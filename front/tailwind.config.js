@@ -11,9 +11,9 @@ module.exports = {
       PrimaryLight: 'rgba(190, 52, 85, 1)', // Magenta-Light1
       SecondaryLight: 'rgba(219, 98, 146, 1)', // Magenta-Light4
       SecondaryVariantLight: 'rgba(219, 98, 146, 0.8)', // Magenta-Light4 80%
-      PrimaryDark: 'rgba(190, 52, 85, 0.6)', // Magenta-Dark1
-      SecondaryDark: 'rgba(219, 98, 146, 0.6)', // Magenta-Dark2
-      SecondaryVariantDark: 'rgba(219, 98, 146, 0.4)', // Magenta-Dark3
+      PrimaryDark: 'rgba(150, 70, 119, 1)', // Magenta-Dark1
+      SecondaryDark: 'rgba(106, 105, 143, 1)', // Magenta-Dark2
+      SecondaryVariantDark: 'rgba(138, 111, 121, 1)', // Magenta-Dark3
 
       // Background, Component color
       BackgroundDark: 'rgba(18, 18, 18, 1)',  // Background-Dark
