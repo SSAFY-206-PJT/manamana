@@ -294,6 +294,23 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`sorts` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `mana_db`.`reports`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mana_db`.`reports` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL,
+  `comment_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_reports_comments1_idx` (`comment_id` ASC) VISIBLE,
+  CONSTRAINT `fk_reports_comments1`
+    FOREIGN KEY (`comment_id`)
+    REFERENCES `mana_db`.`comments` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
