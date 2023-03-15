@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 
 import Navbar from '../components/navBar';
-import WebtoonList from '@/components/webtoonList';
+import WebtoonContainer from '../components/webtoonContainer'
+import WebtoonItem from '../components/webtoonItem';
+
 
 // 웹툰
 interface Webtoon {
@@ -74,7 +76,7 @@ export default function Home() {
   //   imagePath:
   //     'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
   // };
-  let dummyWebtoon = [
+  let myWebtoonDummy = [
     {
       id: 1,
       name: '1조',
@@ -89,25 +91,25 @@ export default function Home() {
     },
     {
       id: 3,
-      name: '아는',
+      name: '신의 탑',
       imagePath:
         'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
     },
     {
       id: 4,
-      name: '웹툰이',
+      name: '웹툰4',
       imagePath:
         'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
     },
     {
       id: 5,
-      name: '이거뿐',
+      name: '웹툰5',
       imagePath:
         'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
     },
     {
       id: 6,
-      name: '이예요',
+      name: '웹툰6',
       imagePath:
         'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
     },
@@ -136,16 +138,31 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="flex justify-center">
-        <div className="bg-BackgroundLightComponent w-11/12 p-4 rounded-lg">
-          <div className="text-lg font-bold">내가 만든 쿠키</div>
-          <div className="overflow-x-auto whitespace-nowrap">
-            {dummyWebtoon.map(webtoon => (
-              <WebtoonList webtoonName={webtoon.name} imageUrl={webtoon.imagePath} />
-            ))}
-          </div>
+
+      {/* 내가 보는 웹툰 */}
+      <div className="flex justify-center mb-3">
+        <div className="bg-BackgroundLightComponent w-11/12 px-4 pt-4 rounded-lg">
+          <WebtoonContainer categoryTitle={'내가 보는 웹툰'} />
+            <div className="overflow-x-auto whitespace-nowrap mb-4">
+              {myWebtoonDummy.map(webtoon => (
+                <WebtoonItem webtoonName={webtoon.name} imageUrl={webtoon.imagePath}/>
+              ))}
+            </div>
         </div>
       </div>
+
+      {/* 마나마나가 준비했어요 */}
+      <div className="flex justify-center mb-3">
+        <div className="bg-BackgroundLightComponent w-11/12 px-4 pt-4 rounded-lg">
+          <WebtoonContainer categoryTitle={'마나마나가 준비했어요'} />
+            <div className="overflow-x-auto whitespace-nowrap mb-4">
+              {myWebtoonDummy.map(webtoon => (
+                <WebtoonItem webtoonName={webtoon.name} imageUrl={webtoon.imagePath}/>
+              ))}
+            </div>
+        </div>
+      </div>
+      
       <Navbar />
     </div>
   );
