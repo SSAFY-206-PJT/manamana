@@ -51,39 +51,44 @@ function DetailPage() {
     background: WEBTOON_GRADATION_COLOR,
   };
 
+  // 태그로 만들 것들
+  const tagList = [dummyWebtoon.genre, dummyWebtoon.day, dummyWebtoon.grade];
+  const tagListDiv = tagList.map(tag => (
+    <div className="mr-3 w-fit flex-initial rounded-3xl border border-white">
+      <p className="mx-3 text-FontPrimaryDark">{tag}</p>
+    </div>
+  ));
+
   return (
     <div>
       <Image
-        className="absolute w-full h-auto"
+        className="absolute h-auto w-full"
         src={WEBTOON_IMAGE_URL}
         alt="웹툰 이미지"
         width={300}
         height={500}
+        priority
       />
-      <div style={coverStyle} className="absolute w-full h-auto">
+      <div style={coverStyle} className="absolute h-auto w-full">
         <div className="text-FontPrimaryDark">(뒤로가기버튼) 상단컴포넌트 (관심웹툰버튼)</div>
         <div className="h-96"></div>
         <div className="mx-3">
           <p className="text-xl text-FontPrimaryDark">{dummyWebtoon.name}</p>
           <p className="text-FontPrimaryDark">{dummyWebtoon.authors}</p>
           <p className="text-sm text-FontPrimaryDark">{dummyWebtoon.plot}</p>
-          <div className="border border-white rounded-3xl w-fit">
-            <p className="text-FontPrimaryDark mx-3">{dummyWebtoon.genre}</p>
-          </div>
-          <p className="text-FontPrimaryDark">{dummyWebtoon.day}</p>
-          <p className="text-FontPrimaryDark">{dummyWebtoon.grade}</p>
+          <div className="flex">{tagListDiv}</div>
           <p className="text-FontPrimaryDark">{dummyWebtoon.status}</p>
           <p className="text-FontPrimaryDark">{dummyWebtoon.totalEp}</p>
-          <hr className="white border-white bg-white h-px" />
+          <hr className="white h-px border-white bg-white" />
         </div>
         <div className="h-96">
-          <hr className="white border-white bg-white h-px" />
+          <hr className="white h-px border-white bg-white" />
         </div>
         <div className="h-96">
-          <hr className="white border-white bg-white h-px" />
+          <hr className="white h-px border-white bg-white" />
         </div>
         <div className="h-96">
-          <hr className="white border-white bg-white h-px" />
+          <hr className="white h-px border-white bg-white" />
         </div>
       </div>
     </div>
