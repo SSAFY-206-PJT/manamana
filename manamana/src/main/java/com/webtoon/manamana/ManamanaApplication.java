@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class ManamanaApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(ManamanaApplication.class, args);
 	}
