@@ -46,7 +46,7 @@ function DetailPage() {
   // 그라데이션 스타일
   const hsls = WEBTOON_COLOR.split(',');
   const WEBTOON_THEME_COLOR = `hsl(${hsls[0]}, ${hsls[1]}%, 20%)`;
-  const WEBTOON_GRADATION_COLOR = `linear-gradient(180deg, transparent, ${WEBTOON_THEME_COLOR} 600px);`;
+  const WEBTOON_GRADATION_COLOR = `linear-gradient(180deg, transparent, ${WEBTOON_THEME_COLOR} 600px)`;
   const coverStyle = {
     background: WEBTOON_GRADATION_COLOR,
   };
@@ -54,7 +54,7 @@ function DetailPage() {
   // 태그로 만들 것들
   const tagList = [dummyWebtoon.genre, dummyWebtoon.day, dummyWebtoon.grade];
   const tagListDiv = tagList.map(tag => (
-    <div className="mr-3 w-fit flex-initial rounded-3xl border border-white">
+    <div className="mr-3 w-fit flex-initial rounded-3xl border border-white" key={tag}>
       <p className="mx-3 text-FontPrimaryDark">{tag}</p>
     </div>
   ));
