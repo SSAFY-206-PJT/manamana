@@ -1,7 +1,6 @@
-// import React from 'react';
 import Link from 'next/link';
 
-export default function NavBar() {
+export default function Navbar() {
   return (
     <div className="w-screen text-FontPrimaryDark bg-FooterBackground flex fixed bottom-0 left-0 right-0">
       <div className="grow flex justify-center">

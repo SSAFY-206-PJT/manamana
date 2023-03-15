@@ -14,10 +14,11 @@ module.exports = {
         SecondaryVariantDark: 'rgba(138, 111, 121, 1)', // Magenta-Dark3
 
         // Background, Component color
-        BackgroundDark: 'rgba(18, 18, 18, 1)', // Background-Dark
+
+        BackgroundDark: 'rgba(18, 18, 18, 1)',  // Background-Dark
         BackgroundDarkComponent: 'rgba(37, 37, 37, 1)', // Background-Dark-Component
         BackgroundLight: 'rgba(243, 243, 243, 1)', // Background-Light
-        BackgroundLightComponent: 'rgba(255, 255, 255, 1)', // Background-Light-Component
+        BackgroundLightComponent: 'rgba(255, 255, 255, 1)',  // Background-Light-Component
         BackgroundLightComponentBolder: 'rgba(234, 234, 234, 1)', // Background-Light-Component-bolder
         BackgroundDarkComponentBolder: 'rgba(47, 47, 47, 1)', // Background-Light-Component-bolder
 
