@@ -19,7 +19,6 @@ public class UserRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
-
     public List<User> findByNickname(String nickname){
         return queryFactory
                 .selectFrom(QUser.user)

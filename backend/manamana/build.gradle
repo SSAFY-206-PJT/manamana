@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-apply plugin: "io.spring.dependency-management"
+//apply plugin: "io.spring.dependency-management"
 
 group = 'com.webtoon'
 version = '0.0.1-SNAPSHOT'

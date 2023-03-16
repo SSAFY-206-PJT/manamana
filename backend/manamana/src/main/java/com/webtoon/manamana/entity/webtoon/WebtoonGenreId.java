@@ -30,6 +30,7 @@ public class WebtoonGenreId implements Serializable {
         return genreId == that.genreId;
     }
 
+
     @Override
     public int hashCode() {
         int result = (int) (webtoonId ^ (webtoonId >>> 32));
