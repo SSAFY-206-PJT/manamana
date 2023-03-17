@@ -10,12 +10,12 @@ export default function webtoonContainer(props: Props) {
   let showRightBtn = props.rightBtn;
 
   return (
-    <div className="flex justify-between bg-BackgroundLightComponent rounded-lg">
+    <div className="flex justify-between rounded-lg bg-BackgroundLightComponent">
       <div className="text-lg font-bold">{categoryTitle}</div>
       {showRightBtn ? (
         <div className="flex items-center">
           <Link href="/my-webtoon">
-            <img src='/images/goOtherPage.png' alt="goOtherPage"></img>
+            <img src="/images/goOtherPage.png" alt="goOtherPage"></img>
           </Link>
         </div>
       ) : (

@@ -1,5 +1,5 @@
-import Navbar from '../../components/navBar';
-import Headerbar from '../../components/headerBar';
+import Navbar from '../../components/common/Navbar';
+import Headerbar from '../../components/common/Headerbar';
 
 export default function SearchPage() {
   return (
