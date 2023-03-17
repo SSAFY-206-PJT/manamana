@@ -38,10 +38,10 @@ pipeline {
 
         stage("Build Container Image") {
             steps {
-
-
+                sh "pwd"
                 script {
                     image = docker.build("${IMAGE_NAME}")
+            
                 }
             }
         }
