@@ -81,7 +81,7 @@ export default function Home() {
       name: '1조',
       imagePath:
         'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
-      status: '연재중',
+      status: '휴재중',
     },
     {
       id: 2,
