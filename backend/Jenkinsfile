@@ -7,8 +7,8 @@ pipeline {
                     IMAGE_NAME = "sh80165/manamana-springboot"
                     IMAGE_STORAGE = "https://registry.hub.docker.com"
                     IMAGE_STORAGE_CREDENTIAL = "docker-auth"
-                    SSH_CONNECTION = "ubuntu@j8b206.p.ssafy.io"
-                    SSH_CONNECTION_CREDENTIAL = "deploy-ec2-ssh"
+                    // SSH_CONNECTION = "ubuntu@j8b206.p.ssafy.io"
+                    // SSH_CONNECTION_CREDENTIAL = "deploy-ec2-ssh"
                     SPRING_BUILD_PATH = "./backend/manamana"
                     APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
                     CONTAINER_NAME = "manamana-api"
@@ -63,19 +63,23 @@ pipeline {
 
         stage("Server Run") {
             steps {
-                sshagent([SSH_CONNECTION_CREDENTIAL]) {
+                docker.ps("-a")
+                script {
+                    
                     // 최신 컨테이너 삭제
-                    sh "ssh -o StrictHostKeyChecking=no ${SSH_CONNECTION} 'docker rm -f ${CONTAINER_NAME}'"
+                    sh "docker rm -f ${CONTAINER_NAME}"
                     // 최신 이미지 삭제
-                    sh "ssh -o StrictHostKeyChecking=no ${SSH_CONNECTION} 'docker rmi -f ${IMAGE_NAME}:latest'"
+                    sh "docker rmi -f ${IMAGE_NAME}:latest"
+                    //컨테이너 확인
+                    sh "docker ps -a"
                     // 최신 이미지 PULL
-                    sh "ssh -o StrictHostKeyChecking=no ${SSH_CONNECTION} 'docker pull ${IMAGE_NAME}:latest'"
+                    sh "docker pull ${IMAGE_NAME}:latest"
                     // 이미지 확인
-                    sh "ssh -o StrictHostKeyChecking=no ${SSH_CONNECTION} 'docker images'"
+                    sh "docker images"
                     // 최신 이미지 RUN
-                    sh "ssh -o StrictHostKeyChecking=no ${SSH_CONNECTION} 'docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_NAME}:latest'"
+                    sh "docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_NAME}:latest"
                     // 컨테이너 확인
-                    sh "ssh -o StrictHostKeyChecking=no ${SSH_CONNECTION} 'docker ps -a'"
+                    sh "docker ps -a"
                 }   
             }
         }
