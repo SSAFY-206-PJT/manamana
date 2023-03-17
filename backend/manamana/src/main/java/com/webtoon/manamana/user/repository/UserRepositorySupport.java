@@ -12,7 +12,7 @@ import java.util.List;
 public class UserRepositorySupport extends QuerydslRepositorySupport {
 
     private final JPAQueryFactory queryFactory;
-
+    
 
     public UserRepositorySupport(JPAQueryFactory queryFactory) {
         super(User.class);
