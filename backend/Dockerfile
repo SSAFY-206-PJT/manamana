@@ -4,7 +4,7 @@ ENV APP_HOME=/usr/app
 
 WORKDIR $APP_HOME
 
-COPY ./backend/manamana/build/libs/*.jar ./application.jar
+COPY ./manamana/build/libs/*.jar ./application.jar
 
 COPY ./resources ./resources
 

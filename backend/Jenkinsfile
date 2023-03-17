@@ -12,7 +12,7 @@ pipeline {
                     SPRING_BUILD_PATH = "./backend/manamana"
                     APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
                     CONTAINER_NAME = "manamana-api"
-                    PROJECT_DIR = "manamana-backend/"
+                    PROJECT_DIR = "spring-boot/backend/"
                 }
             }
         }
@@ -30,6 +30,7 @@ pipeline {
         stage("Copy Application.yml"){
             steps{
                 dir("${APPLICATION_YML_PATH}"){
+                    sh "pwd"
                     sh "cp -r -f resources ${PROJECT_DIR}"
                 }
             }
