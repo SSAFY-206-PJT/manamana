@@ -1,10 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -17,6 +14,7 @@ module.exports = {
         SecondaryVariantDark: 'rgba(138, 111, 121, 1)', // Magenta-Dark3
 
         // Background, Component color
+
         BackgroundDark: 'rgba(18, 18, 18, 1)',  // Background-Dark
         BackgroundDarkComponent: 'rgba(37, 37, 37, 1)', // Background-Dark-Component
         BackgroundLight: 'rgba(243, 243, 243, 1)', // Background-Light
@@ -25,14 +23,14 @@ module.exports = {
         BackgroundDarkComponentBolder: 'rgba(47, 47, 47, 1)', // Background-Light-Component-bolder
 
         // Font color
-        FontPrimaryLight: 'rgba(0, 0, 0, 1)',  // Font-Light
+        FontPrimaryLight: 'rgba(0, 0, 0, 1)', // Font-Light
         FontSecondaryLight: 'rgba(0, 0, 0, 0.6)', // Font-sub-Light
         FontPrimaryDark: 'rgba(255, 255, 255, 0.92)', // Font-Dark
-        FontSecondaryDark: 'rgba(255, 255, 255, 0.6)',  // Font-sub-Dark
+        FontSecondaryDark: 'rgba(255, 255, 255, 0.6)', // Font-sub-Dark
 
         // other color
-        TaskBarBackground: 'rgba(224, 224, 224, 1)',  // taskbar-background
-        FooterIcon: 'rgba(55, 73, 87, 1)',  // footer-icon
+        TaskBarBackground: 'rgba(224, 224, 224, 1)', // taskbar-background
+        FooterIcon: 'rgba(55, 73, 87, 1)', // footer-icon
         FooterBackground: 'rgba(240, 240, 240, 1)', // footer-background
         ImageCover70: 'rgba(0, 0, 0, 0.7)', // Image-cover-70
         ImageCover30: 'rgba(0, 0, 0, 0.3)', // Image-cover-30

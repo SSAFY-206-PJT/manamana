@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.namu.wiki',
+        port: '',
+        pathname: '/i/**',
+      },
+    ],
+  },
   webpack: config => {
     // 아래를 추가합니다.
     config.module.rules.push({
@@ -10,6 +20,6 @@ const nextConfig = {
     });
     return config;
   }
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

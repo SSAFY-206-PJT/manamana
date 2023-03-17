@@ -101,24 +101,25 @@ export default function MovingLogo(props: {
 
             // }
 
-            logoRef.current.animate(
-                {
-                    transform: [
-                        `translateX(${position}%)`,
-                        `translateX(${position + 1}%)`
-                    ]
-                },
-                { 
-                    duration: 1000,
-                    fill: 'forwards',
-                    easing: 'ease'
-                }
-            )
+            // logoRef.current.animate(
+                
+            //     {
+            //         transform: [
+            //             `translateX(${position}%)`,
+            //             `translateX(${position + 1}%)`
+            //         ]
+            //     },
+            //     { 
+            //         duration: 1000,
+            //         fill: 'forwards',
+            //         easing: 'ease'
+            //     }
+            // )
 
-            position += 1;
+            // position += 1;
 
-            setTimeout(moveRight, 1000);
-            console.log(logoRef.current?.getBoundingClientRect().left);
+            // setTimeout(moveRight, 1000);
+            // console.log(logoRef.current?.getBoundingClientRect().left);
         }
 
         return (
