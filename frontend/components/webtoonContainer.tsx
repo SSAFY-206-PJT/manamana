@@ -15,7 +15,7 @@ export default function webtoonContainer(props: Props) {
       {showRightBtn ? (
         <div className="flex items-center">
           <Link href="/my-webtoon">
-            <img src="/images/goOtherPage.png" alt="goOtherPage"></img>
+            <img src='/images/goOtherPage.png' alt="goOtherPage"></img>
           </Link>
         </div>
       ) : (
