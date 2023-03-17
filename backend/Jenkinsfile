@@ -13,6 +13,7 @@ pipeline {
                     APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
                     CONTAINER_NAME = "manamana-api"
                     PROJECT_DIR = "spring-boot/backend/"
+                    DOCKER_FILE_PATH = "backend/"
                 }
             }
         }
@@ -38,11 +39,15 @@ pipeline {
 
         stage("Build Container Image") {
             steps {
-                sh "pwd"
-                script {
-                    image = docker.build("${IMAGE_NAME}")
+                dir("${DOCKER_FILE_PATH}"){
+                    sh "pwd"
+                    script {
+                        image = docker.build("${IMAGE_NAME}")
             
+                    }   
+
                 }
+                
             }
         }
 
