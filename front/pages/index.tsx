@@ -2,9 +2,8 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 
 import Navbar from '../components/navBar';
-import WebtoonContainer from '../components/webtoonContainer'
+import WebtoonContainer from '../components/webtoonContainer';
 import WebtoonItem from '../components/webtoonItem';
-
 
 // 웹툰
 interface Webtoon {
@@ -115,6 +114,21 @@ export default function Home() {
     },
   ];
 
+  let recommentWebtoon = [
+    {
+      id: 1,
+      name: '추천',
+      imagePath:
+        'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
+    },
+    {
+      id: 2,
+      name: '웹툰',
+      imagePath:
+        'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
+    },
+  ];
+
   return (
     <div className="bg-BackgroundLight w-screen h-screen">
       {/* 최상위 헤더 */}
@@ -142,12 +156,12 @@ export default function Home() {
       {/* 내가 보는 웹툰 */}
       <div className="flex justify-center mb-3">
         <div className="bg-BackgroundLightComponent w-11/12 px-4 pt-4 rounded-lg">
-          <WebtoonContainer categoryTitle={'내가 보는 웹툰'} />
-            <div className="overflow-x-auto whitespace-nowrap mb-4">
-              {myWebtoonDummy.map(webtoon => (
-                <WebtoonItem webtoonName={webtoon.name} imageUrl={webtoon.imagePath}/>
-              ))}
-            </div>
+          <WebtoonContainer categoryTitle={'내가 보는 웹툰'} rightBtn={true} />
+          <div className="overflow-x-auto whitespace-nowrap  mb-4">
+            {myWebtoonDummy.map(webtoon => (
+              <WebtoonItem webtoonName={webtoon.name} imageUrl={webtoon.imagePath} />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -155,14 +169,26 @@ export default function Home() {
       <div className="flex justify-center mb-3">
         <div className="bg-BackgroundLightComponent w-11/12 px-4 pt-4 rounded-lg">
           <WebtoonContainer categoryTitle={'마나마나가 준비했어요'} />
-            <div className="overflow-x-auto whitespace-nowrap mb-4">
-              {myWebtoonDummy.map(webtoon => (
-                <WebtoonItem webtoonName={webtoon.name} imageUrl={webtoon.imagePath}/>
-              ))}
-            </div>
+          <div className="overflow-x-auto whitespace-nowrap mb-4">
+            {recommentWebtoon.map(webtoon => (
+              <WebtoonItem webtoonName={webtoon.name} imageUrl={webtoon.imagePath} />
+            ))}
+          </div>
         </div>
       </div>
-      
+
+      {/* 이 달의 신작 */}
+      <div className="flex justify-center mb-3">
+        <div className="bg-BackgroundLightComponent w-11/12 px-4 pt-4 rounded-lg">
+          <WebtoonContainer categoryTitle={'이 달의 신작'} />
+          <div className="overflow-x-auto whitespace-nowrap  mb-4">
+            {myWebtoonDummy.map(webtoon => (
+              <WebtoonItem webtoonName={webtoon.name} imageUrl={webtoon.imagePath} />
+            ))}
+          </div>
+        </div>
+      </div>
+
       <Navbar />
     </div>
   );
