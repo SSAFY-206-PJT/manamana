@@ -93,18 +93,33 @@ export default function MovingLogo(props: {
     */
     let moveRight = () => {
         if (logoRef.current != null && containerRef.current != null) {
-            position += 5;
-            logoRef.current.style.left = `${position}px`;
+            // position += 5;
+            // logoRef.current.style.left = `${position}px`;
 
-            if (position >= containerRef.current.offsetWidth) {
-                position = 0;
+            // if (position >= containerRef.current.offsetWidth) {
+            //     position = 0;
 
-            }
+            // }
 
-            setTimeout(moveRight, 10);
+            logoRef.current.animate(
+                {
+                    transform: [
+                        `translateX(${position}%)`,
+                        `translateX(${position + 1}%)`
+                    ]
+                },
+                { 
+                    duration: 1000,
+                    fill: 'forwards',
+                    easing: 'ease'
+                }
+            )
+
+            position += 1;
+
+            setTimeout(moveRight, 1000);
+            console.log(logoRef.current?.getBoundingClientRect().left);
         }
-
-        console.dir(logoRef.current);
 
         return (
             css``

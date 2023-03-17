@@ -10,7 +10,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='container flex flex-col bg-gray-800 w-screen h-screen'>
+    <div className='flex flex-col bg-gray-800 w-screen h-screen'>
       <div>
         <MovingLogo direction='left' startIdx={2}></MovingLogo>
         <MovingLogo direction='right' startIdx={1}></MovingLogo>
