@@ -63,9 +63,9 @@ pipeline {
 
         stage("Server Run") {
             steps {
-                docker.ps("-a")
+                
                 script {
-                    
+                    docker.ps("-a")
                     // 최신 컨테이너 삭제
                     sh "docker rm -f ${CONTAINER_NAME}"
                     // 최신 이미지 삭제
