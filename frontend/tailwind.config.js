@@ -19,8 +19,8 @@ module.exports = {
         BackgroundDarkComponent: 'rgba(37, 37, 37, 1)', // Background-Dark-Component
         BackgroundLight: 'rgba(243, 243, 243, 1)', // Background-Light
         BackgroundLightComponent: 'rgba(255, 255, 255, 1)',  // Background-Light-Component
-        BackgroundLightComponentBolder: 'rgba(234, 234, 234, 1)', // Background-Light-Component-bolder
-        BackgroundDarkComponentBolder: 'rgba(47, 47, 47, 1)', // Background-Light-Component-bolder
+        BackgroundLightComponentBorder: 'rgba(234, 234, 234, 1)', // Background-Light-Component-bolder
+        BackgroundDarkComponentBorder: 'rgba(47, 47, 47, 1)', // Background-Light-Component-bolder
 
         // Font color
         FontPrimaryLight: 'rgba(0, 0, 0, 1)', // Font-Light
