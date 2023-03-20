@@ -41,13 +41,7 @@ pipeline {
             steps {
                 dir("${DOCKER_FILE_PATH}"){
                     script {
-                        sh "pwd"
-
-                        sh "docker images"
                         image = docker.build("${IMAGE_NAME}")
-
-                        sh "docker images"
-            
                     }   
 
                 }
@@ -58,12 +52,10 @@ pipeline {
         stage("Push Container Image") {
             steps {
                 script {
-                    sh "docker images"
 
                     docker.withRegistry("", "${IMAGE_STORAGE_CREDENTIAL}") {
                         image.push("latest")
                     }
-                    sh "docker images"
                 }
             }
         }
@@ -73,28 +65,27 @@ pipeline {
                 script {
 
                     // //컨테이너 확인 후 정지
-                    // sh "docker ps -f name=${CONTAINER_NAME} -q | xargs --no-run-if-empty docker container stop"
+                    sh "docker ps -f name=${CONTAINER_NAME} -q | xargs --no-run-if-empty docker container stop"
 
                     // //컨테이너 삭제
-                    // sh "docker container ls -a -f name=${CONTAINER_NAME} -q | xargs -r docker container rm"
+                    sh "docker container ls -a -f name=${CONTAINER_NAME} -q | xargs -r docker container rm"
 
-                    //sudo docker rmi $(sudo docker images registry.hub.docker.com/sh80165/manamana-springboot -q)
+                    //기존 이미지 삭제
+                    sh "sudo docker images sh80165/manamana-springboot -q | xargs -r docker rmi -f"
 
-                    // 최신 이미지 삭제
-                    sh "docker rmi -f ${IMAGE_NAME}:latest"
                     //컨테이너 확인
                     sh "docker ps -a"
-
-                    sh "docker images"
 
                     // 최신 이미지 PULL
                     sh "docker pull ${IMAGE_NAME}:latest"
 
                     // 이미지 확인
                     sh "docker images"
+
                     // 최신 이미지 RUN
                     sh "docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_NAME}:latest"
-                    // 컨테이너 확인
+
+                    // 컨테이너 확인 - 로그 확인용
                     sh "docker ps -a"
                 }   
             }
