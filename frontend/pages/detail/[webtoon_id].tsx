@@ -48,7 +48,7 @@ const dummyWebtoon: Webtoon = {
   name: '1초',
   imagePath:
     'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-  plot: '구조율 100%의 전설적인 소방관.\n그의 특별한 능력은 긴장하는 순간, 미래가 보인다는 것!\n촌각을 다투는 진짜 소방관들의 이야기',
+  plot: '구조율 100%의 전설적인 소방관.\n그의 특별한 능력은 긴장하는 순간, 미래가 보인다는 것!\n촌각을 다투는 진짜 소방관들의 이야기구조율 100%의 전설적인 소방관.\n그의 특별한 능력은 긴장하는 순간, 미래가 보인다는 것!\n촌각을 다투는 진짜 소방관들의 이야기구조율 100%의 전설적인 소방관.\n그의 특별한 능력은 긴장하는 순간, 미래가 보인다는 것!\n촌각을 다투는 진짜 소방관들의 이야기구조율 100%의 전설적인 소방관.\n그의 특별한 능력은 긴장하는 순간, 미래가 보인다는 것!\n촌각을 다투는 진짜 소방관들의 이야기',
   grade: '전체이용가',
   status: '연재중',
   webtoonUrl: 'https://m.comic.naver.com/webtoon/list?titleId=725586',
@@ -102,7 +102,7 @@ function DetailPage() {
         className={
           morePlot
             ? 'text-sm font-bold text-FontPrimaryDark'
-            : 'line-clamp-2 text-sm font-bold text-FontPrimaryDark'
+            : 'text-sm font-bold text-FontPrimaryDark line-clamp-2'
         }
       >
         {dummyWebtoon.plot}
