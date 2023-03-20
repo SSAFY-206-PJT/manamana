@@ -3,6 +3,8 @@ import PublishDayBlock from "@/components/pages/search/filter/PublishDayBlock";
 import GenreStateBlock from "@/components/pages/search/filter/GenreStateBlock";
 import AgeGradeBlock from "@/components/pages/search/filter/AgeGradeBlock";
 import {useState, useEffect} from "react";
+import ConfirmBtn from "@/components/confirmBtn";
+import { router } from 'next/router'
 
 export default function FilterPage() {
   /*
@@ -124,7 +126,6 @@ export default function FilterPage() {
 
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
 
-
   const selectBlock = (value: string) => {
     selectedBlocks.push(value);
   }
@@ -138,10 +139,28 @@ export default function FilterPage() {
     }
   }
 
+  const onConfirmClick = () => {
+    // 지금까지 선택된 selectedBlocks 데이터를 보낸다.
+    // search로 이동한다.
+    router.replace({
+      pathname: '/search',
+      query: {
+        value: selectedBlocks
+      }
+    },
+    "/search"
+    );
+  }
+
+  const onCancelClick = () => {
+    // search로 이동한다.
+    router.back();
+  }
+
   return (
     <div className="flex flex-col gap-4 h-full w-full bg-BackgroundLight">
       <div className="flex justify-center items-center h-16 m-2">
-        <span className="text-2xl">필터</span>
+        <span className="text-2xl text-PrimaryLight font-bold">필터</span>
       </div>
       <div className="flex flex-col gap-4 m-4">
         <div className="flex flex-col gap-1">
@@ -169,7 +188,9 @@ export default function FilterPage() {
           </div>
         </div>
       </div>
-      <div>푸터</div>
+      <div className="m-8">
+        <ConfirmBtn cancel={onCancelClick} confirm={onConfirmClick} />
+      </div>
     </div>
   );
 }

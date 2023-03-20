@@ -4,6 +4,8 @@ import SearchBar from '@/components/pages/search/SearchBar';
 import Image from 'next/image';
 import AngleDown from '../../public/images/fi-rs-angle-small-down.svg';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { withRouter } from 'next/router';
 
 export default function SearchPage() {
   const totalWebtoonCount = 1000;
@@ -31,6 +33,13 @@ export default function SearchPage() {
   const changeSearchContent = (content: string) => {
 
   }
+
+  useEffect(
+    () => {
+      console.log()
+    },
+    []
+  )
 
   return (
     <div className='bg-BackgroundLight h-screen'>
