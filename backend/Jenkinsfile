@@ -71,7 +71,7 @@ pipeline {
                     sh "docker container ls -a -f name=${CONTAINER_NAME} -q | xargs -r docker container rm"
 
                     //기존 이미지 삭제
-                    sh "sudo docker images sh80165/manamana-springboot -q | xargs -r docker rmi -f"
+                    sh "docker images sh80165/manamana-springboot -q | xargs -r docker rmi -f"
 
                     //컨테이너 확인
                     sh "docker ps -a"
