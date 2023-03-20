@@ -44,7 +44,7 @@ pipeline {
                         sh "pwd"
                         image = docker.build("${IMAGE_NAME}")
 
-                        sh "docker ps -a"
+                        sh "docker images"
             
                     }   
 
