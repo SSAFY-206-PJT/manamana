@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Navbar from '../components/common/Navbar';
 import WebtoonContainer from '../components/common/WebtoonContainer';
 import WebtoonItem from '../components/common/WebtoonItem';
+import Top10 from '../components/common/Top10';
 
 // 웹툰
 interface Webtoon {
@@ -58,23 +59,7 @@ export default function Home() {
     };
   }, []);
 
-  // 더미 웹툰 정보
-  // const dummyWebtoon = {
-  //   name: '1초',
-  //   authors: '시니/광운',
-  //   plot: '구조율 100%의 전설적인 소방관.\n그의 특별한 능력은 긴장하는 순간, 미래가 보인다는 것!\n촌각을 다투는 진짜 소방관들의 이야기',
-  //   genre: '드라마',
-  //   day: '금요일',
-  //   grade: '전체이용가',
-  //   status: '연재중',
-  //   webtoonURL: 'https://comic.naver.com/webtoon/list?titleId=725586',
-  //   webtoonId: '1',
-  //   startDate: new Date('2019-03-14'),
-  //   totalEp: 123,
-  //   colorHsl: '0,100,20',
-  //   imagePath:
-  //     'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
-  // };
+  // 웹툰 더미데이터
   let myWebtoonDummy = [
     {
       id: 1,
@@ -119,6 +104,15 @@ export default function Home() {
       status: '연재중',
     },
   ];
+  // Top10 더미데이터
+  let top10Dummy = [
+    { id: 1, rank: 1, webtoonname: '1초' },
+    { id: 2, rank: 2, webtoonname: '웹툰2' },
+    { id: 3, rank: 3, webtoonname: '웹툰3' },
+    { id: 4, rank: 4, webtoonname: '웹툰4' },
+    { id: 5, rank: 5, webtoonname: '웹툰5' },
+    { id: 6, rank: 6, webtoonname: '웹툰6' },
+  ];
 
   return (
     <div className="h-screen w-screen bg-BackgroundLight">
@@ -132,23 +126,15 @@ export default function Home() {
       </div>
       {/* TOP 10 */}
       <div className="flex h-14 w-screen items-center justify-center rounded-b-xl bg-PrimaryLight p-2">
-        <div className="flex h-full items-center justify-between rounded-2xl bg-white px-6">
-          <div className="flex items-center">
-            <img src="/images/Main_Chatgrow.png" alt="top10" className="mx-2 h-4"></img>
-            <p className="mx-2">TOP 10</p>
-          </div>
-          <div className="flex items-center">
-            <p className="ml-4 text-PrimaryLight">1</p>
-            <p className="mx-2">나 혼자만 레벨업</p>
-          </div>
+        <div className="flex h-full w-11/12 items-center justify-between rounded-2xl bg-white px-6">
+          <Top10 />
         </div>
       </div>
-
       {/* 내가 보는 웹툰 */}
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
-          <WebtoonContainer categoryTitle={'내가 보는 웹툰'} rightBtn={true} />
-          <div className="mb-4 overflow-x-auto  whitespace-nowrap">
+          <WebtoonContainer categoryTitle={'내가 보는 웹툰'} route={'my-webtoon'} />
+          <div className="mb-4 overflow-x-auto whitespace-nowrap">
             {myWebtoonDummy.map(webtoon => (
               <WebtoonItem
                 key={webtoon.id}
@@ -160,7 +146,24 @@ export default function Home() {
           </div>
         </div>
       </div>
-
+      <div className="mb-4 flex justify-center">
+        <div className="grid w-11/12 grid-cols-3 gap-2">
+          <div className="flex justify-center rounded-lg bg-white">다른 기능</div>
+          <div className="col-span-2 rounded-lg bg-white px-4">
+            <div className="flex justify-center pt-4">
+              <img className="p-2" src="/images/Main_Managola.png" alt="hi"></img>
+              <Link href="/managola">
+                <div className="flex items-center p-2 font-bold">
+                  취향검사
+                  <br />
+                  하러가기
+                </div>
+              </Link>
+            </div>
+            <WebtoonContainer categoryTitle={' '} route={'managola'} />
+          </div>
+        </div>
+      </div>
       {/* 마나마나가 준비했어요 */}
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
@@ -177,7 +180,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       {/* 이 달의 신작 */}
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
