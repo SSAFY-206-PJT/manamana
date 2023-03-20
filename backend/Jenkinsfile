@@ -42,6 +42,8 @@ pipeline {
                 dir("${DOCKER_FILE_PATH}"){
                     script {
                         sh "pwd"
+
+                        sh "docker images"
                         image = docker.build("${IMAGE_NAME}")
 
                         sh "docker images"
@@ -56,7 +58,6 @@ pipeline {
         stage("Push Container Image") {
             steps {
                 script {
-
                     docker.withRegistry("${IMAGE_STORAGE}", "${IMAGE_STORAGE_CREDENTIAL}") {
                         image.push("latest")
                     }
@@ -80,8 +81,12 @@ pipeline {
                     sh "docker rmi -f ${IMAGE_NAME}:latest"
                     //컨테이너 확인
                     sh "docker ps -a"
+
+                    sh "docker images"
+
                     // 최신 이미지 PULL
                     sh "docker pull ${IMAGE_NAME}:latest"
+
                     // 이미지 확인
                     sh "docker images"
                     // 최신 이미지 RUN
