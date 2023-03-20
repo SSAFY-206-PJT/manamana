@@ -322,7 +322,7 @@ function DetailPage() {
       <div className="my-2 h-48 rounded-lg border border-solid border-white bg-CommentBackground"></div>
       <div className="flex h-12 justify-around rounded-lg border border-solid border-white bg-CommentBackground">
         <div className="flex w-1/2 items-center justify-center">
-          <div className="flex w-1/2 items-center justify-center">
+          <div className="flex h-full w-1/2 items-center justify-center">
             <CommentIcon height="100%" fill="white" stroke="white" />
             <p className="whitespace-nowrap text-FontPrimaryDark">리뷰 몇개</p>
           </div>
