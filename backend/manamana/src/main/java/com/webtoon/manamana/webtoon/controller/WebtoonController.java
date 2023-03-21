@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
-import com.webtoon.manamana.webtoon.dto.response.AuthorDTO;
-import com.webtoon.manamana.webtoon.dto.response.WebtoonListDTO;
+import com.webtoon.manamana.webtoon.dto.response.*;
 import com.webtoon.manamana.webtoon.util.WebtoonListFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,8 +87,71 @@ public class WebtoonController {
     }
 
     @GetMapping("/{webtoon-id}")
-    public DataResponse<WebtoonListDTO>> webtoonList(
-            @RequestParam HashMap<String,String> filter
-    )
+    public DataResponse<WebtoonDetailDTO> webtoonDetail(){
+
+        List<AuthorDTO> authorDTOList = new ArrayList<>();
+        AuthorDTO authorDTO1 = AuthorDTO.builder()
+                .id(1)
+                .name("시니")
+                .build();
+        AuthorDTO authorDTO2 = AuthorDTO.builder()
+                .id(2)
+                .name("광운")
+                .build();
+        authorDTOList.add(authorDTO1);
+        authorDTOList.add(authorDTO2);
+
+        List<GenreDTO> genreDTOList = new ArrayList<>();
+        GenreDTO genreDTO1 = GenreDTO.builder()
+                .id(1)
+                .name("드라마")
+                .build();
+        GenreDTO genreDTO2 = GenreDTO.builder()
+                .id(2)
+                .name("직업 드라마")
+                .build();
+        genreDTOList.add(genreDTO1);
+        genreDTOList.add(genreDTO2);
+
+        List<DayDTO> dayDTOList = new ArrayList<>();
+        DayDTO dayDTO1 = DayDTO.builder()
+                .id(1)
+                .codeId(1)
+                .build();
+        DayDTO dayDTO2 = DayDTO.builder()
+                .id(2)
+                .codeId(2)
+                .build();
+        dayDTOList.add(dayDTO1);
+        dayDTOList.add(dayDTO2);
+
+        AdditionDTO additionDTO = AdditionDTO.builder()
+                .id(1)
+                .view(10)
+                .scoreCount(100)
+                .scoreAverage(5)
+                .build();
+
+        WebtoonDetailDTO webtoonDetailDTO = WebtoonDetailDTO.builder()
+                .id(1)
+                .name("1초")
+                .imagePath("https://image-comic.pstatic.net/webtoon/725586/thumbnail/thumbnail_IMAG21_17f81846-d1a9-43fd-83a4-f9e966b6b977.jpg")
+                .plot("소방관 이야기 입니다\n근데 초능력을 곁들인")
+                .grade("전체이용가")
+                .status("연재중")
+                .webtoonUrl("https://comic.naver.com/webtoon/list?titleId=725586")
+                .webtoonId("725586")
+                .startDate("2023.03.13")
+                .totalEpisode(100)
+                .colorHsl("385,20,25")
+                .authors(authorDTOList)
+                .genres(genreDTOList)
+                .days(dayDTOList)
+                .additions(additionDTO)
+                .build();
+
+        return responseService.getDataResponse(webtoonDetailDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
+
+    }
 
 }
