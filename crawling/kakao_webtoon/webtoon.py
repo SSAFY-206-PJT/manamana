@@ -16,7 +16,7 @@ class Webtoon:
     genre_arr: 장르 리스트 (list)
     day_arr: 요일 리스트 (list)
     authors_arr: 작가 리스트 (list)
-    corlorHsl: 이미지 대표색(HSL) (str)
+    colorHsl: 이미지 대표색(HSL) (str)
 
     make_json(): json으로 반환
     """
@@ -34,10 +34,10 @@ class Webtoon:
         self.genre_arr: list = None
         self.day_arr: list = None
         self.authors_arr: list = None
-        self.corlorHsl: str = None
+        self.colorHsl: str = None
 
     def check_null(self):
-        arr = [("name", self.name), ("image", self.image), ("plot", self.plot), ("grade", self.grade), ("status", self.status), ("webtoon_url", self.webtoon_url), ("webtoon_id", self.webtoon_id), ("start_date", self.start_date), ("total_ep", self.total_ep), ("genre_arr", self.genre_arr), ("day_arr", self.day_arr), ("authors_arr", self.authors_arr), ("corlorHsl", self.corlorHsl)]
+        arr = [("name", self.name), ("image", self.image), ("plot", self.plot), ("grade", self.grade), ("status", self.status), ("webtoon_url", self.webtoon_url), ("webtoon_id", self.webtoon_id), ("start_date", self.start_date), ("total_ep", self.total_ep), ("genre_arr", self.genre_arr), ("day_arr", self.day_arr), ("authors_arr", self.authors_arr), ("colorHsl", self.colorHsl)]
         error_arr = []
         for string, value in arr:
             if value is None:
@@ -79,7 +79,7 @@ class Webtoon:
             "genre_arr" : self.genre_arr,
             "day_arr" : self.day_arr,
             "authors_arr" : self.authors_arr,
-            "corlorHsl" : self.corlorHsl,
+            "colorHsl" : self.colorHsl,
             }
 
     def make_json(self):
