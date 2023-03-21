@@ -1,5 +1,5 @@
-import Navbar from '../../components/navBar';
-import Headerbar from '../../components/headerBar';
+import Navbar from '../../components/common/Navbar';
+import Headerbar from '../../components/common/Headerbar';
 import SearchBar from '@/components/pages/search/SearchBar';
 import Image from 'next/image';
 import AngleDown from '../../public/images/fi-rs-angle-small-down.svg';
