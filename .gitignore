@@ -290,4 +290,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,python,java,react
 
 # 설정 파일
-config.py
+*/config.py
