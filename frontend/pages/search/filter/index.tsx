@@ -4,7 +4,10 @@ import GenreStateBlock from "@/components/pages/search/filter/GenreStateBlock";
 import AgeGradeBlock from "@/components/pages/search/filter/AgeGradeBlock";
 import {useState, useEffect} from "react";
 import ConfirmBtn from "@/components/confirmBtn";
-import { router } from 'next/router'
+import { useRouter } from "next/router"
+import { RootState } from "../../../store/index";
+import { useDispatch, useSelector } from "react-redux";
+import { changeCurSearchTag } from "@/store/CurSearchTagSlice";
 
 export default function FilterPage() {
   /*
@@ -13,120 +16,103 @@ export default function FilterPage() {
   * */
   const publishState = [
     {
-      content: '미완결',
-      value: 'PS_01'
+      value: '미완결',
     },
     {
-      content: '완결',
-      value: 'PS_02'
+      value: '완결',
     }
   ];
   const publishDayOfTheWeek = [
     {
-      content: '월',
-      value: 'PDOTW_01'
+      value: '월',
     },
     {
-      content: '화',
-      value: 'PDOTW_02'
+      value: '화',
     },
     {
-      content: '수',
-      value: 'PDOTW_03'
+      value: '수',
     },
     {
-      content: '목',
-      value: 'PDOTW_04'
+      value: '목',
     },
     {
-      content: '금',
-      value: 'PDOTW_05'
+      value: '금',
     },
     {
-      content: '토',
-      value: 'PDOTW_06'
+      value: '토',
     },
     {
-      content: '일',
-      value: 'PDOTW_07'
+      value: '일',
     }
   ];
   const genreState = [
     {
-      content: '액션',
-      value: 'GS_001'
+      value: '액션',
     },
     {
-      content: '판타지',
-      value: 'GS_002'
+      value: '판타지',
     },
     {
-      content: '학원',
-      value: 'GS_003'
+      value: '학원',
     },
     {
-      content: '개그',
-      value: 'GS_004'
+      value: '개그',
     },
     {
-      content: '무협',
-      value: 'GS_005'
+      value: '무협',
     },
     {
-      content: '공포/스릴러',
-      value: 'GS_006'
+      value: '공포/스릴러',
     },
     {
-      content: '드라마',
-      value: 'GS_007'
+      value: '드라마',
     },
     {
-      content: '로맨스',
-      value: 'GS_008'
+      value: '로맨스',
     },
     {
-      content: '옴니버스',
-      value: 'GS_009'
+      value: '옴니버스',
     },
     {
-      content: '일상',
-      value: 'GS_010'
+      value: '일상',
     },
     {
-      content: 'BL',
-      value: 'GS_011'
+      value: 'BL',
     },
     {
-      content: 'GL',
-      value: 'GS_012'
+      value: 'GL',
     },
     {
-      content: 'SF',
-      value: 'GS_013'
+      value: 'SF',
     },
     {
-      content: '스포츠',
-      value: 'GS_014'
+      value: '스포츠',
     },
     {
-      content: '시대극',
-      value: 'GS_015'
+      value: '시대극',
     }
   ];
   const ageGrade = [
     {
-      content: '전연령',
-      value: 'AG_01'
+      value: '전연령',
     },
     {
-      content: '성인',
-      value: 'AG_02'
+      value: '성인',
     }
   ];
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const curSearchTag = useSelector((state: RootState) => state.searchTag);
 
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
 
   const selectBlock = (value: string) => {
+    // for(let i = 0; i < curSearchTag.tags.length; i++){
+    //   if(curSearchTag.tags[i] === value){
+    //     return;
+    //   }
+    // }
     selectedBlocks.push(value);
   }
 
@@ -141,12 +127,10 @@ export default function FilterPage() {
 
   const onConfirmClick = () => {
     // 지금까지 선택된 selectedBlocks 데이터를 보낸다.
+    dispatch(changeCurSearchTag(selectedBlocks));
     // search로 이동한다.
     router.replace({
-      pathname: '/search',
-      query: {
-        value: selectedBlocks
-      }
+      pathname: '/search'
     },
     "/search"
     );
@@ -157,6 +141,10 @@ export default function FilterPage() {
     router.back();
   }
 
+  useEffect(() => {
+    setSelectedBlocks([...curSearchTag.tags]);
+  }, []);
+
   return (
     <div className="flex flex-col gap-4 h-full w-full bg-BackgroundLight">
       <div className="flex justify-center items-center h-16 m-2">
@@ -166,25 +154,61 @@ export default function FilterPage() {
         <div className="flex flex-col gap-1">
           <div className="text-lg">완결 여부</div>
           <div className="flex gap-2">
-            {publishState.map((v) => <PublishStateBlock content={v.content} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} />)}
+            {publishState.map((v) => {
+            let status: boolean = false;
+            for(let i = 0; i < curSearchTag.tags.length; i++){
+              if(curSearchTag.tags[i] === v.value){
+                status = true;
+                break;
+              }
+            }
+            return <PublishStateBlock key={v.value} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} status={status} />
+            })}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-lg">연재 요일</div>
           <div className="text-center">
-            {publishDayOfTheWeek.map((v) => <PublishDayBlock content={v.content} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} />)}
+            {publishDayOfTheWeek.map((v) => {
+              let status: boolean = false;
+              for(let i = 0; i < curSearchTag.tags.length; i++){
+                if(curSearchTag.tags[i] === v.value){
+                  status = true;
+                  break;
+                }
+              }
+            return <PublishDayBlock key={v.value} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} status={status} />
+          })}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-lg">장르</div>
           <div className="text-center">
-            {genreState.map((v) => <GenreStateBlock content={v.content} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} />)}
+            {genreState.map((v) => {
+              let status: boolean = false;
+              for(let i = 0; i < curSearchTag.tags.length; i++){
+                if(curSearchTag.tags[i] === v.value){
+                  status = true;
+                  break;
+                }
+              }
+              return <GenreStateBlock key={v.value} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} status={status} />
+            })}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-lg">연령등급</div>
           <div className="flex w-full justify-center gap-8">
-            {ageGrade.map((v) => <AgeGradeBlock content={v.content} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} />)}
+            {ageGrade.map((v) => {
+              let status: boolean = false;
+              for(let i = 0; i < curSearchTag.tags.length; i++){
+                if(curSearchTag.tags[i] === v.value){
+                  status = true;
+                  break;
+                }
+              }
+              return <AgeGradeBlock key={v.value} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} status={status} />
+            })}
           </div>
         </div>
       </div>

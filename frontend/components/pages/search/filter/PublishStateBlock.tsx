@@ -1,14 +1,15 @@
 import { useState } from "react";
 
 interface Props {
-    content: string;
     value: string;
+    status: boolean;
+    key: string;
     selectBlock: (value: string) => void;
     unSelectBlock: (value: string) => void;
 }
 
 export default function PublishStateBlock(props: Props) {
-    const [selectStatus, setSelectStatus] = useState<boolean>(false);
+    const [selectStatus, setSelectStatus] = useState<boolean>(props.status);
     /*
     * @Method
     * 버튼을 클릭했을 때 실행되는 메소드
@@ -29,11 +30,11 @@ export default function PublishStateBlock(props: Props) {
             {
                 selectStatus ?
                     <button className="w-full h-12 rounded-md bg-SecondaryLight text-FontPrimaryDark text-center" onClick={onButtonClick}>
-                        {props.content}
+                        {props.value}
                     </button>
                     :
                     <button className="w-full h-12 rounded-md bg-BackgroundLightComponent text-FontPrimaryLight text-center" onClick={onButtonClick}>
-                        {props.content}
+                        {props.value}
                     </button>
             }
         </div>

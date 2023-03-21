@@ -40,9 +40,9 @@ export default function SearchBar(props: Props) {
                     >
                         <Image
                             alt='delete content'
-                            src={'/images/cross.png'}
-                            width={10}
-                            height={10}
+                            src={'/images/Delete_Gray_Circle.png'}
+                            width={20}
+                            height={20}
                         />
                     </div>
                     :
