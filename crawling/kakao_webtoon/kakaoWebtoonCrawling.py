@@ -188,10 +188,11 @@ week = ["mon", "tue", "wed", "thu", "fri", "sat", "sun", "complete"]
 today = week[datetime.today().weekday()]
 
 
+import time
+
 
 
 if __name__ == "__main__":
-<<<<<<<< HEAD:crawling/kakao_webtoon/kakaoWebtoonCrawling.py
     arguments = sys.argv
     print("====================")
     if len(arguments) == 2:
@@ -208,6 +209,8 @@ if __name__ == "__main__":
 
     print("====================")
     
+    start = time.time()
+
     f = open("./webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
     for week_string in week_arr:
         crawling(week_string, f)
@@ -216,9 +219,8 @@ if __name__ == "__main__":
     f.write(webtoon_json)
     f.write("\n")
     f.close()
+    end = time.time()
+
+    print(f"{end - start:.5f} sec")
 
 
-    
-========
-    crawling("mon")
->>>>>>>> 243b2f3973f83af114e297ec3e4ad6b32d58b1b7:crwaling/kakao_webtoon/kakaoWebtoonCrawling.py
