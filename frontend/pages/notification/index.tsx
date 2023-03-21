@@ -1,5 +1,6 @@
-import Headerbar from '../../components/common/Headerbar';
 import { useState, useEffect } from 'react';
+import Headerbar from '../../components/common/Headerbar';
+import NotiItem from '../../components/pages/notification/notiItem';
 
 export default function NotificationPage() {
   const [dates, setDates] = useState<string[]>([]); // 이번 주의 날짜
@@ -35,6 +36,37 @@ export default function NotificationPage() {
     setDate(notiDate);
   };
 
+  // 알림 더미데이터
+  let notiDummy = [
+    { id: 1, imageUrl: '/images/Lezhin_Comics_Logo.png', webtoonName: '호랑이형님', lastTurn: 123 },
+    { id: 2, imageUrl: '/images/MANAMANA.svg', webtoonName: '1초', lastTurn: 22 },
+    { id: 3, imageUrl: '/images/Naver_Webtoon_Logo.png', webtoonName: '신의탑', lastTurn: 23 },
+    { id: 4, imageUrl: '/images/Lezhin_Comics_Logo.png', webtoonName: '여신강림', lastTurn: 1245 },
+    {
+      id: 5,
+      imageUrl: '/images/Lezhin_Comics_Logo.png',
+      webtoonName: '재벌집 막내아들',
+      lastTurn: 55,
+    },
+    {
+      id: 6,
+      imageUrl: '/images/Lezhin_Comics_Logo.png',
+      webtoonName: '왕따가 격투기를 너무 잘함',
+      lastTurn: 123,
+    },
+    {
+      id: 7,
+      imageUrl: '/images/Lezhin_Comics_Logo.png',
+      webtoonName: '99강화나무몽둥이',
+      lastTurn: 99999,
+    },
+    {
+      id: 8,
+      imageUrl: '/images/Lezhin_Comics_Logo.png',
+      webtoonName: '신화급 귀속 아이템을 손에 넣었다',
+      lastTurn: 1,
+    },
+  ];
   return (
     <div>
       <Headerbar showBackBtn={true} pageName={'알림'} />
@@ -81,6 +113,14 @@ export default function NotificationPage() {
         </div>
       </div>
       <hr></hr>
+      {notiDummy.map(noti => (
+        <NotiItem
+          key={noti.id}
+          imageUrl={noti.imageUrl}
+          webtoonName={noti.webtoonName}
+          lastTurn={noti.lastTurn}
+        />
+      ))}
     </div>
   );
 }
