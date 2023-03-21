@@ -2,14 +2,19 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from time import sleep
-import webtoon
+from dotenv import load_dotenv
 from webtoonUtil import *
-
+import webtoon
+import os
 
 # 로그인하기
 def login(driver):
-    id = "oth5447@naver.com"
-    pw= "261834oO@@"
+    # .env 로드
+    load_dotenv()
+
+    id = os.environ.get('ID')
+    pw = os.environ.get('PW')
+
     # 로그인 페이지로 이동
     driver.get('https://webtoon.kakao.com/more')
     driver.find_element(By.CSS_SELECTOR, '#root > main > div > div > div.absolute.top-0.left-0.w-full.z-navigationBar > div.px-18.m-auto.items-center.flex.h-header-height.fixed.top-0.left-0.right-0.z-navigationBar > div.ml-auto.flex.flex-none > a').click()
