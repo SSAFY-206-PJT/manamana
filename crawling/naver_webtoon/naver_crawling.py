@@ -17,6 +17,8 @@ fail_list = []
 # weeks = ['mon','tue','wed','thu','fri','sat','sun','dailyPlus','finish']
 weeks = ['tue']
 
+webtoon_info_dict = dict()
+
 def episode_parse(soup):
     
     #총 회차 정보 빼내기.
@@ -43,8 +45,6 @@ def title_parse(content_info):
     content_info = content_info.find('h2', class_="EpisodeListInfo__title--mYLjC")
     
     title = content_info.get_text()
-    
-    print(title)
 
     return title
 
@@ -61,14 +61,26 @@ def author_parse(content_info):
             author_set.add(temp.strip())
     
     print(author_set)
-    return author_set
+    return list(author_set)
 
 ## 요일
-def day_parse(content_info):
+def day_parse(content_info,week):
     content_info = content_info.find('span', class_='ContentMetaInfo__info_item--utGrf').get_text()
     content_info = content_info.split('∙')[0].strip()
-    print(content_info)
-    return content_info
+    ##완결 웹툰이거나, 요일별 웹툰이 아닌 비정기적 웹툰은 '기타'로 분류.
+    if week == "finish" or content_info[:2] == "매일":
+        return ["기타"]
+    
+    content_info = content_info.split(',')
+    if len(content_info) == 1:
+        return [content_info[0][0].strip()]
+    
+    return_list = list()
+    for temp in content_info:
+        temp = temp.strip()
+        return_list.append(temp[0])
+    
+    return return_list
 
 ## 연재등급
 def grade_parse(content_info):
@@ -85,7 +97,6 @@ def plot_parse(content_info):
     
     plot = content_info.get_text()
     
-    print(plot)
     
     return plot
 
@@ -94,7 +105,6 @@ def image_parse(content_info):
     
     content_info = content_info.find('img', class_='Poster__image--d9XTI')
     image_url = content_info.attrs['src']
-    print(image_url)
     
     return image_url
 
@@ -109,8 +119,7 @@ def gerne_parse(content_info):
     for genre in genres:
         result.add(genre.get_text()[1:])
     
-    print(result)
-    return result
+    return list(result)
 
 ##시작일
 def start_date_parse(soup):
@@ -118,9 +127,18 @@ def start_date_parse(soup):
     content_info = soup.select('#container > .content_wrap > .content > .EpisodeListView__episode_list_wrap--q0VYg > .EpisodeListList__episode_list--_N3ks > .EpisodeListList__item--M8zq4')
     date = content_info[0].find('span', class_='date').get_text()
     
-    print(date)
-    
     return date
+
+##연재 상태
+def status_parse(content_info,week):
+    
+    if week == "finish": return "완결"
+    
+    content_info = content_info.find('span', class_="blind")
+    
+    if content_info == None: return "연재중"
+    
+    return content_info.get_text()
 
 def crawling_start():
     
@@ -156,11 +174,18 @@ def crawling_start():
         ##각 url 마다 들어가서 확인.
         for url in urls:
             
+            # 하나의 웹툰 정보를 저장하고 있음.
+            temp_dic = {}
+            
             # 웹툰 상세페이지 url 가져오기
             webtoon_detail_url = url.attrs["href"]
             
             # 웹툰 식별Id
             webtoon_id = webtoon_detail_url.split('=')[1]
+            
+            # 이전에 탐색된 웹툰이라면 패스 - 여러 요일에서 연재중이면 중복될 수 있음.
+            if webtoon_id in webtoon_info_dict:
+                continue
             
             #웹툰 이동url
             webtoon_url = webtoon_detail_url
@@ -192,12 +217,20 @@ def crawling_start():
             #장르
             genre_arr = gerne_parse(content_info[0])
             
+            #작품명
+            name = title_parse(content_info[0])
+            print(name)
+            
+            # 연재 상태
+            content_info = soup.select('#container > .content_wrap > .content > .EpisodeListInfo__comic_info--yRAu0 > .EpisodeListInfo__info_area--hkinm')
+            status = status_parse(content_info[0],week)
             
             content_info = soup.select('#container > .content_wrap > .content > .EpisodeListInfo__comic_info--yRAu0 > .EpisodeListInfo__info_area--hkinm > .ContentMetaInfo__meta_info--GbTg4')
             #요일
-            day_arr = day_parse(content_info[0])
+            day_arr = day_parse(content_info[0],week)
             
-            #연재정보
+            
+            #연재등급
             grade = grade_parse(content_info[0])
             
             
@@ -208,16 +241,29 @@ def crawling_start():
             start_date = start_date_parse(soup)
             
             
-            print("++++++++++++++++++++++++++++++++++++")
+            temp_dic = {
+                "name" : name,
+                "image" : image,
+                "plot" : plot,
+                "grade" : grade,
+                "status" : status,
+                "webtoon_url" : webtoon_url,
+                "webtoon_id" : webtoon_id,
+                "start_date" : start_date,
+                "total_ep" : total_ep,
+                "genre_arr" : genre_arr,
+                "day_arr" : day_arr,
+                "authors_arr" : authors_arr,
+                "colorHsl" : color_hsl
+            }
             
-            
+            webtoon_info_dict[webtoon_id] = temp_dic
+           
         
         
-        
-        
-        # ##json 파일로 저장.
-        # with open('./webtoon_json/naver_webtoon.json','a') as f:
-        #     json.dump(weebtoon_dict, f, ensure_ascii=False, indent=4)
+    ##json 파일로 저장.
+    with open('./webtoon_json/naver_webtoon.json','w',encoding='UTF-8') as f:
+        json.dump(webtoon_info_dict, f, ensure_ascii=False, indent=4)
             
         
 
