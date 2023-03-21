@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { Rating } from '@mui/material';
+import Modal from '@mui/material/Modal';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+
 import ConfirmBtn from '@/components/confirmBtn';
 import CommentIcon from '@/public/images/Comment_List.svg';
-import Modal from '@mui/material/Modal';
 import Heart from '@/public/images/Heart.svg';
 
 // 응답 result
@@ -356,7 +357,11 @@ function DetailPage() {
         <div className="m-3 flex h-12 justify-between">
           <img src="/images/HeaderBar_Back.png" alt="goBack" onClick={() => router.back()}></img>
           <button className=" h-full" onClick={likeInput}>
-            {likeWebtoon ? <Heart fill="red" /> : <Heart fillOpacity="0" stroke="white" />}
+            {likeWebtoon ? (
+              <Heart width="100%" height="100%" fill="red" stroke="red" />
+            ) : (
+              <Heart width="100%" height="100%" fillOpacity="0" stroke="white" />
+            )}
           </button>
         </div>
         <div className="h-96"></div>
