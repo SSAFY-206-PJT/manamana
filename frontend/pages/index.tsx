@@ -117,7 +117,7 @@ export default function Home() {
   return (
     <div className=" h-full w-full bg-BackgroundLight">
       {/* 최상위 헤더 */}
-      <div className="sticky top-0 flex h-14 w-screen items-center justify-between bg-PrimaryLight px-5">
+      <div className="sticky top-0 z-10 flex h-14 w-screen items-center justify-between bg-PrimaryLight px-5">
         <div className="h-6 w-6"></div>
         <img src="/images/MNMN_Logo_White.png" alt="Logo" className="h-10 w-10"></img>
         <Link href="/notification">
