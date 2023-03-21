@@ -5,6 +5,7 @@ import { Rating } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
+import Home from '@/pages/index';
 import WebtoonItem from '@/components/common/WebtoonItem';
 import ConfirmBtn from '@/components/confirmBtn';
 import CommentIcon from '@/public/images/Comment_List.svg';
@@ -230,12 +231,17 @@ function DetailPage() {
     setAfterRating(true);
   };
   const goComment = () => {
-    router.push({
-      pathname: `/detail/comment/${webtoon_id}`,
-      query: {
-        WEBTOON_GRADATION_COLOR,
+    router.push(
+      {
+        pathname: `/detail/comment/${webtoon_id}`,
+        query: {
+          WEBTOON_THEME_COLOR,
+          imagePath: dummyWebtoon.imagePath,
+          name: dummyWebtoon.name,
+        },
       },
-    });
+      `/detail/comment/${webtoon_id}`,
+    );
   };
 
   // 기존 평점
