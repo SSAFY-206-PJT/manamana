@@ -188,6 +188,8 @@ week = ["mon", "tue", "wed", "thu", "fri", "sat", "sun", "complete"]
 today = week[datetime.today().weekday()]
 
 
+import time
+
 
 
 if __name__ == "__main__":
@@ -207,6 +209,8 @@ if __name__ == "__main__":
 
     print("====================")
     
+    start = time.time()
+
     f = open("./webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
     for week_string in week_arr:
         crawling(week_string, f)
@@ -215,6 +219,8 @@ if __name__ == "__main__":
     f.write(webtoon_json)
     f.write("\n")
     f.close()
+    end = time.time()
+
+    print(f"{end - start:.5f} sec")
 
 
-    
