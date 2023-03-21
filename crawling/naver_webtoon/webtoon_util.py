@@ -3,6 +3,8 @@ from HSL.hsl import rgb_to_hsl, hsl_to_rgb
 import urllib.request
 import numpy as np
 from time import sleep
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
 
 def image_main_color_to_hsl(url):
@@ -45,3 +47,21 @@ def scroll_down(driver):
             if new_height == last_height:
                 break
         last_height = new_height
+        
+def scroll_page_down(driver):
+    
+    last_height = driver.execute_script("return document.body.scrollHeight")
+    
+    count = 0
+    while True:
+        driver.find_element(By.CSS_SELECTOR,'body').send_keys(Keys.PAGE_DOWN)
+        new_height = scroll_location = driver.execute_script("return document.body.scrollHeight")
+        
+        if last_height == new_height: count+=1
+        else: count = 0
+        ## 5번만 넘어도 가능한데 혹시 모를 사태를 대비해서 8정도로 잡음.
+        if(count >= 8): break
+        sleep(0.5)
+        
+        last_height = new_height
+        print("finished")

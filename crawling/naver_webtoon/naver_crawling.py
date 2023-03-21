@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from time import sleep
 from naver_auth import login
 from webdriver import create_webdriver
-from webtoon_util import scroll_down, image_main_color_to_hsl
+from webtoon_util import scroll_down, image_main_color_to_hsl,scroll_page_down
 import json
 # import sys,io
 
@@ -15,7 +15,7 @@ search_url = "https://comic.naver.com/webtoon?tab="
 provider_url = "https://comic.naver.com"
 fail_list = []
 # weeks = ['mon','tue','wed','thu','fri','sat','sun','dailyPlus','finish']
-weeks = ['mon']
+weeks = ['tue']
 
 def episode_parse(soup):
     
@@ -65,7 +65,6 @@ def author_parse(content_info):
 
 ## 요일
 def day_parse(content_info):
-    
     content_info = content_info.find('span', class_='ContentMetaInfo__info_item--utGrf').get_text()
     content_info = content_info.split('∙')[0].strip()
     print(content_info)
@@ -141,7 +140,8 @@ def crawling_start():
         driver.get(search_url + week)
         
         ## 모든 웹툰 로딩을 위해 스크롤
-        scroll_down(driver)
+        # scroll_down(driver)
+        scroll_page_down(driver)
         sleep(2)
         
         ## 해당 페이지의 html 가져오기
