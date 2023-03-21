@@ -1,5 +1,5 @@
 from colorthief import ColorThief
-from HSL.hsl import rgb_to_hsl, hsl_to_rgb
+from HSL.hsl import rgb_to_hsl
 from time import sleep
 import urllib.request
 import os
