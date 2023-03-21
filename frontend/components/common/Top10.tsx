@@ -27,16 +27,16 @@ export default function RollingBanner() {
   const getPrevIndex = (index: number) => (index + items.length - 1) % items.length;
   const getNextIndex = (index: number) => (index + 2) % items.length;
 
-  // 글자수 확인 함수
-  const shortenWords = (str: string) => {
-    let result = '';
-    if (str.length > 20) {
-      result = str.substr(0, 15) + '...';
-    } else {
-      result = str;
-    }
-    return result;
-  };
+  // // 글자수 확인 함수
+  // const shortenWords = (str: string) => {
+  //   let result = '';
+  //   if (str.length > 20) {
+  //     result = str.substr(0, 15) + '...';
+  //   } else {
+  //     result = str;
+  //   }
+  //   return result;
+  // };
 
   return (
     <div className={styles.rollingbanner}>
@@ -59,7 +59,7 @@ export default function RollingBanner() {
               <li key={index} {...classObj}>
                 <span className={styles.rankfont}>{index + 1}</span>
                 &nbsp; &nbsp;
-                <span className={styles.rankitemfont}>{shortenWords(item.webtoonname)}</span>
+                <span className={styles.rankitemfont}>{item.webtoonname}</span>
               </li>
             );
           })}

@@ -7,12 +7,11 @@
 
 /* 배너 컨테이너 */
 .rollingbanner {
-  /* position: relative; */
+  position: relative;
   font-size: 0.875rem;
   letter-spacing: -1px;
   padding: 7px 15px;
-  /* width: 40% */
-  height: 30px;
+  width: 100%;
   box-sizing: border-box;
   border-radius: 16px;
   display: flex;
@@ -20,8 +19,9 @@
 
 /* 왼쪽 아이템 */
 .leftitem {
-  width: 40%;
+  width: 80px;
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 /* 오른쪽 아이템 */
@@ -46,22 +46,25 @@
 .rollingbanner > .wrap {
   position: relative;
   display: inline-block;
-  width: 200px;
-  height: 100%;
+  width: calc(100% - 80px);
+  height: 24px;
+  font-size: 16px;
   box-sizing: border-box;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .rollingbanner ul {
   list-style: none;
 }
 .rollingbanner li {
   position: absolute;
-  top: -36px;
+  top: -50px;
   left: 0;
 }
 /* 이전, 현재, 다음 롤링 배너 표시 */
 .rollingbanner li.prev {
-  top: 36px;
+  top: 50px;
   transition: top 0.5s ease;
 }
 .rollingbanner li.current {
@@ -69,7 +72,7 @@
   transition: top 0.5s ease;
 }
 .rollingbanner li.next {
-  top: -36px;
+  top: -50px;
 }
 .rollingbanner a {
   display: block;
