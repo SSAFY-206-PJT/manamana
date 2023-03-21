@@ -39,8 +39,8 @@ def login(driver):
         pass
     sleep(1)
 
-def crawling(day_string):
-    f = open("./webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
+def crawling(day_string, f):
+    
 
     count = 0 # 성공한 웹툰 개수
 
@@ -177,13 +177,11 @@ def crawling(day_string):
 
         sleep(1)
 
-    webtoon_json = webtoon_info.make_json()
+    
     print("done:",count)
     print("fail:", len(miss))
     print("miss:",miss)
-    f.write(webtoon_json)
-    f.write("\n")
-    f.close()
+    
 
 miss = [] # 크롤링에 필패한 웹툰을 기록할 리스트
 week = ["mon", "tue", "wed", "thu", "fri", "sat", "sun", "complete"]
@@ -210,8 +208,15 @@ if __name__ == "__main__":
 
     print("====================")
     
+    f = open("./webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
     for week_string in week_arr:
-        crawling(week_string)
+        crawling(week_string, f)
+    total_webtoon = webtoon.Webtoon()
+    webtoon_json = total_webtoon.make_json()
+    f.write(webtoon_json)
+    f.write("\n")
+    f.close()
+
 
     
 ========
