@@ -11,11 +11,8 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-<<<<<<< HEAD
     "@reduxjs/toolkit": "^1.9.3",
-=======
     "@mui/material": "^5.11.13",
->>>>>>> d0c8b81a68f7e01d1f091b2ed4048ed49c716624
     "@types/node": "18.15.1",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
@@ -31,11 +28,8 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",
-<<<<<<< HEAD
     "@types/redux-logger": "^3.0.9",
-=======
     "@tailwindcss/line-clamp": "^0.4.2",
->>>>>>> d0c8b81a68f7e01d1f091b2ed4048ed49c716624
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "autoprefixer": "^10.4.14",
