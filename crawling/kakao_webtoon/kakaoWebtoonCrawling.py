@@ -193,6 +193,7 @@ today = week[datetime.today().weekday()]
 
 
 if __name__ == "__main__":
+<<<<<<<< HEAD:crawling/kakao_webtoon/kakaoWebtoonCrawling.py
     arguments = sys.argv
     print("====================")
     if len(arguments) == 2:
@@ -213,3 +214,6 @@ if __name__ == "__main__":
         crawling(week_string)
 
     
+========
+    crawling("mon")
+>>>>>>>> 243b2f3973f83af114e297ec3e4ad6b32d58b1b7:crwaling/kakao_webtoon/kakaoWebtoonCrawling.py
