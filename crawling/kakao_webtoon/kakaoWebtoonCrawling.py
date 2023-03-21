@@ -3,9 +3,12 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from time import sleep
 from dotenv import load_dotenv
+from datetime import datetime
 from webtoonUtil import *
-import webtoon
 import os
+import sys
+import webtoon
+
 
 # 로그인하기
 def login(driver):
@@ -37,7 +40,7 @@ def login(driver):
     sleep(1)
 
 def crawling(day_string):
-    f = open("./webtoon-json.txt", 'a', encoding="UTF-8") # json을 저장할 파일 지정
+    f = open("./webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
 
     count = 0 # 성공한 웹툰 개수
 
@@ -184,6 +187,29 @@ def crawling(day_string):
 
 miss = [] # 크롤링에 필패한 웹툰을 기록할 리스트
 week = ["mon", "tue", "wed", "thu", "fri", "sat", "sun", "complete"]
+today = week[datetime.today().weekday()]
+
+
+
 
 if __name__ == "__main__":
-    crawling("mon")
+    arguments = sys.argv
+    print("====================")
+    if len(arguments) == 2:
+        if arguments[1] == "all":
+            week_arr = week
+            print("Crawling All")
+        else:
+            if arguments[1] in week:
+                week_arr = arguments[1]
+                print(f'Crawling {arguments[1]}')
+    else:
+        week_arr = today
+        print(f'Crawling {today}')
+
+    print("====================")
+    
+    for week_string in week_arr:
+        crawling(week_string)
+
+    
