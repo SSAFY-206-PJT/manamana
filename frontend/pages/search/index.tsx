@@ -12,8 +12,10 @@ import { deleteCurSearchOneTag } from '@/store/CurSearchTagSlice';
 import SearchTag from '@/components/pages/search/SearchTag';
 import Lottie from "react-lottie-player";
 import EmptyLottie from "../../public/lottie/51382-astronaut-light-theme.json";
+import axios from 'axios';
+import WebtoonItem from '@/components/common/WebtoonItem';
 
-export default function SearchPage() {
+export default function SearchPage(props: any) {
   const dispatch = useDispatch();
   const curSearchTag = useSelector((state: RootState) => state.searchTag);  // Redux에 있는 값
 
@@ -58,13 +60,15 @@ export default function SearchPage() {
     return setSelectedTagListElements(curSearchTag.tags.map((v) => <SearchTag tagName={v} deleteTag={deleteTag} />));
   }
 
+  const onSearchBarChange = (message: string) => {
+
+  }
+
   useEffect(
     () => {
       reloadTag();
-      // Tag 값에 따라 Webtoon Data를 가져옴
-
-
-      // 해당 Webtton Data의 길이
+      console.log(props.data);
+      setWebtoonList(props.data);
     },
     []
   )
@@ -73,13 +77,23 @@ export default function SearchPage() {
     () => {
       reloadTag();
     },
-    [curSearchTag.tags])
+    [curSearchTag.tags]);
+
+  useEffect(
+    () => {
+      setWebtoonListElement(
+        webtoonList.map((data) => {
+          return <WebtoonItem imageUrl={data.imagePath} status={data.status} webtoonName={data.name} key={data.id} />
+        })
+      );
+    },
+    [webtoonList]);
 
   return (
     <div className='bg-BackgroundLight h-screen'>
-      <Headerbar showBackBtn={true} pageName="내 웹툰" rightBtn="EDIT" />
-      <div className='bg-BackgroundLightComponent m-2 p-4 rounded-2xl'>
-        <SearchBar sendData={changeSearchContent} />
+      <Headerbar showBackBtn={true} pageName="탐색" rightBtn="EDIT" />
+      <div className='bg-BackgroundLightComponent m-2 p-4 pb-2 rounded-2xl'>
+        <SearchBar sendData={changeSearchContent} onSearchBarChange={onSearchBarChange} />
         <div className='flex flex-row justify-between items-center'>
           <div className='font-bold text-xl pl-2 pr-2'>
             <span>전체</span>
@@ -122,4 +136,14 @@ export default function SearchPage() {
       <Navbar />
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const response = await axios.get("https://j8b206.p.ssafy.io/api/webtoons");
+
+  return {
+    props: {
+      data: response.data.result
+    }
+  }
 }
