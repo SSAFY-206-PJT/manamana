@@ -174,13 +174,37 @@ public class CodeTableController {
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
-//    /*정렬 조건 목록*/
-//    @GetMapping("/sorts")
-//    public DataResponse<Object> stautsList() throws Exception{
-//
-//
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
-//    }
+    /*정렬 조건 목록*/
+    @GetMapping("/sorts")
+    public DataResponse<Object> sortTypeList() throws Exception{
+
+        String temp1 = "{\n" +
+                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"name\": \"조회순\"\n" +
+                "\t\t\t}";
+        String temp2 = "{\n" +
+                "\t\t\t\t\t\"id\": 2,\n" +
+                "\t\t\t\t\t\"name\": \"별점 높은 순\"\n" +
+                "\t\t\t}";
+        String temp3 = "{\n" +
+                "\t\t\t\t\t\"id\": 3,\n" +
+                "\t\t\t\t\t\"name\": \"댓글 많은 순\"\n" +
+                "\t\t\t}";
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
+        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+        JSONObject jsonObj3 = (JSONObject) jsonParser.parse(temp3);
+
+        jsonArray.add(jsonObj1);
+        jsonArray.add(jsonObj2);
+        jsonArray.add(jsonObj3);
+
+
+        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
 //    /*웹툰 키워드 top10*/
 //    @GetMapping("keywords")
 //    public DataResponse<Object> stautsList() throws Exception{
