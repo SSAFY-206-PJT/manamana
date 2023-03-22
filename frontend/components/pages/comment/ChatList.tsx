@@ -322,7 +322,7 @@ function ChatList() {
       <div className="flex justify-center">{scrollLoading ? <CircularProgress /> : null}</div>
       <div className="m-2 flex min-h-screen flex-col-reverse">
         {dummyChatList.map((item: Chat) => (
-          <ChatListItem chat={item} />
+          <ChatListItem chat={item} key={item.id} />
         ))}
       </div>
       {/* 아래는 개발용 버튼들 */}
