@@ -63,7 +63,7 @@ public class UserController {
     @DeleteMapping("/{user-id}")
     public CommonResponse deleteUser(
             @PathVariable("user-id") long userId){
-        
+
 
         return responseService.getSuccessResponse();
     }
