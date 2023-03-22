@@ -276,11 +276,115 @@ public class CodeTableController {
 
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
-//
-//    /*웹툰 장르 목록*/
-//    @GetMapping("/genres")public DataResponse<Object> stautsList() throws Exception{
-//
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
-//    }
+
+    /*웹툰 장르 목록*/
+    @GetMapping("/genres")public DataResponse<Object> stautsList() throws Exception{
+
+        String temp1 = "{\n" +
+                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"name\": \"액션\"\n" +
+                "\t\t\t}";
+        String temp2 = "{\n" +
+                "\t\t\t\t\t\"id\": 2,\n" +
+                "\t\t\t\t\t\"name\": \"판타지\"\n" +
+                "\t\t\t}";
+        String temp3 = "{\n" +
+                "\t\t\t\t\t\"id\": 3,\n" +
+                "\t\t\t\t\t\"name\": \"학원\"\n" +
+                "\t\t\t}";
+        String temp4 = "{\n" +
+                "\t\t\t\t\t\"id\": 4,\n" +
+                "\t\t\t\t\t\"name\": \"액션\"\n" +
+                "\t\t\t}";
+        String temp5 = "{\n" +
+                "\t\t\t\t\t\"id\": 5,\n" +
+                "\t\t\t\t\t\"name\": \"개그\"\n" +
+                "\t\t\t}";
+        String temp6 = "{\n" +
+                "\t\t\t\t\t\"id\": 6,\n" +
+                "\t\t\t\t\t\"name\": \"무협\"\n" +
+                "\t\t\t}";
+        String temp7 = "{\n" +
+                "\t\t\t\t\t\"id\": 7,\n" +
+                "\t\t\t\t\t\"name\": \"공포 스릴러\"\n" +
+                "\t\t\t}";
+        String temp8 = "{\n" +
+                "\t\t\t\t\t\"id\": 8,\n" +
+                "\t\t\t\t\t\"name\": \"드라마\"\n" +
+                "\t\t\t}";
+
+        String temp9 = "{\n" +
+                "\t\t\t\t\t\"id\": 9,\n" +
+                "\t\t\t\t\t\"name\": \"로맨스\"\n" +
+                "\t\t\t}";
+        String temp10 = "{\n" +
+                "\t\t\t\t\t\"id\": 10,\n" +
+                    "\t\t\t\t\t\"name\": \"옴니버스\"\n" +
+                "\t\t\t}";
+        String temp11 = "{\n" +
+                "\t\t\t\t\t\"id\": 11,\n" +
+                "\t\t\t\t\t\"name\": \"일상\"\n" +
+                "\t\t\t}";
+        String temp12 = "{\n" +
+                "\t\t\t\t\t\"id\": 12,\n" +
+                "\t\t\t\t\t\"name\": \"BL\"\n" +
+                "\t\t\t}";
+        String temp13 = "{\n" +
+                "\t\t\t\t\t\"id\": 13,\n" +
+                "\t\t\t\t\t\"name\": \"GL\"\n" +
+                "\t\t\t}";
+        String temp14 = "{\n" +
+                "\t\t\t\t\t\"id\": 14,\n" +
+                "\t\t\t\t\t\"name\": \"SF\"\n" +
+                "\t\t\t}";
+        String temp15 = "{\n" +
+                "\t\t\t\t\t\"id\": 15,\n" +
+                "\t\t\t\t\t\"name\": \"스포츠\"\n" +
+                "\t\t\t}";
+        String temp16 = "{\n" +
+                "\t\t\t\t\t\"id\": 16,\n" +
+                "\t\t\t\t\t\"name\": \"시대극\"\n" +
+                "\t\t\t}";
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
+        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+        JSONObject jsonObj3 = (JSONObject) jsonParser.parse(temp3);
+        JSONObject jsonObj4 = (JSONObject) jsonParser.parse(temp4);
+        JSONObject jsonObj5 = (JSONObject) jsonParser.parse(temp5);
+        JSONObject jsonObj6 = (JSONObject) jsonParser.parse(temp6);
+        JSONObject jsonObj7 = (JSONObject) jsonParser.parse(temp7);
+        JSONObject jsonObj8 = (JSONObject) jsonParser.parse(temp8);
+        JSONObject jsonObj9 = (JSONObject) jsonParser.parse(temp9);
+        JSONObject jsonObj10 = (JSONObject) jsonParser.parse(temp10);
+        JSONObject jsonObj11 = (JSONObject) jsonParser.parse(temp11);
+        JSONObject jsonObj12 = (JSONObject) jsonParser.parse(temp12);
+        JSONObject jsonObj13= (JSONObject) jsonParser.parse(temp13);
+        JSONObject jsonObj14= (JSONObject) jsonParser.parse(temp14);
+        JSONObject jsonObj15 = (JSONObject) jsonParser.parse(temp15);
+        JSONObject jsonObj16 = (JSONObject) jsonParser.parse(temp16);
+
+        jsonArray.add(jsonObj1);
+        jsonArray.add(jsonObj2);
+        jsonArray.add(jsonObj3);
+        jsonArray.add(jsonObj4);
+        jsonArray.add(jsonObj5);
+        jsonArray.add(jsonObj6);
+        jsonArray.add(jsonObj7);
+        jsonArray.add(jsonObj8);
+        jsonArray.add(jsonObj9);
+        jsonArray.add(jsonObj10);
+        jsonArray.add(jsonObj11);
+        jsonArray.add(jsonObj12);
+        jsonArray.add(jsonObj13);
+        jsonArray.add(jsonObj14);
+        jsonArray.add(jsonObj15);
+        jsonArray.add(jsonObj16);
+
+
+        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
 
 }
