@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { useState } from 'react';
-
+import Image from 'next/image';
 import { TextField, Switch } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -19,7 +18,7 @@ const theme = createTheme({
 
 export default function CommentPage() {
   const router = useRouter();
-  const { webtoon_id, WEBTOON_THEME_COLOR, imagePath, name } = router.query;
+  const { WEBTOON_THEME_COLOR, imagePath, name } = router.query;
 
   // 웹툰 헤더 style
   let coverStyle;
@@ -58,6 +57,18 @@ export default function CommentPage() {
   const [spoilerInput, setSpoilerInput] = useState<boolean>(false);
   const commentPost = () => {
     console.log(commentInput, spoilerInput);
+
+    const newChat = {
+      content: commentInput,
+      isSpoiler: spoilerInput,
+      report: 0,
+      createTime: '2023-03-22 11:22:33',
+      user: {
+        id: 1,
+        nickname: '김태학',
+        imagePath: 'url',
+      },
+    };
 
     // 댓글 작성 성공하면 빈칸으로
     setCommentInput('');
@@ -107,18 +118,14 @@ export default function CommentPage() {
   );
 
   return (
-    <div className="h-[98vh]">
-      <div className="absolute flex h-[98vh] w-full flex-col justify-between">
-        <div>
-          <Headerbar showBackBtn={true} pageName={''} rightBtn={'NOTI'} />
-          <div style={coverStyle} className="w-full px-3 py-1 drop-shadow-xl">
-            {webtoonHeader}
-          </div>
+    <div>
+      <div className="flex h-screen w-full flex-col">
+        <Headerbar showBackBtn={true} pageName={''} rightBtn={'NOTI'} />
+        <div style={coverStyle} className="w-full px-3 py-1 drop-shadow-xl">
+          {webtoonHeader}
         </div>
-        <div className="m-2">{commentInputDiv}</div>
-      </div>
-      <div className="bottom-0 m-3 h-5/6 bg-slate-200">
         <ChatList />
+        <div className="m-2">{commentInputDiv}</div>
       </div>
     </div>
   );

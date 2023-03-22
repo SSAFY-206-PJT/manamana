@@ -5,7 +5,6 @@ import { Rating } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
-import Home from '@/pages/index';
 import WebtoonItem from '@/components/common/WebtoonItem';
 import ConfirmBtn from '@/components/confirmBtn';
 import CommentIcon from '@/public/images/Comment_List.svg';
