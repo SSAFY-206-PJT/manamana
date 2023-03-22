@@ -7,6 +7,7 @@ import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
+import com.webtoon.manamana.user.dto.request.GenreRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -115,16 +116,16 @@ public class UserInteractionController {
 
         return responseService.getSuccessResponse();
     }
-//
-//    /*선호 장르 선택*/
-//    @PostMapping("/{user-id}/genre/select")
-//    public CommonResponse userSelectGenre(
-//            @PathVariable("user-id") long userId
-//    ){
-//
-//
-//        return responseService.getSuccessResponse();
-//    }
+
+    /*선호 장르 선택*/
+    @PostMapping("/{user-id}/genre/select")
+    public CommonResponse userSelectGenre(
+            @PathVariable("user-id") long userId,
+            @RequestBody GenreRequestDTO genreRequestDTO){
+
+        log.info(genreRequestDTO.getId().toString());
+        return responseService.getSuccessResponse();
+    }
 //
 //
 //    /*선호 웹툰 선택*/

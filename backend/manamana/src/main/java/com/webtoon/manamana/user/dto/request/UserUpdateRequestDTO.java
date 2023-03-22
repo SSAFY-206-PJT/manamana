@@ -1,4 +1,4 @@
-package com.webtoon.manamana.user.dto.reponse;
+package com.webtoon.manamana.user.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
