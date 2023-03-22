@@ -63,8 +63,8 @@ export default function ProfilePage() {
             </div>
             <div className='font-bold text-2xl'>{info.loveCount}</div>
             <Link href={'/my-webtoon'}>
-              <button className='bg-PrimaryLight rounded-2xl text-FontPrimaryDark p-2 font-medium text-xl'>
-                관심 웹툰
+              <button className='bg-PrimaryLight rounded-2xl text-FontPrimaryDark p-2 pl-4 pr-4 font-medium text-xl'>
+                내 웹툰
                 </button>
             </Link>
           </div>
@@ -79,7 +79,7 @@ export default function ProfilePage() {
             </div>
             <div className='font-bold text-2xl'>{info.starCount}</div>
             <Link href={'/my-star'}>
-            <button className='border-2 border-PrimaryLight rounded-2xl text-PrimaryLight p-2 font-medium text-xl'>내 별점</button>
+            <button className=' bg-PrimaryLight rounded-2xl text-FontPrimaryDark p-2 pl-4 pr-4 font-medium text-xl'>내 별점</button>
             </Link>
           </div>
           <div className='w-full flex flex-col gap-2 justify-center items-center'>
@@ -93,7 +93,7 @@ export default function ProfilePage() {
             </div>
             <div className='font-bold text-2xl'>{info.commentCount}</div>
             <Link href={'/my-comment'}>
-            <button className='bg-PrimaryLight rounded-2xl text-FontPrimaryDark p-2 font-medium text-xl'>내 댓글</button>
+            <button className='bg-PrimaryLight rounded-2xl text-FontPrimaryDark p-2 pl-4 pr-4 font-medium text-xl'>내 댓글</button>
             </Link>
           </div>
         </div>
