@@ -59,7 +59,16 @@ public class UserController {
         return responseService.getSuccessResponse();
     }
 //
-//    /*회원 탈퇴*/
-//    @DeleteMapping("/{user-id}")
+    /*회원 탈퇴*/
+    @DeleteMapping("/{user-id}")
+    public CommonResponse deleteUser(
+            @PathVariable("user-id") long userId){
+        
+
+        return responseService.getSuccessResponse();
+    }
+
+
+
 
 }
