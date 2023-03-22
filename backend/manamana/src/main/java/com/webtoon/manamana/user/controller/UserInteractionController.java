@@ -106,15 +106,15 @@ public class UserInteractionController {
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
 
     }
-//
-//    /*관심 웹툰 삭제*/
-//    @DeleteMapping("/{user-id}/webtoons")
-//    public CommonResponse deleteUserWebtoon(
-//            @PathVariable("user-id") long userId
-//    ){
-//
-//        return responseService.getSuccessResponse();
-//    }
+
+    /*관심 웹툰 삭제*/
+    @DeleteMapping("/{user-id}/webtoons")
+    public CommonResponse deleteUserWebtoon(
+            @PathVariable("user-id") long userId
+    ){
+
+        return responseService.getSuccessResponse();
+    }
 //
 //    /*선호 장르 선택*/
 //    @PostMapping("/{user-id}/genre/select")
