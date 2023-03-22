@@ -115,7 +115,7 @@ public class CodeTableController {
                 "\t\t\t\t\t\"id\": 8,\n" +
                 "\t\t\t\t\t\"day\": \"기타\"\n" +
                 "\t\t\t}";
-        
+
         JSONArray jsonArray = new JSONArray();
         JSONParser jsonParser = new JSONParser();
 
@@ -139,13 +139,41 @@ public class CodeTableController {
 
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
-//
-//    /*웹툰 제공자 목록*/
-//    @GetMapping("/providers")
-//    public DataResponse<Object> stautsList() throws Exception{
-//
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
-//    }
+
+    /*웹툰 제공자 목록*/
+    @GetMapping("/providers")
+    public DataResponse<Object> providerList() throws Exception{
+
+        String temp1 = "{\n" +
+                "\t\t\t\"id\": 1,\n" +
+                "\t\t\t\"name\": \"네이버 웹툰\",\n" +
+                "\t\t\t\"providerUrl\": \"https://comic.naver.com/webtoon\"\n" +
+                "\t\t}";
+        String temp2 = "{\n" +
+                "\t\t\t\"id\": 2,\n" +
+                "\t\t\t\"name\": \"카카오 웹툰\",\n" +
+                "\t\t\t\"providerUrl\": \"https://webtoon.kakao.com\"\n" +
+                "\t\t}";
+        String temp3 = "{\n" +
+                "\t\t\t\"id\": 3,\n" +
+                "\t\t\t\"name\": \"카카오 페이지\",\n" +
+                "\t\t\t\"providerUrl\": \"https://page.kakao.com\"\n" +
+                "\t\t}";
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
+        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+        JSONObject jsonObj3 = (JSONObject) jsonParser.parse(temp3);
+
+        jsonArray.add(jsonObj1);
+        jsonArray.add(jsonObj2);
+        jsonArray.add(jsonObj3);
+
+        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
+
 //    /*정렬 조건 목록*/
 //    @GetMapping("/sorts")
 //    public DataResponse<Object> stautsList() throws Exception{
