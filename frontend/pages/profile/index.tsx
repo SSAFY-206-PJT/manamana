@@ -37,7 +37,9 @@ export default function ProfilePage() {
             <div className='flex flex-col w-full gap-2 justify-center'>
               <div className='text-xl font-medium text-FontPrimaryLight'>임시완</div>
               <div className='text-base text-FontSecondaryLight'>mana@ssafy.com</div>
-              <button className='bg-PrimaryLight rounded-2xl p-4 pt-2 pb-2 font-bold text-FontPrimaryDark text-base w-24' onClick={onLogOutClick}>로그아웃</button>
+              <button className='bg-PrimaryLight rounded-2xl p-4 pt-2 pb-2 font-bold text-FontPrimaryDark text-base w-24' onClick={onLogOutClick}>
+                로그아웃
+                </button>
             </div>
           </div>
           <div className='flex-grow-1' onClick={onSettingClick}>
@@ -61,7 +63,9 @@ export default function ProfilePage() {
             </div>
             <div className='font-bold text-2xl'>{info.loveCount}</div>
             <Link href={'/my-webtoon'}>
-              <button className='bg-PrimaryLight rounded-2xl text-FontPrimaryDark p-2 font-medium text-xl'>관심 웹툰</button>
+              <button className='bg-PrimaryLight rounded-2xl text-FontPrimaryDark p-2 font-medium text-xl'>
+                관심 웹툰
+                </button>
             </Link>
           </div>
           <div className='w-full flex flex-col gap-2 justify-center items-center'>
