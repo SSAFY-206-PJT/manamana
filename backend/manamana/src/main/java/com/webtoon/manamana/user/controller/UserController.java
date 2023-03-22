@@ -2,12 +2,15 @@ package com.webtoon.manamana.user.controller;
 
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
+import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
+import com.webtoon.manamana.user.dto.reponse.UserUpdateRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 회원 관련 기능
@@ -46,8 +49,15 @@ public class UserController {
     }
 
 
-//    /*회원 정보 수정*/
-//    @PatchMapping("/{user-id}")
+    /*회원 정보 수정*/
+    @PatchMapping(value="/{user-id}", consumes = {"multipart/form-data"})
+    public CommonResponse updateUser(
+            @PathVariable("user-id") long userId,
+            @RequestPart("data") UserUpdateRequestDTO userUpdateRequestDTO,
+            @RequestPart(value = "userImg",required = false) MultipartFile multipartFile){
+
+        return responseService.getSuccessResponse();
+    }
 //
 //    /*회원 탈퇴*/
 //    @DeleteMapping("/{user-id}")
