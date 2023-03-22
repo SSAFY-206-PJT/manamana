@@ -33,11 +33,11 @@ public class CodeTableController {
                 "\t\t\t\t\t\"status\": \"연재중\"\n" +
                 "\t\t\t}";
         String temp2 = "{\n" +
-                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"id\": 2,\n" +
                 "\t\t\t\t\t\"status\": \"완결\"\n" +
                 "\t\t\t}";
         String temp3 = "{\n" +
-                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"id\": 3,\n" +
                 "\t\t\t\t\t\"status\": \"휴재\"\n" +
                 "\t\t\t}";
 
