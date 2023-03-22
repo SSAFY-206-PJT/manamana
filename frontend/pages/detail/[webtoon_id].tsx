@@ -6,6 +6,7 @@ import { Rating } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
+import WebtoonItem from '@/components/common/WebtoonItem';
 import ConfirmBtn from '@/components/confirmBtn';
 import CommentIcon from '@/public/images/Comment_List.svg';
 import Heart from '@/public/images/Heart.svg';
@@ -250,12 +251,17 @@ function DetailPage() {
     setAfterRating(true);
   };
   const goComment = () => {
-    router.push({
-      pathname: `/detail/comment/${webtoon_id}`,
-      query: {
-        WEBTOON_GRADATION_COLOR,
+    router.push(
+      {
+        pathname: `/detail/comment/${webtoon_id}`,
+        query: {
+          WEBTOON_THEME_COLOR,
+          imagePath: dummyWebtoon.imagePath,
+          name: dummyWebtoon.name,
+        },
       },
-    });
+      `/detail/comment/${webtoon_id}`,
+    );
   };
 
   // 기존 평점
@@ -307,6 +313,7 @@ function DetailPage() {
       <ConfirmBtn cancel={closeModal} confirm={postRating} />
     </div>
   );
+
   // 평가이후 댓글이동 확인
   const commentCheckDiv = (
     <div className="m-3 flex flex-col">
@@ -357,10 +364,42 @@ function DetailPage() {
   );
 
   // 유사웹툰 목록
+  const similarWebtoon = [
+    {
+      id: 4,
+      imageUrl:
+        'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
+      webtoonName: '역대급 영지 설계사',
+      status: '연재중',
+    },
+    {
+      id: 2,
+      imageUrl:
+        'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
+      webtoonName: '역대급 영지 설계사',
+      status: '연재중',
+    },
+    {
+      id: 3,
+      imageUrl:
+        'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
+      webtoonName: '역대급 영지 설계사',
+      status: '연재중',
+    },
+  ];
   const elseWebtoons = (
     <div>
       <p className="text-2xl font-bold text-FontPrimaryDark">이런 웹툰은 어때요?</p>
-      <div className="h-12"></div>
+      <div>
+        {similarWebtoon.map(webtoon => (
+          <WebtoonItem
+            key={webtoon.id}
+            webtoonName={webtoon.webtoonName}
+            imageUrl={webtoon.imageUrl}
+            status={webtoon.status}
+          />
+        ))}
+      </div>
     </div>
   );
 
