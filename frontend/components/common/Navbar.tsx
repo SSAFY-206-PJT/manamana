@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Navbar() {
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex w-screen bg-FooterBackground text-FontPrimaryDark">
+    <div className="fixed bottom-[-1px] left-0 right-0 flex w-screen bg-FooterBackground">
       <div className="flex grow justify-center">
         <Link href="/">
           <img className="p-3" src="/images/NavBar_Home.png" alt="GoHome"></img>

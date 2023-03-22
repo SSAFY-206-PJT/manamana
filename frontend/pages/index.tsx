@@ -115,9 +115,9 @@ export default function Home() {
   ];
 
   return (
-    <div className="h-screen w-screen bg-BackgroundLight">
+    <div className=" h-full w-full bg-BackgroundLight">
       {/* 최상위 헤더 */}
-      <div className="sticky top-0 flex h-14 w-screen items-center justify-between bg-PrimaryLight px-5">
+      <div className="sticky top-0 z-10 flex h-14 w-screen items-center justify-between bg-PrimaryLight px-5">
         <div className="h-6 w-6"></div>
         <img src="/images/MNMN_Logo_White.png" alt="Logo" className="h-10 w-10"></img>
         <Link href="/notification">
@@ -125,7 +125,7 @@ export default function Home() {
         </Link>
       </div>
       {/* TOP 10 */}
-      <div className="flex h-14 w-screen items-center justify-center rounded-b-xl bg-PrimaryLight p-2">
+      <div className=" z-0 flex h-14 w-full items-center justify-center rounded-b-xl bg-PrimaryLight p-2">
         <div className="flex h-full w-11/12 items-center justify-between rounded-2xl bg-white px-6">
           <Top10 />
         </div>
