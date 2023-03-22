@@ -87,9 +87,20 @@ def grade_parse(content_info):
     
     content_info = content_info.find('span', class_='ContentMetaInfo__info_item--utGrf').get_text()
     content_info = content_info.split('∙')[1].strip()
-    print(content_info)
     
-    return content_info
+    grade_check = content_info[:2]
+    
+    ##앞에 두글자가 숫자가 아니면 전체이용가
+    if not grade_check.isdigit():
+        return "전체이용가"
+    else:
+        grade_check = int(grade_check)
+        ##앞에 두글자가 숫자이고 18보다 작으면 전체이용가
+        if grade_check < 18:
+            return "전체이용가"
+        ## 앞에 두글자가 숫자이고 18이상이면 성인
+        else:
+            return "성인"
 
 ## 줄거리
 def plot_parse(content_info):
