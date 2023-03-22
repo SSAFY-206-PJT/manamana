@@ -125,7 +125,7 @@ export default function Home() {
         </Link>
       </div>
       {/* TOP 10 */}
-      <div className="flex h-14 w-full items-center justify-center rounded-b-xl bg-PrimaryLight p-2">
+      <div className=" z-0 flex h-14 w-full items-center justify-center rounded-b-xl bg-PrimaryLight p-2">
         <div className="flex h-full w-11/12 items-center justify-between rounded-2xl bg-white px-6">
           <Top10 />
         </div>
