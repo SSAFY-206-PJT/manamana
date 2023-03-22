@@ -3,6 +3,7 @@ import {useState} from "react";
 
 interface Props {
     sendData: any;
+    onSearchBarChange: any;
 }
 
 export default function SearchBar(props: Props) {  
@@ -15,6 +16,7 @@ export default function SearchBar(props: Props) {
     const onChangeSearchContent = (event: any) => {
         setSearchContent(event.target.value);
         props.sendData(event.target.value);
+        props.onSearchBarChange(event.target.value);
     };
 
     const onClickDeleteSearchContent = (event: any) => {
