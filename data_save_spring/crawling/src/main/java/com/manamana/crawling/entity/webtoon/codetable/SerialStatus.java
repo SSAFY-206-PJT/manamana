@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "setial_status")
+@Table(name = "serial_status")
 public class SerialStatus {
 
     @Id

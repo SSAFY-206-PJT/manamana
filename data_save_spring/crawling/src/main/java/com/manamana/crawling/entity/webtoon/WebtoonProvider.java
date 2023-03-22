@@ -1,5 +1,6 @@
 package com.manamana.crawling.entity.webtoon;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,5 @@ public class WebtoonProvider {
 
     @Column(name = "url")
     private String url;
+
 }

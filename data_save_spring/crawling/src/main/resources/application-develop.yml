@@ -13,7 +13,7 @@ spring:
   jpa:
     database:
     hibernate:
-      ddl_auto: none #validate로 검증하려고 했는데, jpa2.1부터 지원안함
+      ddl_auto: update #validate로 검증하려고 했는데, jpa2.1부터 지원안함
     properties:
       hibernate:
         "globally_quoted_identifiers": "true"

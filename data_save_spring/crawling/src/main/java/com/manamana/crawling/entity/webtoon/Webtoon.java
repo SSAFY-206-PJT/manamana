@@ -1,6 +1,7 @@
 package com.manamana.crawling.entity.webtoon;
 
 import com.manamana.crawling.config.entity.BaseTimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
+//@Builder
 @Table(name = "webtoons")
 public class Webtoon extends BaseTimeEntity {
 
@@ -59,4 +61,75 @@ public class Webtoon extends BaseTimeEntity {
 
 //    @OneToMany(mappedBy = "webtoon")
 //    private List<Comment> comment = new ArrayList<>();
+
+    @Builder
+    public Webtoon(long id, String name, String imagePath, String plot, int gradeId, int serialId, String webtoonUrl, String webtoonId, LocalDate startDate, int totalEp, String colorHsl, boolean isDeleted, WebtoonProvider providerId) {
+        this.id = id;
+        this.name = name;
+        this.imagePath = imagePath;
+        this.plot = plot;
+        this.gradeId = gradeId;
+        this.serialId = serialId;
+        this.webtoonUrl = webtoonUrl;
+        this.webtoonId = webtoonId;
+        this.startDate = startDate;
+        this.totalEp = totalEp;
+        this.colorHsl = colorHsl;
+        this.isDeleted = isDeleted;
+        this.providerId = providerId;
+    }
+
+    public void updateId(long id) {
+        this.id = id;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void updatePlot(String plot) {
+        this.plot = plot;
+    }
+
+    public void updateGradeId(int gradeId) {
+        this.gradeId = gradeId;
+    }
+
+    public void updateSerialId(int serialId) {
+        this.serialId = serialId;
+    }
+
+    public void updateWebtoonUrl(String webtoonUrl) {
+        this.webtoonUrl = webtoonUrl;
+    }
+
+    public void updateWebtoonId(String webtoonId) {
+        this.webtoonId = webtoonId;
+    }
+
+    public void updateStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void updateTotalEp(int totalEp) {
+        this.totalEp = totalEp;
+    }
+
+    public void updateDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public void updateColorHsl(String colorHsl) {
+        this.colorHsl = colorHsl;
+    }
+
+    public void updateProviderId(WebtoonProvider providerId) {
+        this.providerId = providerId;
+    }
+
+
 }
