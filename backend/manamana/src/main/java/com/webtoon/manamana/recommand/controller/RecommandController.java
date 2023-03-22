@@ -65,15 +65,46 @@ public class RecommandController {
     }
 
 
-//    /*관련 웹툰 추천*/
-//    @GetMapping("/{webtoon-id}/recommands")
-//    public DataResponse<Object> recommandAssociationWebtoon(
-//            @PathVariable("webtoon-id") long webtoonId
-//    ){
-//
-//
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
-//    }
+    /*관련 웹툰 추천*/
+    @GetMapping("/{webtoon-id}/recommands")
+    public DataResponse<Object> recommandAssociationWebtoon(
+            @PathVariable("webtoon-id") long webtoonId) throws Exception{
+
+        String temp1 = "{\n" +
+                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"name\": \"1초\",\n" +
+                "\t\t\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/725586/thumbnail/thumbnail_IMAG21_17f81846-d1a9-43fd-83a4-f9e966b6b977.jpg\",\n" +
+                "\t\t\t\t\t\"authors\": [\n" +
+                "\t\t\t\t\t\t{\n" +
+                "\t\t\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\t\t\"name\": \"광운\"\n" +
+                "\t\t\t\t\t\t}, ...\n" +
+                "\t\t\t\t\t]\n" +
+                "\t\t\t\t}";
+        String temp2 = "{\n" +
+                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"name\": \"투신전생기\",\n" +
+                "\t\t\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/774044/thumbnail/thumbnail_IMAG21_81504afb-1a05-41b0-9650-0c9aa1d741d9.jpg\",\n" +
+                "\t\t\t\t\t\"authors\": [\n" +
+                "\t\t\t\t\t\t{\n" +
+                "\t\t\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\t\t\"name\": \"청담\"\n" +
+                "\t\t\t\t\t\t}, ...\n" +
+                "\t\t\t\t\t]\n" +
+                "\t\t\t\t}";
+
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
+        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+
+        jsonArray.add(jsonObj1);
+        jsonArray.add(jsonObj2);
+
+        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
 //
 //    /*취향 월드컵 조회*/
 //    @GetMapping("/world-cup")
@@ -90,6 +121,6 @@ public class RecommandController {
 //    ){
 //
 //
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
+//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS)
 //    }
 }
