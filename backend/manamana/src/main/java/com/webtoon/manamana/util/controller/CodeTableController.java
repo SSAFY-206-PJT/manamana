@@ -78,13 +78,67 @@ public class CodeTableController {
 
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
-//
-//    /*연재 요일 목록*/
-//    @GetMapping("/days")
-//    public DataResponse<Object> stautsList() throws Exception{
-//
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
-//    }
+
+    /*연재 요일 목록*/
+    @GetMapping("/days")
+    public DataResponse<Object> dayList() throws Exception{
+
+        String temp1 = "{\n" +
+                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"day\": \"월\"\n" +
+                "\t\t\t}";
+        String temp2 = "{\n" +
+                "\t\t\t\t\t\"id\": 2,\n" +
+                "\t\t\t\t\t\"day\": \"화\"\n" +
+                "\t\t\t}";
+        String temp3 = "{\n" +
+                "\t\t\t\t\t\"id\": 3,\n" +
+                "\t\t\t\t\t\"day\": \"수\"\n" +
+                "\t\t\t}";
+        String temp4 = "{\n" +
+                "\t\t\t\t\t\"id\": 4,\n" +
+                "\t\t\t\t\t\"day\": \"목\"\n" +
+                "\t\t\t}";
+        String temp5 = "{\n" +
+                "\t\t\t\t\t\"id\": 5,\n" +
+                "\t\t\t\t\t\"day\": \"금\"\n" +
+                "\t\t\t}";
+        String temp6 = "{\n" +
+                "\t\t\t\t\t\"id\": 6,\n" +
+                "\t\t\t\t\t\"day\": \"토\"\n" +
+                "\t\t\t}";
+        String temp7 = "{\n" +
+                "\t\t\t\t\t\"id\": 7,\n" +
+                "\t\t\t\t\t\"day\": \"일\"\n" +
+                "\t\t\t}";
+        String temp8 = "{\n" +
+                "\t\t\t\t\t\"id\": 8,\n" +
+                "\t\t\t\t\t\"day\": \"기타\"\n" +
+                "\t\t\t}";
+        
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
+        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+        JSONObject jsonObj3 = (JSONObject) jsonParser.parse(temp3);
+        JSONObject jsonObj4 = (JSONObject) jsonParser.parse(temp4);
+        JSONObject jsonObj5 = (JSONObject) jsonParser.parse(temp5);
+        JSONObject jsonObj6 = (JSONObject) jsonParser.parse(temp6);
+        JSONObject jsonObj7 = (JSONObject) jsonParser.parse(temp7);
+        JSONObject jsonObj8 = (JSONObject) jsonParser.parse(temp8);
+
+        jsonArray.add(jsonObj1);
+        jsonArray.add(jsonObj2);
+        jsonArray.add(jsonObj3);
+        jsonArray.add(jsonObj4);
+        jsonArray.add(jsonObj5);
+        jsonArray.add(jsonObj6);
+        jsonArray.add(jsonObj7);
+        jsonArray.add(jsonObj8);
+
+        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
 //
 //    /*웹툰 제공자 목록*/
 //    @GetMapping("/providers")
