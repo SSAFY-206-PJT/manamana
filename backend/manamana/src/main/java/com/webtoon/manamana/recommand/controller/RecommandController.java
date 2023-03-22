@@ -4,9 +4,11 @@ package com.webtoon.manamana.recommand.controller;
 import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
+import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
+import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -154,14 +156,13 @@ public class RecommandController {
 
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
-//
-//    /*취향 월드컵 결과 저장.*/
-//    @PostMapping("/world-cup")
-//    public DataResponse<Object> worldCupWebtoonSave(
-//
-//    ){
-//
-//
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS)
-//    }
+
+    /*취향 월드컵 결과 저장.*/
+    @PostMapping("/world-cup")
+    public CommonResponse worldCupWebtoonSave(
+            @RequestBody WorldCupRequestDTO worldCupRequestDTO){
+
+        log.info(worldCupRequestDTO.getId().toString());
+        return responseService.getSuccessResponse();
+    }
 }
