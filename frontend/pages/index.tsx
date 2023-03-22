@@ -148,19 +148,31 @@ export default function Home() {
       </div>
       <div className="mb-4 flex justify-center">
         <div className="grid w-11/12 grid-cols-3 gap-2">
-          <div className="flex justify-center rounded-lg bg-white">다른 기능</div>
-          <div className="col-span-2 rounded-lg bg-white px-4">
+          <div className="col-span-1 flex flex-col justify-between rounded-lg bg-white px-4">
             <div className="flex justify-center pt-4">
-              <img className="p-2" src="/images/Main_Managola.png" alt="hi"></img>
-              <Link href="/managola">
-                <div className="flex items-center p-2 font-bold">
-                  취향검사
-                  <br />
-                  하러가기
-                </div>
+              <Link href="/genre-taste">
+                <div className="flex items-center p-2 font-bold">웹툰취향</div>
               </Link>
             </div>
-            <WebtoonContainer categoryTitle={' '} route={'managola'} />
+            <div className="flex justify-end">
+              <WebtoonContainer categoryTitle={' '} route={'genre-taste'} />
+            </div>
+          </div>
+
+          <div className="col-span-2 rounded-lg bg-white px-4">
+            <div className="flex flex-col justify-between">
+              <div className="flex justify-center pt-4">
+                <img className="p-2" src="/images/Main_Managola.png" alt="hi"></img>
+                <Link href="/managola">
+                  <div className="flex items-center p-2 font-bold">
+                    취향검사
+                    <br />
+                    하러가기
+                  </div>
+                </Link>
+              </div>
+              <WebtoonContainer categoryTitle={' '} route={'managola'} />
+            </div>
           </div>
         </div>
       </div>
