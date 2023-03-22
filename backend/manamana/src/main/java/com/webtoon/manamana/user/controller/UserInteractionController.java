@@ -58,17 +58,54 @@ public class UserInteractionController {
         return responseService.getDataResponse(jsonArray,CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
-//    /*관심 웹툰 조회*/
-//    @GetMapping("/{user-id}/webtoons")
-//    public DataResponse<Object>  findUserWebtoon(
-//            @PathVariable("user-id") long userId
-//
-//    ){
-//
-//
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
-//
-//    }
+    /*관심 웹툰 조회*/
+    @GetMapping("/{user-id}/webtoons")
+    public DataResponse<Object>  findUserWebtoon(
+            @PathVariable("user-id") long userId) throws Exception{
+
+        String temp1 = "{\n" +
+                "\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\"name\": \"호랑이형님\",\n" +
+                "\t\t\t\t\"authors\": [\n" +
+                "\t\t\t\t\t{\n" +
+                "\t\t\t\t\t\t\"id\": 1, \n" +
+                "\t\t\t\t\t\t\"name\": \"이상규\"\n" +
+                "\t\t\t\t\t}\n" +
+                "\t\t\t\t],\n" +
+                "\t\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/650305/thumbnail/thumbnail_IMAG21_3631086797392995425.jpg\",\n" +
+                "\t\t\t\t\"status\": {\n" +
+                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"status\": \"연재중\"\n" +
+                "\t\t\t\t}\n" +
+                "\t\t\t}";
+        String temp2 = "{\n" +
+                "\t\t\t\t\"id\": 2,\n" +
+                "\t\t\t\t\"name\": \"내일\",\n" +
+                "\t\t\t\t\"authors\": [\n" +
+                "\t\t\t\t\t{\n" +
+                "\t\t\t\t\t\t\"id\": 3, \n" +
+                "\t\t\t\t\t\t\"name\": \"라마\"\n" +
+                "\t\t\t\t\t}\n" +
+                "\t\t\t\t],\n" +
+                "\t\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/695796/thumbnail/thumbnail_IMAG21_332bb25b-c77d-477f-9979-5a8607ebd7a5.jpg\",\n" +
+                "\t\t\t\t\"status\": {\n" +
+                "\t\t\t\t\t\"id\": 2,\n" +
+                "\t\t\t\t\t\"status\": \"완결\"\n" +
+                "\t\t\t\t}\n" +
+                "\t\t\t}";
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
+        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+
+        jsonArray.add(jsonObj1);
+        jsonArray.add(jsonObj2);
+
+        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+
+    }
 //
 //    /*관심 웹툰 삭제*/
 //    @DeleteMapping("/{user-id}/webtoons")
