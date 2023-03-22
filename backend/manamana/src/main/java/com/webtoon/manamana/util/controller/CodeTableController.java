@@ -55,42 +55,60 @@ public class CodeTableController {
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
-//    /*연령 등급 목록*/
-//    @GetMapping("/grades")
-//    public DataResponse<Object> stautsList(){
-//        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
-//    }
+    /*연령 등급 목록*/
+    @GetMapping("/grades")
+    public DataResponse<Object> gradesList() throws Exception{
+        String temp1 = "{\n" +
+                "\t\t\t\t\t\"id\": 1,\n" +
+                "\t\t\t\t\t\"grade\": \"전체이용가\"\n" +
+                "\t\t\t}";
+        String temp2 = "{\n" +
+                "\t\t\t\t\t\"id\": 2,\n" +
+                "\t\t\t\t\t\"grade\": \"성인\"\n" +
+                "\t\t\t}";
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
+        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+
+        jsonArray.add(jsonObj1);
+        jsonArray.add(jsonObj2);
+
+        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
 //
 //    /*연재 요일 목록*/
 //    @GetMapping("/days")
-//    public DataResponse<Object> stautsList(){
+//    public DataResponse<Object> stautsList() throws Exception{
 //
 //        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
 //    }
 //
 //    /*웹툰 제공자 목록*/
 //    @GetMapping("/providers")
-//    public DataResponse<Object> stautsList(){
+//    public DataResponse<Object> stautsList() throws Exception{
 //
 //        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
 //    }
 //    /*정렬 조건 목록*/
 //    @GetMapping("/sorts")
-//    public DataResponse<Object> stautsList(){
+//    public DataResponse<Object> stautsList() throws Exception{
 //
 //
 //        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
 //    }
 //    /*웹툰 키워드 top10*/
 //    @GetMapping("keywords")
-//    public DataResponse<Object> stautsList(){
+//    public DataResponse<Object> stautsList() throws Exception{
 //
 //
 //        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
 //    }
 //
 //    /*웹툰 장르 목록*/
-//    @GetMapping("/genres")public DataResponse<Object> stautsList(){
+//    @GetMapping("/genres")public DataResponse<Object> stautsList() throws Exception{
 //
 //        return responseService.getDataResponse(, CustomSuccessStatus.RESPONSE_SUCCESS);
 //    }
