@@ -1,3 +1,13 @@
+import Headerbar from "@/components/common/Headerbar";
+import ManagolaCanvas from "@/components/pages/managola/managolaCanvas";
+
 export default function ManagolaPage() {
-  return <h1 className="text-3xl font-bold underline">Managola Page</h1>;
+  return (
+    <div className="w-full h-screen overflow-hidden">
+      <Headerbar showBackBtn={true} pageName={"마나골라"} rightBtn={undefined} key={"마나골라"} />
+      <div className="h-full bg-slate-600">
+        <ManagolaCanvas />
+      </div>
+    </div>
+  );
 }
