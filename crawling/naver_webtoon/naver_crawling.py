@@ -271,10 +271,12 @@ def crawling_start():
             webtoon_info_dict[webtoon_id] = temp_dic
            
         
-        
+    temp_dict = dict()
+    temp_dict["provider_id"] = 1
+    temp_dict["data"] = list(webtoon_info_dict.values())
     ##json 파일로 저장.
     with open('./webtoon_json/naver_webtoon.json','w',encoding='UTF-8') as f:
-        json.dump(webtoon_info_dict, f, ensure_ascii=False, indent=4)
+        json.dump(temp_dict, f, ensure_ascii=False, indent=4)
             
         
 
