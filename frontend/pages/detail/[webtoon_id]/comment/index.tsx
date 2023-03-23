@@ -331,7 +331,6 @@ export default function CommentPage() {
     for (let i = 0; i < commentList.length; i++) {
       if (commentList[i] === ee) {
         commentList.splice(i, 1);
-        break;
       }
     }
     setCommentList([...commentList]);
