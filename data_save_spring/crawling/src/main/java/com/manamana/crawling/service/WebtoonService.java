@@ -1,55 +1,78 @@
 package com.manamana.crawling.service;
 
+import com.manamana.crawling.dto.*;
 import com.manamana.crawling.entity.webtoon.Webtoon;
-import com.manamana.crawling.repository.WebtoonRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
-@Service
-@Transactional
-@RequiredArgsConstructor
-public class WebtoonService {
-
-    private final WebtoonRepository webtoonRepository;
+public interface WebtoonService {
 
     /**
-     * 웹툰 데이터 저장
+     * 웹툰 데이터 리스트 처리
+     * @param webtoonDataArrayDTO
      */
-    public Long saveWebtoon(Webtoon webtoon) {
-        //validateDuplicateWebtoon(webtoon); //중복 웹툰 검증
-        webtoonRepository.saveWebtoon(webtoon);
-        return webtoon.getId();
-    }
+    void webtoonsData(WebtoonDataArrayDTO webtoonDataArrayDTO);
+
+    /**
+     * 웹툰 단건 데이터 분류 (장르, 웹툰, 요일, 작가)
+     * @param webtoonDataDTO
+     */
+    SplitDTO splitWebtoonData(WebtoonDataDTO webtoonDataDTO);
+
+    /**
+     * 웹툰 저장
+     * @param webtoonDTO
+     */
+    void saveWebtoon(WebtoonDTO webtoonDTO);
+
+    /**
+     * 장르 저장
+     * @param genreDTO
+     */
+    void saveGenre(GenreDTO genreDTO);
+
+    /**
+     * 요일 저장
+     * @param dayDTO
+     */
+    void saveDay(DayDTO dayDTO);
+
+    /**
+     * 작가 저장
+     * @param authorDTO
+     */
+    void saveAuthor(AuthorDTO authorDTO);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //TODO webtoonId, webtoonProvder둘다 확인하기
-    private void validateDuplicateWebtoon(Webtoon webtoon) {
-        List<Webtoon> findWebtoon = webtoonRepository.findByWebtoonId(webtoon.getWebtoonId());
-        if (!findWebtoon.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 웹툰입니다.");
-        }
-    }
+    void validateDuplicateWebtoon(WebtoonDataDTO webtoonDataDTO);
+
 
     /**
      * 웹툰 전체 조회
      */
-    public List<Webtoon> findWebtoon() {
-        return webtoonRepository.findAll();
-    }
+    List<Webtoon> findWebtoon();
 
     /**
      * 웹툰 단건 조회(id)
      */
-    public Webtoon findOne(Long webtoonId) {
-        return webtoonRepository.findOne(webtoonId);
-    }
+    Webtoon findOne(Long id);
 
     /**
      * 웹툰 단건 조회(webtoonId)
      */
-    public List<Webtoon> findOneByWebtoonId(String webtoonId) {
-        return webtoonRepository.findByWebtoonId(webtoonId);
-    }
+    Webtoon findOneByWebtoonId(String webtoonId);
+
 }

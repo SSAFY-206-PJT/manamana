@@ -37,8 +37,7 @@ public class Webtoon extends BaseTimeEntity {
     @Column(name = "serial_id")
     private int serialId;
 
-    @Column(name = "webtoon_url")
-    private String webtoonUrl;
+    @Column(name = "webtoon_url")    private String webtoonUrl;
 
     @Column(name = "webtoon_id")
     private String webtoonId;
