@@ -9,10 +9,15 @@ import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.user.dto.request.GenreRequestDTO;
 import com.webtoon.manamana.user.dto.request.WebtoonRequestDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "회원 상호작용 기능", description = "회원 상호작용 관련 기능 관련 API 모음")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -22,6 +27,12 @@ public class UserInteractionController {
     private final ResponseService responseService;
 
     /*회원이 작성한 댓글 조회*/
+    @Tag(name = "회원 상호작용 기능")
+    @Operation(summary = "작성한 댓글 조회", description =  "작성한 댓글 조회 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @GetMapping("/{user-id}/comments")
     public DataResponse<Object> findUserComment(
             @PathVariable("user-id") long userId) throws Exception{
@@ -61,6 +72,12 @@ public class UserInteractionController {
     }
 
     /*관심 웹툰 조회*/
+    @Tag(name = "회원 상호작용 기능")
+    @Operation(summary = "관심 웹툰 조회", description =  "관심 웹툰 조회 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @GetMapping("/{user-id}/webtoons")
     public DataResponse<Object>  findUserWebtoon(
             @PathVariable("user-id") long userId) throws Exception{
@@ -110,6 +127,12 @@ public class UserInteractionController {
     }
 
     /*관심 웹툰 삭제*/
+    @Tag(name = "회원 상호작용 기능")
+    @Operation(summary = "관심 웹툰 삭제", description =  "관심 웹툰 삭제 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @DeleteMapping("/{user-id}/webtoons")
     public CommonResponse deleteUserWebtoon(
             @PathVariable("user-id") long userId
@@ -119,6 +142,12 @@ public class UserInteractionController {
     }
 
     /*선호 장르 선택*/
+    @Tag(name = "회원 상호작용 기능")
+    @Operation(summary = "선호 장르 선택", description =  "선호 장르 선택 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @PostMapping("/{user-id}/genre/select")
     public CommonResponse userSelectGenre(
             @PathVariable("user-id") long userId,
@@ -130,6 +159,12 @@ public class UserInteractionController {
 
 
     /*선호 웹툰 선택*/
+    @Tag(name = "회원 상호작용 기능")
+    @Operation(summary = "선호 웹툰 선택", description =  "선호 웹툰 선택 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @PostMapping("/{user-id}/webtoon/select")
     public CommonResponse userSelectWebtoon(
             @PathVariable("user-id") long userId,

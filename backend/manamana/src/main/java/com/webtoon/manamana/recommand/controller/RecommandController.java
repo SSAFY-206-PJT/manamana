@@ -9,6 +9,10 @@ import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 추천 관련 API처리 컨트롤러
  */
+@Tag(name = "추천 관련 기능", description = "웹툰 추천 관련 기능 관련 API 모음")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -27,6 +32,12 @@ public class RecommandController {
     private final ResponseService responseService;
 
     /*추천 알고리즘을 통한 웹툰 조회*/
+    @Tag(name = "추천 관련 기능")
+    @Operation(summary = "사용자 별 웹툰 추천 기능", description =  "사용자에 맞춘 웹툰 추천 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @GetMapping("/recommands")
     public DataResponse<Object> recommandUserWebtoon() throws Exception{
 
@@ -68,6 +79,12 @@ public class RecommandController {
 
 
     /*관련 웹툰 추천*/
+    @Tag(name = "추천 관련 기능")
+    @Operation(summary = "관련 웹툰 추천", description =  "관련 웹툰 추천 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @GetMapping("/{webtoon-id}/recommands")
     public DataResponse<Object> recommandAssociationWebtoon(
             @PathVariable("webtoon-id") long webtoonId) throws Exception{
@@ -109,6 +126,12 @@ public class RecommandController {
     }
 //
     /*취향 월드컵 조회*/
+    @Tag(name = "추천 관련 기능")
+    @Operation(summary = "취향 월드컵 조회", description =  "취향 월드컵에 사용할 웹툰 조회 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @GetMapping("/world-cup")
     public DataResponse<Object> worldCupWebtoon() throws Exception{
 
@@ -158,6 +181,12 @@ public class RecommandController {
     }
 
     /*취향 월드컵 결과 저장.*/
+    @Tag(name = "추천 관련 기능")
+    @Operation(summary = "취향 월드컵 결과 저장", description =  "취향 월드컵에서 나온 결과 저장 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @PostMapping("/world-cup")
     public CommonResponse worldCupWebtoonSave(
             @RequestBody WorldCupRequestDTO worldCupRequestDTO){
