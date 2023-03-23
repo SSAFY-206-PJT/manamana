@@ -188,10 +188,20 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @PostMapping("/world-cup")
-    public CommonResponse worldCupWebtoonSave(
-            @RequestBody WorldCupRequestDTO worldCupRequestDTO){
+    public DataResponse<Object> worldCupWebtoonSave(
+            @RequestBody WorldCupRequestDTO worldCupRequestDTO) throws Exception{
+
+        String temp = " {\n" +
+                "\t\t\"id\": 1,\n" +
+                "\t\t\"name\": \"호랑이형님\",\n" +
+                "\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/650305/thumbnail/thumbnail_IMAG21_3631086797392995425.jpg\"\n" +
+                "\t}";
+
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj = (JSONObject) jsonParser.parse(temp);
 
         log.info(worldCupRequestDTO.getId().toString());
-        return responseService.getSuccessResponse();
+        return responseService.getDataResponse(jsonObj,CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 }
