@@ -11,6 +11,7 @@ import com.webtoon.manamana.webtoon.dto.request.CommentDeleteDTO;
 import com.webtoon.manamana.webtoon.dto.request.CommentRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 //TODO : 전부 더미데이터라 바꿔야됨.
@@ -31,8 +32,10 @@ public class WebtoonCommentController {
     /*댓글 전체 조회*/
     @GetMapping("/{webtoon-id}/comments")
     public DataResponse<Object> commentList(
-            @PathVariable("webtoon-id") long webtoonId
-    ) throws Exception{
+            @PathVariable("webtoon-id") long webtoonId,
+            Pageable pageable) throws Exception{
+
+        log.info("page = {}, size = {}", pageable.getOffset(), pageable.getPageSize());
 
         String temp1 = "{\n" +
                 "\t\t\t\"id\": 1,\n" +
