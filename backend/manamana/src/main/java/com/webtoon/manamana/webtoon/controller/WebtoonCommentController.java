@@ -9,6 +9,10 @@ import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.webtoon.dto.request.CommentDeleteDTO;
 import com.webtoon.manamana.webtoon.dto.request.CommentRequestDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 댓글 관련 컨트롤러 - 댓글 CRUD
  */
+@Tag(name = "웹툰 댓글", description = "웹툰 댓글관련 API 모음")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -30,6 +35,12 @@ public class WebtoonCommentController {
 
 
     /*댓글 전체 조회*/
+    @Tag(name = "웹툰 댓글")
+    @Operation(summary = "웹툰 댓글 조회", description =  "웹툰 댓글 조회 - 모든 댓글 조회, 페이징 가능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @GetMapping("/{webtoon-id}/comments")
     public DataResponse<Object> commentList(
             @PathVariable("webtoon-id") long webtoonId,
@@ -78,6 +89,12 @@ public class WebtoonCommentController {
     }
 
     /*댓글 작성*/
+    @Tag(name = "웹툰 댓글")
+    @Operation(summary = "웹툰 댓글 작성", description =  "웹툰 댓글 작성 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @PostMapping("/{webtoon-id}/comments")
     public DataResponse<Object> commentCreate(
             @PathVariable("webtoon-id") long webtoonId,
@@ -102,6 +119,13 @@ public class WebtoonCommentController {
 
     // TODO : 모든 내용을 바꾸고 있어서 PUT 으로 메서드 변경하는 것 고려 필요
     /*댓글 수정*/
+
+    @Tag(name = "웹툰 댓글")
+    @Operation(summary = "웹툰 댓글 수정", description =  "웹툰 댓글 수정 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @PatchMapping("/{webtoon-id}/comments/{comment-id}")
     public DataResponse<Object> updateComment(
             @PathVariable("webtoon-id") long webtoonId,
@@ -126,6 +150,12 @@ public class WebtoonCommentController {
     }
 
     /*댓글 삭제*/
+    @Tag(name = "웹툰 댓글")
+    @Operation(summary = "웹툰 댓글 삭제", description =  "웹툰 댓글 삭제 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
     @DeleteMapping("/{webtoon-id}/comments")
     public CommonResponse deleteComment(
             @PathVariable("webtoon-id") long webtoonId,
@@ -137,7 +167,4 @@ public class WebtoonCommentController {
         return responseService.getSuccessResponse();
 
     }
-
-
-
 }
