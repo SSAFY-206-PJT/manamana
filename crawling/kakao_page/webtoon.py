@@ -62,6 +62,9 @@ class Webtoon:
         """
         json으로 반환
         """
+        temp_dict = dict()
+        temp_dict["data"] = list(self.webtoons_dict.values())
+
         webtoon_json = json.dumps(
-            self.webtoons_dict, ensure_ascii=False, indent=4)
+            temp_dict, ensure_ascii=False, indent=4)
         return webtoon_json

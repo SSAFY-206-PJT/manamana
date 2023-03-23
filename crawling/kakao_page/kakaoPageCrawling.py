@@ -22,8 +22,8 @@ error_list = []
 """
 요일별 크롤링 시작
 """
-# day_id = ["1", "2", "3", "4", "5", "6", "7", "12"]
-day_id = ["1"]
+day_id = ["1", "2", "3", "4", "5", "6", "7", "12"]
+# day_id = ["1"]
 
 # for d_id in tqdm(day_id):  # 배포할때 tqdm 빼야함
 for d_id in day_id:
@@ -63,7 +63,7 @@ for d_id in day_id:
     """
 	해당 요일의 웹툰 id 전부 가져오기
 	"""
-    i = 190
+    i = 1
     total_url = []
     while True:
         temp = str(soup.select('#__next > div > div.flex.w-full.grow.flex-col.px-122pxr > div > div.flex.grow.flex-col > div.flex.grow.flex-col > div > div:nth-child(3) > div > div > div:nth-child(' + str(i) + ') > div > a'))
