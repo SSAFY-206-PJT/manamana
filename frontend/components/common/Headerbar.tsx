@@ -56,7 +56,7 @@ export default function Headerbar(props: Props) {
   }
 
   return (
-    <div className="flex h-14 items-center justify-between bg-BackgroundLightComponent p-5">
+    <div className="z-30 flex h-14 items-center justify-between bg-BackgroundLightComponent p-5">
       {backBtn}
       <div className="">
         <p className="text-xl font-bold">{pageName}</p>

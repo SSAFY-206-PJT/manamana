@@ -6,7 +6,14 @@ body {
     padding: 0;
     margin: 0;
     font-family: 'Pretendard-Regular', sans-serif;
+    min-height: 100vh;
+    height: 100vh;
 }
+
+#__next {
+    height: 100vh;
+}
+
 
 @font-face {
     font-family: 'SUIT-Regular';
