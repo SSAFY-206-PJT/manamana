@@ -63,6 +63,7 @@ class Webtoon:
         json으로 반환
         """
         temp_dict = dict()
+        temp_dict["provider_id"] = 3
         temp_dict["data"] = list(self.webtoons_dict.values())
 
         webtoon_json = json.dumps(
