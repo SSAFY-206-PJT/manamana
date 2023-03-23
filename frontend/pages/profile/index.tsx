@@ -22,7 +22,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className='h-screen'>
+    <div className='h-screen overflow-hidden'>
       <Headerbar showBackBtn={false} pageName='마이페이지' rightBtn='NOTI' />
       <div className='w-full h-full bg-BackgroundLight p-2 flex flex-col gap-4'>
         <div className='flex items-center bg-BackgroundLightComponent p-8 rounded-2xl'>
