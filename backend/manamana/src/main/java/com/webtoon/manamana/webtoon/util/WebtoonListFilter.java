@@ -1,5 +1,6 @@
 package com.webtoon.manamana.webtoon.util;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,15 @@ public class WebtoonListFilter {
     private Integer genreId;
     private Integer gradeId;
     private Integer dayId;
-    private String sortType;
+    private Integer sortType;
 
+    @Builder
+    public WebtoonListFilter(String keyword, Integer statusId, Integer genreId, Integer gradeId, Integer dayId, Integer sortType) {
+        this.keyword = keyword;
+        this.statusId = statusId;
+        this.genreId = genreId;
+        this.gradeId = gradeId;
+        this.dayId = dayId;
+        this.sortType = sortType;
+    }
 }

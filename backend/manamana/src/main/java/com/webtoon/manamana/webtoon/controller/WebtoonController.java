@@ -1,9 +1,7 @@
 package com.webtoon.manamana.webtoon.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.parser.JSONParser;
+
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
@@ -12,9 +10,9 @@ import com.webtoon.manamana.webtoon.util.WebtoonListFilter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,14 +29,28 @@ public class WebtoonController {
     private final ResponseService responseService;
 
 
+    // TODO : 아래처럼 쿼리 스트링을 하나씩 받는게 아니라 맵으로 받던가 해야됨 - Pageable 사용하려고 하다보니까 아래와 같은 형식이 됨.
     //전체 조회.
     @GetMapping
     public DataResponse<List<WebtoonListDTO>> webtoonList(
-            @RequestParam HashMap<String,String> filter
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer statusId,
+            @RequestParam(required = false) Integer gradeId,
+            @RequestParam(required = false) Integer genreId,
+            @RequestParam(required = false) Integer dayId,
+            @RequestParam(required = false) Integer sortType,
+            Pageable pageable
     ){
+
+        log.info("page = {}, size = {}",pageable.getOffset(),pageable.getPageSize());
         //쿼리 스트링을 map으로 받아서 객체에 매핑함.
-        ObjectMapper objectMapper = new ObjectMapper();
-        WebtoonListFilter searchFilter = objectMapper.convertValue(filter,WebtoonListFilter.class);
+        WebtoonListFilter filter = WebtoonListFilter.builder()
+                .keyword(keyword)
+                .statusId(statusId)
+                .genreId(genreId)
+                .gradeId(gradeId)
+                .dayId(dayId)
+                .sortType(sortType).build();
 
         //TODO : 더미데이터로 리턴하기 때문에 실제 로직으로 바꿔야 됨.
 
