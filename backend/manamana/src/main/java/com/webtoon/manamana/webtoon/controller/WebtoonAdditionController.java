@@ -44,6 +44,7 @@ public class WebtoonAdditionController {
             @PathVariable("comment-id") long commentId
     ){
 
+
         log.info("[신고 확인] - webtoon-id : {} , comment-id : {}", webtoonId,commentId);
         return responseService.getSuccessResponse();
     }

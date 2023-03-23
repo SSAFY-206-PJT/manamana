@@ -21,6 +21,8 @@ public class QWebtoonProvider extends EntityPathBase<WebtoonProvider> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
+    public final StringPath image = createString("image");
+
     public final StringPath name = createString("name");
 
     public final StringPath url = createString("url");
