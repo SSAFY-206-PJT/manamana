@@ -1,36 +1,21 @@
 package com.manamana.crawling.repository;
 
 import com.manamana.crawling.entity.webtoon.Webtoon;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import com.manamana.crawling.entity.webtoon.WebtoonProvider;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class WebtoonRepository {
+public interface WebtoonRepository extends JpaRepository<Webtoon, Long> {
 
-    private final EntityManager em;
 
-    public void saveWebtoon(Webtoon webtoon) {
-//        em.persist(webtoon);
-        em.merge(webtoon);
-    }
+    Optional<Webtoon> findById(Long id);
 
-    public Webtoon findOne(Long id) {
-        return em.find(Webtoon.class, id);
-    }
+    List<Webtoon> findAll();
 
-    public List<Webtoon> findAll() {
-        return em.createQuery("select w from Webtoon w", Webtoon.class)
-                .getResultList();
-    }
+    Optional<Webtoon> findByWebtoonId(String webtoonId);
 
-    public List<Webtoon> findByWebtoonId(String webtoonId) {
-        return em.createQuery("select w from Webtoon w where w.webtoonId = :webtoonId", Webtoon.class)
-                .setParameter("webtoonId", webtoonId)
-                .getResultList();
-    }
+    Optional<Webtoon> findByWebtoonIdAndProviderId(String webtoonId, WebtoonProvider ProviderId);
+
 }
