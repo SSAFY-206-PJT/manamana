@@ -16,19 +16,19 @@ public interface WebtoonService {
      * 웹툰 단건 데이터 분류 (장르, 웹툰, 요일, 작가)
      * @param webtoonDataDTO
      */
-    SplitDTO splitWebtoonData(WebtoonDataDTO webtoonDataDTO);
+//    SplitDTO splitWebtoonData(WebtoonDataDTO webtoonDataDTO, int providerId);
 
     /**
      * 웹툰 저장
-     * @param webtoonDTO
+     * @param webtoonDataDTO
      */
-    void saveWebtoon(WebtoonDTO webtoonDTO);
+    Webtoon saveWebtoon(int provider, WebtoonDataDTO webtoonDataDTO);
 
     /**
      * 장르 저장
-     * @param genreDTO
+     * @param webtoon, webtoonDataDTO
      */
-    void saveGenre(GenreDTO genreDTO);
+    void saveGenre(Webtoon webtoon, WebtoonDataDTO webtoonDataDTO);
 
     /**
      * 요일 저장
@@ -52,27 +52,27 @@ public interface WebtoonService {
 
 
 
-
-
-
-
-    //TODO webtoonId, webtoonProvder둘다 확인하기
-    void validateDuplicateWebtoon(WebtoonDataDTO webtoonDataDTO);
-
-
-    /**
-     * 웹툰 전체 조회
-     */
-    List<Webtoon> findWebtoon();
-
-    /**
-     * 웹툰 단건 조회(id)
-     */
-    Webtoon findOne(Long id);
-
-    /**
-     * 웹툰 단건 조회(webtoonId)
-     */
-    Webtoon findOneByWebtoonId(String webtoonId);
-
+//
+//
+//
+//
+//    //TODO webtoonId, webtoonProvder둘다 확인하기
+//    void validateDuplicateWebtoon(WebtoonDataDTO webtoonDataDTO);
+//
+//
+//    /**
+//     * 웹툰 전체 조회
+//     */
+//    List<Webtoon> findWebtoon();
+//
+//    /**
+//     * 웹툰 단건 조회(id)
+//     */
+//    Webtoon findOne(Long id);
+//
+//    /**
+//     * 웹툰 단건 조회(webtoonId)
+//     */
+//    Webtoon findOneByWebtoonId(String webtoonId);
+//
 }

@@ -1,5 +1,6 @@
 package com.manamana.crawling.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,4 +16,12 @@ public class SplitDTO {
 
     private AuthorDTO authorDTO;
 
+
+    @Builder
+    public SplitDTO(GenreDTO genreDTO, WebtoonDTO webtoonDTO, DayDTO dayDTO, AuthorDTO authorDTO) {
+        this.genreDTO = genreDTO;
+        this.webtoonDTO = webtoonDTO;
+        this.dayDTO = dayDTO;
+        this.authorDTO = authorDTO;
+    }
 }

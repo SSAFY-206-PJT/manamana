@@ -1,5 +1,6 @@
 package com.manamana.crawling.entity.webtoon.codetable;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,5 +21,6 @@ public class Genre {
 
     @Column(name = "name")
     private String name;
+
 
 }

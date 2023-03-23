@@ -1,5 +1,6 @@
 package com.manamana.crawling.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,4 +14,9 @@ public class GenreDTO {
 
     private List<Integer> genreIdArr;
 
+    @Builder
+    public GenreDTO(Long webtoonId, List<Integer> genreIdArr) {
+        this.webtoonId = webtoonId;
+        this.genreIdArr = genreIdArr;
+    }
 }

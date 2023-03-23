@@ -1,6 +1,7 @@
 package com.manamana.crawling.entity.webtoon;
 
 import com.manamana.crawling.entity.webtoon.codetable.Genre;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,5 +25,11 @@ public class WebtoonGenre {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "webtoon_id")
     private Webtoon webtoon;
+
+    @Builder
+    public WebtoonGenre(Genre genre, Webtoon webtoon) {
+        this.genre = genre;
+        this.webtoon = webtoon;
+    }
 
 }

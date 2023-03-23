@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface WebtoonRepository extends JpaRepository<Webtoon, Long> {
 
-
     Optional<Webtoon> findById(Long id);
 
     List<Webtoon> findAll();

@@ -1,6 +1,7 @@
 package com.manamana.crawling.dto;
 
 
+import com.manamana.crawling.entity.webtoon.Webtoon;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
