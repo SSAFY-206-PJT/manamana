@@ -2,6 +2,9 @@ package com.webtoon.manamana.webtoon.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
@@ -189,6 +192,49 @@ public class WebtoonController {
 
     }
 
+    /*웹툰 작품 플랫폼 정보*/
+    @Tag(name = "웹툰 정보")
+    @Operation(summary = "웹툰 플랫폼 정보", description =  "웹툰 플랫폼 정보 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러")
+    })
+    @GetMapping("/{webtoon-id}/providers")
+    public DataResponse<Object> getWebtoonProvider(
+            @PathVariable("webtoon-id") long webtoonId) throws Exception{
+
+
+        String temp1 = "{\n" +
+                "\t\t\t\"name\" : \"네이버 웹툰\",\n" +
+                "\t\t\t\"url\" : \"https://comic.naver.com/webtoon/list?titleId=747269\",\n" +
+                "\t\t\t\"provider_image\" : \"https://manamana-bucket.s3.ap-northeast-2.amazonaws.com/webtoon_provider_image/naver_webtoon.png\"\n" +
+                "\t\t}";
+        String temp2 = "{\n" +
+                "\t\t\t\"name\" : \"카카오 웹툰\",\n" +
+                "\t\t\t\"url\" : \"https://webtoon.kakao.com/content/초인주의/3388\",\n" +
+                "\t\t\t\"provider_image\" : \"https://manamana-bucket.s3.ap-northeast-2.amazonaws.com/webtoon_provider_image/kakao_webtoon.jpg\"\n" +
+                "\t\t}";
+        String temp3 = "{\n" +
+                "\t\t\t\"name\" : \"카카오 페이지\",\n" +
+                "\t\t\t\"url\" : \"https://page.kakao.com/content/58909608\",\n" +
+                "\t\t\t\"provider_image\" : \"https://manamana-bucket.s3.ap-northeast-2.amazonaws.com/webtoon_provider_image/kakao_page.png\"\n" +
+                "\t\t}";
+
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
+        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+        JSONObject jsonObj3 = (JSONObject) jsonParser.parse(temp3);
+
+        jsonArray.add(jsonObj1);
+        jsonArray.add(jsonObj2);
+        jsonArray.add(jsonObj3);
+
+
+        return responseService.getDataResponse(jsonArray,CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
 
 
 
