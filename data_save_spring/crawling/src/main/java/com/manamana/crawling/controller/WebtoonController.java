@@ -19,6 +19,7 @@ public class WebtoonController {
 
     private final WebtoonService webtoonService;
 
+<<<<<<< HEAD
 //    @GetMapping("/crawling")
 //    public Webtoon getWebtoon() {
 //        return webtoonService.findOne(2L);
@@ -26,6 +27,21 @@ public class WebtoonController {
 
     @PostMapping("/crawling")
     public Long saveWebtoon(@RequestBody WebtoonDataArrayDTO webtoonDataArrayDTO) {
+=======
+    @GetMapping("/crawling")
+    public Webtoon getWebtoon() {
+        return webtoonService.findOne(2L);
+    }
+
+    @PostMapping("/crawling")
+    public Long saveWebtoon(@RequestBody WebtoonDataDTO requestDTO) {
+        webtoonService.saveWebtoon(requestDTO);
+        return 1L;
+    }
+
+    @PostMapping("/crawlings")
+    public Long saveWebtoons(@RequestBody WebtoonDataArrayDTO webtoonDataArrayDTO) {
+>>>>>>> 6b44a1aecf1d6faa1802c83e1ce09ba65b1953f1
         webtoonService.webtoonsData(webtoonDataArrayDTO);
         return 1L;
     }
