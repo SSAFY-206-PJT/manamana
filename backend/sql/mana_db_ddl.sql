@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`webtoon_providers` (
   `id` INT NOT NULL,
   `name` VARCHAR(50) NOT NULL,
   `provider_url` VARCHAR(255) NOT NULL,
+  `provider_image` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
