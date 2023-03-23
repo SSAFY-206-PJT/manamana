@@ -260,7 +260,7 @@ function DetailPage() {
           name: dummyWebtoon.name,
         },
       },
-      `/detail/${webtoon_id}/comment`,
+      // `/detail/${webtoon_id}/comment`,
     );
   };
 
