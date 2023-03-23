@@ -5,15 +5,13 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -21,7 +19,19 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api(){
+        Server localServer = new Server("local",
+                "http://localhost;8080",
+                "로컬 주소",
+                Collections.emptyList(),
+                Collections.emptyList());
+        Server testServer = new Server("test",
+                "https://j8b206.p.ssafy.io/api",
+                "테스트용 주소",
+                Collections.emptyList(),
+                Collections.emptyList());
+
         return new Docket(DocumentationType.OAS_30)
+                .servers(localServer,testServer)
                 .useDefaultResponseMessages(false)
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
