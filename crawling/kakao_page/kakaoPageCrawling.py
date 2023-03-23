@@ -22,8 +22,8 @@ error_list = []
 """
 요일별 크롤링 시작
 """
-day_id = ["1", "2", "3", "4", "5", "6", "7", "12"]
-# day_id = ["1"]
+# day_id = ["1", "2", "3", "4", "5", "6", "7", "12"]
+day_id = ["1"]
 
 # for d_id in tqdm(day_id):  # 배포할때 tqdm 빼야함
 for d_id in day_id:
@@ -63,13 +63,13 @@ for d_id in day_id:
     """
 	해당 요일의 웹툰 id 전부 가져오기
 	"""
-    i = 1
+    i = 190
     total_url = []
     while True:
         temp = str(soup.select('#__next > div > div.flex.w-full.grow.flex-col.px-122pxr > div > div.flex.grow.flex-col > div.flex.grow.flex-col > div > div:nth-child(3) > div > div > div:nth-child(' + str(i) + ') > div > a'))
         if len(temp) == 2:
             break
-        temp = temp[temp.find("href") + 15:temp.find(">")-1]
+        temp = temp[temp.find("href") + 6:temp.find(">")-1]
         total_url.append(temp)
         i += 1
 
@@ -87,19 +87,20 @@ for d_id in day_id:
     웹툰 정보 크롤링
     """
     # for webtoon_id in tqdm(total_url):  # 배포할때 tqdm 빼야됨
-    for webtoon_id in total_url:
+    for webtoon_url in total_url:
 
         try:
 
             webtoon_info = webtoon.Webtoon()  # 웹툰 클래스 생성
 
-            webtoon_base_url = "https://page.kakao.com/content/"
-            webtoon_url = webtoon_base_url + webtoon_id
+            webtoon_base_url = "https://page.kakao.com"
+            webtoon_id = webtoon_url[9:]
+            webtoon_ori_url = webtoon_base_url + webtoon_url
 
             webtoon_info.webtoon_id = webtoon_id
             webtoon_info.webtoon_url = webtoon_url
 
-            driver.get(webtoon_url)
+            driver.get(webtoon_ori_url)
             time.sleep(2)
 
             html = driver.page_source
@@ -127,7 +128,7 @@ for d_id in day_id:
                 '#__next > div > div.flex.w-full.grow.flex-col.px-122pxr > div.flex.h-full.flex-1 > div.mb-28pxr.ml-4px.flex.w-632pxr.flex-col > div:nth-child(2) > div:nth-child(1) > div.min-h-360pxr > ul > li:nth-child(1) > div > div > a > div > div.flex.flex-col > div.text-ellipsis.line-clamp-1.font-small2.text-el-60 > span').get_text()
 
             # 작품소개로 이동
-            info_url = webtoon_url + "?tab_type=about"
+            info_url = webtoon_ori_url + "?tab_type=about"
             driver.get(info_url)
             time.sleep(1.5)
 
