@@ -16,6 +16,9 @@ export default function ManagolaPage() {
   * 현재 위치하고 있는 단계의 Element 저장할 변수
   * */
   const [presentData, setPresentData] = useState<any>();
+
+  const [cover, setCover] = useState<boolean>(true);
+
   /*
   * @Variable
   * 전체 단계의 정보를 저장할 변수
@@ -61,6 +64,7 @@ export default function ManagolaPage() {
   * */
   const onReplayClick = () => {
     setPresentIdx(0);
+    setCover(true);
     // 웹툰 정보를 다시 받아와서 data 변수 갱신
   }
 
@@ -73,7 +77,7 @@ export default function ManagolaPage() {
       setPresentIdx(presentIdx + 1);
     }
     else {  // data 배열의 크기 이상이면 종료해야 하므로, 최종 결과 화면 띄워줌
-      
+
       // 서버에 결과를 보내줌
       console.log(choiceResult);
 
@@ -170,6 +174,33 @@ export default function ManagolaPage() {
     <div className="h-screen w-full">
       <Headerbar showBackBtn={true} pageName={"마나골라"} rightBtn={undefined} key={"마나골라"} />
       <div className="w-full">
+        {
+          cover ?
+            <div className="flex flex-col justify-center items-center w-full h-full bg-slate-600 z-30 fixed">
+              <video src="/movies/managola.mp4" autoPlay loop muted className="h-full w-full object-cover absolute" />
+              <div className="z-40">
+                <div className="flex flex-col items-center justify-center mb-4">
+                  <span className="text-2xl text-FontSecondaryLight font-semibold">웹툰 취향 테스트</span>
+                  <span className="text-xl text-FontSecondaryLight font-semibold">당신을 위한 웹툰을 찾아보세요!</span>
+                </div>
+                <div className="mb-4 flex justify-center items-center">
+                  <span className="text-6xl text-FontPrimaryLight font-bold">마나골라</span>
+                </div>
+                <div className="flex justify-center m-12">
+                  <button 
+                  className="font-semibold text-2xl bg-BackgroundLightComponent p-2 rounded-lg opacity-80 mb-4 text-FontPrimaryLight drop-shadow-lg"
+                  onClick={() => { setCover(false); }}>시작하기</button>
+                </div>
+                <div className="flex flex-col items-center text-FontSecondaryLight">
+                  <div>좋아하는 웹툰은 오른쪽으로</div>
+                  <div>별로인 웹툰은 왼쪽으로 밀어보세요.</div>
+                  <div>한번 선택하면 되돌릴 수 없어요.</div>
+                </div>
+              </div>
+            </div>
+            :
+            null
+        }
         <div className="absolute z-20 w-full h-1/6 flex justify-center items-center">
           <div className="bg-BackgroundLightComponent rounded-3xl p-2 opacity-90">{presentIdx + 1} / {data.length}</div>
         </div>
