@@ -1,19 +1,23 @@
 import { useState } from 'react';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import CommentInput from './CommentInput';
-import { Chat } from './ChatList';
-import { CommentUserInput } from './CommentInput';
+import { MyChat } from './MyCommentList';
+import CommentInput, { CommentUserInput } from '../comment/CommentInput';
 
 interface ChatListModalProps {
-  chat: Chat;
+  chat: MyChat;
   open: boolean;
   close: () => void;
   deleteComment: (ee: any) => void;
-  modifyComment: (oldComment: Chat, newComment: Chat) => void;
+  modifyComment: (oldComment: MyChat, newComment: MyChat) => void;
 }
 
-function ChatListModal({ chat, open, close, deleteComment, modifyComment }: ChatListModalProps) {
-  const myName = '김태학';
+function MyCommentListModal({
+  chat,
+  open,
+  close,
+  deleteComment,
+  modifyComment,
+}: ChatListModalProps) {
   const [modalState, setModalState] = useState<string>('init');
 
   const openModal = () => {};
@@ -34,13 +38,12 @@ function ChatListModal({ chat, open, close, deleteComment, modifyComment }: Chat
     const newComment = {
       id: chat.id,
       content: e.content,
-      isSpoiler: e.spoiler,
-      report: chat.report,
       createTime: chat.createTime,
-      user: {
-        id: chat.user.id,
-        nickname: chat.user.nickname,
-        imagePath: chat.user.imagePath,
+      isSpoiler: false,
+      webtoons: {
+        id: chat.webtoons.id,
+        name: chat.webtoons.name,
+        imagePath: chat.webtoons.imagePath,
       },
     };
     modifyComment(oldComment, newComment);
@@ -80,21 +83,6 @@ function ChatListModal({ chat, open, close, deleteComment, modifyComment }: Chat
     </div>
   );
 
-  const popupReport = (
-    <div className="flex justify-center">
-      <div className="my-6 flex w-2/3 flex-col items-center justify-center">
-        <p className="text-center text-2xl text-PrimaryLight">이 댓글을 정말 신고하시겠습니까?</p>
-        <hr className="my-2 w-full border border-PrimaryLight bg-PrimaryLight" />
-        <button
-          className="flex w-1/2 flex-col items-center justify-center py-3"
-          onClick={reportChat}
-        >
-          <p className="text-center">신고하기</p>
-        </button>
-      </div>
-    </div>
-  );
-
   const popupListForUser = (
     <div className="flex justify-center">
       <div className="my-6 flex w-2/3 flex-col items-center justify-center">
@@ -120,23 +108,6 @@ function ChatListModal({ chat, open, close, deleteComment, modifyComment }: Chat
     </div>
   );
 
-  const popupListForElse = (
-    <div className="flex justify-center">
-      <div className="my-6 flex w-2/3 flex-col items-center justify-center">
-        <p className="text-center text-2xl text-PrimaryLight">댓글 설정</p>
-        <hr className="my-2 w-full border border-PrimaryLight bg-PrimaryLight" />
-        <button
-          className="flex w-1/2 flex-col items-center justify-center py-3"
-          onClick={() => {
-            changeModalState('report');
-          }}
-        >
-          <p className="text-center">신고하기</p>
-        </button>
-      </div>
-    </div>
-  );
-
   const popupForUser = () => {
     if (modalState === 'init') {
       return popupListForUser;
@@ -146,19 +117,12 @@ function ChatListModal({ chat, open, close, deleteComment, modifyComment }: Chat
       return popupModify;
     }
   };
-  const popupForElse = () => {
-    if (modalState === 'init') {
-      return popupListForElse;
-    } else if (modalState === 'report') {
-      return popupReport;
-    }
-  };
 
   return (
     <SwipeableDrawer anchor={'bottom'} open={open} onOpen={openModal} onClose={closeModal}>
-      {chat?.user.nickname === myName ? popupForUser() : popupForElse()}
+      {popupForUser()}
     </SwipeableDrawer>
   );
 }
 
-export default ChatListModal;
+export default MyCommentListModal;

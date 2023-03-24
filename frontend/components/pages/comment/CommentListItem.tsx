@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Avatar } from '@mui/material';
-import { Chat } from './ChatList';
+import { Chat } from './CommentList';
 
 interface ChatProp {
   chat: Chat;
   itemInfo: any;
 }
 
-function ChatListItem({ chat, itemInfo }: ChatProp) {
+function CommentListItem({ chat, itemInfo }: ChatProp) {
   const userImagePath =
     'https://i.namu.wiki/i/xss2U6BFSuoMjDMssQDkkUNNvzOgpWjkTJ_pgdcRF034Qc_vlAZ6yOVI6ik1rhHBWpxovuBg5MIE55Wcf54uyLI6KplwA5lrYS5Omaa-G1MXvAawlW_QQO0gCR63K_TdrlqX75TyqynnSF89211hqg.webp';
   const myName = '김태학';
@@ -119,4 +119,4 @@ function ChatListItem({ chat, itemInfo }: ChatProp) {
   }
 }
 
-export default ChatListItem;
+export default CommentListItem;

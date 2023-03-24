@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import Headerbar from '@/components/common/Headerbar';
-import ChatList from '@/components/pages/comment/ChatList';
+import CommentList from '@/components/pages/comment/CommentList';
 import CommentInput from '@/components/pages/comment/CommentInput';
-import { Chat } from '@/components/pages/comment/ChatList';
+import { Chat } from '@/components/pages/comment/CommentList';
 import { CommentUserInput } from '@/components/pages/comment/CommentInput';
 
 const defaultValue: CommentUserInput = {
@@ -358,7 +358,7 @@ export default function CommentPage() {
         <div style={coverStyle} className="w-full px-3 py-1 drop-shadow-xl">
           {commentHeader}
         </div>
-        <ChatList
+        <CommentList
           commentList={commentList}
           commentEnd={commentEnd}
           loadComment={loadComment}
