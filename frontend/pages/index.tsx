@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useRef } from 'react';
+import { css } from '@emotion/react';
 
 import Navbar from '../components/common/Navbar';
 import WebtoonContainer from '../components/common/WebtoonContainer';
@@ -114,6 +116,25 @@ export default function Home() {
     { id: 6, rank: 6, webtoonname: '웹툰6' },
   ];
 
+  // 웹툰 취향 가는 컴포넌트 스타일
+  const bannerStyle1 = css`
+    background: linear-gradient(120deg, #f9dc5c 0%, #f9dc5c 50%, #f4d03f 50%, #f4d03f 100%);
+    color: white;
+    text-align: center;
+    transform: perspective(1000px) rotateX(10deg);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.15), 0px 5px 5px rgba(0, 0, 0, 0.1);
+    transform: perspective(1000px) rotateX(10deg);
+  `;
+  // 마나마나 가는 컴포넌트 스타일
+  const bannerStyle2 = css`
+    background: linear-gradient(120deg, #92c83e 0%, #92c83e 50%, #6ebe44 50%, #6ebe44 100%);
+    color: white;
+    text-align: center;
+    transform: perspective(1000px) rotateX(10deg);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.15), 0px 5px 5px rgba(0, 0, 0, 0.1);
+    transform: perspective(1000px) rotateX(10deg);
+  `;
+
   return (
     <div className=" h-full w-full bg-BackgroundLight">
       {/* 최상위 헤더 */}
@@ -147,31 +168,60 @@ export default function Home() {
         </div>
       </div>
       <div className="mb-4 flex justify-center">
-        <div className="grid w-11/12 grid-cols-3 gap-2">
-          <div className="col-span-1 flex flex-col justify-between rounded-lg bg-white px-4">
-            <div className="flex justify-center pt-4">
+        <div className="grid h-32 w-11/12 grid-cols-3 gap-2">
+          <div
+            css={css`
+              ${bannerStyle1}
+            `}
+            className="col-span-1 rounded-lg bg-white px-4"
+          >
+            <div className="flex h-full w-full items-center justify-center">
               <Link href="/genre-taste">
-                <div className="flex items-center p-2 font-bold">웹툰취향</div>
+                <div className="p-2 font-bold">
+                  선호취향
+                  <br></br>
+                  설정하기
+                </div>
               </Link>
-            </div>
-            <div className="flex justify-end">
-              <WebtoonContainer categoryTitle={' '} route={'genre-taste'} />
+
+              <div className="absolute bottom-1 right-2">
+                <Link href="/genre-taste">
+                  <Image
+                    src={'/images/goOtherPageWhite.png'}
+                    alt="선호취향 이동"
+                    width={24}
+                    height={24}
+                  />
+                </Link>
+              </div>
             </div>
           </div>
 
-          <div className="col-span-2 rounded-lg bg-white px-4">
-            <div className="flex flex-col justify-between">
-              <div className="flex justify-center pt-4">
-                <img className="p-2" src="/images/Main_Managola.png" alt="hi"></img>
+          <div
+            css={css`
+              ${bannerStyle2}
+            `}
+            className="relative col-span-2 rounded-lg bg-[#0B99FF] px-4"
+          >
+            <div className="z-10 flex flex-col justify-between">
+              <div className="z-10 flex items-center justify-center pt-4">
+                <img className="z-10 h-24 w-24 p-2" src="/images/character.png" alt="hi"></img>
                 <Link href="/managola">
                   <div className="flex items-center p-2 font-bold">
-                    취향검사
-                    <br />
-                    하러가기
+                    취향검사<br></br>하러가기
                   </div>
                 </Link>
               </div>
-              <WebtoonContainer categoryTitle={' '} route={'managola'} />
+              <div className="absolute bottom-1 right-2">
+                <Link href="/managola">
+                  <Image
+                    src={'/images/goOtherPageWhite.png'}
+                    alt="마나골라 이동"
+                    width={24}
+                    height={24}
+                  />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
