@@ -59,9 +59,8 @@ def scroll_page_down(driver):
         
         if last_height == new_height: count+=1
         else: count = 0
-        ## 5번만 넘어도 가능한데 혹시 모를 사태를 대비해서 8정도로 잡음.
-        if(count >= 8): break
+        ## 5번만 넘어도 가능한데 혹시 모를 사태를 대비해서 15정도로 잡음.
+        if(count >= 15): break
         sleep(0.5)
         
         last_height = new_height
-        print("finished")
