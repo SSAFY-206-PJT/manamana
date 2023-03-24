@@ -13,6 +13,7 @@ COPY ./next.config.js ./next.config.js
 
 COPY ./package.json ./package.json
 COPY ./public ./public
+COPY ./pages ./pages
 
 
 #어떤 포트에서 listen할지
