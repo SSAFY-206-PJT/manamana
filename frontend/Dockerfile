@@ -14,8 +14,9 @@ COPY ./next.config.js ./next.config.js
 COPY ./package.json ./package.json
 COPY ./public ./public
 
+
 #어떤 포트에서 listen할지
 EXPOSE 3000
 
-ENTRYPOINT [ "npm","run","start" ]
+ENTRYPOINT [ "npm","start" ]
 
