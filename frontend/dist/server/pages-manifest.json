@@ -1,0 +1,22 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/api/hello": "pages/api/hello.js",
+  "/detail/[webtoon_id]": "pages/detail/[webtoon_id].html",
+  "/api/webtoon": "pages/api/webtoon.js",
+  "/detail/[webtoon_id]/comment": "pages/detail/[webtoon_id]/comment.html",
+  "/emotion": "pages/emotion.html",
+  "/genre-taste": "pages/genre-taste.html",
+  "/": "pages/index.html",
+  "/login": "pages/login.html",
+  "/managola": "pages/managola.html",
+  "/my-comment": "pages/my-comment.html",
+  "/my-webtoon": "pages/my-webtoon.html",
+  "/notification": "pages/notification.html",
+  "/profile/edit": "pages/profile/edit.html",
+  "/profile": "pages/profile.html",
+  "/search/filter": "pages/search/filter.html",
+  "/search": "pages/search.js",
+  "/404": "pages/404.html"
+}
