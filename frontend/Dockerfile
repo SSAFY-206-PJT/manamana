@@ -9,13 +9,13 @@ WORKDIR $APP_HOME
 
 COPY ./.next ./.next
 
-# COPY ./next.config.js ./next.config.js
+COPY ./next.config.js ./next.config.js
 
 COPY ./package.json ./package.json
-# COPY ./public ./public
-# COPY ./pages ./pages
+COPY ./public ./public
+COPY ./pages ./pages
 
-RUN npm install
+RUN npm installcd
 #어떤 포트에서 listen할지
 EXPOSE 3000
 
