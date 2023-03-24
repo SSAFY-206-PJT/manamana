@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import ChatListItem from './ChatListItem';
+import CommentListItem from './CommentListItem';
 import { CircularProgress } from '@mui/material';
-import ChatListModal from './ChatListModal';
+import CommentListModal from './CommentListModal';
 
 export interface Chat {
   id: number;
@@ -24,7 +24,7 @@ interface CommentListProps {
   modifyComment: (oldComment: Chat, newComment: Chat) => void;
 }
 
-function ChatList({
+function CommentList({
   commentList,
   commentEnd,
   loadComment,
@@ -98,17 +98,17 @@ function ChatList({
   };
 
   return (
-    <div className="mx-3 overflow-auto bg-slate-100" ref={scrollRef} onScroll={scrollFn}>
+    <div className="mx-3 max-w-full overflow-auto bg-slate-100" ref={scrollRef} onScroll={scrollFn}>
       <div className="flex justify-center">
         {scrollLoading === 'add' ? <CircularProgress /> : null}
       </div>
-      <div className="m-2 flex min-h-screen flex-col-reverse">
+      <div className="m-2 flex min-h-screen max-w-full flex-col-reverse">
         {commentList?.map((item: Chat) => (
-          <ChatListItem chat={item} itemInfo={itemInfo} key={item.id} />
+          <CommentListItem chat={item} itemInfo={itemInfo} key={item.id} />
         ))}
       </div>
       {openModal ? (
-        <ChatListModal
+        <CommentListModal
           chat={selectedChat}
           open={openModal}
           close={closeModal}
@@ -120,4 +120,4 @@ function ChatList({
   );
 }
 
-export default ChatList;
+export default CommentList;
