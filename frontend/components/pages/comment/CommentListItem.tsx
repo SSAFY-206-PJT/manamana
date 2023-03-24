@@ -61,7 +61,7 @@ function CommentListItem({ chat, itemInfo }: ChatProp) {
       <div className="my-2 flex justify-end">
         <div className="max-w-[65%]">
           <div className="flex rounded bg-BackgroundLightComponent p-1.5">
-            <p className="break-all">{chat.content}</p>
+            <p className="whitespace-pre-wrap break-all">{chat.content}</p>
             <div className="ml-auto">
               <button
                 className="w-4"
@@ -94,7 +94,15 @@ function CommentListItem({ chat, itemInfo }: ChatProp) {
         </div>
         <div className="max-w-[65%]">
           <div className="relative flex rounded bg-BackgroundLightComponent p-1.5">
-            <p className={isSpoiler ? 'break-all blur-sm' : 'break-all'}>{chat.content}</p>
+            <p
+              className={
+                isSpoiler
+                  ? 'whitespace-pre-wrap break-all blur-sm'
+                  : 'whitespace-pre-wrap break-all'
+              }
+            >
+              {chat.content}
+            </p>
             <div className="mr-0">
               <button
                 className="w-4"

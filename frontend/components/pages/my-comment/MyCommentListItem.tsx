@@ -42,7 +42,7 @@ function MyCommentListItem({ chat, itemInfo }: ChatProp) {
       <div className="max-w-[65%]">
         <MyommentWebtoonInfo webtoonId={1} />
         <div className="flex rounded bg-BackgroundLightComponent p-1.5">
-          <p className="break-all">{chat.content}</p>
+          <p className="whitespace-pre-wrap break-all">{chat.content}</p>
           <div className="ml-auto">
             <button
               className="w-4"
