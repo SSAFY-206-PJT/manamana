@@ -1,16 +1,19 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import { Avatar } from '@mui/material';
-import { Chat } from './ChatList';
+import { Chat } from './CommentList';
 
 interface ChatProp {
   chat: Chat;
   itemInfo: any;
 }
 
-function ChatListItem({ chat, itemInfo }: ChatProp) {
+function CommentListItem({ chat, itemInfo }: ChatProp) {
   const userImagePath =
     'https://i.namu.wiki/i/xss2U6BFSuoMjDMssQDkkUNNvzOgpWjkTJ_pgdcRF034Qc_vlAZ6yOVI6ik1rhHBWpxovuBg5MIE55Wcf54uyLI6KplwA5lrYS5Omaa-G1MXvAawlW_QQO0gCR63K_TdrlqX75TyqynnSF89211hqg.webp';
   const myName = '김태학';
+
+  const [isSpoiler, setIsSpoiler] = useState<boolean>(chat.isSpoiler);
 
   // 날짜 변환
   const timeForToday = (value: string) => {
@@ -37,16 +40,31 @@ function ChatListItem({ chat, itemInfo }: ChatProp) {
   };
 
   // const itemInfo = () => {};
+  const spoilerDiv = (
+    <div className="flex flex-col">
+      <div className="flex justify-center">
+        <p className="inline-block font-bold text-red-600">스포일러</p>
+        <p className="inline-block">&nbsp;주의</p>
+      </div>
+      <button
+        onClick={() => {
+          setIsSpoiler(false);
+        }}
+      >
+        눌러서 보기
+      </button>
+    </div>
+  );
 
   if (chat.user.nickname === myName) {
     return (
-      <div className="my-2 ml-auto flex max-w-[70%] items-center">
-        <div>
-          <div className="mr-1 flex max-w-full rounded bg-BackgroundLightComponent p-1.5">
-            <p>{chat.content}</p>
-            <div>
+      <div className="my-2 flex justify-end">
+        <div className="max-w-[65%]">
+          <div className="flex rounded bg-BackgroundLightComponent p-1.5">
+            <p className="break-all">{chat.content}</p>
+            <div className="ml-auto">
               <button
-                className="mt-1"
+                className="w-4"
                 onClick={() => {
                   itemInfo(chat);
                   console.log('더보기클릭함');
@@ -56,25 +74,30 @@ function ChatListItem({ chat, itemInfo }: ChatProp) {
               </button>
             </div>
           </div>
+
           <div>
             <p className="text-right">
               {timeForToday(chat.createTime)}|{chat.user.nickname}
             </p>
           </div>
         </div>
-        <Avatar alt="Remy Sharp" src={userImagePath} />
+        <div className="ml-1 flex items-center">
+          <Avatar alt="Remy Sharp" src={userImagePath} />
+        </div>
       </div>
     );
   } else {
     return (
-      <div className="my-2 flex max-w-[70%] items-center">
-        <Avatar alt="Remy Sharp" src={userImagePath} />
-        <div>
-          <div className="ml-1 flex max-w-full rounded bg-BackgroundLightComponent p-1.5">
-            <p>{chat.content}</p>
-            <div>
+      <div className="mjustify-end my-2 flex">
+        <div className="mr-1 flex items-center">
+          <Avatar alt="Remy Sharp" src={userImagePath} />
+        </div>
+        <div className="max-w-[65%]">
+          <div className="relative flex rounded bg-BackgroundLightComponent p-1.5">
+            <p className={isSpoiler ? 'break-all blur-sm' : 'break-all'}>{chat.content}</p>
+            <div className="mr-0">
               <button
-                className="mt-1"
+                className="w-4"
                 onClick={() => {
                   itemInfo(chat);
                   console.log('더보기클릭함');
@@ -83,6 +106,7 @@ function ChatListItem({ chat, itemInfo }: ChatProp) {
                 <Image src="/images/More.png" width={20} height={20} alt="#" />
               </button>
             </div>
+            <div className="absolute w-full">{isSpoiler ? spoilerDiv : null}</div>
           </div>
           <div>
             <p>
@@ -95,4 +119,4 @@ function ChatListItem({ chat, itemInfo }: ChatProp) {
   }
 }
 
-export default ChatListItem;
+export default CommentListItem;
