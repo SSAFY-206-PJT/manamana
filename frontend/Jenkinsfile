@@ -28,8 +28,8 @@ pipeline {
                 dir("${PROJECT_DIR}"){
                     sh "pwd"
                     sh "npm i"
-                    sh "npm run build"
-                    sh "npm export"
+                    sh "next run build"
+                    sh "next export"
                     sh "pwd"
                     sh "ls"
                 }
