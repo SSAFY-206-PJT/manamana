@@ -1,5 +1,6 @@
 package com.manamana.crawling.entity.webtoon;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,5 +36,11 @@ public class WebtoonGenreId implements Serializable {
         int result = (int) (webtoonId ^ (webtoonId >>> 32));
         result = 31 * result + genreId;
         return result;
+    }
+
+    @Builder
+    public WebtoonGenreId(long webtoonId, int genreId) {
+        this.webtoonId = webtoonId;
+        this.genreId = genreId;
     }
 }

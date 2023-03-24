@@ -1,35 +1,22 @@
 package com.manamana.crawling.service;
 
-<<<<<<< HEAD
-import com.manamana.crawling.dto.*;
-import com.manamana.crawling.entity.webtoon.Webtoon;
-import com.manamana.crawling.entity.webtoon.WebtoonGenre;
-import com.manamana.crawling.entity.webtoon.WebtoonProvider;
+import com.manamana.crawling.entity.webtoon.*;
 import com.manamana.crawling.entity.webtoon.codetable.Genre;
 import com.manamana.crawling.repository.*;
-=======
 import com.manamana.crawling.dto.WebtoonDataDTO;
 import com.manamana.crawling.dto.WebtoonDataArrayDTO;
-import com.manamana.crawling.entity.webtoon.Webtoon;
-import com.manamana.crawling.entity.webtoon.WebtoonProvider;
 import com.manamana.crawling.repository.WebtoonProviderRepository;
 import com.manamana.crawling.repository.WebtoonRepository;
->>>>>>> 6b44a1aecf1d6faa1802c83e1ce09ba65b1953f1
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-<<<<<<< HEAD
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
-=======
-import java.util.List;
-import java.util.Optional;
->>>>>>> 6b44a1aecf1d6faa1802c83e1ce09ba65b1953f1
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,111 +25,32 @@ public class WebtoonServiceImpl implements WebtoonService {
 
     private final WebtoonRepository webtoonRepository;
     private final WebtoonProviderRepository webtoonProviderRepository;
-<<<<<<< HEAD
-    private final GradeRepository gradeRepository;
-    private final SerialStatusRepository serialStatusRepository;
     private final GenreRepository genreRepository;
+    private final WebtoonGenreRepository webtoonGenreRepository;
+    private final DayCodeRepository dayCodeRepository;
+    private final WebtoonDayRepository webtoonDayRepository;
+    private final AuthorRepository authorRepository;
 
     // 웹툰 데이터 리스트 처리
     public void webtoonsData(WebtoonDataArrayDTO webtoonDataArrayDTO) {
         int providerId = webtoonDataArrayDTO.getProvider_id();
         List<WebtoonDataDTO> webtoonData = webtoonDataArrayDTO.getData();
         webtoonData.forEach(w -> {
-//            SplitDTO splitDTO = splitWebtoonData(w, providerId);
             Webtoon webtoon = saveWebtoon(providerId, w);
             saveGenre(webtoon, w);
-//            saveDay(splitDTO.getDayDTO());
-//            saveAuthor(splitDTO.getAuthorDTO());
+            saveDay(webtoon, w);
+            saveAuthor(webtoon, w);
         });
     }
 
-//    // 웹툰 단건 데이터 분류 (장르, 웹툰, 요일, 작가)
-//    public SplitDTO splitWebtoonData(WebtoonDataDTO webtoonDataDTO, int provider) {
-//        // 웹툰 데이터 정제
-//        String name = webtoonDataDTO.getName();
-//        String image = webtoonDataDTO.getImage();
-//        String plot = webtoonDataDTO.getPlot();
-//        String grade = webtoonDataDTO.getGrade();
-//        int gradeId = 0;
-//        if (grade.equals("성인")) {
-//            gradeId = 1;
-//        } else {
-//            gradeId = 0;
-//        }
-//
-//        String status = webtoonDataDTO.getStatus();
-//        int statusId = 0;
-//        if (status.equals("휴재")) {
-//            statusId = 2;
-//        } else if (status.equals("완결")) {
-//            statusId = 1;
-//        } else {
-//            statusId = 0;
-//        }
-//
-//        String webtoonUrl = webtoonDataDTO.getWebtoon_url();
-//        int webtoonIdInt = webtoonDataDTO.getWebtoon_id();
-//        String webtoonId = Integer.toString(webtoonIdInt);
-//        String startDateStirng = webtoonDataDTO.getStart_date();
-//        LocalDate startDate = LocalDate.parse(startDateStirng, DateTimeFormatter.ISO_DATE)
-//
-//        int totalEp = webtoonDataDTO.getTotal_ep();
-//        Boolean isDeleted = false;
-//        String colorHsl = webtoonDataDTO.getColorHsl();
-//        WebtoonProvider providerId = webtoonProviderRepository.findById(provider).orElseThrow();
-//
-//        WebtoonDTO webtoonDTO = WebtoonDTO.builder()
-//                .name(name)
-//                .imagePath(image)
-//                .plot(plot)
-//                .gradeId(gradeId)
-//                .statusId(statusId)
-//                .webtoonUrl(webtoonUrl)
-//                .webtoonId(webtoonId)
-//                .startDate(startDate)
-//                .totalEp(totalEp)
-//                .colorHsl(colorHsl)
-//                .providerId(providerId)
-//                .build();
-//
-//        GenreDTO genreDTO = GenreDTO.builder()
-//                .webtoonId(webtoonId)
-//                .genreIdArr()
-//                .build();
-//
-//        DayDTO dayDTO = DayDTO.builder()
-//                .webtoonId()
-//                .codeId()
-//                .build();
-//
-//        AuthorDTO authorDTO = AuthorDTO.builder()
-//                .webtoonId()
-//                .nameArr()
-//                .build();
-//
-//
-//
-//        return SplitDTO.builder()
-//                .webtoonDTO(webtoonDTO)
-//                .genreDTO(genreDTO)
-//                .dayDTO()
-//                .authorDTO()
-//                .build();
-//
-//    }
 
     // 웹툰 저장
-    public Webtoon saveWebtoon(int provider, WebtoonDataDTO webtoonDataDTO) {
+    private Webtoon saveWebtoon(int provider, WebtoonDataDTO webtoonDataDTO) {
         // 웹툰 데이터 정제
-        String name = webtoonDataDTO.getName();
-        String image = webtoonDataDTO.getImage();
-        String plot = webtoonDataDTO.getPlot();
         String grade = webtoonDataDTO.getGrade();
         int gradeId = 0;
         if (grade.equals("성인")) {
             gradeId = 1;
-        } else {
-            gradeId = 0;
         }
 
         String status = webtoonDataDTO.getStatus();
@@ -151,273 +59,130 @@ public class WebtoonServiceImpl implements WebtoonService {
             statusId = 2;
         } else if (status.equals("완결")) {
             statusId = 1;
-        } else {
-            statusId = 0;
         }
 
-        String webtoonUrl = webtoonDataDTO.getWebtoon_url();
-        int webtoonIdInt = webtoonDataDTO.getWebtoon_id();
-        String webtoonId = Integer.toString(webtoonIdInt);
-        String startDateStirng = webtoonDataDTO.getStart_date();
-        LocalDate startDate = LocalDate.parse(startDateStirng, DateTimeFormatter.ISO_DATE);
+        String webtoonId = Integer.toString(webtoonDataDTO.getWebtoon_id());
+        String startDateStirng = "20" + webtoonDataDTO.getStart_date();
+        LocalDate startDate = LocalDate.parse(startDateStirng.replace(".", "-"), DateTimeFormatter.ISO_DATE);
+        WebtoonProvider webtoonProvider = webtoonProviderRepository.findById(provider).orElseThrow();
 
-        int totalEp = webtoonDataDTO.getTotal_ep();
-        Boolean isDeleted = false;
-        String colorHsl = webtoonDataDTO.getColorHsl();
-        WebtoonProvider providerId = webtoonProviderRepository.findById(provider).orElseThrow();
-
-        Webtoon webtoon = Webtoon.builder()
-                .name(name)
-                .imagePath(image)
-                .plot(plot)
-                .gradeId(gradeId)
-                .serialId(statusId)
-                .webtoonUrl(webtoonUrl)
-                .webtoonId(webtoonId)
-                .startDate(startDate)
-                .totalEp(totalEp)
-                .colorHsl(colorHsl)
-                .providerId(providerId)
-                .build();
-
-        return webtoonRepository.save(webtoon);
-    }
-
-    // 장르 저장
-    //TODO 여기 하고 있음
-    public void saveGenre(Webtoon webtoon, WebtoonDataDTO webtoonDataDTO) {
-        List<WebtoonGenre> webtoonGenres = new ArrayList<>();
-        webtoonDataDTO.getGenre_arr().forEach(g -> {
-            int genreId = GenreRepository.findByName(g).orElseThrow();
-            Genre genre = GenreRepository.findById(genreId).orElseThrow();
-            WebtoonGenre webtoonGenre = WebtoonGenre.builder()
-                    .genre(g)
-                    .webtoon(webtoon)
-                    .build();
-        });
-
-
-
-    }
-
-    // 요일 저장
-    public void saveDay(DayDTO dayDTO) {
-
-    }
-
-    // 작가 저장
-    public void saveAuthor(AuthorDTO authorDTO) {
-
-    }
-
-
-
-
-
-
-
-//
-//
-//
-//    public void webtoonsData(WebtoonDataArrayDTO webtoonDataArrayDTO, int providerId) {
-//
-//    }
-//
-//    /**
-//     * 웹툰 데이터 저장
-//     */
-//    public void saveWebtoon(WebtoonDataDTO webtoonDataDTO, int providerId) {
-//
-//        Webtoon webtoon = Webtoon.builder()
-//                .name(webtoonDataDTO.getName())
-//                .imagePath(webtoonDataDTO.getImage())
-//                .plot(webtoonDataDTO.getPlot())
-//                .gradeId(webtoonDataDTO.getGrade())
-//                .serialId(webtoonDataDTO.getSerialId())
-//                .webtoonUrl(webtoonDataDTO.getWebtoonUrl())
-//                .webtoonId(webtoonDataDTO.getWebtoonId())
-//                .startDate(LocalDate.now())
-//                .totalEp(webtoonDataDTO.getTotalEp())
-//                .colorHsl(webtoonDataDTO.getColorHsl())
-//                .isDeleted(false)
-//                .providerId(web)
-//                .build();
-//
-//        validateDuplicateWebtoon(webtoonDataDTO); //중복 웹툰 검증
-//
-//        WebtoonProvider web = webtoonProviderRepository
-//                .findById(1)
-//                .orElseThrow();
-//
-//        Webtoon webtoon = Webtoon.builder()
-//                .name(webtoonDataDTO.getName())
-//                .imagePath(webtoonDataDTO.getImagePath())
-//                .plot(webtoonDataDTO.getPlot())
-//                .gradeId(webtoonDataDTO.getGradeId())
-//                .serialId(webtoonDataDTO.getSerialId())
-//                .webtoonUrl(webtoonDataDTO.getWebtoonUrl())
-//                .webtoonId(webtoonDataDTO.getWebtoonId())
-//                .startDate(LocalDate.now())
-//                .totalEp(webtoonDataDTO.getTotalEp())
-//                .colorHsl(webtoonDataDTO.getColorHsl())
-//                .isDeleted(false)
-//                .providerId(web)
-//                .build();
-//
-////        Webtoon webtoon = createWebtoonDTO.createWebtoon();
-//        System.out.println("webtoon" + webtoon.getProviderId());
-//        webtoonRepository.save(webtoon);
-//    }
-//
-//    //TODO webtoonId, webtoonProvder둘다 확인하기
-//    private void validateDuplicateWebtoon(WebtoonDataDTO webtoonDataDTO) {
-//        WebtoonProvider web = webtoonProviderRepository
-//                .findById(webtoonDataDTO.getProviderId())
-//                .orElseThrow();
-//
-//        Optional<Webtoon> webtoon = webtoonRepository
-//                .findByWebtoonIdAndProviderId(webtoonDataDTO.getWebtoonId(), web);
-//
-//
-//        if(!webtoon.isEmpty()) {
-//
-//        }
-//    }
-//
-//    /**
-//     * 웹툰 전체 조회
-//     */
-//    public List<Webtoon> findWebtoon() {
-//        return webtoonRepository.findAll();
-//    }
-//
-//    /**
-//     * 웹툰 단건 조회(id)
-//     */
-//    public Webtoon findOne(Long id) {
-//        return webtoonRepository
-//                .findById(id)
-//                .orElseThrow();
-//    }
-//
-//    /**
-//     * 웹툰 단건 조회(webtoonId)
-//     */
-//    public Webtoon findOneByWebtoonId(String webtoonId) {
-//        Webtoon webtoon = webtoonRepository
-//                .findByWebtoonId(webtoonId)
-//                .orElseThrow();
-//        return webtoon;
-//    }
-//
-//    public void saveWebtoons(WebtoonDataArrayDTO webtoonDataArrayDTO) {
-//
-//        int providerId = webtoonDataArrayDTO.getProvider_id();
-//
-//        webtoonDataArrayDTO.getData().forEach(w -> {
-//            saveWebtoon(w, providerId);
-//        });
-//    }
-=======
-
-    public void webtoonsData(WebtoonDataArrayDTO webtoonDataArrayDTO, int providerId) {
-
-    }
-
-    /**
-     * 웹툰 데이터 저장
-     */
-    public void saveWebtoon(WebtoonDataDTO webtoonDataDTO, int providerId) {
+        Optional<Webtoon> findedWebtoon = webtoonRepository.findByWebtoonIdAndProviderId(webtoonId, webtoonProvider);
+        if (!findedWebtoon.isEmpty()) {
+            Webtoon updatedWebtoon = findedWebtoon.get();
+            updatedWebtoon.updateName(webtoonDataDTO.getName());
+            updatedWebtoon.updateImagePath(webtoonDataDTO.getImage());
+            updatedWebtoon.updatePlot(webtoonDataDTO.getPlot());
+            updatedWebtoon.updateGradeId(gradeId);
+            updatedWebtoon.updateSerialId(statusId);
+            updatedWebtoon.updateWebtoonUrl(webtoonDataDTO.getWebtoon_url());
+            updatedWebtoon.updateStartDate(startDate);
+            updatedWebtoon.updateTotalEp(webtoonDataDTO.getTotal_ep());
+            updatedWebtoon.updateColorHsl(webtoonDataDTO.getColorHsl());
+            return updatedWebtoon;
+        }
 
         Webtoon webtoon = Webtoon.builder()
                 .name(webtoonDataDTO.getName())
                 .imagePath(webtoonDataDTO.getImage())
                 .plot(webtoonDataDTO.getPlot())
-                .gradeId(webtoonDataDTO.getGrade())
-                .serialId(webtoonDataDTO.getSerialId())
-                .webtoonUrl(webtoonDataDTO.getWebtoonUrl())
-                .webtoonId(webtoonDataDTO.getWebtoonId())
-                .startDate(LocalDate.now())
-                .totalEp(webtoonDataDTO.getTotalEp())
+                .gradeId(gradeId)
+                .serialId(statusId)
+                .webtoonUrl(webtoonDataDTO.getWebtoon_url())
+                .webtoonId(webtoonId)
+                .startDate(startDate)
+                .totalEp(webtoonDataDTO.getTotal_ep())
                 .colorHsl(webtoonDataDTO.getColorHsl())
                 .isDeleted(false)
-                .providerId(web)
+                .providerId(webtoonProvider)
                 .build();
-
-        validateDuplicateWebtoon(webtoonDataDTO); //중복 웹툰 검증
-
-        WebtoonProvider web = webtoonProviderRepository
-                .findById(1)
-                .orElseThrow();
-
-        Webtoon webtoon = Webtoon.builder()
-                .name(webtoonDataDTO.getName())
-                .imagePath(webtoonDataDTO.getImagePath())
-                .plot(webtoonDataDTO.getPlot())
-                .gradeId(webtoonDataDTO.getGradeId())
-                .serialId(webtoonDataDTO.getSerialId())
-                .webtoonUrl(webtoonDataDTO.getWebtoonUrl())
-                .webtoonId(webtoonDataDTO.getWebtoonId())
-                .startDate(LocalDate.now())
-                .totalEp(webtoonDataDTO.getTotalEp())
-                .colorHsl(webtoonDataDTO.getColorHsl())
-                .isDeleted(false)
-                .providerId(web)
-                .build();
-
-//        Webtoon webtoon = createWebtoonDTO.createWebtoon();
-        System.out.println("webtoon" + webtoon.getProviderId());
-        webtoonRepository.save(webtoon);
+        return webtoonRepository.save(webtoon);
     }
 
-    //TODO webtoonId, webtoonProvder둘다 확인하기
-    private void validateDuplicateWebtoon(WebtoonDataDTO webtoonDataDTO) {
-        WebtoonProvider web = webtoonProviderRepository
-                .findById(webtoonDataDTO.getProviderId())
-                .orElseThrow();
+    // 장르 저장
+    private void saveGenre(Webtoon webtoon, WebtoonDataDTO webtoonDataDTO) {
+        List<WebtoonGenre> webtoonGenres = new ArrayList<>();
+        List<Integer> genreIds = new ArrayList<>();
+        webtoonDataDTO.getGenre_arr().forEach(genreName -> {
 
-        Optional<Webtoon> webtoon = webtoonRepository
-                .findByWebtoonIdAndProviderId(webtoonDataDTO.getWebtoonId(), web);
+            Optional<Genre> genre = genreRepository.findByName(genreName);
+            if (!genre.isEmpty()) {
+                genreIds.add(genre.get().getId());
+            } else {
+                genreRepository.findAll().forEach(g -> {
+                    if (genreName.contains(g.getName())) {
+                        genreIds.add(g.getId());
+                    }
+                });
+                }
+            });
 
+            genreIds.forEach(genreId -> {
+                if (genreId != 0) {
+                    Genre genre = genreRepository.findById(genreId).orElseThrow();
 
-        if(!webtoon.isEmpty()) {
+                    WebtoonGenreId webtoonGenreId = WebtoonGenreId.builder()
+                            .webtoonId(webtoon.getId())
+                            .genreId(genreId)
+                            .build();
 
-        }
+                    WebtoonGenre webtoonGenre = WebtoonGenre.builder()
+                            .id(webtoonGenreId)
+                            .genre(genre)
+                            .webtoon(webtoon)
+                            .build();
+                    webtoonGenres.add(webtoonGenre);
+                }
+            });
+
+        List<WebtoonGenre> webtoonGenreList = webtoonGenres
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
+        webtoonGenreRepository.saveAll(webtoonGenreList);
     }
 
-    /**
-     * 웹툰 전체 조회
-     */
-    public List<Webtoon> findWebtoon() {
-        return webtoonRepository.findAll();
-    }
+    // 요일 저장
+    private void saveDay(Webtoon webtoon, WebtoonDataDTO webtoonDataDTO) {
 
-    /**
-     * 웹툰 단건 조회(id)
-     */
-    public Webtoon findOne(Long id) {
-        return webtoonRepository
-                .findById(id)
-                .orElseThrow();
-    }
+        List<WebtoonDay> webtoonDays = new ArrayList<>();
 
-    /**
-     * 웹툰 단건 조회(webtoonId)
-     */
-    public Webtoon findOneByWebtoonId(String webtoonId) {
-        Webtoon webtoon = webtoonRepository
-                .findByWebtoonId(webtoonId)
-                .orElseThrow();
-        return webtoon;
-    }
+        webtoonDataDTO.getDay_arr().forEach(day -> {
 
-    public void saveWebtoons(WebtoonDataArrayDTO webtoonDataArrayDTO) {
+            int dayId = dayCodeRepository.findByDay(day).orElseThrow().getId();
 
-        int providerId = webtoonDataArrayDTO.getProvider_id();
-
-        webtoonDataArrayDTO.getData().forEach(w -> {
-            saveWebtoon(w, providerId);
+            WebtoonDay webtoonDay = WebtoonDay.builder()
+                    .codeId(dayId)
+                    .webtoon(webtoon)
+                    .build();
+            webtoonDays.add(webtoonDay);
         });
+
+        webtoonDayRepository.saveAll(webtoonDays);
     }
->>>>>>> 6b44a1aecf1d6faa1802c83e1ce09ba65b1953f1
+
+    // 작가 저장
+    private void saveAuthor(Webtoon webtoon, WebtoonDataDTO webtoonDataDTO) {
+        List<Author> authors = new ArrayList<>();
+        List<Author> webtoonAuthorList = authorRepository.findByWebtoon(webtoon);
+        webtoonDataDTO.getAuthors_arr().forEach(authorName -> {
+
+             Optional<Author> findedAuthor = authorRepository.findByNameAndWebtoon(authorName, webtoon);
+             if (!findedAuthor.isEmpty()) {
+                 Author author = Author.builder()
+                         .name(authorName)
+                         .webtoon(webtoon)
+                         .build();
+                 authors.add(author);
+             }
+             
+
+
+        });
+        //TODO 여기 할 순서 리스트에 있는 값은 DB에서 지우기
+        List<Author> deletedList = webtoonAuthorList.stream()
+                .filter(a -> !authors.contains(a))
+                .collect(Collectors.toList());
+        //TODO 중복은 저장 안되게        
+        authorRepository.saveAll(authors);
+    }
 }

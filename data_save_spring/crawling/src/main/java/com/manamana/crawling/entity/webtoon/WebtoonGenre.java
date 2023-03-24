@@ -27,7 +27,8 @@ public class WebtoonGenre {
     private Webtoon webtoon;
 
     @Builder
-    public WebtoonGenre(Genre genre, Webtoon webtoon) {
+    public WebtoonGenre(WebtoonGenreId id, Genre genre, Webtoon webtoon) {
+        this.id = id;
         this.genre = genre;
         this.webtoon = webtoon;
     }

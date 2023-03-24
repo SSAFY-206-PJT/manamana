@@ -1,6 +1,5 @@
 package com.manamana.crawling.dto;
 
-<<<<<<< HEAD
 import com.manamana.crawling.entity.webtoon.WebtoonProvider;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,8 +40,4 @@ public class WebtoonDTO {
         this.isDeleted = isDeleted;
         this.providerId = providerId;
     }
-
-=======
-public class WebtoonDTO {
->>>>>>> 6b44a1aecf1d6faa1802c83e1ce09ba65b1953f1
 }
