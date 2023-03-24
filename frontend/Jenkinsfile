@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    tools {nodejs "nodejs-18.12.1"}
+
+    stages {
+        stage("Set Variable") {
+            steps {
+                script {
+                    IMAGE_NAME = "sh80165/manaman-frontend"
+                    IMAGE_STORAGE = "https://registry.hub.docker.com"
+                    IMAGE_STORAGE_CREDENTIAL = "docker-hub"
+                    NODE_BUILD_PATH = "./build"
+                    APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
+                    CONTAINER_NAME = "manamana-fronted"
+                    PROJECT_DIR = "frontend"
+                }
+            }
+        }
+
+        stage("Node install & build") {
+            steps {
+                dir("${PROJECT_DIR}"){
+                    sh "pwd"
+                    sh "npm i"
+                    sh "npm run build"
+                    sh "pwd"
+                }
+            }
+        }
+
+        // stage("Build Container Image") {
+        //     steps {
+        //         script {
+        //             image = docker.build("${IMAGE_NAME}")
+        //         }
+        //     }
+        // }
+
+        // stage("Push Container Image") {
+        //     steps {
+        //         script {
+        //             docker.withRegistry("${IMAGE_STORAGE}", "docker-hub") {
+        //                 image.push("${env.BUILD_NUMBER}")
+        //                 image.push("latest")
+        //                 image
+        //             }
+        //         }
+        //     }
+        // }
+
+        // stage("Server Run") {
+        //     steps {
+        //         sshagent([SSH_CONNECTION_CREDENTIAL]) {
+        //             // 기존 파일 삭제
+        //             sh "ssh -o StrictHostKeyChecking=no ${SSH_CONNECTION} 'rm -rf ./frontend/build'"
+        //             //파일 이동
+        //             sh "scp -o StrictHostKeyChecking=no -r ${PROJECT_DIR}/build ${SSH_CONNECTION}:/home/ubuntu/frontend/build"
+        //         }   
+        //     }
+        // }
+    }
+}

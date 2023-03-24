@@ -18,6 +18,16 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"]
     });
+
+    config.module.rules.push({
+      test: /\.(ts|tsx)$/i,
+      use: {
+        loader: "babel-loader",
+        options: {
+          presets: ["next/babel"],
+        },
+      },
+    })
     return config;
   }
 };
