@@ -15,9 +15,12 @@ COPY ./package.json ./package.json
 COPY ./public ./public
 COPY ./pages ./pages
 
+RUN npm
+
 
 #어떤 포트에서 listen할지
 EXPOSE 3000
 
-ENTRYPOINT [ "npm","start" ]
+# ENTRYPOINT [ "npm","start" ]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
 
