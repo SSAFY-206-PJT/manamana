@@ -98,11 +98,11 @@ function ChatList({
   };
 
   return (
-    <div className="mx-3 overflow-auto bg-slate-100" ref={scrollRef} onScroll={scrollFn}>
+    <div className="mx-3 max-w-full overflow-auto bg-slate-100" ref={scrollRef} onScroll={scrollFn}>
       <div className="flex justify-center">
         {scrollLoading === 'add' ? <CircularProgress /> : null}
       </div>
-      <div className="m-2 flex min-h-screen flex-col-reverse">
+      <div className="m-2 flex min-h-screen max-w-full flex-col-reverse">
         {commentList?.map((item: Chat) => (
           <ChatListItem chat={item} itemInfo={itemInfo} key={item.id} />
         ))}

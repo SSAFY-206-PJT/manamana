@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import Headerbar from '@/components/common/Headerbar';
@@ -137,7 +137,7 @@ const dummyChatList: Chat[] = [
 ];
 const dummyChatList2: Chat[] = [
   {
-    id: 1, // 댓글 식별자
+    id: 11, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: false, // 스포 여부
     report: 0, // 신고 횟수
@@ -149,7 +149,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 2, // 댓글 식별자
+    id: 22, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: true, // 스포 여부
     report: 0, // 신고 횟수
@@ -161,7 +161,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 3, // 댓글 식별자
+    id: 33, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: false, // 스포 여부
     report: 0, // 신고 횟수
@@ -173,7 +173,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 4, // 댓글 식별자
+    id: 44, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: true, // 스포 여부
     report: 0, // 신고 횟수
@@ -185,7 +185,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 5, // 댓글 식별자
+    id: 55, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: false, // 스포 여부
     report: 0, // 신고 횟수
@@ -197,7 +197,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 6, // 댓글 식별자
+    id: 66, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: true, // 스포 여부
     report: 0, // 신고 횟수
@@ -209,7 +209,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 7, // 댓글 식별자
+    id: 77, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: false, // 스포 여부
     report: 0, // 신고 횟수
@@ -221,7 +221,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 8, // 댓글 식별자
+    id: 88, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: true, // 스포 여부
     report: 0, // 신고 횟수
@@ -233,7 +233,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 9, // 댓글 식별자
+    id: 99, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: false, // 스포 여부
     report: 0, // 신고 횟수
@@ -245,7 +245,7 @@ const dummyChatList2: Chat[] = [
     },
   },
   {
-    id: 10, // 댓글 식별자
+    id: 100, // 댓글 식별자
     content: '이것은 댓글 내용요요용요요요요요요용', // 내용
     isSpoiler: true, // 스포 여부
     report: 0, // 신고 횟수
@@ -347,9 +347,13 @@ export default function CommentPage() {
     setCommentList([...commentList]);
   };
 
+  useEffect(() => {
+    console.log(commentList);
+  }, [commentList]);
+
   return (
     <div>
-      <div className="flex h-screen w-full flex-col">
+      <div className="flex h-screen w-screen flex-col">
         <Headerbar showBackBtn={true} pageName={''} rightBtn={'NOTI'} />
         <div style={coverStyle} className="w-full px-3 py-1 drop-shadow-xl">
           {commentHeader}
