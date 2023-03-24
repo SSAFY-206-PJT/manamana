@@ -14,6 +14,7 @@ pipeline {
                     ESLINTIGNORE_PATH = "/var/jenkins_home/workspace/manamana-frontend"
                     CONTAINER_NAME = "manamana-fronted"
                     PROJECT_DIR = "frontend"
+                    DOCKER_FILE_PATH = "frontend/"
                 }
             }
         }
@@ -37,9 +38,13 @@ pipeline {
 
         stage("Build Container Image") {
             steps {
-                script {
-                    image = docker.build("${IMAGE_NAME}")
+                dir("${DOCKER_FILE_PATH}"){
+                    script {
+                        sh "pwd" 
+                        image = docker.build("${IMAGE_NAME}")
+                    }
                 }
+                
             }
         }
 
