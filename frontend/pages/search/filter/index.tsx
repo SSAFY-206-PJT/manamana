@@ -11,8 +11,8 @@ import { changeCurSearchTag } from "@/store/CurSearchTagSlice";
 
 export default function FilterPage() {
   /*
-  * @Data
-  * 필터에 필요한 데이터 입력
+  * @Variable
+  * - 필터에 필요한 데이터 입력
   * */
   const publishState = [
     {
@@ -101,18 +101,15 @@ export default function FilterPage() {
     }
   ];
 
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const curSearchTag = useSelector((state: RootState) => state.searchTag);
-
+  /*
+  * @Variable
+  * */
+  const router = useRouter(); // 화면 전환을 위한 라우터
+  const dispatch = useDispatch(); // redux 사용을 위한 dispatch
+  const curSearchTag = useSelector((state: RootState) => state.searchTag);  // 현재 redux에서 저장한 searchTag 값 가져오기
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
 
   const selectBlock = (value: string) => {
-    // for(let i = 0; i < curSearchTag.tags.length; i++){
-    //   if(curSearchTag.tags[i] === value){
-    //     return;
-    //   }
-    // }
     selectedBlocks.push(value);
   }
 
