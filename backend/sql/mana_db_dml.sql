@@ -49,3 +49,8 @@ insert into webtoon_providers(id,name,provider_url,provider_image) values(3,"카
 
 -- 로그인 제공자
 insert into login_providers(id,name) values(1,"kakao");
+
+select * from users;
+-- 테스트용 유저
+insert into users(email,nickname,image_path,gender,age,is_deleted,create_time,update_time,provider_id) 
+value("ssafy80165","ssafy","https://manamana-bucket.s3.ap-northeast-2.amazonaws.com/webtoon_provider_image/kakao_page.png","남","27",false,now(),now(),1);
