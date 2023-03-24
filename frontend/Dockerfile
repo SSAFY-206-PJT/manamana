@@ -11,17 +11,14 @@ COPY ./.next ./.next
 
 # COPY ./next.config.js ./next.config.js
 
-# COPY ./package.json ./package.json
+COPY ./package.json ./package.json
 # COPY ./public ./public
 # COPY ./pages ./pages
 
-
-WORKDIR /usr/app/out
-
-
+RUN npm install
 #어떤 포트에서 listen할지
 EXPOSE 3000
 
-# ENTRYPOINT [ "npm","run","start" ]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT [ "npm","run","start" ]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
 
