@@ -110,6 +110,7 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`users` (
   `create_time` TIMESTAMP NOT NULL,
   `update_time` TIMESTAMP NOT NULL,
   `provider_id` INT NOT NULL,
+  `refresh_token` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_users_login_providers1_idx` (`provider_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_login_providers1`
