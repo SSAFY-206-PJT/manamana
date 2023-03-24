@@ -16,17 +16,10 @@
     "jsxImportSource": "@emotion/react",
     "incremental": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      // "@emotion/react": ["node_modules/@emotion/react"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
-
-// {
-//   "compilerOptions": {
-//     "paths": {
-//       "@emotion/react/jsx-runtime": ["node_modules/@emotion/react/jsx-runtime"]
-//     }
-//   }
-// }

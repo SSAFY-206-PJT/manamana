@@ -102,21 +102,10 @@ export default function ProfilePage() {
             <div>
               <Image src={'/images/Heart_Logo.png'} alt="내 웹툰" width={50} height={50} />
             </div>
-            <div className="text-2xl font-bold">{info.loveCount}</div>
+            <div className="text-xl font-bold">{info.loveCount}</div>
             <Link href={'/my-webtoon'}>
-              <button className="rounded-2xl bg-PrimaryLight p-2 pl-4 pr-4 text-xl font-medium text-FontPrimaryDark">
+              <button className="rounded-xl bg-PrimaryLight p-1 pl-2 pr-2 text-lg font-medium text-FontPrimaryDark">
                 내 웹툰
-              </button>
-            </Link>
-          </div>
-          <div className="flex w-full flex-col items-center justify-center gap-2">
-            <div>
-              <Image src={'/images/Star_Logo.png'} alt="내 별점" width={45} height={45} />
-            </div>
-            <div className="text-2xl font-bold">{info.starCount}</div>
-            <Link href={'/my-star'}>
-              <button className=" rounded-2xl bg-PrimaryLight p-2 pl-4 pr-4 text-xl font-medium text-FontPrimaryDark">
-                내 별점
               </button>
             </Link>
           </div>
@@ -124,9 +113,9 @@ export default function ProfilePage() {
             <div>
               <Image src={'/images/Comment_Logo.png'} alt="내 댓글" width={45} height={45} />
             </div>
-            <div className="text-2xl font-bold">{info.commentCount}</div>
+            <div className="text-xl font-bold">{info.commentCount}</div>
             <Link href={'/my-comment'}>
-              <button className="rounded-2xl bg-PrimaryLight p-2 pl-4 pr-4 text-xl font-medium text-FontPrimaryDark">
+              <button className="rounded-xl bg-PrimaryLight p-1 pl-2 pr-2 text-lg font-medium text-FontPrimaryDark">
                 내 댓글
               </button>
             </Link>
