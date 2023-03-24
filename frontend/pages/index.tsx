@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
-import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 
 import Navbar from '../components/common/Navbar';
 import WebtoonContainer from '../components/common/WebtoonContainer';
@@ -66,43 +66,37 @@ export default function Home() {
     {
       id: 1,
       name: '1조',
-      imagePath:
-      '/images/Temp_Webtoon_Thumnail.jpg',
+      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
       status: '휴재중',
     },
     {
       id: 2,
       name: '호랑이행님',
-      imagePath:
-      '/images/Temp_Webtoon_Thumnail.jpg',
+      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
       status: '휴재중',
     },
     {
       id: 3,
       name: '신의 탑',
-      imagePath:
-      '/images/Temp_Webtoon_Thumnail.jpg',
+      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
       status: '연재중',
     },
     {
       id: 4,
       name: '웹툰4',
-      imagePath:
-      '/images/Temp_Webtoon_Thumnail.jpg',
+      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
       status: '완결',
     },
     {
       id: 5,
       name: '웹툰5',
-      imagePath:
-        '/images/Temp_Webtoon_Thumnail.jpg',
+      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
       status: '연재중',
     },
     {
       id: 6,
       name: '웹툰6',
-      imagePath:
-      '/images/Temp_Webtoon_Thumnail.jpg',
+      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
       status: '연재중',
     },
   ];
@@ -117,7 +111,7 @@ export default function Home() {
   ];
 
   // 웹툰 취향 가는 컴포넌트 스타일
-  const bannerStyle1 = css`
+  const BannerStyle1 = styled.div`
     background: linear-gradient(120deg, #f9dc5c 0%, #f9dc5c 50%, #f4d03f 50%, #f4d03f 100%);
     color: white;
     text-align: center;
@@ -126,7 +120,7 @@ export default function Home() {
     transform: perspective(1000px) rotateX(10deg);
   `;
   // 마나마나 가는 컴포넌트 스타일
-  const bannerStyle2 = css`
+  const BannerStyle2 = styled.div`
     background: linear-gradient(120deg, #92c83e 0%, #92c83e 50%, #6ebe44 50%, #6ebe44 100%);
     color: white;
     text-align: center;
@@ -169,17 +163,12 @@ export default function Home() {
       </div>
       <div className="mb-4 flex justify-center">
         <div className="grid h-32 w-11/12 grid-cols-3 gap-2">
-          <div
-            css={css`
-              ${bannerStyle1}
-            `}
-            className="col-span-1 rounded-lg bg-white px-4"
-          >
+          <BannerStyle1 className="col-span-1 rounded-lg bg-white px-4">
             <div className="flex h-full w-full items-center justify-center">
               <Link href="/genre-taste">
                 <div className="p-2 font-bold">
                   선호취향
-                  <br></br>
+                  <br />
                   설정하기
                 </div>
               </Link>
@@ -195,14 +184,8 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-          </div>
-
-          <div
-            css={css`
-              ${bannerStyle2}
-            `}
-            className="relative col-span-2 rounded-lg bg-[#0B99FF] px-4"
-          >
+          </BannerStyle1>
+          <BannerStyle2 className="relative col-span-2 rounded-lg bg-[#0B99FF] px-4">
             <div className="z-10 flex flex-col justify-between">
               <div className="z-10 flex items-center justify-center pt-4">
                 <img className="z-10 h-24 w-24 p-2" src="/images/character.png" alt="hi"></img>
@@ -223,7 +206,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-          </div>
+          </BannerStyle2>
         </div>
       </div>
       {/* 마나마나가 준비했어요 */}
