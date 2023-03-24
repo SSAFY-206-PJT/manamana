@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    tools {nodejs "18.12.1"}
+    tools {nodejs "nodejs-18.12.1"}
 
     stages {
         stage("Set Variable") {
@@ -11,6 +11,7 @@ pipeline {
                     IMAGE_STORAGE_CREDENTIAL = "docker-hub"
                     NODE_BUILD_PATH = "./build"
                     APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
+                    ESLINTIGNORE_PATH = "/var/jenkins_home/workspace/manamana-frontend"
                     CONTAINER_NAME = "manamana-fronted"
                     PROJECT_DIR = "frontend"
                 }
@@ -19,22 +20,29 @@ pipeline {
 
         stage("Node install & build") {
             steps {
+                dir("${ESLINTIGNORE_PATH}"){
+                    sh "pwd"
+                    sh "cp -f eslintignore frontend/eslintignore"
+                }
+
                 dir("${PROJECT_DIR}"){
                     sh "pwd"
                     sh "npm i"
                     sh "npm run build"
+                    sh "npm export"
                     sh "pwd"
+                    sh "ls"
                 }
             }
         }
 
-        // stage("Build Container Image") {
-        //     steps {
-        //         script {
-        //             image = docker.build("${IMAGE_NAME}")
-        //         }
-        //     }
-        // }
+        stage("Build Container Image") {
+            steps {
+                script {
+                    image = docker.build("${IMAGE_NAME}")
+                }
+            }
+        }
 
         // stage("Push Container Image") {
         //     steps {

@@ -67,42 +67,42 @@ export default function Home() {
       id: 1,
       name: '1조',
       imagePath:
-        'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
+      '/images/Temp_Webtoon_Thumnail.jpg',
       status: '휴재중',
     },
     {
       id: 2,
       name: '호랑이행님',
       imagePath:
-        'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
+      '/images/Temp_Webtoon_Thumnail.jpg',
       status: '휴재중',
     },
     {
       id: 3,
       name: '신의 탑',
       imagePath:
-        'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
+      '/images/Temp_Webtoon_Thumnail.jpg',
       status: '연재중',
     },
     {
       id: 4,
       name: '웹툰4',
       imagePath:
-        'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
+      '/images/Temp_Webtoon_Thumnail.jpg',
       status: '완결',
     },
     {
       id: 5,
       name: '웹툰5',
       imagePath:
-        'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
+        '/images/Temp_Webtoon_Thumnail.jpg',
       status: '연재중',
     },
     {
       id: 6,
       name: '웹툰6',
       imagePath:
-        'https://i.namu.wiki/i/1HFSZdDzi4R794o8YDRy6hqWPrwmDvjXM_DzQRoQG330IyvGufKbi-washsh1zjq2ixQeZV4CMheA57p_G3C5Idc5AobqXmiERS_HFLUDqqd3oye4WHQQCGgwejnVtBxx7zF0B0NQyzThORYiKCc-w.webp',
+      '/images/Temp_Webtoon_Thumnail.jpg',
       status: '연재중',
     },
   ];

@@ -7,11 +7,10 @@ ENV APP_HOME=/usr/app
 
 WORKDIR $APP_HOME
 
-COPY 
-
-#의존성 설치
-RUN npm install
+COPY ./.next ./.next
 
 #어떤 포트에서 listen할지
 EXPOSE 3000
+
+ENTRYPOINT [ "npm","run","start" ]
 
