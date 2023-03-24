@@ -20,7 +20,8 @@ pipeline {
         stage("Node install & build") {
             steps {
                 dir("${APPLICATION_YML_PATH}"){
-                    sh "cp -f eslintignore frontend/"
+                    sh "pwd"
+                    sh "cp -f eslintignore frontend/eslintignore"
                 }
 
                 dir("${PROJECT_DIR}"){
