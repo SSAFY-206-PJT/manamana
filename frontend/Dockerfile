@@ -7,20 +7,22 @@ ENV APP_HOME=/usr/app
 
 WORKDIR $APP_HOME
 
-COPY ./.next ./.next
+# COPY ./.next ./.next
 
-COPY ./next.config.js ./next.config.js
+# COPY ./next.config.js ./next.config.js
 
-COPY ./package.json ./package.json
-COPY ./public ./public
-COPY ./pages ./pages
+# COPY ./package.json ./package.json
+# COPY ./public ./public
+# COPY ./pages ./pages
 
-# RUN npm
+COPY ./out ./out
+
+WORKDIR /usr/app/out
 
 
 #어떤 포트에서 listen할지
 EXPOSE 3000
 
-# ENTRYPOINT [ "npm","start" ]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT [ "npm","run","start" ]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
 
