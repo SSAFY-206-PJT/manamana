@@ -27,7 +27,9 @@ pipeline {
                     sh "pwd"
                     sh "npm i"
                     sh "npm run build"
+                    sh "npm run export"
                     sh "pwd"
+                    sh "ls"
                 }
             }
         }
