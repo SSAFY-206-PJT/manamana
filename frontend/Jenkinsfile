@@ -19,6 +19,10 @@ pipeline {
 
         stage("Node install & build") {
             steps {
+                dir("${APPLICATION_YML_PATH}"){
+                    sh "cp -f eslintignore frontend/"
+                }
+
                 dir("${PROJECT_DIR}"){
                     sh "pwd"
                     sh "npm i"
@@ -28,13 +32,13 @@ pipeline {
             }
         }
 
-        // stage("Build Container Image") {
-        //     steps {
-        //         script {
-        //             image = docker.build("${IMAGE_NAME}")
-        //         }
-        //     }
-        // }
+        stage("Build Container Image") {
+            steps {
+                script {
+                    image = docker.build("${IMAGE_NAME}")
+                }
+            }
+        }
 
         // stage("Push Container Image") {
         //     steps {
