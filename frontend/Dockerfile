@@ -15,7 +15,7 @@ COPY ./package.json ./package.json
 COPY ./public ./public
 COPY ./pages ./pages
 
-RUN npm
+# RUN npm
 
 
 #어떤 포트에서 listen할지
