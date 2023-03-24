@@ -253,14 +253,14 @@ function DetailPage() {
   const goComment = () => {
     router.push(
       {
-        pathname: `/detail/comment/${webtoon_id}`,
+        pathname: `/detail/${webtoon_id}/comment`,
         query: {
           WEBTOON_THEME_COLOR,
           imagePath: dummyWebtoon.imagePath,
           name: dummyWebtoon.name,
         },
       },
-      `/detail/comment/${webtoon_id}`,
+      // `/detail/${webtoon_id}/comment`,
     );
   };
 
