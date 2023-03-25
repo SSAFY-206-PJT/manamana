@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -146,9 +147,28 @@ public class WebtoonServiceImpl implements WebtoonService {
 
         List<WebtoonDay> webtoonDays = new ArrayList<>();
 
-        webtoonDataDTO.getDay_arr().forEach(day -> {
+        List<Integer> webtoonDayList = webtoonDayRepository.findByWebtoon(webtoon).stream()
+                .map(d -> d.getCodeId())
+                .collect(Collectors.toList());
+        List<Integer> dayIdArr = webtoonDataDTO.getDay_arr().stream()
+                .map(d -> {
+                    return dayCodeRepository.findByDay(d).get().getId();
+                })
+                .collect(Collectors.toList());
 
-            int dayId = dayCodeRepository.findByDay(day).orElseThrow().getId();
+        //리스트에 있는 값은 DB에서 지우기
+        List<Integer> deletedList = webtoonDayList.stream()
+                .filter(d -> !dayIdArr.contains(d))
+                .collect(Collectors.toList());
+
+        List<Integer> saveList = dayIdArr.stream()
+                .filter(d -> !webtoonDayList.contains(d))
+                .collect(Collectors.toList());
+
+
+
+
+        saveList.forEach(dayId -> {
 
             WebtoonDay webtoonDay = WebtoonDay.builder()
                     .codeId(dayId)
@@ -158,31 +178,51 @@ public class WebtoonServiceImpl implements WebtoonService {
         });
 
         webtoonDayRepository.saveAll(webtoonDays);
+
+        List<Integer> deleteDayIds = deletedList.stream()
+                .map(d -> {
+                    return webtoonDayRepository.findByCodeIdAndWebtoon(d, webtoon).get();
+                })
+                .collect(Collectors.toList());
+
+        webtoonDayRepository.deleteAllById(deleteDayIds);
     }
 
     // 작가 저장
     private void saveAuthor(Webtoon webtoon, WebtoonDataDTO webtoonDataDTO) {
         List<Author> authors = new ArrayList<>();
-        List<Author> webtoonAuthorList = authorRepository.findByWebtoon(webtoon);
-        webtoonDataDTO.getAuthors_arr().forEach(authorName -> {
-
-             Optional<Author> findedAuthor = authorRepository.findByNameAndWebtoon(authorName, webtoon);
-             if (!findedAuthor.isEmpty()) {
-                 Author author = Author.builder()
-                         .name(authorName)
-                         .webtoon(webtoon)
-                         .build();
-                 authors.add(author);
-             }
-             
-
-
-        });
-        //TODO 여기 할 순서 리스트에 있는 값은 DB에서 지우기
-        List<Author> deletedList = webtoonAuthorList.stream()
-                .filter(a -> !authors.contains(a))
+        List<String> webtoonAuthorList = authorRepository.findByWebtoon(webtoon).stream()
+                .map(a -> a.getName())
                 .collect(Collectors.toList());
-        //TODO 중복은 저장 안되게        
+        List<String> authorsArr = webtoonDataDTO.getAuthors_arr();
+
+        //리스트에 있는 값은 DB에서 지우기
+        List<String> deletedList = webtoonAuthorList.stream()
+                .filter(a -> !authorsArr.contains(a))
+                .collect(Collectors.toList());
+
+        List<String> saveList = authorsArr.stream()
+                .filter(a -> !webtoonAuthorList.contains(a))
+                .collect(Collectors.toList());
+
+        saveList.forEach(authorName -> {
+
+             Author author = Author.builder()
+                     .name(authorName)
+                     .webtoon(webtoon)
+                     .build();
+             authors.add(author);
+        });
+
         authorRepository.saveAll(authors);
+
+        List<Integer> authorIds = deletedList.stream()
+                .map(a -> {
+                    return authorRepository.findByNameAndWebtoon(a, webtoon).get().getId();
+                })
+                .collect(Collectors.toList());
+
+        authorRepository.deleteAllById(authorIds);
+
     }
 }
