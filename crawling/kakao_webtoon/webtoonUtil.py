@@ -1,9 +1,10 @@
 from colorthief import ColorThief
-from HSL.hsl import rgb_to_hsl
+# from HSL.hsl import rgb_to_hsl
+import colorsys
 from time import sleep
 import urllib.request
 import os
-
+import requests
 
 def image_main_color_hsl(url,tmp_file='tmp.jpg'):
     """
@@ -28,7 +29,8 @@ def image_main_color_hsl(url,tmp_file='tmp.jpg'):
     print(r,g,b)
     ONE_255 = 1.0 / 255.0
 
-    h, s, l = map(lambda x: int(round(x*100, 0)), rgb_to_hsl(r * ONE_255, g * ONE_255, b * ONE_255))
+    # h, s, l = map(lambda x: int(round(x*100, 0)), rgb_to_hsl(r * ONE_255, g * ONE_255, b * ONE_255))
+    h, l, s = map(lambda x: int(round(x*100, 0)), colorsys.rgb_to_hls(r * ONE_255, g * ONE_255, b * ONE_255))
     
     return f'{int(round(h*3.6,0))},{s},{l}'
 
@@ -85,3 +87,18 @@ def scroll_slow(driver):
         if new_height == last_height:
             break
         last_height = new_height
+
+# post
+def post_request(data, url="http://localhost:8080"):
+    """
+    JSON 데이터를 POST 요청
+        ARGS:
+            data: JSON
+            url: "http://localhost:8080"(default)
+    """
+    headers = { 'content-type': 'application/json' }
+    http_post_request = requests.post(url, headers=headers, data=data.encode('utf-8'))
+    print("HTTP POST REQUEST!")
+    print(http_post_request.text)
+    print(http_post_request.status_code)
+
