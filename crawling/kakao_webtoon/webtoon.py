@@ -20,7 +20,7 @@ class Webtoon:
 
     make_json(): json으로 반환
     """
-    webtoons_dict = {}
+    webtoons_dict = {"provider_id": 2, "data":[]}
     def __init__(self):
         self.name: str = None
         self.image: str = None
@@ -43,7 +43,7 @@ class Webtoon:
         """
         # self.check_null()
 
-        self.webtoons_dict[self.webtoon_id] = {
+        self.webtoons_dict.append({
             "name" : self.name,
             "image" : self.image,
             "plot" : self.plot,
@@ -57,13 +57,13 @@ class Webtoon:
             "day_arr" : self.day_arr,
             "authors_arr" : self.authors_arr,
             "colorHsl" : self.colorHsl,
-            }
+            })
 
     def make_json(self):
         """
         json으로 반환
         """
-        webtoon_json = json.dumps(self.webtoons_dict, ensure_ascii=False, indent=4)
+        webtoon_json = json.dumps(self.webtoons_dict, ensure_ascii=False)
         return webtoon_json
 
 
