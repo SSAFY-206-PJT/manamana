@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface WebtoonDayRepository extends JpaRepository<WebtoonDay, Integer> {
     List<WebtoonDay> findByWebtoon(Webtoon webtoon);
 
-    Optional<Integer> findByCodeIdAndWebtoon(int codeId, Webtoon webtoon);
+    Optional<WebtoonDay> findByCodeIdAndWebtoon(int codeId, Webtoon webtoon);
 }

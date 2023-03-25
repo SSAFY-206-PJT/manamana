@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -144,30 +143,31 @@ public class WebtoonServiceImpl implements WebtoonService {
 
     // 요일 저장
     private void saveDay(Webtoon webtoon, WebtoonDataDTO webtoonDataDTO) {
-
+        // 입력받은 요일객체를 저장할 리스트 (요일 객체)
         List<WebtoonDay> webtoonDays = new ArrayList<>();
 
+        // 이미 저장되어 있는 요일을 저장할 리스트 (요일 아이디)
         List<Integer> webtoonDayList = webtoonDayRepository.findByWebtoon(webtoon).stream()
                 .map(d -> d.getCodeId())
                 .collect(Collectors.toList());
+
+        // 입력받은 요일에 맞는 요일 아이디를 저장할 리스트 (요일 아이디)
         List<Integer> dayIdArr = webtoonDataDTO.getDay_arr().stream()
                 .map(d -> {
                     return dayCodeRepository.findByDay(d).get().getId();
                 })
                 .collect(Collectors.toList());
 
-        //리스트에 있는 값은 DB에서 지우기
+        // 삭제할 요일 리스트 (요일 아이디)
         List<Integer> deletedList = webtoonDayList.stream()
                 .filter(d -> !dayIdArr.contains(d))
                 .collect(Collectors.toList());
-
+        // 저장할 요일 리스트 (요일 아이디)
         List<Integer> saveList = dayIdArr.stream()
                 .filter(d -> !webtoonDayList.contains(d))
                 .collect(Collectors.toList());
 
-
-
-
+        // 저장할 요일을 요일 객체로 만들기
         saveList.forEach(dayId -> {
 
             WebtoonDay webtoonDay = WebtoonDay.builder()
@@ -176,16 +176,19 @@ public class WebtoonServiceImpl implements WebtoonService {
                     .build();
             webtoonDays.add(webtoonDay);
         });
-
+        // 저장
         webtoonDayRepository.saveAll(webtoonDays);
-
-        List<Integer> deleteDayIds = deletedList.stream()
+        // 삭제할 요일을 db아이디로 변환
+        List<WebtoonDay> deleteDays = deletedList.stream()
                 .map(d -> {
-                    return webtoonDayRepository.findByCodeIdAndWebtoon(d, webtoon).get();
+                    System.out.println("HERE :" + d);
+                    Optional<WebtoonDay> byCodeIdAndWebtoon = webtoonDayRepository.findByCodeIdAndWebtoon(d, webtoon);
+                    return byCodeIdAndWebtoon.get();
                 })
                 .collect(Collectors.toList());
-
-        webtoonDayRepository.deleteAllById(deleteDayIds);
+        System.out.println("FINE");
+        // 삭제
+        webtoonDayRepository.deleteAllInBatch(deleteDays);
     }
 
     // 작가 저장
@@ -216,13 +219,13 @@ public class WebtoonServiceImpl implements WebtoonService {
 
         authorRepository.saveAll(authors);
 
-        List<Integer> authorIds = deletedList.stream()
+        List<Author> deleteAuthors = deletedList.stream()
                 .map(a -> {
-                    return authorRepository.findByNameAndWebtoon(a, webtoon).get().getId();
+                    return authorRepository.findByNameAndWebtoon(a, webtoon).get();
                 })
                 .collect(Collectors.toList());
 
-        authorRepository.deleteAllById(authorIds);
+        authorRepository.deleteAllInBatch(deleteAuthors);
 
     }
 }
