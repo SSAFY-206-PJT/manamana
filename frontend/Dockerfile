@@ -19,6 +19,5 @@ RUN npm install
 #어떤 포트에서 listen할지
 EXPOSE 3000
 
-# ENTRYPOINT [ "npm","run","start" ]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT [ "npm","run","start" ]
 
