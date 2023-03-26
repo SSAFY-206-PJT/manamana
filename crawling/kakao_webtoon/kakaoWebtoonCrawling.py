@@ -82,6 +82,8 @@ def crawling(driver, day_string, f):
             sleep(0.5)
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
+            genre = soup.select('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(2) > p')
+            webtoon_info.genre_arr = genre[0].string.strip().split()
             
             try:
                 driver.find_element(By.CSS_SELECTOR, '#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div').click()
@@ -117,13 +119,19 @@ def crawling(driver, day_string, f):
             # 성인 여부 태그
             grade = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div.flex.flex-wrap > div > img')
             if not grade:
+                grade = "전체이용가"
+            webtoon_info.grade = grade
+            """
+            # 성인 여부 태그
+            grade = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div.flex.flex-wrap > div > img')
+            if not grade:
                 # 등급 태그
                 grade = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div.flex.flex-wrap > div > p.whitespace-pre-wrap.break-all.break-words.support-break-word.font-badge.\!whitespace-nowrap.rounded-5.s10-bold-white.bg-dark-blue.px-4')
                 # 전체 이용가는 표시가 안되어있음
                 if not grade:
-                    webtoon_info.grade = "전체이용가"
+                    webtoon_info.grade = "전체이용가"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
             webtoon_info.grade
-
+            """
             # 웹툰 이름 저장
             webtoon_info.name = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > p').string.strip()
 
@@ -134,11 +142,13 @@ def crawling(driver, day_string, f):
                 ]
             
             # 웹툰 줄거리 저장
-            webtoon_info.plot = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div:nth-child(4) > div:nth-child(2) > p').string.strip()
-
+            plot = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div:nth-child(4) > div:nth-child(2) > p').string.strip()
+            #TODO 너무 줄거리가 길어서 에러뜸
+            webtoon_info.plot = plot[:100]
             # 웹툰 장르 리스트 저장
-            genres = soup.select('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div:nth-child(5) > div.flex.flex-wrap.-mt-12 > a > p')
-            webtoon_info.genre_arr = [genre.string.strip() for genre in genres]
+            # genres = soup.select('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div:nth-child(5) > div.flex.flex-wrap.-mt-12 > a > p')
+            # webtoon_info.genre_arr = [genre.string.strip() for genre in genres]
+            
             
             # 웹툰 썸네일 저장
             webtoon_info.image = image
@@ -153,8 +163,9 @@ def crawling(driver, day_string, f):
             # 전체 회차 저장
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
-            total_ep = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li:nth-child(1) > a > div.px-8.pt-9.pb-8.h-46 > p')
-            webtoon_info.total_ep = total_ep.string.strip()[:-1]
+            total_ep = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li:nth-child(1) > a > div.px-8.pt-9.pb-8.h-46 > p').string.strip()
+            idx = total_ep.index("화")
+            webtoon_info.total_ep = total_ep[:idx]
             driver.find_element(By.CSS_SELECTOR, '#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.bottom-73.z-5.relative.flex-center.pointer-events-none > button').click()
             sleep(0.5)
 
@@ -164,6 +175,9 @@ def crawling(driver, day_string, f):
             start_date = soup.select_one('#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li:nth-child(1) > a > div.px-8.pt-9.pb-8.h-46 > div > p')
             webtoon_info.start_date = start_date.string.strip()
 
+            # 색 저장
+            webtoon_info.colorHsl = image_main_color_hsl(webtoon_info.image)
+
             # dict 형태로 변환
             webtoon_info.done()
             
@@ -172,9 +186,11 @@ def crawling(driver, day_string, f):
             print(count)
 
             sleep(1)
-        except Exception:
+        except Exception as e:
+            print(e)
             miss.append(url[idx+1:])
-    
+        if count == 3:
+            break
     print("done:",count)
     print("fail:", len(miss))
     print("miss:",miss)
@@ -199,10 +215,10 @@ if __name__ == "__main__":
             print("Crawling All")
         else:
             if arguments[1] in week:
-                week_arr = arguments[1]
+                week_arr = arguments[1].split()
                 print(f'Crawling {arguments[1]}')
     else:
-        week_arr = today
+        week_arr = today.split()
         print(f'Crawling {today}')
     print("====================")
     
@@ -220,9 +236,11 @@ if __name__ == "__main__":
     total_webtoon = webtoon.Webtoon()
     webtoon_json = total_webtoon.make_json()
 
+
     f.write(webtoon_json)
-    f.write("\n")
+    # f.write("\n")
     f.close()
+    post_request(webtoon_json, url="http://127.0.0.1:8080/crawling")
 
     end = time.time()
     print(miss)

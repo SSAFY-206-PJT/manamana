@@ -43,7 +43,7 @@ class Webtoon:
         """
         # self.check_null()
 
-        self.webtoons_dict.append({
+        self.webtoons_dict["data"].append({
             "name" : self.name,
             "image" : self.image,
             "plot" : self.plot,
