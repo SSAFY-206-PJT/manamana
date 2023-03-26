@@ -1,5 +1,5 @@
 # 노드 버전 지정
-FROM node:18.12.1
+FROM node:16-alpine
 
 LABEL email="lsh80165@gmail.com"
 
