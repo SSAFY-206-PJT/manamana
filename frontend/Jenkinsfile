@@ -1,6 +1,5 @@
 pipeline {
     agent any
-    tools {nodejs "nodejs-18.12.1"}
 
     stages {
         stage("Set Variable") {
