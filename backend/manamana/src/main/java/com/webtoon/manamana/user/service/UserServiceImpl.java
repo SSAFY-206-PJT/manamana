@@ -199,11 +199,11 @@ public class UserServiceImpl implements UserService{
             webtoonGenres.forEach(webtoonGenre ->
                 userGenreRepository.findById(UserGenreId.createUserGenreId(user.getId(), webtoonGenre.getGenre().getId()))
                         .ifPresentOrElse(
-                                //장르가 있으면 +10
-                                userGenre -> userGenre.updateUserGenre(),
-                                //입력한적 없으면 생성
+                                //장르가 있으면 +5
+                                userGenre -> userGenre.updateUserWebtoonGenre(),
+                                //입력한적 없으면 2점으로 생성
                                 () -> {
-                                    UserGenre userGenre = UserGenre.createUserGenre(user, webtoonGenre.getGenre());
+                                    UserGenre userGenre = UserGenre.createUserWebtoonGenre(user, webtoonGenre.getGenre());
                                     userGenreRepository.save(userGenre);
                                 })
             );

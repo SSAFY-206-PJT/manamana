@@ -1,5 +1,6 @@
 package com.webtoon.manamana.webtoon.dto.response;
 
+import com.webtoon.manamana.entity.webtoon.codetable.Genre;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +16,12 @@ public class GenreDTO {
     public GenreDTO(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public static GenreDTO createDTO(Genre genre){
+
+        return GenreDTO.builder()
+                .id(genre.getId())
+                .name(genre.getName()).build();
     }
 }

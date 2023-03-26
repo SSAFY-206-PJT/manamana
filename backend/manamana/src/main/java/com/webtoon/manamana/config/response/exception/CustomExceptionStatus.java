@@ -27,6 +27,9 @@ public enum CustomExceptionStatus {
     /*웹툰 관련*/
     NOT_FOUNT_WEBTOON(false, 400, "해당하는 웹툰이 없습니다."),
 
+    /*웹툰 제공자 관련*/
+    BAD_PROVIDER_REQUEST(false, 400, "잘못된 웹툰 제공자 요청입니다.")
+
 
     ;
     private final boolean isSuccess;

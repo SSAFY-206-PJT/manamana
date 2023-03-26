@@ -56,7 +56,13 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
 
+    public final ListPath<com.webtoon.manamana.entity.user.UserWebtoon, com.webtoon.manamana.entity.user.QUserWebtoon> userWebtoons = this.<com.webtoon.manamana.entity.user.UserWebtoon, com.webtoon.manamana.entity.user.QUserWebtoon>createList("userWebtoons", com.webtoon.manamana.entity.user.UserWebtoon.class, com.webtoon.manamana.entity.user.QUserWebtoon.class, PathInits.DIRECT2);
+
+    public final QWebtoonAddition webtoonAddition;
+
     public final ListPath<WebtoonDay, QWebtoonDay> webtoonDays = this.<WebtoonDay, QWebtoonDay>createList("webtoonDays", WebtoonDay.class, QWebtoonDay.class, PathInits.DIRECT2);
+
+    public final ListPath<WebtoonGenre, QWebtoonGenre> webtoonGenres = this.<WebtoonGenre, QWebtoonGenre>createList("webtoonGenres", WebtoonGenre.class, QWebtoonGenre.class, PathInits.DIRECT2);
 
     public final StringPath webtoonId = createString("webtoonId");
 
@@ -81,6 +87,7 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
     public QWebtoon(Class<? extends Webtoon> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.providerId = inits.isInitialized("providerId") ? new QWebtoonProvider(forProperty("providerId")) : null;
+        this.webtoonAddition = inits.isInitialized("webtoonAddition") ? new QWebtoonAddition(forProperty("webtoonAddition"), inits.get("webtoonAddition")) : null;
     }
 
 }
