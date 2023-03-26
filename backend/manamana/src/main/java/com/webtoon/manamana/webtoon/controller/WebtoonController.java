@@ -1,7 +1,5 @@
 package com.webtoon.manamana.webtoon.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
@@ -9,20 +7,22 @@ import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.webtoon.dto.response.*;
+import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
+import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
+import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
+import com.webtoon.manamana.webtoon.service.WebtoonService;
 import com.webtoon.manamana.webtoon.util.WebtoonListFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,6 +37,7 @@ import java.util.List;
 public class WebtoonController {
 
     private final ResponseService responseService;
+    private final WebtoonService webtoonService;
 
 
     // TODO : 아래처럼 쿼리 스트링을 하나씩 받는게 아니라 맵으로 받던가 해야됨 - Pageable 사용하려고 하다보니까 아래와 같은 형식이 됨.
@@ -55,8 +56,7 @@ public class WebtoonController {
             @Parameter(description = "장르", required = false, example = "1") @RequestParam(required = false) Integer genreId,
             @Parameter(description = "요일", required = false, example = "1") @RequestParam(required = false) Integer dayId,
             @Parameter(description = "정렬조건", required = false, example = "1") @RequestParam(required = false) Integer sortType,
-            Pageable pageable
-    ){
+            Pageable pageable){
 
         log.info("page = {}, size = {}",pageable.getOffset(),pageable.getPageSize());
         //쿼리 스트링을 map으로 받아서 객체에 매핑함.
@@ -70,50 +70,11 @@ public class WebtoonController {
 
         //TODO : 더미데이터로 리턴하기 때문에 실제 로직으로 바꿔야 됨.
 
-        List<WebtoonListDTO> returnArray = new ArrayList<>();
-        List<AuthorDTO> authorArray1 = new ArrayList<>();
-        AuthorDTO authorDTO1 = AuthorDTO.builder()
-                .id(1)
-                .name("시니")
-                .build();
-        AuthorDTO authorDTO2 = AuthorDTO.builder()
-                .id(2)
-                .name("광운")
-                .build();
-        authorArray1.add(authorDTO1);
-        authorArray1.add(authorDTO2);
+        List<WebtoonListDTO> webtoonListDTOS = webtoonService.findWebtoonAll(filter, pageable);
 
-        WebtoonListDTO webtoonListDTO = WebtoonListDTO.builder()
-                .id(1)
-                .name("1초")
-                .status("연재중")
-                .imagePath("https://image-comic.pstatic.net/webtoon/725586/thumbnail/thumbnail_IMAG21_17f81846-d1a9-43fd-83a4-f9e966b6b977.jpg")
-                .authors(authorArray1)
-                .build();
+        if(webtoonListDTOS.isEmpty()) return responseService.getDataResponse(webtoonListDTOS,CustomSuccessStatus.RESPONSE_NO_CONTENT);
 
-        List<AuthorDTO> authorArray2 = new ArrayList<>();
-        AuthorDTO authorDTO3 = AuthorDTO.builder()
-                .id(3)
-                .name("박태준만화회사")
-                .build();
-        AuthorDTO authorDTO4 = AuthorDTO.builder()
-                .id(4)
-                .name("정종택")
-                .build();
-        authorArray2.add(authorDTO3);
-        authorArray2.add(authorDTO4);
-
-        WebtoonListDTO webtoonListDTO2 = WebtoonListDTO.builder()
-                .id(2)
-                .name("김부장")
-                .status("연재중")
-                .imagePath("https://image-comic.pstatic.net/webtoon/783053/thumbnail/thumbnail_IMAG21_d7732f14-26da-4e35-8762-660cc87b53f1.jpg")
-                .authors(authorArray2)
-                .build();
-
-        returnArray.add(webtoonListDTO);
-        returnArray.add(webtoonListDTO2);
-        return responseService.getDataResponse(returnArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(webtoonListDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
     @Tag(name = "웹툰 정보")
@@ -124,71 +85,13 @@ public class WebtoonController {
     })
     @GetMapping("/{webtoon-id}")
     public DataResponse<WebtoonDetailDTO> webtoonDetail(
-            @PathVariable("webtoon-id") long webtoonId
-    ){
+            @PathVariable("webtoon-id") long webtoonId){
 
-        List<AuthorDTO> authorDTOList = new ArrayList<>();
-        AuthorDTO authorDTO1 = AuthorDTO.builder()
-                .id(1)
-                .name("시니")
-                .build();
-        AuthorDTO authorDTO2 = AuthorDTO.builder()
-                .id(2)
-                .name("광운")
-                .build();
-        authorDTOList.add(authorDTO1);
-        authorDTOList.add(authorDTO2);
+        long authUserId = 1L;
 
-        List<GenreDTO> genreDTOList = new ArrayList<>();
-        GenreDTO genreDTO1 = GenreDTO.builder()
-                .id(1)
-                .name("드라마")
-                .build();
-        GenreDTO genreDTO2 = GenreDTO.builder()
-                .id(2)
-                .name("직업 드라마")
-                .build();
-        genreDTOList.add(genreDTO1);
-        genreDTOList.add(genreDTO2);
+        WebtoonDetailDTO webtoonOne = webtoonService.findWebtoonOne(authUserId, webtoonId);
 
-        List<DayDTO> dayDTOList = new ArrayList<>();
-        DayDTO dayDTO1 = DayDTO.builder()
-                .id(1)
-                .codeId(1)
-                .build();
-        DayDTO dayDTO2 = DayDTO.builder()
-                .id(2)
-                .codeId(2)
-                .build();
-        dayDTOList.add(dayDTO1);
-        dayDTOList.add(dayDTO2);
-
-        AdditionDTO additionDTO = AdditionDTO.builder()
-                .id(1)
-                .view(10)
-                .scoreCount(100)
-                .scoreAverage(5)
-                .build();
-
-        WebtoonDetailDTO webtoonDetailDTO = WebtoonDetailDTO.builder()
-                .id(1)
-                .name("1초")
-                .imagePath("https://image-comic.pstatic.net/webtoon/725586/thumbnail/thumbnail_IMAG21_17f81846-d1a9-43fd-83a4-f9e966b6b977.jpg")
-                .plot("소방관 이야기 입니다\n근데 초능력을 곁들인")
-                .grade("전체이용가")
-                .status("연재중")
-                .webtoonUrl("https://comic.naver.com/webtoon/list?titleId=725586")
-                .webtoonId("725586")
-                .startDate("2023.03.13")
-                .totalEpisode(100)
-                .colorHsl("385,20,25")
-                .authors(authorDTOList)
-                .genres(genreDTOList)
-                .days(dayDTOList)
-                .additions(additionDTO)
-                .build();
-
-        return responseService.getDataResponse(webtoonDetailDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(webtoonOne, CustomSuccessStatus.RESPONSE_SUCCESS);
 
     }
 
@@ -201,42 +104,11 @@ public class WebtoonController {
     })
     @GetMapping("/{webtoon-id}/providers")
     public DataResponse<Object> getWebtoonProvider(
-            @PathVariable("webtoon-id") long webtoonId) throws Exception{
+            @PathVariable("webtoon-id") long webtoonId){
 
 
-        String temp1 = "{\n" +
-                "\t\t\t\"name\" : \"네이버 웹툰\",\n" +
-                "\t\t\t\"url\" : \"https://comic.naver.com/webtoon/list?titleId=747269\",\n" +
-                "\t\t\t\"provider_image\" : \"https://manamana-bucket.s3.ap-northeast-2.amazonaws.com/webtoon_provider_image/naver_webtoon.png\"\n" +
-                "\t\t}";
-        String temp2 = "{\n" +
-                "\t\t\t\"name\" : \"카카오 웹툰\",\n" +
-                "\t\t\t\"url\" : \"https://webtoon.kakao.com/content/초인주의/3388\",\n" +
-                "\t\t\t\"provider_image\" : \"https://manamana-bucket.s3.ap-northeast-2.amazonaws.com/webtoon_provider_image/kakao_webtoon.jpg\"\n" +
-                "\t\t}";
-        String temp3 = "{\n" +
-                "\t\t\t\"name\" : \"카카오 페이지\",\n" +
-                "\t\t\t\"url\" : \"https://page.kakao.com/content/58909608\",\n" +
-                "\t\t\t\"provider_image\" : \"https://manamana-bucket.s3.ap-northeast-2.amazonaws.com/webtoon_provider_image/kakao_page.png\"\n" +
-                "\t\t}";
+        WebtoonProviderDTO webtoonProviderDTO = webtoonService.findWebtoonProviderAll(webtoonId);
 
-
-        JSONArray jsonArray = new JSONArray();
-        JSONParser jsonParser = new JSONParser();
-
-        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
-        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
-        JSONObject jsonObj3 = (JSONObject) jsonParser.parse(temp3);
-
-        jsonArray.add(jsonObj1);
-        jsonArray.add(jsonObj2);
-        jsonArray.add(jsonObj3);
-
-
-        return responseService.getDataResponse(jsonArray,CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(webtoonProviderDTO,CustomSuccessStatus.RESPONSE_SUCCESS);
     }
-
-
-
-
 }
