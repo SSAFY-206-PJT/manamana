@@ -71,7 +71,7 @@ public class WebtoonDetailDTO {
                 .plot(webtoon.getPlot())
                 .grade(gradeMap.get(webtoon.getGradeId()))
                 .status(statusMap.get(webtoon.getStatusId()))
-                .webtoonUrl(webtoon.getProviderId().getName() + webtoon.getWebtoonUrl())
+                .webtoonUrl(webtoon.getProviderId().getUrl() + webtoon.getWebtoonUrl())
                 .webtoonId(webtoon.getWebtoonId())
                 .startDate(webtoon.getStartDate().toString())
                 .totalEpisode(webtoon.getTotalEp())

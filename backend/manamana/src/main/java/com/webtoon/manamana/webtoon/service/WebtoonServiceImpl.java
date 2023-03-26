@@ -3,6 +3,7 @@ package com.webtoon.manamana.webtoon.service;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
+import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.entity.webtoon.WebtoonProvider;
 import com.webtoon.manamana.entity.webtoon.codetable.Genre;
 import com.webtoon.manamana.entity.webtoon.codetable.Grade;
@@ -12,6 +13,7 @@ import com.webtoon.manamana.webtoon.dto.response.GenreDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
+import com.webtoon.manamana.webtoon.repository.WebtoonGenreRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.WebtoonRepository;
 import com.webtoon.manamana.webtoon.repository.WebtoonRepositorySupport;
 import com.webtoon.manamana.webtoon.util.WebtoonListFilter;
@@ -35,8 +37,7 @@ public class WebtoonServiceImpl implements WebtoonService{
     private final StatusCodeRepository statusCodeRepository;
     private final WebtoonProviderRepository webtoonProviderRepository;
     private final GradeCodeRepository gradeCodeRepository;
-    private final GenreCodeRepositorySupport genreCodeRepositorySupport;
-
+    private final WebtoonGenreRepositorySupport webtoonGenreRepositorySupport;
     /*웹툰 전체 조회*/
     @Override
     public List<WebtoonListDTO> findWebtoonAll(WebtoonListFilter webtoonListFilter, Pageable pageable) {
@@ -84,8 +85,8 @@ public class WebtoonServiceImpl implements WebtoonService{
         });
 
         //장르 조회
-        List<Genre> genres = genreCodeRepositorySupport.findAllByWebtoon(webtoonId);
-        List<GenreDTO> genreDTOS = genres.stream()
+        List<WebtoonGenre> webtoonGenres = webtoonGenreRepositorySupport.findGenrebyWebtoonAll(webtoonId);
+        List<GenreDTO> genreDTOS = webtoonGenres.stream()
                 .map(GenreDTO::createDTO)
                 .collect(Collectors.toList());
 

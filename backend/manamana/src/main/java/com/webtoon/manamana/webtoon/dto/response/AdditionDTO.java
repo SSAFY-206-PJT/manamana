@@ -26,7 +26,7 @@ public class AdditionDTO {
         return AdditionDTO.builder()
                 .view(webtoonAddition.getView())
                 .scoreCount(webtoonAddition.getScoreCount())
-                .scoreAverage(String.format("%.2f", webtoonAddition.getTotalScore()/webtoonAddition.getScoreCount()))
+                .scoreAverage(String.format("%.2f", (double) webtoonAddition.getTotalScore()/(double)webtoonAddition.getScoreCount()))
                 .build();
     }
 }

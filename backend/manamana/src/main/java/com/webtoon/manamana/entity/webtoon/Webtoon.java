@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -52,26 +54,23 @@ public class Webtoon extends BaseTimeEntity {
     private WebtoonProvider providerId;
 
     @OneToMany(mappedBy = "webtoon")
-    private List<Comment> comment = new ArrayList<>();
+    private Set<Comment> comment = new HashSet<>();
 
 
     @OneToMany(mappedBy = "webtoon")
-    private List<Author> authors = new ArrayList<>();
+    private Set<Author> authors = new HashSet<>();
 
     @OneToMany(mappedBy= "webtoon")
-    private List<WebtoonDay> webtoonDays = new ArrayList<>();
+    private Set<WebtoonDay> webtoonDays = new HashSet<>();
 
     @OneToMany(mappedBy = "webtoon")
-    private List<WebtoonGenre> webtoonGenres = new ArrayList<>();
+    private Set<WebtoonGenre> webtoonGenres = new HashSet<>();
 
     @OneToOne(mappedBy = "webtoon", fetch = FetchType.LAZY)
     private WebtoonAddition webtoonAddition;
 
 
     @OneToMany(mappedBy = "webtoon")
-    private List<UserWebtoon> userWebtoons = new ArrayList<>();
-
-
-
+    private Set<UserWebtoon> userWebtoons = new HashSet<>();
 
 }

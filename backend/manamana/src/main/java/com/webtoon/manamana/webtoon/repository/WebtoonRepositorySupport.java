@@ -67,7 +67,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         QWebtoon webtoon = QWebtoon.webtoon;
         return Optional.ofNullable(queryFactory
                 .selectFrom(webtoon)
-                .where(webtoon.isDeleted.eq(false))
+                .where(webtoon.isDeleted.eq(false), webtoon.id.eq(webtoonId))
                 .leftJoin(webtoon.userWebtoons, QUserWebtoon.userWebtoon)
                 .fetchJoin()
                 .where(webtoon.userWebtoons.any().user.id.eq(userId))
@@ -135,18 +135,21 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
 
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
 
+        if(sortType == null){
+            orderSpecifiers.add(new OrderSpecifier(Order.ASC,QWebtoon.webtoon.name));
+        }
 
         //조회순
-        if(sortType == 1){
+        else if(sortType.equals(1)){
             orderSpecifiers.add(new OrderSpecifier(Order.DESC,QWebtoon.webtoon.webtoonAddition.view));
         }
         //별점 순
-        else if(sortType == 2){
+        else if(sortType.equals(2)){
             orderSpecifiers.add(new OrderSpecifier(Order.DESC
                     ,QWebtoon.webtoon.webtoonAddition.totalScore.divide(QWebtoon.webtoon.webtoonAddition.scoreCount)));
         }
         //댓글 순
-        else if(sortType == 3){
+        else if(sortType.equals(3)){
             orderSpecifiers.add(new OrderSpecifier(Order.DESC
                     ,QWebtoon.webtoon.comment.size()));
         }

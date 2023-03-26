@@ -24,11 +24,11 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
 
     public final com.webtoon.manamana.config.entity.QBaseTimeEntity _super = new com.webtoon.manamana.config.entity.QBaseTimeEntity(this);
 
-    public final ListPath<Author, QAuthor> authors = this.<Author, QAuthor>createList("authors", Author.class, QAuthor.class, PathInits.DIRECT2);
+    public final SetPath<Author, QAuthor> authors = this.<Author, QAuthor>createSet("authors", Author.class, QAuthor.class, PathInits.DIRECT2);
 
     public final StringPath colorHsl = createString("colorHsl");
 
-    public final ListPath<Comment, QComment> comment = this.<Comment, QComment>createList("comment", Comment.class, QComment.class, PathInits.DIRECT2);
+    public final SetPath<Comment, QComment> comment = this.<Comment, QComment>createSet("comment", Comment.class, QComment.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createTime = _super.createTime;
@@ -56,13 +56,13 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
 
-    public final ListPath<com.webtoon.manamana.entity.user.UserWebtoon, com.webtoon.manamana.entity.user.QUserWebtoon> userWebtoons = this.<com.webtoon.manamana.entity.user.UserWebtoon, com.webtoon.manamana.entity.user.QUserWebtoon>createList("userWebtoons", com.webtoon.manamana.entity.user.UserWebtoon.class, com.webtoon.manamana.entity.user.QUserWebtoon.class, PathInits.DIRECT2);
+    public final SetPath<com.webtoon.manamana.entity.user.UserWebtoon, com.webtoon.manamana.entity.user.QUserWebtoon> userWebtoons = this.<com.webtoon.manamana.entity.user.UserWebtoon, com.webtoon.manamana.entity.user.QUserWebtoon>createSet("userWebtoons", com.webtoon.manamana.entity.user.UserWebtoon.class, com.webtoon.manamana.entity.user.QUserWebtoon.class, PathInits.DIRECT2);
 
     public final QWebtoonAddition webtoonAddition;
 
-    public final ListPath<WebtoonDay, QWebtoonDay> webtoonDays = this.<WebtoonDay, QWebtoonDay>createList("webtoonDays", WebtoonDay.class, QWebtoonDay.class, PathInits.DIRECT2);
+    public final SetPath<WebtoonDay, QWebtoonDay> webtoonDays = this.<WebtoonDay, QWebtoonDay>createSet("webtoonDays", WebtoonDay.class, QWebtoonDay.class, PathInits.DIRECT2);
 
-    public final ListPath<WebtoonGenre, QWebtoonGenre> webtoonGenres = this.<WebtoonGenre, QWebtoonGenre>createList("webtoonGenres", WebtoonGenre.class, QWebtoonGenre.class, PathInits.DIRECT2);
+    public final SetPath<WebtoonGenre, QWebtoonGenre> webtoonGenres = this.<WebtoonGenre, QWebtoonGenre>createSet("webtoonGenres", WebtoonGenre.class, QWebtoonGenre.class, PathInits.DIRECT2);
 
     public final StringPath webtoonId = createString("webtoonId");
 
