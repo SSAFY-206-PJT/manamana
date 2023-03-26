@@ -10,4 +10,6 @@ public class UserUpdateRequestDTO {
     private long id;
     private String nickname;
 
+    private String userImage;
+
 }

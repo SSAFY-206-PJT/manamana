@@ -15,6 +15,19 @@ public enum CustomExceptionStatus {
 
     REQUEST_QUERY_ERROR(false, 400, "잘못된 쿼리 요청입니다."),
 
+    /*association user*/
+    NOT_FOUNT_USER(false, 401,"해당하는 유저정보가 없습니다."),
+
+    /*유저 웹툰 연관*/
+    NOT_FOUND_USER_WEBTOON(false,400,"관심웹툰이 아니거나 이미 삭제한 관심웹툰입니다."),
+
+    /*유저 장르 연관*/
+    NOT_FOUNT_GENRE(false, 400, "해당하는 장르가 없습니다."),
+
+    /*웹툰 관련*/
+    NOT_FOUNT_WEBTOON(false, 400, "해당하는 웹툰이 없습니다."),
+
+
     ;
     private final boolean isSuccess;
 

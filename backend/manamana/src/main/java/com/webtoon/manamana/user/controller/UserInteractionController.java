@@ -8,7 +8,11 @@ import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.user.dto.request.GenreRequestDTO;
+import com.webtoon.manamana.user.dto.request.IdLongMultiSelectRequestDTO;
 import com.webtoon.manamana.user.dto.request.WebtoonRequestDTO;
+import com.webtoon.manamana.user.dto.response.UserCommentResponseDTO;
+import com.webtoon.manamana.user.dto.response.WebtoonInfoDTO;
+import com.webtoon.manamana.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -17,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "회원 상호작용 기능", description = "회원 상호작용 관련 기능 관련 API 모음")
 @Slf4j
 @RequiredArgsConstructor
@@ -24,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserInteractionController {
 
+    private final UserService userService;
     private final ResponseService responseService;
 
     /*회원이 작성한 댓글 조회*/
@@ -35,40 +42,19 @@ public class UserInteractionController {
     })
     @GetMapping("/{user-id}/comments")
     public DataResponse<Object> findUserComment(
-            @PathVariable("user-id") long userId) throws Exception{
+            @PathVariable("user-id") long userId){
 
-        String temp1 ="{\n" +
-                "\t\t\t\"id\": 1,\n" +
-                "\t\t\t\"content\": \"이게 완달....? 가슴이 웅장해진다...\", \n" +
-                "\t\t\t\"createTime\": \"2023-03-13 11:22:33\", \n" +
-                "\t\t\t\"webtoons\": {\n" +
-                "\t\t\t\t\"id\": 1, \n" +
-                "\t\t\t\t\"name\": \"호랑이형님\",\n" +
-                "\t\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/650305/thumbnail/thumbnail_IMAG21_3631086797392995425.jpg\"\n" +
-                "\t\t\t}\n" +
-                "\t\t}";
+        // TODO : OAuth 완성후 userId 수정필요
+        long authUserId = 1L;
 
-        String temp2 ="{\n" +
-                "\t\t\t\"id\": 3,\n" +
-                "\t\t\t\"content\": \"재밌어요ㅠㅠ\", \n" +
-                "\t\t\t\"createTime\": \"2023-03-12 11:22:33\", \n" +
-                "\t\t\t\"webtoons\": {\n" +
-                "\t\t\t\t\"id\": 2, \n" +
-                "\t\t\t\t\"name\": \"내일\",\n" +
-                "\t\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/695796/thumbnail/thumbnail_IMAG21_332bb25b-c77d-477f-9979-5a8607ebd7a5.jpg\"\n" +
-                "\t\t\t}\n" +
-                "\t\t}";
+        List<UserCommentResponseDTO> commentResponseDTOS = userService.getUserCommentAll(authUserId);
 
-        JSONArray jsonArray = new JSONArray();
-        JSONParser jsonParser = new JSONParser();
+        //데이터가 없으면 No Content
+        if(commentResponseDTOS.isEmpty()){
+            return responseService.getDataResponse(commentResponseDTOS,CustomSuccessStatus.RESPONSE_NO_CONTENT);
+        }
 
-        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
-        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
-
-        jsonArray.add(jsonObj1);
-        jsonArray.add(jsonObj2);
-
-        return responseService.getDataResponse(jsonArray,CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(commentResponseDTOS,CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
     /*관심 웹툰 조회*/
@@ -80,49 +66,19 @@ public class UserInteractionController {
     })
     @GetMapping("/{user-id}/webtoons")
     public DataResponse<Object>  findUserWebtoon(
-            @PathVariable("user-id") long userId) throws Exception{
+            @PathVariable("user-id") long userId,
+            @RequestParam(name = "day",required = false) Integer dayId){
 
-        String temp1 = "{\n" +
-                "\t\t\t\t\"id\": 1,\n" +
-                "\t\t\t\t\"name\": \"호랑이형님\",\n" +
-                "\t\t\t\t\"authors\": [\n" +
-                "\t\t\t\t\t{\n" +
-                "\t\t\t\t\t\t\"id\": 1, \n" +
-                "\t\t\t\t\t\t\"name\": \"이상규\"\n" +
-                "\t\t\t\t\t}\n" +
-                "\t\t\t\t],\n" +
-                "\t\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/650305/thumbnail/thumbnail_IMAG21_3631086797392995425.jpg\",\n" +
-                "\t\t\t\t\"status\": {\n" +
-                "\t\t\t\t\t\"id\": 1,\n" +
-                "\t\t\t\t\t\"status\": \"연재중\"\n" +
-                "\t\t\t\t}\n" +
-                "\t\t\t}";
-        String temp2 = "{\n" +
-                "\t\t\t\t\"id\": 2,\n" +
-                "\t\t\t\t\"name\": \"내일\",\n" +
-                "\t\t\t\t\"authors\": [\n" +
-                "\t\t\t\t\t{\n" +
-                "\t\t\t\t\t\t\"id\": 3, \n" +
-                "\t\t\t\t\t\t\"name\": \"라마\"\n" +
-                "\t\t\t\t\t}\n" +
-                "\t\t\t\t],\n" +
-                "\t\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/695796/thumbnail/thumbnail_IMAG21_332bb25b-c77d-477f-9979-5a8607ebd7a5.jpg\",\n" +
-                "\t\t\t\t\"status\": {\n" +
-                "\t\t\t\t\t\"id\": 2,\n" +
-                "\t\t\t\t\t\"status\": \"완결\"\n" +
-                "\t\t\t\t}\n" +
-                "\t\t\t}";
+        long authUserId = 1L;
 
-        JSONArray jsonArray = new JSONArray();
-        JSONParser jsonParser = new JSONParser();
+        List<WebtoonInfoDTO> webtoonInfoDTOS = userService.getUserWebtoonAll(authUserId, dayId);
 
-        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
-        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
+        //조회된 데이터가 없으면 No Content
+        if(webtoonInfoDTOS.isEmpty()){
+            return responseService.getDataResponse(webtoonInfoDTOS, CustomSuccessStatus.RESPONSE_NO_CONTENT);
+        }
 
-        jsonArray.add(jsonObj1);
-        jsonArray.add(jsonObj2);
-
-        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(webtoonInfoDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
 
     }
 
@@ -135,8 +91,12 @@ public class UserInteractionController {
     })
     @DeleteMapping("/{user-id}/webtoons")
     public CommonResponse deleteUserWebtoon(
-            @PathVariable("user-id") long userId
-    ){
+            @PathVariable("user-id") long userId,
+            @RequestBody IdLongMultiSelectRequestDTO idLongMultiSelectRequestDTO){
+
+        long authUserId = 1L;
+
+        userService.deleteUserWebtoon(authUserId,idLongMultiSelectRequestDTO.getId());
 
         return responseService.getSuccessResponse();
     }
@@ -153,7 +113,10 @@ public class UserInteractionController {
             @PathVariable("user-id") long userId,
             @RequestBody GenreRequestDTO genreRequestDTO){
 
-        log.info(genreRequestDTO.getId().toString());
+        long authUserId = 1L;
+
+        userService.selectLikeGenre(authUserId,genreRequestDTO.getId());
+
         return responseService.getSuccessResponse();
     }
 
@@ -171,7 +134,9 @@ public class UserInteractionController {
             @RequestBody WebtoonRequestDTO webtoonRequestDTO){
 
 
-        log.info(webtoonRequestDTO.getId().toString());
+        long authUserId = 1L;
+
+        userService.selectLikeWebtoon(authUserId,webtoonRequestDTO.getId());
 
         return responseService.getSuccessResponse();
     }

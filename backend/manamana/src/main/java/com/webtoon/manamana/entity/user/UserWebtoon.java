@@ -36,4 +36,10 @@ public class UserWebtoon extends BaseTimeEntity {
     private boolean isDeleted;
 
 
+    public void removeUserWebtoon(){
+
+        this.isLiked = false;
+
+    }
+
 }

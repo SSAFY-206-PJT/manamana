@@ -2,6 +2,7 @@ package com.webtoon.manamana.entity.webtoon;
 
 
 import com.webtoon.manamana.config.entity.BaseTimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,8 +28,8 @@ public class Webtoon extends BaseTimeEntity {
     private String plot;
     @Column(name = "grade_id")
     private int gradeId;
-    @Column(name = "serial_id")
-    private int serialId;
+    @Column(name = "status_id")
+    private int statusId;
     @Column(name = "webtoon_url")
     private String webtoonUrl;
 
@@ -51,5 +52,10 @@ public class Webtoon extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "webtoon")
     private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "webtoon")
+    private List<Author> authors = new ArrayList<>();
+
+
 
 }
