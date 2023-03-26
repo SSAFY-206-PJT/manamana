@@ -56,6 +56,10 @@ public class Webtoon extends BaseTimeEntity {
     @OneToMany(mappedBy = "webtoon")
     private List<Author> authors = new ArrayList<>();
 
+    @OneToMany(mappedBy= "webtoon")
+    private List<WebtoonDay> webtoonDays = new ArrayList<>();
+
+
 
 
 }

@@ -56,6 +56,8 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
 
+    public final ListPath<WebtoonDay, QWebtoonDay> webtoonDays = this.<WebtoonDay, QWebtoonDay>createList("webtoonDays", WebtoonDay.class, QWebtoonDay.class, PathInits.DIRECT2);
+
     public final StringPath webtoonId = createString("webtoonId");
 
     public final StringPath webtoonUrl = createString("webtoonUrl");
