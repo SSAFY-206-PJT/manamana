@@ -2,6 +2,7 @@ package com.webtoon.manamana.entity.webtoon;
 
 
 import com.webtoon.manamana.entity.webtoon.codetable.Genre;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,6 +1,7 @@
 package com.webtoon.manamana.entity.user;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

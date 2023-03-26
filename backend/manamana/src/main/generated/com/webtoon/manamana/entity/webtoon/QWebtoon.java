@@ -24,6 +24,8 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
 
     public final com.webtoon.manamana.config.entity.QBaseTimeEntity _super = new com.webtoon.manamana.config.entity.QBaseTimeEntity(this);
 
+    public final ListPath<Author, QAuthor> authors = this.<Author, QAuthor>createList("authors", Author.class, QAuthor.class, PathInits.DIRECT2);
+
     public final StringPath colorHsl = createString("colorHsl");
 
     public final ListPath<Comment, QComment> comment = this.<Comment, QComment>createList("comment", Comment.class, QComment.class, PathInits.DIRECT2);
@@ -45,14 +47,16 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
 
     public final QWebtoonProvider providerId;
 
-    public final NumberPath<Integer> serialId = createNumber("serialId", Integer.class);
-
     public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
+
+    public final NumberPath<Integer> statusId = createNumber("statusId", Integer.class);
 
     public final NumberPath<Integer> totalEp = createNumber("totalEp", Integer.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
+
+    public final ListPath<WebtoonDay, QWebtoonDay> webtoonDays = this.<WebtoonDay, QWebtoonDay>createList("webtoonDays", WebtoonDay.class, QWebtoonDay.class, PathInits.DIRECT2);
 
     public final StringPath webtoonId = createString("webtoonId");
 

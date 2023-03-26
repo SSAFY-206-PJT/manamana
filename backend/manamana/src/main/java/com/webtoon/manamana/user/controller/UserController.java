@@ -7,6 +7,8 @@ import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.user.dto.request.UserUpdateRequestDTO;
+import com.webtoon.manamana.user.dto.response.UserResponseDTO;
+import com.webtoon.manamana.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserService userService;
     private final ResponseService responseService;
 
     /*회원 정보 조회*/
@@ -36,26 +39,15 @@ public class UserController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/{user-id}")
-    public DataResponse<Object> findUser(
-            @PathVariable("user-id") long userId) throws Exception{
+    public DataResponse<UserResponseDTO> findUser(
+            @PathVariable("user-id") long userId){
 
-        String temp = "{\n" +
-                "\t\t\"id\" : 1, \n" +
-                "\t\t\"email\" : \"test@gmail.com\",\n" +
-                "\t\t\"nickname\" : \"test\", \n" +
-                "\t\t\"imagePath\" : \"/test/test.jpg\",\n" +
-                "\t\t\"gender\" : \"남\", \n" +
-                "\t\t\"age\" : 27,\n" +
-                "\t\t\"likeCount\" : 0,\n" +
-                "\t\t\"scoreCount\" : 3 \n" +
-                "\t}";
+        // TODO : oauth2 기능 완성 후 수정필요.
+        long authUserId = 1L;
 
-        JSONParser jsonParser = new JSONParser();
+        UserResponseDTO userResponseDTO = userService.getUser(authUserId);
 
-        JSONObject jsonObj = (JSONObject) jsonParser.parse(temp);
-
-
-        return responseService.getDataResponse(jsonObj, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(userResponseDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
 
@@ -72,6 +64,12 @@ public class UserController {
             @RequestPart("data") UserUpdateRequestDTO userUpdateRequestDTO,
             @RequestPart(value = "userImg",required = false) MultipartFile multipartFile){
 
+        // TODO : oauth2 기능 완성 후 수정필요.
+        // TODO : 파일 처리 필요.
+        long authUserId = 1L;
+
+        userService.updateUser(userId, userUpdateRequestDTO, multipartFile);
+
         return responseService.getSuccessResponse();
     }
 //
@@ -86,6 +84,10 @@ public class UserController {
     public CommonResponse deleteUser(
             @PathVariable("user-id") long userId){
 
+        // TODO : 인증토큰의 ID와 PathVariable의 ID가 같은지 확인.
+        long authUserId = 1L;
+
+        userService.removeUser(authUserId);
 
         return responseService.getSuccessResponse();
     }
