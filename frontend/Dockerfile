@@ -7,15 +7,11 @@ ENV APP_HOME=/usr/app
 
 WORKDIR $APP_HOME
 
-COPY ./.next ./.next
+RUN npm install -g yarn
 
-COPY ./next.config.js ./next.config.js
+COPY . .
 
-COPY ./package.json ./package.json
-COPY ./public ./public
-COPY ./pages ./pages
-
-RUN npm install
+RUN yarn install
 #어떤 포트에서 listen할지
 EXPOSE 3000
 
