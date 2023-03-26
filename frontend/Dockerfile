@@ -7,8 +7,6 @@ ENV APP_HOME=/usr/app
 
 WORKDIR $APP_HOME
 
-RUN npm install -g yarn
-
 COPY . .
 
 RUN yarn install
