@@ -1,4 +1,4 @@
-package com.webtoon.manamana.webtoon.repository;
+package com.webtoon.manamana.webtoon.repository.webtoon;
 
 import com.querydsl.core.QueryFactory;
 import com.querydsl.core.types.Order;

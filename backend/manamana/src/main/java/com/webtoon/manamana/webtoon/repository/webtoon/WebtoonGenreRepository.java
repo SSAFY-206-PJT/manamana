@@ -1,4 +1,4 @@
-package com.webtoon.manamana.webtoon.repository;
+package com.webtoon.manamana.webtoon.repository.webtoon;
 
 import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.entity.webtoon.WebtoonGenreId;

@@ -26,7 +26,7 @@ public class QReport extends EntityPathBase<Report> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> user_id = createNumber("user_id", Long.class);
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
     public QReport(String variable) {
         this(Report.class, forVariable(variable), INITS);

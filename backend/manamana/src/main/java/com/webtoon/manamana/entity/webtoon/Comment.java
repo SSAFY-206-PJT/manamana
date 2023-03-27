@@ -70,4 +70,9 @@ public class Comment extends BaseTimeEntity {
     public void removeComment(){
         this.isDeleted = true;
     }
+
+    //신고수 증가
+    public void commentReport(){
+        this.report++;
+    }
 }
