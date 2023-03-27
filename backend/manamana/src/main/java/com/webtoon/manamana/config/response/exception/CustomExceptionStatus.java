@@ -42,6 +42,9 @@ public enum CustomExceptionStatus {
     ALREADY_LIKE_WEBTOON(false, 400, "이미 관심등록 된 웹툰입니다."),
     NOT_FOUND_SCORE(false, 400, "이전에 평가한 점수가 없습니다."),
 
+    /*S3관련*/
+    FILE_SAVE_FAIL(false, 400, "파일 저장에 실패했습니다."),
+
 
     ;
     private final boolean isSuccess;

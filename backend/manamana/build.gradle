@@ -34,6 +34,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	//AWS
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 	//queryDSL 설정
 	implementation "com.querydsl:querydsl-core"
 	implementation "com.querydsl:querydsl-jpa"
@@ -43,7 +46,7 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"  // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
 
 	//스웨거 설정
-	implementation 'io.springfox:springfox-boot-starter:3.0.0';
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
 }
 
