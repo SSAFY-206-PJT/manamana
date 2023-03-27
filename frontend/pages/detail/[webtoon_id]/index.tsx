@@ -425,7 +425,11 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 };
 
-// 관심등록
+/**
+ * 관심등록
+ * @param webtoon_id 웹툰 아이디
+ * @returns
+ */
 const likeWebtoonAPI = async (webtoon_id: number) => {
   // const DETAIL_URL = process.env.API_URL;
   const DETAIL_URL = 'https://j8b206.p.ssafy.io/api';
@@ -437,7 +441,11 @@ const likeWebtoonAPI = async (webtoon_id: number) => {
   }
 };
 
-// 관심등록 해제
+/**
+ * 관심등록 해제
+ * @param webtoon_id 웹툰 아이디
+ * @returns
+ */
 const unLikeWebtoonAPI = async (webtoon_id: number) => {
   // const DETAIL_URL = process.env.API_URL;
   const DETAIL_URL = 'https://j8b206.p.ssafy.io/api';
