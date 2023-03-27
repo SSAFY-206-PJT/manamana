@@ -1,6 +1,7 @@
 package com.webtoon.manamana.webtoon.service.addition;
 
 import com.webtoon.manamana.webtoon.dto.request.ScoreRequestDTO;
+import com.webtoon.manamana.webtoon.dto.response.addition.ScoreResponseDTO;
 
 public interface WebtoonAdditionService {
 
@@ -14,11 +15,9 @@ public interface WebtoonAdditionService {
     //TODO : 워드클라우드 기능은 보류
 
     /*개인이 평가한 평점*/
-    ScoreRequestDTO getWebtoonUserScore(long userId,long webtoonId);
+    ScoreResponseDTO getWebtoonUserScore(long userId, long webtoonId);
 
-    /*작품 평점 생성*/
+    /*작품 평점 생성 및 수정*/
     void createWebtoonUserScore(long userId,long webtoonId,int score);
 
-    /*작품 평점 수정*/
-    void updateWebtoonUserScore(long userId,long webtoonId,int score);
 }

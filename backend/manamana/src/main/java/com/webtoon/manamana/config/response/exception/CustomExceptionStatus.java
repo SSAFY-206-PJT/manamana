@@ -26,6 +26,7 @@ public enum CustomExceptionStatus {
 
     /*웹툰 관련*/
     NOT_FOUNT_WEBTOON(false, 400, "해당하는 웹툰이 없습니다."),
+    NOT_FOUNT_WEBTOON_ADDITION(false, 400,"잘못된 접근입니다."),
 
     /*웹툰 제공자 관련*/
     BAD_PROVIDER_REQUEST(false, 400, "잘못된 웹툰 제공자 요청입니다."),
@@ -36,6 +37,10 @@ public enum CustomExceptionStatus {
 
     /*신고 관련*/
     ALREADY_REPORT_COMMENT(false, 400,"이미 신고한 댓글입니다."),
+
+    /*관심 등록 관련*/
+    ALREADY_LIKE_WEBTOON(false, 400, "이미 관심등록 된 웹툰입니다."),
+    NOT_FOUND_SCORE(false, 400, "이전에 평가한 점수가 없습니다."),
 
 
     ;

@@ -31,6 +31,20 @@ public class UserWebtoonRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
+
+    //유저 관심등록 테이블 조회 - 관심등록 상관 없이 조회.
+    public Optional<UserWebtoon> findUserWebtoonByUserAndWebtoon(long userId, long webtoonId){
+
+        QUserWebtoon userWebtoon = QUserWebtoon.userWebtoon;
+
+        return Optional.ofNullable(
+                queryFactory
+                        .selectFrom(userWebtoon)
+                        .where(userWebtoon.isDeleted.eq(false), userWebtoon.user.id.eq(userId),userWebtoon.webtoon.id.eq(webtoonId))
+                        .fetchOne()
+        );
+    }
+
     // fetchCount()는 deprecated 됨
     /*웹툰 좋아요 한 갯수*/
     public Long findUserWebtoonLikeCount(User user){
