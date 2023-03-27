@@ -1,6 +1,8 @@
 package com.webtoon.manamana.recommand.service;
 
+import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
+
 public interface RecommandService {
 
-    void recommandUserWebtoon();
+    RecommandWebtoonResponseDTO recommandUserWebtoon() throws Exception;
 }

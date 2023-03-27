@@ -9,8 +9,8 @@ import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
+import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
 import com.webtoon.manamana.recommand.service.RecommandService;
-import com.webtoon.manamana.webtoon.dto.response.WebtoonListDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -46,8 +46,9 @@ public class RecommandController {
     @GetMapping("/recommands")
     public DataResponse<Object> recommandUserWebtoon() throws Exception{
 
-        recommandService.recommandUserWebtoon();
+        RecommandWebtoonResponseDTO recommandWebtoonResponseDTO = recommandService.recommandUserWebtoon();
 
+        /*
         String temp1 = "{\n" +
                 "\t\t\t\t\t\"id\": 1,\n" +
                 "\t\t\t\t\t\"name\": \"1초\",\n" +
@@ -82,6 +83,8 @@ public class RecommandController {
         jsonArray.add(jsonObj2);
 
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+        */
+        return responseService.getDataResponse(recommandWebtoonResponseDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
 
