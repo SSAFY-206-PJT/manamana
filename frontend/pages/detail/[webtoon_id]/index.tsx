@@ -1,14 +1,14 @@
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { Rating } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { GetServerSideProps } from 'next';
 
 import WebtoonItem from '@/components/common/WebtoonItem';
 import ConfirmBtn from '@/components/confirmBtn';
+import GoSee from '@/components/pages/detail/GoSee';
 import CommentIcon from '@/public/images/Comment_List.svg';
 import Heart from '@/public/images/Heart.svg';
 
@@ -45,33 +45,6 @@ interface Webtoon {
   };
 }
 
-// 더미 웹툰 정보
-// const ddwebtoon: Webtoon = {
-//   id: 1,
-//   name: '1초',
-//   imagePath:
-//     'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-//   plot: plot2,
-//   grade: '전체이용가',
-//   status: '연재중',
-//   webtoonUrl: 'https://m.comic.naver.com/webtoon/list?titleId=725586',
-//   webtoonId: 123,
-//   startDate: new Date('2019-03-14'),
-//   totalEpisode: 123,
-//   colorHsl: '0,100,20',
-//   authors: [
-//     { id: 1, name: '시니' },
-//     { id: 2, name: '광운' },
-//   ],
-//   genres: [{ id: 1, name: '드라마' }],
-//   days: [{ id: 1, codeId: 5 }],
-//   additions: {
-//     view: 123123,
-//     scoreCount: 12,
-//     scoreAverage: '4.5',
-//   },
-// };
-
 interface Props {
   webtoon: Webtoon | null;
 }
@@ -80,7 +53,6 @@ function DetailPage({ webtoon }: Props) {
   if (webtoon === null) {
     return <div>axios error</div>;
   } else {
-    console.log('123123');
     const router = useRouter();
 
     // 그라데이션 스타일
@@ -165,34 +137,9 @@ function DetailPage({ webtoon }: Props) {
           onClose={() => {
             setOpenModal(false);
           }}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
         >
-          <div className="absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 rounded bg-white p-4">
-            <p className="mb-2 whitespace-nowrap">클릭시 해당 플랫폼으로 이동 합니다</p>
-            <div className="flex justify-evenly">
-              {/* 네이버웹툰 */}
-              <div className="inline-block">
-                <Link href={webtoon.webtoonUrl} target="_blank">
-                  <img className="h-12 w-12" src="/images/Naver_Webtoon_Logo.png"></img>
-                  <button className="text-sm font-bold">보러가기</button>
-                </Link>
-              </div>
-              {/* 카카오웹툰 */}
-              <div className="inline-block">
-                <Link href={webtoon.webtoonUrl} target="_blank">
-                  <img className="h-12 w-12" src="/images/Kakao_Webtoon_Logo.png"></img>
-                  <button className="text-sm font-bold">보러가기</button>
-                </Link>
-              </div>
-              {/* 카카오페이지 */}
-              <div className="inline-block">
-                <Link href={webtoon.webtoonUrl} target="_blank">
-                  <img className="h-12 w-12" src="/images/Kakao_Page_Logo.png"></img>
-                  <button className="text-sm font-bold">보러가기</button>
-                </Link>
-              </div>
-            </div>
+          <div>
+            <GoSee webtoonProvider={webtoon.webtoonUrl} />
           </div>
         </Modal>
       </div>
@@ -254,20 +201,17 @@ function DetailPage({ webtoon }: Props) {
       setAfterRating(true);
     };
     const goComment = () => {
-      router.push(
-        {
-          pathname: `/detail/${webtoon.id}/comment`,
-          query: {
-            WEBTOON_THEME_COLOR,
-            imagePath: webtoon.imagePath,
-            name: webtoon.name,
-          },
+      router.push({
+        pathname: `/detail/${webtoon.id}/comment`,
+        query: {
+          WEBTOON_THEME_COLOR,
+          imagePath: webtoon.imagePath,
+          name: webtoon.name,
         },
-        // `/detail/${webtoon_id}/comment`,
-      );
+      });
     };
 
-    // 기존 평점
+    // 현재 평점
     const scoreDiv = (
       <div>
         <div className="flex justify-center">
@@ -423,7 +367,7 @@ function DetailPage({ webtoon }: Props) {
         <div style={coverStyle} className="absolute h-auto w-full">
           <div className="m-3 flex h-12 justify-between">
             <img src="/images/HeaderBar_Back.png" alt="goBack" onClick={() => router.back()}></img>
-            <button className=" h-full" onClick={likeInput}>
+            <button className="h-full" onClick={likeInput}>
               {likeWebtoon ? (
                 <Heart width="100%" height="100%" fill="red" stroke="red" />
               ) : (
@@ -451,14 +395,34 @@ function DetailPage({ webtoon }: Props) {
 
 export default DetailPage;
 
+// api
+// detail 정보
 export const getServerSideProps: GetServerSideProps = async context => {
+  // const DETAIL_URL = 'https://j8b206.p.ssafy.io/api';
+  const DETAIL_URL = process.env.API_URL;
   const { webtoon_id } = context.query;
-  const DETAIL_URL = `https://j8b206.p.ssafy.io/api/webtoons/${webtoon_id}`;
+  const URL = `/webtoons/${webtoon_id}`;
   try {
-    const res = await axios.get(DETAIL_URL);
+    const res = await axios.get(DETAIL_URL + URL);
     const webtoon = res.data.result;
     return { props: { webtoon } };
   } catch (error) {
     return { props: { webtoon: null } };
   }
 };
+
+// 좋아요
+
+// 사용자 평점 가져오기
+// const getUserScore = async (webtoon_id: number) => {
+//   const APIURL = 'https://j8b206.p.ssafy.io/api';
+//   const URL = `/webtoons/${webtoon_id}/scores`;
+//   try {
+//     const res = await axios.get(APIURL + URL);
+//     return res.data.result.score;
+//   } catch (error) {
+//     return null;
+//   }
+// };
+
+// 평점 입력
