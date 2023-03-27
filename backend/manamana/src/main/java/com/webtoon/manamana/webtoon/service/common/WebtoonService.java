@@ -1,4 +1,4 @@
-package com.webtoon.manamana.webtoon.service;
+package com.webtoon.manamana.webtoon.service.common;
 
 import com.webtoon.manamana.entity.webtoon.WebtoonProvider;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;

@@ -1,4 +1,4 @@
-package com.webtoon.manamana.webtoon.service;
+package com.webtoon.manamana.webtoon.service.addition;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class WebtoonCommentServiceImpl implements WebtoonCommentService{
+public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
 }

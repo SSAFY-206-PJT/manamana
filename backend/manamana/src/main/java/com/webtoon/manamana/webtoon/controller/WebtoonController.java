@@ -1,16 +1,12 @@
 package com.webtoon.manamana.webtoon.controller;
 
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
-import com.webtoon.manamana.webtoon.dto.response.*;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
-import com.webtoon.manamana.webtoon.service.WebtoonService;
+import com.webtoon.manamana.webtoon.service.common.WebtoonService;
 import com.webtoon.manamana.webtoon.util.WebtoonListFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

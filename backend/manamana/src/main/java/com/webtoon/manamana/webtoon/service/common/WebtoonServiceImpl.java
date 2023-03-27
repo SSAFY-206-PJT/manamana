@@ -1,11 +1,10 @@
-package com.webtoon.manamana.webtoon.service;
+package com.webtoon.manamana.webtoon.service.common;
 
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.entity.webtoon.WebtoonProvider;
-import com.webtoon.manamana.entity.webtoon.codetable.Genre;
 import com.webtoon.manamana.entity.webtoon.codetable.Grade;
 import com.webtoon.manamana.entity.webtoon.codetable.SerialStatus;
 import com.webtoon.manamana.util.repository.*;
@@ -21,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class WebtoonServiceImpl implements WebtoonService{
 
