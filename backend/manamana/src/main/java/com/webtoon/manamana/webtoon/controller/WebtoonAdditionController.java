@@ -7,6 +7,7 @@ import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
+import com.webtoon.manamana.webtoon.service.addition.WebtoonAdditionServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class WebtoonAdditionController {
 
     private final ResponseService responseService;
+    private final WebtoonAdditionServiceImpl webtoonAdditionService;
 
     /*댓글 신고*/
     @Tag(name = "웹툰 추가 기능")
@@ -41,11 +43,12 @@ public class WebtoonAdditionController {
     @PatchMapping("/{webtoon-id}/comments/{comment-id}/report")
     public CommonResponse reportComment(
             @PathVariable("webtoon-id") long webtoonId,
-            @PathVariable("comment-id") long commentId
-    ){
+            @PathVariable("comment-id") long commentId){
 
+        long authUserId = 1L;
+        
+        webtoonAdditionService.commentReport(authUserId,webtoonId,commentId);
 
-        log.info("[신고 확인] - webtoon-id : {} , comment-id : {}", webtoonId,commentId);
         return responseService.getSuccessResponse();
     }
 

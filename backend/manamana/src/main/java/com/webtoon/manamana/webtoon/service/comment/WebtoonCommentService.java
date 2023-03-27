@@ -1,8 +1,8 @@
 package com.webtoon.manamana.webtoon.service.comment;
 
 import com.webtoon.manamana.webtoon.dto.request.CommentRequestDTO;
-import com.webtoon.manamana.webtoon.dto.response.Comment.CommentDTO;
-import com.webtoon.manamana.webtoon.dto.response.Comment.CommentListDTO;
+import com.webtoon.manamana.webtoon.dto.response.comment.CommentDTO;
+import com.webtoon.manamana.webtoon.dto.response.comment.CommentListDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

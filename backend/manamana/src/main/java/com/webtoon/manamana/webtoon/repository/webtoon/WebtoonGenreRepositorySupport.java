@@ -1,4 +1,4 @@
-package com.webtoon.manamana.webtoon.repository;
+package com.webtoon.manamana.webtoon.repository.webtoon;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.manamana.entity.webtoon.QWebtoonGenre;

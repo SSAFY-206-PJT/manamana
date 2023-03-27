@@ -7,6 +7,7 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.SortHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -26,5 +27,14 @@ public class WebConfig implements WebMvcConfigurer {
         pageableArgumentResolver.setFallbackPageable(PageRequest.of(1,12));
         argumentResolvers.add(pageableArgumentResolver);
 
+    }
+
+    // TODO : 추후에 지워야됨, 또한 시큐리티 사용시 바꿔야됨.
+    /*CORS 처리*/
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET","POST","PATCH","DELETE");
     }
 }

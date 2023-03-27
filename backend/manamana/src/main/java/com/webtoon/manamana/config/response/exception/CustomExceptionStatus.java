@@ -32,6 +32,10 @@ public enum CustomExceptionStatus {
 
     /*댓글 관련*/
     NOT_FOUNT_COMMENT(false, 400, "해당하는 댓글을 찾을 수 없습니다."),
+    BAD_COMMENT_REQUEST(false,400,"잘못된 댓글 접근입니다."),
+
+    /*신고 관련*/
+    ALREADY_REPORT_COMMENT(false, 400,"이미 신고한 댓글입니다."),
 
 
     ;

@@ -1,4 +1,4 @@
-package com.webtoon.manamana.webtoon.repository;
+package com.webtoon.manamana.webtoon.repository.comment;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.manamana.entity.user.QUser;
@@ -22,6 +22,20 @@ public class CommentRepositorySupport extends QuerydslRepositorySupport {
     public CommentRepositorySupport(JPAQueryFactory queryFactory) {
         super(Comment.class);
         this.queryFactory = queryFactory;
+    }
+
+    //신고할 댓글 조회 - 자신이 아닌것
+    public Optional<Comment> findCommentNotUser(long userId, long commentId){
+
+        QComment comment = QComment.comment;
+
+        return Optional.ofNullable(
+                queryFactory
+                        .selectFrom(comment)
+                        .where(comment.isDeleted.eq(false),comment.id.eq(commentId),comment.user.id.ne(userId))
+                        .fetchOne()
+        );
+
     }
 
     //유저가 작성한 댓글 목록

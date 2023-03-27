@@ -1,6 +1,5 @@
-package com.webtoon.manamana.webtoon.dto.response.Comment;
+package com.webtoon.manamana.webtoon.dto.response.comment;
 
-import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import com.webtoon.manamana.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;

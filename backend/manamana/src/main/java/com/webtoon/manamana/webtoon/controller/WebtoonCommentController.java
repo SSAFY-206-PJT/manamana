@@ -1,16 +1,13 @@
 package com.webtoon.manamana.webtoon.controller;
 
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.webtoon.dto.request.CommentDeleteDTO;
 import com.webtoon.manamana.webtoon.dto.request.CommentRequestDTO;
-import com.webtoon.manamana.webtoon.dto.response.Comment.CommentDTO;
-import com.webtoon.manamana.webtoon.dto.response.Comment.CommentListDTO;
+import com.webtoon.manamana.webtoon.dto.response.comment.CommentDTO;
+import com.webtoon.manamana.webtoon.dto.response.comment.CommentListDTO;
 import com.webtoon.manamana.webtoon.service.comment.WebtoonCommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

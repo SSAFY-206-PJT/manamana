@@ -1,4 +1,4 @@
-package com.webtoon.manamana.webtoon.dto.response.Comment;
+package com.webtoon.manamana.webtoon.dto.response.comment;
 
 import com.webtoon.manamana.entity.webtoon.Comment;
 import lombok.Builder;

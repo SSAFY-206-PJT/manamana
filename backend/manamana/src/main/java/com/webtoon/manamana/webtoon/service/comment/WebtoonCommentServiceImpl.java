@@ -1,17 +1,16 @@
 package com.webtoon.manamana.webtoon.service.comment;
 
 import com.webtoon.manamana.config.response.exception.CustomException;
-import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.webtoon.Comment;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.user.repository.user.UserRepository;
 import com.webtoon.manamana.webtoon.dto.request.CommentRequestDTO;
-import com.webtoon.manamana.webtoon.dto.response.Comment.CommentDTO;
-import com.webtoon.manamana.webtoon.dto.response.Comment.CommentListDTO;
-import com.webtoon.manamana.webtoon.repository.CommentRepository;
-import com.webtoon.manamana.webtoon.repository.CommentRepositorySupport;
-import com.webtoon.manamana.webtoon.repository.WebtoonRepository;
+import com.webtoon.manamana.webtoon.dto.response.comment.CommentDTO;
+import com.webtoon.manamana.webtoon.dto.response.comment.CommentListDTO;
+import com.webtoon.manamana.webtoon.repository.comment.CommentRepository;
+import com.webtoon.manamana.webtoon.repository.comment.CommentRepositorySupport;
+import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
