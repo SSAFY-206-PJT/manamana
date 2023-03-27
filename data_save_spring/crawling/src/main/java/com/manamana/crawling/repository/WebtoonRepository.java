@@ -17,4 +17,6 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, Long> {
 
     Optional<Webtoon> findByWebtoonIdAndProviderId(String webtoonId, WebtoonProvider ProviderId);
 
+    Optional<Webtoon> findByName(String name);
+
 }

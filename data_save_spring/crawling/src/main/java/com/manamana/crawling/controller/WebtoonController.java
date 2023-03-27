@@ -1,12 +1,10 @@
 package com.manamana.crawling.controller;
 
-import com.manamana.crawling.dto.WebtoonDataDTO;
+import com.manamana.crawling.config.response.CommonResponse;
 import com.manamana.crawling.dto.WebtoonDataArrayDTO;
-import com.manamana.crawling.entity.webtoon.Webtoon;
 import com.manamana.crawling.service.WebtoonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,5 +27,11 @@ public class WebtoonController {
         webtoonService.webtoonsData(webtoonDataArrayDTO);
         return 1L;
     }
+
+//    @PostMapping("/temp")
+//    public void temp() {
+//        webtoonService.temp();
+//        return 1L;
+//    }
 
 }

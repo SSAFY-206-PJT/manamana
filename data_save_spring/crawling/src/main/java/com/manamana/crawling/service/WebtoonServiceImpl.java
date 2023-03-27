@@ -1,6 +1,7 @@
 package com.manamana.crawling.service;
 
 import com.manamana.crawling.entity.webtoon.*;
+import com.manamana.crawling.entity.webtoon.codetable.DayCode;
 import com.manamana.crawling.entity.webtoon.codetable.Genre;
 import com.manamana.crawling.repository.*;
 import com.manamana.crawling.dto.WebtoonDataDTO;
@@ -30,6 +31,7 @@ public class WebtoonServiceImpl implements WebtoonService {
     private final DayCodeRepository dayCodeRepository;
     private final WebtoonDayRepository webtoonDayRepository;
     private final AuthorRepository authorRepository;
+    private final WebtoonAdditionRepository webtoonAdditionRepository;
 
     // 웹툰 데이터 리스트 처리
     public void webtoonsData(WebtoonDataArrayDTO webtoonDataArrayDTO) {
@@ -40,9 +42,9 @@ public class WebtoonServiceImpl implements WebtoonService {
             saveGenre(webtoon, w);
             saveDay(webtoon, w);
             saveAuthor(webtoon, w);
+            saveAddition(webtoon);
         });
     }
-
 
     // 웹툰 저장
     private Webtoon saveWebtoon(int provider, WebtoonDataDTO webtoonDataDTO) {
@@ -67,35 +69,41 @@ public class WebtoonServiceImpl implements WebtoonService {
         WebtoonProvider webtoonProvider = webtoonProviderRepository.findById(provider).orElseThrow();
 
         Optional<Webtoon> findedWebtoon = webtoonRepository.findByWebtoonIdAndProviderId(webtoonId, webtoonProvider);
+
         if (!findedWebtoon.isEmpty()) {
             Webtoon updatedWebtoon = findedWebtoon.get();
             updatedWebtoon.updateName(webtoonDataDTO.getName().trim());
             updatedWebtoon.updateImagePath(webtoonDataDTO.getImage().trim());
             updatedWebtoon.updatePlot(webtoonDataDTO.getPlot().trim());
             updatedWebtoon.updateGradeId(gradeId);
-            updatedWebtoon.updateSerialId(statusId);
+            updatedWebtoon.updateStatusId(statusId);
             updatedWebtoon.updateWebtoonUrl(webtoonDataDTO.getWebtoon_url().trim());
             updatedWebtoon.updateStartDate(startDate);
             updatedWebtoon.updateTotalEp(webtoonDataDTO.getTotal_ep());
             updatedWebtoon.updateColorHsl(webtoonDataDTO.getColorHsl().trim());
             return updatedWebtoon;
         }
+        Optional<Webtoon> webtoonByName = webtoonRepository.findByName(webtoonDataDTO.getName());
+        if (webtoonByName.isEmpty()) {
+            Webtoon webtoon = Webtoon.builder()
+                    .name(webtoonDataDTO.getName().trim())
+                    .imagePath(webtoonDataDTO.getImage())
+                    .plot(webtoonDataDTO.getPlot().trim())
+                    .gradeId(gradeId)
+                    .statusId(statusId)
+                    .webtoonUrl(webtoonDataDTO.getWebtoon_url().trim())
+                    .webtoonId(webtoonId)
+                    .startDate(startDate)
+                    .totalEp(webtoonDataDTO.getTotal_ep())
+                    .colorHsl(webtoonDataDTO.getColorHsl().trim())
+                    .isDeleted(false)
+                    .providerId(webtoonProvider)
+                    .build();
+            return webtoonRepository.save(webtoon);
+        }
+        return webtoonByName.orElseThrow();
 
-        Webtoon webtoon = Webtoon.builder()
-                .name(webtoonDataDTO.getName().trim())
-                .imagePath(webtoonDataDTO.getImage())
-                .plot(webtoonDataDTO.getPlot().trim())
-                .gradeId(gradeId)
-                .serialId(statusId)
-                .webtoonUrl(webtoonDataDTO.getWebtoon_url().trim())
-                .webtoonId(webtoonId)
-                .startDate(startDate)
-                .totalEp(webtoonDataDTO.getTotal_ep())
-                .colorHsl(webtoonDataDTO.getColorHsl().trim())
-                .isDeleted(false)
-                .providerId(webtoonProvider)
-                .build();
-        return webtoonRepository.save(webtoon);
+
     }
 
     // 장르 저장
@@ -154,8 +162,13 @@ public class WebtoonServiceImpl implements WebtoonService {
         // 입력받은 요일에 맞는 요일 아이디를 저장할 리스트 (요일 아이디)
         List<Integer> dayIdArr = webtoonDataDTO.getDay_arr().stream()
                 .map(d -> {
-                    return dayCodeRepository.findByDay(d).get().getId();
+                    Optional<DayCode> dayCode = dayCodeRepository.findByDay(d);
+                    if (dayCode.isEmpty()) {
+                        return 8;
+                    }
+                    return dayCode.get().getId();
                 })
+                .distinct()
                 .collect(Collectors.toList());
 
         // 삭제할 요일 리스트 (요일 아이디)
@@ -228,4 +241,22 @@ public class WebtoonServiceImpl implements WebtoonService {
         authorRepository.deleteAllInBatch(deleteAuthors);
 
     }
+
+    private void saveAddition(Webtoon webtoon) {
+        WebtoonAddition webtoonAddition = WebtoonAddition.builder()
+                .view(0)
+                .totalScore(0)
+                .scoreCount(0)
+                .webtoon(webtoon)
+                .build();
+
+        webtoonAdditionRepository.save(webtoonAddition);
+    }
+
+//    public ResponseWebtoonDTO temp() {
+//
+//
+//    }
+
+
 }

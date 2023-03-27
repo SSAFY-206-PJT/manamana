@@ -34,10 +34,11 @@ public class Webtoon extends BaseTimeEntity {
     @Column(name = "grade_id")
     private int gradeId;
 
-    @Column(name = "serial_id")
-    private int serialId;
+    @Column(name = "status_id")
+    private int statusId;
 
-    @Column(name = "webtoon_url")    private String webtoonUrl;
+    @Column(name = "webtoon_url")
+    private String webtoonUrl;
 
     @Column(name = "webtoon_id")
     private String webtoonId;
@@ -62,13 +63,13 @@ public class Webtoon extends BaseTimeEntity {
 //    private List<Comment> comment = new ArrayList<>();
 
     @Builder
-    public Webtoon(long id, String name, String imagePath, String plot, int gradeId, int serialId, String webtoonUrl, String webtoonId, LocalDate startDate, int totalEp, String colorHsl, boolean isDeleted, WebtoonProvider providerId) {
+    public Webtoon(long id, String name, String imagePath, String plot, int gradeId, int statusId, String webtoonUrl, String webtoonId, LocalDate startDate, int totalEp, String colorHsl, boolean isDeleted, WebtoonProvider providerId) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
         this.plot = plot;
         this.gradeId = gradeId;
-        this.serialId = serialId;
+        this.statusId = statusId;
         this.webtoonUrl = webtoonUrl;
         this.webtoonId = webtoonId;
         this.startDate = startDate;
@@ -98,8 +99,8 @@ public class Webtoon extends BaseTimeEntity {
         this.gradeId = gradeId;
     }
 
-    public void updateSerialId(int serialId) {
-        this.serialId = serialId;
+    public void updateStatusId(int serialId) {
+        this.statusId = statusId;
     }
 
     public void updateWebtoonUrl(String webtoonUrl) {

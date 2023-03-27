@@ -1,6 +1,8 @@
 package com.manamana.crawling.dto;
 
 
+import com.manamana.crawling.entity.webtoon.Webtoon;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +25,5 @@ public class WebtoonDataDTO {
     private List<String> day_arr;
     private List<String> authors_arr;
     private String colorHsl;
-
 
 }
