@@ -14,9 +14,4 @@ import java.util.List;
 public class RecommandWebtoonResponseDTO {
 
     private List<ApiResponseDTO> result;
-
-    @Builder
-    public RecommandWebtoonResponseDTO(List<ApiResponseDTO> result) {
-        this.result = result;
-    }
 }
