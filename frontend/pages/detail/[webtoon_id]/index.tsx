@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Rating } from '@mui/material';
@@ -64,9 +64,23 @@ function DetailPage({ webtoon }: Props) {
 
     // 좋아요
     const [likeWebtoon, setLikeWebtoon] = useState<boolean>(false);
-    const likeInput = () => {
-      // api 요청 후
-      setLikeWebtoon(!likeWebtoon);
+    const likeInput = async () => {
+      if (!likeWebtoon) {
+        const res = await likeWebtoonAPI(webtoon.id);
+        if (res.isSuccess) {
+          setLikeWebtoon(true);
+        } else {
+          alert(res.message);
+        }
+      } else {
+        const res = await unLikeWebtoonAPI(webtoon.id);
+        console.log(res);
+        if (res.isSuccess) {
+          setLikeWebtoon(false);
+        } else {
+          alert(res.message);
+        }
+      }
     };
 
     // 줄거리
@@ -411,7 +425,33 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 };
 
-// 좋아요
+// 관심등록
+const likeWebtoonAPI = async (webtoon_id: number) => {
+  // const DETAIL_URL = process.env.API_URL;
+  const DETAIL_URL = 'https://j8b206.p.ssafy.io/api';
+  try {
+    const res = await axios.patch(DETAIL_URL + `/webtoons/${webtoon_id}/like`);
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+// 관심등록 해제
+const unLikeWebtoonAPI = async (webtoon_id: number) => {
+  // const DETAIL_URL = process.env.API_URL;
+  const DETAIL_URL = 'https://j8b206.p.ssafy.io/api';
+  try {
+    const res = await axios.delete(DETAIL_URL + `/users/1/webtoons`, {
+      data: {
+        id: [webtoon_id],
+      },
+    });
+    return res.data;
+  } catch (erorr) {
+    return null;
+  }
+};
 
 // 사용자 평점 가져오기
 // const getUserScore = async (webtoon_id: number) => {
