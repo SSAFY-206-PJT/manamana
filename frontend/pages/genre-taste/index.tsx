@@ -48,6 +48,7 @@ export default function GenreTastePage() {
       value: 'SF',
     },
     {
+      
       value: 'BL',
     },
   ];
