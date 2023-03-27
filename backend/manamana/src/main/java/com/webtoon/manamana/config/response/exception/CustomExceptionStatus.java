@@ -28,7 +28,10 @@ public enum CustomExceptionStatus {
     NOT_FOUNT_WEBTOON(false, 400, "해당하는 웹툰이 없습니다."),
 
     /*웹툰 제공자 관련*/
-    BAD_PROVIDER_REQUEST(false, 400, "잘못된 웹툰 제공자 요청입니다.")
+    BAD_PROVIDER_REQUEST(false, 400, "잘못된 웹툰 제공자 요청입니다."),
+
+    /*댓글 관련*/
+    NOT_FOUNT_COMMENT(false, 400, "해당하는 댓글을 찾을 수 없습니다."),
 
 
     ;

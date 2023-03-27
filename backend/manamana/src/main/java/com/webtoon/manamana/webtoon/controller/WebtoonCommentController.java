@@ -9,6 +9,9 @@ import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.webtoon.dto.request.CommentDeleteDTO;
 import com.webtoon.manamana.webtoon.dto.request.CommentRequestDTO;
+import com.webtoon.manamana.webtoon.dto.response.Comment.CommentDTO;
+import com.webtoon.manamana.webtoon.dto.response.Comment.CommentListDTO;
+import com.webtoon.manamana.webtoon.service.comment.WebtoonCommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -17,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //TODO : 전부 더미데이터라 바꿔야됨.
 
@@ -32,6 +37,7 @@ public class WebtoonCommentController {
 
 
     private final ResponseService responseService;
+    private final WebtoonCommentService webtoonCommentService;
 
 
     /*댓글 전체 조회*/
@@ -42,50 +48,19 @@ public class WebtoonCommentController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/{webtoon-id}/comments")
-    public DataResponse<Object> commentList(
+    public DataResponse<List<CommentListDTO>> commentList(
             @PathVariable("webtoon-id") long webtoonId,
-            Pageable pageable) throws Exception{
+            Pageable pageable){
 
+
+        long authUserId = 1;
         log.info("page = {}, size = {}", pageable.getOffset(), pageable.getPageSize());
+        List<CommentListDTO> commentListDTOS = webtoonCommentService.findCommentAll(authUserId, webtoonId, pageable);
 
-        String temp1 = "{\n" +
-                "\t\t\t\"id\": 1,\n" +
-                "\t\t\t\"content\": \"댓글 내용입니다.\",\n" +
-                "\t\t\t\"isSpoiler\": true,\n" +
-                "\t\t\t\"report\": 0,\n" +
-                "\t\t\t\"createTime\": \"2023.03.13\",\n" +
-                "\t\t\t\"user\": {\n" +
-                "\t\t\t\t\"id\": 1,\n" +
-                "\t\t\t\t\"nickname\": \"test\",\n" +
-                "\t\t\t\t\"imagePath\": \"url\"\n" +
-                "\t\t\t}\n" +
-                "\t\t}";
+        if(commentListDTOS.isEmpty()) return responseService.getDataResponse(commentListDTOS,CustomSuccessStatus.RESPONSE_NO_CONTENT);
 
-        String temp2 = "{\n" +
-                "\t\t\t\"id\": 2,\n" +
-                "\t\t\t\"content\": \"댓글 내용입니다222.\",\n" +
-                "\t\t\t\"isSpoiler\": false,\n" +
-                "\t\t\t\"report\": 0,\n" +
-                "\t\t\t\"createTime\": \"2023.03.12\",\n" +
-                "\t\t\t\"user\": {\n" +
-                "\t\t\t\t\"id\": 2,\n" +
-                "\t\t\t\t\"nickname\": \"test2222\",\n" +
-                "\t\t\t\t\"imagePath\": \"url12312\"\n" +
-                "\t\t\t}\n" +
-                "\t\t}";
 
-        JSONArray jsonArray = new JSONArray();
-        JSONParser jsonParser = new JSONParser();
-
-        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
-        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
-
-        jsonArray.add(jsonObj1);
-        jsonArray.add(jsonObj2);
-
-        log.info("[댓글 전체 조회 확인] - webtoon-id : {} ", webtoonId);
-
-        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(commentListDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
     /*댓글 작성*/
@@ -96,24 +71,15 @@ public class WebtoonCommentController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @PostMapping("/{webtoon-id}/comments")
-    public DataResponse<Object> commentCreate(
+    public DataResponse<CommentDTO> commentCreate(
             @PathVariable("webtoon-id") long webtoonId,
-            @RequestBody CommentRequestDTO commentRequestDTO
-            )throws Exception{
+            @RequestBody CommentRequestDTO commentRequestDTO){
 
-        String temp = "{\n" +
-                "\t\t\"id\": 2,\n" +
-                "\t\t\"content\" : \""+commentRequestDTO.getContent()+"\",\n" +
-                "\t\t\"isSpoiler\" : "+commentRequestDTO.isSpoiler()+ "\n" +
-                "\t}";
+        int authUserId = 1;
 
-        JSONParser jsonParser = new JSONParser();
+        CommentDTO comment = webtoonCommentService.createComment(authUserId, webtoonId, commentRequestDTO);
 
-        JSONObject jsonObj = (JSONObject) jsonParser.parse(temp);
-
-        log.info("[댓글 작성 확인] - webtoon-id : {}", webtoonId);
-
-        return responseService.getDataResponse(jsonObj,CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(comment,CustomSuccessStatus.RESPONSE_SUCCESS);
 
     }
 
@@ -127,25 +93,16 @@ public class WebtoonCommentController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @PatchMapping("/{webtoon-id}/comments/{comment-id}")
-    public DataResponse<Object> updateComment(
+    public DataResponse<CommentDTO> updateComment(
             @PathVariable("webtoon-id") long webtoonId,
             @PathVariable("comment-id") long commentId,
-            @RequestBody CommentRequestDTO commentRequestDTO
-    ) throws Exception{
-        String temp = "{\n" +
-                "\t\t\"id\":" +commentId+",\n" +
-                "\t\t\"content\" : \""+commentRequestDTO.getContent()+"\",\n" +
-                "\t\t\"isSpoiler\" : "+commentRequestDTO.isSpoiler()+ "\n" +
-                "\t}";
+            @RequestBody CommentRequestDTO commentRequestDTO) {
 
-        JSONParser jsonParser = new JSONParser();
+        int authUserId = 1;
 
-        JSONObject jsonObj = (JSONObject) jsonParser.parse(temp);
+        CommentDTO commentDTO = webtoonCommentService.updateComment(authUserId, webtoonId, commentId, commentRequestDTO);
 
-        log.info("[댓글 수정 확인] - webtoon-id : {} , comment-id : {}", webtoonId,commentId);
-
-
-        return responseService.getDataResponse(jsonObj,CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(commentDTO,CustomSuccessStatus.RESPONSE_SUCCESS);
 
     }
 
@@ -159,11 +116,13 @@ public class WebtoonCommentController {
     @DeleteMapping("/{webtoon-id}/comments")
     public CommonResponse deleteComment(
             @PathVariable("webtoon-id") long webtoonId,
-            @RequestBody CommentDeleteDTO commentDeleteDTO
-            ){
+            @RequestBody CommentDeleteDTO commentDeleteDTO){
 
-        log.info(commentDeleteDTO.getId().toString());
-        log.info("[신고 확인] - webtoon-id : {}", webtoonId);
+        int authUserId = 1;
+
+        webtoonCommentService.removeComment(authUserId,webtoonId,commentDeleteDTO.getId());
+
+
         return responseService.getSuccessResponse();
 
     }
