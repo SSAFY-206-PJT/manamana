@@ -11,6 +11,12 @@ const nextConfig = {
         port: '',
         pathname: '/i/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'image-comic.pstatic.net',
+        port: '',
+        pathname: '/webtoon/**',
+      },
     ],
   },
   webpack: config => {
