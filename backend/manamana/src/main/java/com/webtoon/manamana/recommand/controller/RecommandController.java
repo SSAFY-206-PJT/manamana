@@ -9,6 +9,8 @@ import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
+import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
+import com.webtoon.manamana.recommand.service.RecommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,6 +18,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 // TODO : 더미데이터로 만든 테스트용이라 수정 필요.
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/webtoons")
 public class RecommandController {
 
+    private final RecommandService recommandService;
     private final ResponseService responseService;
 
     /*추천 알고리즘을 통한 웹툰 조회*/
@@ -41,6 +46,9 @@ public class RecommandController {
     @GetMapping("/recommands")
     public DataResponse<Object> recommandUserWebtoon() throws Exception{
 
+        RecommandWebtoonResponseDTO recommandWebtoonResponseDTO = recommandService.recommandUserWebtoon();
+
+        /*
         String temp1 = "{\n" +
                 "\t\t\t\t\t\"id\": 1,\n" +
                 "\t\t\t\t\t\"name\": \"1초\",\n" +
@@ -75,6 +83,8 @@ public class RecommandController {
         jsonArray.add(jsonObj2);
 
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+        */
+        return responseService.getDataResponse(recommandWebtoonResponseDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
 
