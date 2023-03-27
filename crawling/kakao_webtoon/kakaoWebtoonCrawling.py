@@ -189,8 +189,6 @@ def crawling(driver, day_string, f):
         except Exception as e:
             print(e)
             miss.append(url[idx+1:])
-        if count == 3:
-            break
     print("done:",count)
     print("fail:", len(miss))
     print("miss:",miss)
