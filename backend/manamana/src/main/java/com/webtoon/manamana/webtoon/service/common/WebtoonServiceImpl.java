@@ -15,7 +15,7 @@ import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
-import com.webtoon.manamana.webtoon.util.WebtoonListFilter;
+import com.webtoon.manamana.webtoon.util.WebtoonFilterDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -41,9 +41,9 @@ public class WebtoonServiceImpl implements WebtoonService{
     private final WebtoonGenreRepositorySupport webtoonGenreRepositorySupport;
     /*웹툰 전체 조회*/
     @Override
-    public List<WebtoonListDTO> findWebtoonAll(WebtoonListFilter webtoonListFilter, Pageable pageable) {
+    public List<WebtoonListDTO> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable) {
 
-        List<Webtoon> webtoonAll = webtoonRepositorySupport.findWebtoonAll(webtoonListFilter, pageable);
+        List<Webtoon> webtoonAll = webtoonRepositorySupport.findWebtoonAll(webtoonFilterDTO, pageable);
 
         //웹툰 연재 상태 코드표 조회
         List<SerialStatus> serialStatuses = statusCodeRepository.findAll();

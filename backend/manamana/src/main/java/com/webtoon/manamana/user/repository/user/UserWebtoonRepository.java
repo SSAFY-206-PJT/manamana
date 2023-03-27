@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface UserWebtoonRepository extends JpaRepository<UserWebtoon, UserWebtoonId> {
 
-
     Optional<UserWebtoon> findByUserAndIsDeletedFalseAndIsLikedTrue(User user);
 }

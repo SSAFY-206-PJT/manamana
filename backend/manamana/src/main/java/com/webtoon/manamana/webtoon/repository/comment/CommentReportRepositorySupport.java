@@ -27,7 +27,7 @@ public class CommentReportRepositorySupport extends QuerydslRepositorySupport {
         return Optional.ofNullable(
                 queryFactory
                         .selectFrom(report)
-                        .where(report.userId.eq(commentId),report.comment.id.eq(commentId))
+                        .where(report.userId.eq(userId),report.comment.id.eq(commentId))
                         .fetchOne()
 
         );
