@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from '@emotion/styled';
+import { GetServerSideProps } from 'next';
 
 type User = {
   id: number;
@@ -191,11 +192,14 @@ export default function ProfilePage({ userData }: any) {
   );
 }
 
-export const getServerSideProps: any = async () => {
+export const getServerSideProps: GetServerSideProps = async context => {
+  // const { user_id } = context.query;
+  const user_id = 1; // 로그인 구현 전이라 임시로 user_id 설정
   try {
-    const response = await axios.get('https://j8b206.p.ssafy.io/api/users/1');
+    const response = await axios.get(`https://j8b206.p.ssafy.io/api/users/${user_id}`);
     const userData: User = response.data.result;
     console.log(userData);
+    // console.log(context);
     return {
       props: { userData },
     };
