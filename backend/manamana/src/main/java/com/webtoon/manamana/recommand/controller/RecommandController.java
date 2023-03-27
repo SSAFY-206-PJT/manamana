@@ -9,6 +9,7 @@ import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
+import com.webtoon.manamana.recommand.dto.response.ApiResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
 import com.webtoon.manamana.recommand.service.RecommandService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,9 +45,9 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/recommands")
-    public DataResponse<Object> recommandUserWebtoon() throws Exception{
+    public DataResponse<List<ApiResponseDTO>> recommandUserWebtoon() throws Exception{
 
-        RecommandWebtoonResponseDTO recommandWebtoonResponseDTO = recommandService.recommandUserWebtoon();
+        List<ApiResponseDTO> apiResponseDTOS = recommandService.recommandUserWebtoon();
 
         /*
         String temp1 = "{\n" +
@@ -84,7 +85,7 @@ public class RecommandController {
 
         return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
         */
-        return responseService.getDataResponse(recommandWebtoonResponseDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(apiResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
 

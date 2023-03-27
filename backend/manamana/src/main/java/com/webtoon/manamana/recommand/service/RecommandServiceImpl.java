@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.xml.bind.v2.TODO;
 import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
+import com.webtoon.manamana.recommand.dto.response.ApiResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
 import com.webtoon.manamana.webtoon.dto.response.AuthorDTO;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.List;
 public class RecommandServiceImpl implements RecommandService {
 
     @Override
-    public RecommandWebtoonResponseDTO recommandUserWebtoon() throws Exception {
+    public List<ApiResponseDTO> recommandUserWebtoon() throws Exception {
 
         /*
             TODO : DB에서 데이터 가져오는 로직, Exception 던졌던거 다시 처리
@@ -66,7 +67,6 @@ public class RecommandServiceImpl implements RecommandService {
                 .days("금")
                 .build();
 
-
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -84,8 +84,8 @@ public class RecommandServiceImpl implements RecommandService {
         System.out.println(response.getStatusCode());
         System.out.println(response.getBody());
 
-        RecommandWebtoonResponseDTO recommandWebtoonResponseDTO = objectMapper.readValue(response.getBody(), RecommandWebtoonResponseDTO.class);
+        List<ApiResponseDTO> apiResponseDTOS = objectMapper.readValue(response.getBody(), RecommandWebtoonResponseDTO.class).getResult();
 
-        return recommandWebtoonResponseDTO;
+        return apiResponseDTOS;
     }
 }

@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class RecommandWebtoonResponseDTO {
 
     private List<ApiResponseDTO> result;
