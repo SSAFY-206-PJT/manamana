@@ -1,5 +1,9 @@
 package com.webtoon.manamana.user.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
@@ -25,13 +29,19 @@ import com.webtoon.manamana.webtoon.repository.comment.CommentRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.webtoon.manamana.config.aws.AwsDirectoryName.PROFILE_IMAGE;
+import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.*;
 import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.NOT_FOUNT_USER;
 
 @RequiredArgsConstructor
@@ -48,6 +58,13 @@ public class UserServiceImpl implements UserService{
     private final GenreCodeRepository genreCodeRepository;
     private final WebtoonRepository webtoonRepository;
     private final WebtoonGenreRepository webtoonGenreRepository;
+
+    //aws 업로드
+    private final AmazonS3Client amazonS3Client;
+
+    //s3 버킷명
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
     //TODO : jwt로 받은 유저ID와 pathvariable로 받은 유저ID가 같은지 처리하는 로직 필요. - 별도의 메서드로 만들어서 공통처리하도록.
 
@@ -80,11 +97,23 @@ public class UserServiceImpl implements UserService{
         //유저 조회
         User user = userCheck(userId);
 
+        String updateFilePath = "";
+
         //TODO : 파일 업로드 처리 로직 필요.
+        if(file != null){
+            updateFilePath = saveFile(userId, file);
+
+            //DTO에 파일 경로 저장
+            userUpdateRequestDTO.setUserImage(updateFilePath);
+        }
+
 
         //유저 업데이트
         user.updateUser(userUpdateRequestDTO);
+
+
     }
+
 
     /*회원 탈퇴*/
     @Transactional
@@ -145,7 +174,7 @@ public class UserServiceImpl implements UserService{
         //관심 웹툰 조회
         webtoonIds.forEach(id -> {
             UserWebtoon userWebtoon = userWebtoonRepository.findByUserAndIsDeletedFalseAndIsLikedTrue(user)
-                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_USER_WEBTOON));
+                    .orElseThrow(() -> new CustomException(NOT_FOUND_USER_WEBTOON));
 
             userWebtoon.removeUserWebtoon();
         });
@@ -163,7 +192,7 @@ public class UserServiceImpl implements UserService{
 
             //선택된 장르들을 하나씩 조회.
             Genre genre = genreCodeRepository.findById(id)
-                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_GENRE));
+                    .orElseThrow(() -> new CustomException(NOT_FOUNT_GENRE));
 
 
             //해당 장르를 유저가 전에 선택했는지 확인.
@@ -191,7 +220,7 @@ public class UserServiceImpl implements UserService{
         webtoonIds.forEach(id -> {
             //해당 웹툰 조회
             Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(id)
-                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
+                    .orElseThrow(() -> new CustomException(NOT_FOUNT_WEBTOON));
 
             List<WebtoonGenre> webtoonGenres = webtoonGenreRepository.findByWebtoonId(webtoon.getId());
 
@@ -217,5 +246,41 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findByIdAndIsDeletedFalse(userId)
                 .orElseThrow(() -> new CustomException(NOT_FOUNT_USER));
         return user;
+    }
+
+    /*S3 파일 저장.*/
+    private String saveFile(long userId, MultipartFile file) {
+        String storageFileUrl;
+
+        //저장에 필요한 메타데이터
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(file.getContentType());
+        objectMetadata.setContentLength(file.getSize());
+
+        //유저가 업로드한 파일의 이름
+        String originFileName = file.getOriginalFilename();
+
+        //확장자 추출
+        int index = originFileName.lastIndexOf(".");
+        String ext = originFileName.substring(index+1);
+
+        //저장할 이름
+        String storeFileName = UUID.randomUUID().toString() + "." + ext;
+
+        //파일 저장위치
+        String key = PROFILE_IMAGE + userId + "/" + storeFileName;
+
+        try (InputStream inputStream = file.getInputStream()) {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        }
+        catch(IOException e){
+
+            throw new CustomException(FILE_SAVE_FAIL);
+        }
+
+        storageFileUrl = amazonS3Client.getUrl(bucket,key).toString();
+
+        return storageFileUrl;
     }
 }
