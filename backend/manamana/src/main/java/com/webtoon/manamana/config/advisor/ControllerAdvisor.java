@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.cdi.Eager;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class ControllerAdvisor {
     private final ResponseService responseService;
 
 
+    @ExceptionHandler
     //커스텀 예외 처리 - 커스텀 예외를 먼저 처리하도록 둠.
     public CommonResponse exceptionHandler(CustomException e){
 
@@ -36,6 +38,7 @@ public class ControllerAdvisor {
 
 
     //커스텀 예외로 확인되지 않은 모든 런타임 예외
+    @ExceptionHandler
     public CommonResponse exceptionHandler(RuntimeException e){
 
 

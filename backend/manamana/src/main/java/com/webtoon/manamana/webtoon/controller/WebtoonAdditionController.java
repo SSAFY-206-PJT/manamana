@@ -7,6 +7,8 @@ import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
+import com.webtoon.manamana.webtoon.dto.request.ScoreRequestDTO;
+import com.webtoon.manamana.webtoon.dto.response.addition.ScoreResponseDTO;
 import com.webtoon.manamana.webtoon.service.addition.WebtoonAdditionServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,6 +34,7 @@ public class WebtoonAdditionController {
 
     private final ResponseService responseService;
     private final WebtoonAdditionServiceImpl webtoonAdditionService;
+    
 
     /*댓글 신고*/
     @Tag(name = "웹툰 추가 기능")
@@ -46,7 +49,7 @@ public class WebtoonAdditionController {
             @PathVariable("comment-id") long commentId){
 
         long authUserId = 1L;
-        
+
         webtoonAdditionService.commentReport(authUserId,webtoonId,commentId);
 
         return responseService.getSuccessResponse();
@@ -61,15 +64,17 @@ public class WebtoonAdditionController {
     })
     @PatchMapping("/{webtoon-id}/like")
     public CommonResponse likeComment(
-            @PathVariable("webtoon-id") long webtoonId
-    ){
+            @PathVariable("webtoon-id") long webtoonId){
 
+        long authUserId = 1L;
         log.info("[관심등록 확인] - webtoon-id : {} ", webtoonId);
+        webtoonAdditionService.createLikeWebtoon(authUserId,webtoonId);
 
         return responseService.getSuccessResponse();
     }
 
     /*댓글 워드 클라우드*/
+    //TODO : 기능 보류
     @Tag(name = "웹툰 추가 기능")
     @Operation(summary = "댓글 워드 클라우드", description =  "댓글 워드 클라우드 기능")
     @ApiResponses({
@@ -80,7 +85,6 @@ public class WebtoonAdditionController {
     public DataResponse<Object> wordCloudComment(
             @PathVariable("webtoon-id") long webtoonId
     )throws Exception{
-
 
 
         String temp1 = "{\n" +
@@ -116,15 +120,12 @@ public class WebtoonAdditionController {
             @PathVariable("webtoon-id") long webtoonId
     ) throws Exception{
         log.info("[개인이 평가한 평점 확인] - webtoon-id : {} ", webtoonId);
+        
+        long authUserId = 1L;
 
-        String temp = "{\n" +
-                "\t\t\t\t\"score\": 5\n" +
-                "\t\t}";
-        JSONParser jsonParser = new JSONParser();
+        ScoreResponseDTO webtoonUserScore = webtoonAdditionService.getWebtoonUserScore(authUserId, webtoonId);
 
-        JSONObject jsonObj = (JSONObject) jsonParser.parse(temp);
-
-        return responseService.getDataResponse(jsonObj,CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(webtoonUserScore,CustomSuccessStatus.RESPONSE_SUCCESS);
 
     }
 
@@ -138,30 +139,14 @@ public class WebtoonAdditionController {
     @PostMapping("/{webtoon-id}/scores")
     public CommonResponse createWebtoonScore(
             @PathVariable("webtoon-id") long webtoonId,
-            @RequestBody Map<String,Integer> requestMap){
+            @RequestBody ScoreRequestDTO scoreRequestDTO){
 
+        long authUserId = 1L;
+        log.info("[작품 평점 생성 확인] - webtoon-id : {}, score : {}", webtoonId, scoreRequestDTO.getScore());
 
-        log.info("[작품 평점 생성 확인] - webtoon-id : {}, score : {}", webtoonId, requestMap.get("score"));
-
-        return responseService.getSuccessResponse();
-    }
-
-
-    /*작품 평점 수정.*/
-    @Tag(name = "웹툰 추가 기능")
-    @Operation(summary = "개인 평점 수정", description =  "개인 평점 수정 기능")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
-            @ApiResponse(responseCode = "400",description = "API 에러"),
-    })
-    @PatchMapping("/{webtoon-id}/scores")
-    public CommonResponse updateWebtoonScore(
-            @PathVariable("webtoon-id") long webtoonId,
-            @RequestBody Map<String,Integer> requestMap){
-
-        log.info("[작품 평점 수정 확인] - webtoon-id : {}, score : {}", webtoonId, requestMap.get("score"));
-
+        webtoonAdditionService.createWebtoonUserScore(authUserId,webtoonId,scoreRequestDTO.getScore());
 
         return responseService.getSuccessResponse();
     }
+
 }

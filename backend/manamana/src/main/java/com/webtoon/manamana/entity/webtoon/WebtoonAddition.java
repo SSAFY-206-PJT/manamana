@@ -27,5 +27,13 @@ public class WebtoonAddition extends BaseTimeEntity {
     private Webtoon webtoon;
 
 
+    //총 점수, 사람 업데이트
+    public void updateTotalScore(int score){
+        this.totalScore +=score;
+    }
+
+    public void updateScoreCount(){
+        this.scoreCount++;
+    }
 
 }
