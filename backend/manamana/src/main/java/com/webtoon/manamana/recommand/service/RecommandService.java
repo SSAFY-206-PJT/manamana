@@ -9,5 +9,5 @@ public interface RecommandService {
 
     List<RecommandWebtoonResponseDTO> recommandUserWebtoon() throws Exception;
 
-    void recommandAssociationWebtoon() throws Exception;
+    List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon() throws Exception;
 }

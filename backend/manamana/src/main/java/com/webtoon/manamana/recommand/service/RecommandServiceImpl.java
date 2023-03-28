@@ -1,6 +1,7 @@
 package com.webtoon.manamana.recommand.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.AssosiationApiRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.ApiResponseDTO;
@@ -80,7 +81,7 @@ public class RecommandServiceImpl implements RecommandService {
     }
 
     @Override
-    public void recommandAssociationWebtoon() throws Exception {
+    public  List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon() throws Exception {
 
         /*
             TODO : DB users_and_webtoons 테이블에서 모든 정보 가져와야함, Exception 던졌던거 처리
@@ -101,7 +102,7 @@ public class RecommandServiceImpl implements RecommandService {
                 AssosiationApiRequestDTO.builder()
                         .userId(2L)
                         .webtoonId(2L)
-                        .score(5)
+                        .score(3)
                         .build()
         );
 
@@ -109,7 +110,7 @@ public class RecommandServiceImpl implements RecommandService {
                 AssosiationApiRequestDTO.builder()
                         .userId(3L)
                         .webtoonId(1L)
-                        .score(2)
+                        .score(1)
                         .build()
         );
         /* 테스트용 */
@@ -128,13 +129,51 @@ public class RecommandServiceImpl implements RecommandService {
         // url 바꿔야함
         ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/test", HttpMethod.POST, entity, String.class);
 
-//        List<ApiResponseDTO> apiResponseDTOS = objectMapper.readValue(response.getBody(), RecommandWebtoonResponseDTO.class).getResult();
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
+
+        System.out.println(response.getBody());
+        System.out.println(assosiationWebtoonResponseDTOS.toString());
 
         /*
             TODO : 추천된 webtoon id로 DB접근해서 webtoon 정보 반환
          */
 
-        return ;
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
+
+        for (AssosiationWebtoonResponseDTO assosiationWebtoonResponseDTO : assosiationWebtoonResponseDTOS) {
+
+            /*
+                TODO : webtoonId별 웹툰정보 DB에서 가져와야함
+                TODO : 근데 웹툰마다 DB접근 10번이면
+             */
+
+            /* 테스트용 데이터 */
+            List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
+
+            apiAuthorDTOS.add(
+                    ApiAuthorDTO.builder()
+                            .id(1)
+                            .name("시니")
+                            .build()
+            );
+
+            apiAuthorDTOS.add(
+                    ApiAuthorDTO.builder()
+                            .id(2)
+                            .name("광운")
+                            .build()
+            );
+
+//            System.out.println(assosiationWebtoonResponseDTO.getWebtoonId());
+            recommandWebtoonResponseDTOS.add(RecommandWebtoonResponseDTO.builder()
+                    .id(assosiationWebtoonResponseDTO.getWebtoonId())
+                    .name("1초")
+                    .imagePath("image")
+                    .authors(apiAuthorDTOS)
+                    .build());
+            /* 테스트용 데이터 */
+        }
+
+        return recommandWebtoonResponseDTOS;
     }
 }

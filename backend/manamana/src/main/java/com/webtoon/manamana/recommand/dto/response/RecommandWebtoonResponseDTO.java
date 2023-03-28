@@ -11,10 +11,19 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class RecommandWebtoonResponseDTO {
 
     private long id;
     private String name;
     private String imagePath;
     private List<ApiAuthorDTO> authors;
+
+    @Builder
+    public RecommandWebtoonResponseDTO(long id, String name, String imagePath, List<ApiAuthorDTO> authors) {
+        this.id = id;
+        this.name = name;
+        this.imagePath = imagePath;
+        this.authors = authors;
+    }
 }

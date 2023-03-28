@@ -61,9 +61,11 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/{webtoon-id}/recommands")
-    public DataResponse<Object> recommandAssociationWebtoon(
+    public DataResponse< List<RecommandWebtoonResponseDTO>> recommandAssociationWebtoon(
             @PathVariable("webtoon-id") long webtoonId) throws Exception{
 
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandAssociationWebtoon();
+/*
         String temp1 = "{\n" +
                 "\t\t\t\t\t\"id\": 1,\n" +
                 "\t\t\t\t\t\"name\": \"1초\",\n" +
@@ -96,8 +98,9 @@ public class RecommandController {
 
         jsonArray.add(jsonObj1);
         jsonArray.add(jsonObj2);
+ */
 
-        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 //
     /*취향 월드컵 조회*/
