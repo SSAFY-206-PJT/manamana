@@ -1,21 +1,26 @@
 import Image from "next/image";
 
+interface Data{
+    key: number,
+    value: string
+}
+
 interface Props {
-    tagName: string,
-    deleteTag: (value: string) => void
+    tagData: Data,
+    deleteTag: (data: Data) => void
 }
 
 
 export default function SearchTag(props: Props) {
 
     const ondeleteTagClick = () => {
-        props.deleteTag(props.tagName);
+        props.deleteTag(props.tagData);
     }
 
     return (
         <div className="flex justify-center items-center gap-2 bg-PrimaryLight text-FontPrimaryDark pl-2 pr-2 pt-1 pb-1 rounded-xl">
             <div className="inline-block">
-                {props.tagName}
+                {props.tagData.value}
             </div>
             <div className="inline-block" onClick={ondeleteTagClick}>
                 <Image

@@ -10,11 +10,6 @@ body {
     height: 100vh;
 }
 
-#__next {
-    height: 100vh;
-}
-
-
 @font-face {
     font-family: 'SUIT-Regular';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');

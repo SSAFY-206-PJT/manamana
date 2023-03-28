@@ -1,11 +1,15 @@
 import { useState } from "react";
 
+interface Data {
+    key: number,
+    value: string
+}
+
 interface Props {
-    value: string;
+    value: Data;
     status: boolean;
-    key: string;
-    selectBlock: (value: string) => void;
-    unSelectBlock: (value: string) => void;
+    selectBlock: (data :Data) => void;
+    unSelectBlock: (data: Data) => void;
 }
 
 export default function PublishStateBlock(props: Props) {
@@ -16,11 +20,11 @@ export default function PublishStateBlock(props: Props) {
     *  */
     const onButtonClick = () => {
         if(!selectStatus){
-            props.selectBlock(props.value);
+            props.selectBlock({key: props.value.key, value: props.value.value});
             setSelectStatus(true);
         }
         else{
-            props.unSelectBlock(props.value);
+            props.unSelectBlock({key: props.value.key, value: props.value.value});
             setSelectStatus(false);
         }
     }
@@ -30,11 +34,11 @@ export default function PublishStateBlock(props: Props) {
             {
                 selectStatus ?
                     <button className="w-full h-12 rounded-md bg-SecondaryLight text-FontPrimaryDark text-center" onClick={onButtonClick}>
-                        {props.value}
+                        {props.value.value}
                     </button>
                     :
                     <button className="w-full h-12 rounded-md bg-BackgroundLightComponent text-FontPrimaryLight text-center" onClick={onButtonClick}>
-                        {props.value}
+                        {props.value.value}
                     </button>
             }
         </div>
