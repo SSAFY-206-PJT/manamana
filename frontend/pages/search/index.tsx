@@ -4,24 +4,38 @@ import SearchBar from '@/components/pages/search/SearchBar';
 import Image from 'next/image';
 import AngleDown from '../../public/images/fi-rs-angle-small-down.svg';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { withRouter } from 'next/router';
 import { RootState } from "../../store/index";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCurSearchOneTag } from '@/store/CurSearchTagSlice';
+import { deleteDayTag, deleteGenreTag, deleteGradeTag, deleteStatusTag } from '@/store/CurSearchTagSlice';
 import SearchTag from '@/components/pages/search/SearchTag';
 import Lottie from "react-lottie-player";
 import EmptyLottie from "../../public/lottie/51382-astronaut-light-theme.json";
-import axios from 'axios';
 import WebtoonItem from '@/components/common/WebtoonItem';
+import { getWebtoons } from '../api/webtoon';
 
-export default function SearchPage(props: any) {
+interface Data {
+  key: number,
+  value: string
+}
+
+export default function SearchPage() {
   const dispatch = useDispatch();
   const curSearchTag = useSelector((state: RootState) => state.searchTag);  // Redux에 있는 값
 
-  const [selectedTagListElement, setSelectedTagListElements] = useState<any | null>(null);  // Tag 정보를 이용하여 Element로 변환한 값 
+  const [selectedDaysElement, setSelectedDaysElement] = useState<any | null>(null);  // Tag 정보를 이용하여 Element로 변환한 값 
+  const [selectedGenresElement, setSelectedGenresElement] = useState<any | null>(null);  // Tag 정보를 이용하여 Element로 변환한 값 
+  const [selectedGradesElement, setSelectedGradesElement] = useState<any | null>(null);  // Tag 정보를 이용하여 Element로 변환한 값 
+  const [selectedStatusElement, setSelectedStatusElement] = useState<any | null>(null);  // Tag 정보를 이용하여 Element로 변환한 값 
+
   const [webtoonList, setWebtoonList] = useState<any[]>([]); // 웹툰 정보 리스트
   const [webtoonListElement, setWebtoonListElement] = useState<any | null>(null); // 웹툰 정보를 이용하여 Element로 변환한 값
+
+  const [searchText, setSearchText] = useState<string>('');
+  const [tempSearchText, setTempSearchText] = useState(searchText);
+
+  let pageNum = 0;
 
   /*
   * @Method
@@ -41,43 +55,116 @@ export default function SearchPage(props: any) {
 
   /*
   * @Method
-  * Seach Bar에 변화가 있을 시 서버와 통신할 수 있도록 호출되는 메소드
+  * Tag 삭제 버튼 클릭시 태그 삭제
   * */
-  const changeSearchContent = (content: string) => {
-
+  const deleteDay = (data: Data) => {
+    dispatch(deleteDayTag(data));
+    reloadTag();
   }
 
   /*
   * @Method
   * Tag 삭제 버튼 클릭시 태그 삭제
   * */
-  const deleteTag = (value: string) => {
-    dispatch(deleteCurSearchOneTag(value));
+  const deleteGenre = (data: Data) => {
+    dispatch(deleteGenreTag(data));
+    reloadTag();
+  }
+
+  /*
+  * @Method
+  * Tag 삭제 버튼 클릭시 태그 삭제
+  * */
+  const deleteGrade = (data: Data) => {
+    dispatch(deleteGradeTag(data));
+    reloadTag();
+  }
+
+  /*
+  * @Method
+  * Tag 삭제 버튼 클릭시 태그 삭제
+  * */
+  const deleteStatus = (data: Data) => {
+    dispatch(deleteStatusTag(data));
     reloadTag();
   }
 
   const reloadTag = () => {
-    return setSelectedTagListElements(curSearchTag.tags.map((v) => <SearchTag tagName={v} deleteTag={deleteTag} />));
+    console.dir(curSearchTag);
+    setSelectedDaysElement(
+      curSearchTag.days.map((v) => <SearchTag tagData={v} deleteTag={deleteDay} />)
+    );
+    setSelectedGenresElement(
+      curSearchTag.genres.map((v) => <SearchTag tagData={v} deleteTag={deleteGenre} />)
+    );
+    setSelectedGradesElement(
+      curSearchTag.grades.map((v) => <SearchTag tagData={v} deleteTag={deleteGrade} />)
+    );
+    setSelectedStatusElement(
+      curSearchTag.status.map((v) => <SearchTag tagData={v} deleteTag={deleteStatus} />)
+    );
+
   }
 
-  const onSearchBarChange = (message: string) => {
+  const onSearchBarChange = (e: ChangeEvent<HTMLInputElement>) => setTempSearchText(e.target.value);
 
-  }
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      return setSearchText(tempSearchText);
+    }, 300);
+
+    return () => clearTimeout(debounce);
+  }, [tempSearchText]);
+
+  useEffect(() => {
+    if (searchText !== '') {
+      // 각 세팅 + 검색어(searchText) 를 통해 웹툰을 검색한다.
+      getWebtoons({
+        keyword: searchText,
+        page: pageNum,   // 페이지 숫자
+        size: 12,   // 한 페이지에 몇 개를 받을 건지
+        sortType: 1,
+        statusId: curSearchTag.status.map((v) => v.key),
+        genreId: curSearchTag.genres.map((v) => v.key),
+        gradeId: curSearchTag.grades.map((v) => v.key),
+        dayId: curSearchTag.days.map((v) => v.key)
+      })
+        .then((res) => {
+          if (res != null) {
+            setWebtoonList(res);
+          }
+        });
+    }
+  }, [searchText]);
+
+  // useEffect(
+  //   () => {
+  //     reloadTag();
+  //   },
+  //   []
+  // )
 
   useEffect(
     () => {
       reloadTag();
-      console.log(props.data);
-      setWebtoonList(props.data);
+      // 필터값을 이용하여 웹툰을 검색한다.
+      getWebtoons({
+        keyword: '',
+        page: pageNum,   // 페이지 숫자
+        size: 12,   // 한 페이지에 몇 개를 받을 건지
+        sortType: 1,
+        statusId: curSearchTag.status.map((v) => v.key),
+        genreId: curSearchTag.genres.map((v) => v.key),
+        gradeId: curSearchTag.grades.map((v) => v.key),
+        dayId: curSearchTag.days.map((v) => v.key)
+      })
+        .then((res) => {
+          if (res != null) {
+            setWebtoonList(res);
+          }
+        });
     },
-    []
-  )
-
-  useEffect(
-    () => {
-      reloadTag();
-    },
-    [curSearchTag.tags]);
+    [curSearchTag]);
 
   useEffect(
     () => {
@@ -93,7 +180,7 @@ export default function SearchPage(props: any) {
     <div className='bg-BackgroundLight h-screen'>
       <Headerbar showBackBtn={true} pageName="탐색" rightBtn="EDIT" />
       <div className='bg-BackgroundLightComponent m-2 p-4 pb-2 rounded-2xl'>
-        <SearchBar sendData={changeSearchContent} onSearchBarChange={onSearchBarChange} />
+        <SearchBar onSearchBarChange={onSearchBarChange} />
         <div className='flex flex-row justify-between items-center'>
           <div className='font-bold text-xl pl-2 pr-2'>
             <span>전체</span>
@@ -121,7 +208,10 @@ export default function SearchPage(props: any) {
           </div>
         </div>
         <div className='flex flex- row flex-wrap gap-2 m-2'>
-          {selectedTagListElement}
+          {selectedDaysElement}
+          {selectedGenresElement}
+          {selectedGradesElement}
+          {selectedStatusElement}
         </div>
       </div>
       {webtoonList.length == 0 ?
@@ -136,14 +226,4 @@ export default function SearchPage(props: any) {
       <Navbar />
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  const response = await axios.get("https://j8b206.p.ssafy.io/api/webtoons");
-
-  return {
-    props: {
-      data: response.data.result
-    }
-  }
 }
