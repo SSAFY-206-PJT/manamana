@@ -1,19 +1,22 @@
 import WebtoonBreakLabel from './WebtoonBreakLabel';
 import WebtoonCompleteLabel from './WebtoonCompleteLabel';
+import { useRouter } from 'next/router';
 
 type Props = {
   imageUrl: string;
   webtoonName: string;
   status: string;
+  id: number;
 };
 
 export default function WebtoonItem(props: Props) {
   let imageUrl = props.imageUrl;
   let webtoonName = props.webtoonName;
   let status = props.status;
+  const router = useRouter();
 
   const onWebtoonClick = () => {
-    
+    router.push(`/detail/${props.id}`);
   };
 
   return (
