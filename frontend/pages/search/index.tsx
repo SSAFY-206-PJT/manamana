@@ -170,7 +170,7 @@ export default function SearchPage() {
     () => {
       setWebtoonListElement(
         webtoonList.map((data) => {
-          return <WebtoonItem imageUrl={data.imagePath} status={data.status} webtoonName={data.name} key={data.id} />
+          return <WebtoonItem id={data.id} imageUrl={data.imagePath} status={data.status} webtoonName={data.name} key={data.id} />
         })
       );
     },

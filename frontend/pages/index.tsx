@@ -153,6 +153,7 @@ export default function Home() {
             {myWebtoonDummy.map(webtoon => (
               <WebtoonItem
                 key={webtoon.id}
+                id={webtoon.id}
                 webtoonName={webtoon.name}
                 imageUrl={webtoon.imagePath}
                 status={webtoon.status}
@@ -217,6 +218,7 @@ export default function Home() {
             {myWebtoonDummy.map(webtoon => (
               <WebtoonItem
                 key={webtoon.id}
+                id={webtoon.id}
                 webtoonName={webtoon.name}
                 imageUrl={webtoon.imagePath}
                 status={webtoon.status}
@@ -233,6 +235,7 @@ export default function Home() {
             {myWebtoonDummy.map(webtoon => (
               <WebtoonItem
                 key={webtoon.id}
+                id={webtoon.id}
                 webtoonName={webtoon.name}
                 imageUrl={webtoon.imagePath}
                 status={webtoon.status}
