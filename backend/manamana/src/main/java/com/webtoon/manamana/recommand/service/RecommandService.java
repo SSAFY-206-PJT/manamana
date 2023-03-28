@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface RecommandService {
 
-    List<ApiResponseDTO> recommandUserWebtoon() throws Exception;
+    List<RecommandWebtoonResponseDTO> recommandUserWebtoon() throws Exception;
+
+    void recommandAssociationWebtoon() throws Exception;
 }

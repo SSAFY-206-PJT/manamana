@@ -10,9 +10,6 @@ import java.util.List;
 @Setter
 public class ApiResponseDTO {
 
-    private long id;
-    private String name;
-    private String imagePath;
-    private List<ApiAuthorDTO> authors;
+    private List<RecommandWebtoonResponseDTO> result;
 
 }
