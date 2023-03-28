@@ -7,11 +7,10 @@ import numpy as np
 
 
 # 웹툰 추천
-def recommand_webtoon(target_webtoon_id: int, data: list) -> list:
+def recommand_webtoon(data: list):
     """
     웹툰 추천
         ARGS:
-            target_webtoon_id: int
             data: list
     """
 
@@ -34,6 +33,17 @@ def recommand_webtoon(target_webtoon_id: int, data: list) -> list:
     corr = np.corrcoef(matrix) # 피어슨 상관계수 구하기
 
     webtoon_title = user_webtoon_score.columns
+    
+    return webtoon_title, corr
+
+def webtoons_recommand_top10(webtoon_title, corr, target_webtoon_id: int) -> list:
+    """
+    상위 10개 추출
+        ARGS:
+            webtoon_title
+            corr
+            target_webtoon_id: int
+    """
     webtoon_title_list = list(webtoon_title)
     coffey_hands = webtoon_title_list.index(target_webtoon_id)
     corr_coffey_hands = corr[coffey_hands]
