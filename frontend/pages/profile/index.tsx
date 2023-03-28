@@ -40,7 +40,7 @@ export default function ProfilePage({ userData }: any) {
   };
 
   // 회원정보 수정 axios
-  function axiosPatch() {
+  const axiosPatch = () => {
     let id = info.id;
     let nickname = info.nickname;
     let imagePath = info.imagePath;
@@ -57,12 +57,13 @@ export default function ProfilePage({ userData }: any) {
         },
       })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
+        alert('프로필 수정 완료');
       })
       .catch(error => {
         console.error(error);
       });
-  }
+  };
 
   // 저장 눌렀을 때 바뀐 정보 저장
   const changeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +76,8 @@ export default function ProfilePage({ userData }: any) {
   // 처음 프로필 페이지 들어오면 수정중이 아닌 상태
   useEffect(() => {
     setIsEditState(false);
-    console.log(userData);
+    // console.log(userData);
+    // console.log(info);
   }, []);
 
   const BtnUpload = styled.div`
