@@ -306,21 +306,30 @@ function CommentPage({ webtoon, comments }: Props) {
     };
 
     // 댓글 입력
-    const comment = (commentInput: CommentUserInput) => {
-      // dummy
-      const newComment = {
-        id: 3323,
-        content: commentInput.content,
-        isSpoiler: commentInput.spoiler,
-        report: 0,
-        createTime: '2023-03-13 11:22:33',
-        user: {
-          id: 1,
-          nickname: '김태학',
-          imagePath: 'url',
-        },
-      };
-      setCommentList([newComment, ...commentList]);
+    const comment = async (commentInput: CommentUserInput) => {
+      const data = await api.postWebtoonComment(
+        webtoon.id,
+        commentInput.content,
+        commentInput.spoiler,
+      );
+      if (data) {
+        const newComment = {
+          id: data.result.id,
+          content: data.result.content,
+          isSpoiler: data.result.spoiler,
+          report: 0,
+          createTime: new Date().toDateString(),
+          user: {
+            id: 1,
+            nickname: '김태학',
+            imagePath: 'url',
+          },
+        };
+        setCommentList([newComment, ...commentList]);
+        return true;
+      } else {
+        return false;
+      }
     };
 
     // 댓글 삭제
@@ -334,14 +343,25 @@ function CommentPage({ webtoon, comments }: Props) {
     };
 
     // 댓글 수정
-    const modifyComment = (oldComment: Chat, newComment: Chat) => {
-      for (let i = 0; i < commentList.length; i++) {
-        if (commentList[i] === oldComment) {
-          commentList[i] = newComment;
-          break;
+    const modifyComment = async (chatId: number, oldComment: Chat, newComment: Chat) => {
+      const result = await api.modifyWebtoonComment(
+        webtoon.id,
+        chatId,
+        newComment.content,
+        newComment.isSpoiler,
+      );
+      if (result) {
+        for (let i = 0; i < commentList.length; i++) {
+          if (commentList[i] === oldComment) {
+            commentList[i] = newComment;
+            break;
+          }
         }
+        setCommentList([...commentList]);
+        return true;
+      } else {
+        return false;
       }
-      setCommentList([...commentList]);
     };
 
     useEffect(() => {

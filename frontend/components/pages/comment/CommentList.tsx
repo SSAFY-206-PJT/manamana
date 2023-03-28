@@ -21,7 +21,7 @@ interface CommentListProps {
   commentEnd: boolean;
   loadComment: () => void;
   deleteComment: (ee: any) => void;
-  modifyComment: (oldComment: Chat, newComment: Chat) => void;
+  modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
 }
 
 function CommentList({

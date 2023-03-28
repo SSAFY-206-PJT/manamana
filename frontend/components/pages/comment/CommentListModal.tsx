@@ -9,7 +9,7 @@ interface ChatListModalProps {
   open: boolean;
   close: () => void;
   deleteComment: (ee: any) => void;
-  modifyComment: (oldComment: Chat, newComment: Chat) => void;
+  modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
 }
 
 function CommentListModal({ chat, open, close, deleteComment, modifyComment }: ChatListModalProps) {
@@ -29,7 +29,7 @@ function CommentListModal({ chat, open, close, deleteComment, modifyComment }: C
     deleteComment(chat);
     closeModal();
   };
-  const modifyChat = (e: CommentUserInput) => {
+  const modify = async (e: CommentUserInput) => {
     const oldComment = chat;
     const newComment = {
       id: chat.id,
@@ -43,8 +43,13 @@ function CommentListModal({ chat, open, close, deleteComment, modifyComment }: C
         imagePath: chat.user.imagePath,
       },
     };
-    modifyComment(oldComment, newComment);
-    closeModal();
+    const result = await modifyComment(chat.id, oldComment, newComment);
+    if (result) {
+      closeModal();
+      return true;
+    } else {
+      return false;
+    }
   };
   const reportChat = () => {
     // api 통신 후에
@@ -74,7 +79,7 @@ function CommentListModal({ chat, open, close, deleteComment, modifyComment }: C
         <hr className="my-2 w-full border border-PrimaryLight bg-PrimaryLight" />
         <CommentInput
           defaultValue={{ content: chat.content, spoiler: chat.isSpoiler }}
-          comment={modifyChat}
+          comment={modify}
         />
       </div>
     </div>
