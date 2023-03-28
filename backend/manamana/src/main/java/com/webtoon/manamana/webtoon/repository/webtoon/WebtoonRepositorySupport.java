@@ -25,6 +25,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
+    //웹툰 전체 조회
     public List<Webtoon> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable){
 
         QWebtoon webtoon = QWebtoon.webtoon;
@@ -75,15 +76,12 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
 
     }
 
-
-
-
     /*키워드 검색*/
     private BooleanExpression containsKey(String keyword){
 
         if(keyword == null) return null;
 
-        return QWebtoon.webtoon.name.contains(keyword);
+        return QWebtoon.webtoon.name.contains(keyword).or(QWebtoon.webtoon.authors.any().name.contains(keyword));
 
     }
 
