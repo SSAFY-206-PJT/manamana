@@ -1,5 +1,6 @@
 package com.webtoon.manamana.recommand.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.AssosiationApiRequestDTO;
@@ -9,6 +10,8 @@ import com.webtoon.manamana.recommand.dto.response.AssosiationApiResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.AssosiationWebtoonResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +20,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecommandServiceImpl implements RecommandService {
@@ -62,8 +66,7 @@ public class RecommandServiceImpl implements RecommandService {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String request = objectMapper.writeValueAsString(recommandWebtoonRequestDTOS); //
-//        System.out.println(request);
+        String request = objectMapper.writeValueAsString(recommandWebtoonRequestDTOS);
 
         HttpEntity entity = new HttpEntity(request, httpHeaders);
 
@@ -72,8 +75,8 @@ public class RecommandServiceImpl implements RecommandService {
         // url 바꿔야함
         ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/test", HttpMethod.POST, entity, String.class);
 
-        System.out.println(response.getStatusCode());
-        System.out.println(response.getBody());
+//        System.out.println(response.getStatusCode());
+//        System.out.println(response.getBody());
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), ApiResponseDTO.class).getResult();
 
@@ -120,7 +123,7 @@ public class RecommandServiceImpl implements RecommandService {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String request = objectMapper.writeValueAsString(assosiationApiRequestDTOS); //
+        String request = objectMapper.writeValueAsString(assosiationApiRequestDTOS);
 
         HttpEntity entity = new HttpEntity(request, httpHeaders);
 
@@ -131,8 +134,8 @@ public class RecommandServiceImpl implements RecommandService {
 
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
 
-        System.out.println(response.getBody());
-        System.out.println(assosiationWebtoonResponseDTOS.toString());
+        log.info(response.getBody());
+        log.info(assosiationWebtoonResponseDTOS.toString());
 
         /*
             TODO : 추천된 webtoon id로 DB접근해서 webtoon 정보 반환
@@ -144,7 +147,7 @@ public class RecommandServiceImpl implements RecommandService {
 
             /*
                 TODO : webtoonId별 웹툰정보 DB에서 가져와야함
-                TODO : 근데 웹툰마다 DB접근 10번이면
+                TODO : 웹툰마다 DB접근 10번이면 웹툰 10개면 DB접근 100번?
              */
 
             /* 테스트용 데이터 */
@@ -172,8 +175,33 @@ public class RecommandServiceImpl implements RecommandService {
                     .authors(apiAuthorDTOS)
                     .build());
             /* 테스트용 데이터 */
+
         }
 
         return recommandWebtoonResponseDTOS;
+    }
+
+    private static <T> ResponseEntity<String> springToFastAPI(T reqDTO, String url) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String request = null;
+
+        try {
+            request = objectMapper.writeValueAsString(reqDTO);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpEntity entity = new HttpEntity(request, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        // url 바꿔야함
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+
+        return response;
     }
 }

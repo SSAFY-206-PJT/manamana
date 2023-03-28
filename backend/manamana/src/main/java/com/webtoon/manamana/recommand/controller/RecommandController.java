@@ -64,6 +64,8 @@ public class RecommandController {
     public DataResponse< List<RecommandWebtoonResponseDTO>> recommandAssociationWebtoon(
             @PathVariable("webtoon-id") long webtoonId) throws Exception{
 
+        // TODO : webtoonId PathVariable 사용하는 부분
+
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandAssociationWebtoon();
 
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
