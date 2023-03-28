@@ -270,3 +270,19 @@ export const myWebtoonComment = async (user_id: any) => {
     return null;
   }
 };
+
+///////////////////* 웹툰 추천 관련 기능 *///////////////////
+export const getElseWebtoon = async (webtoon_id: any) => {
+  const options = {
+    method: 'GET',
+    url: `/webtoons/${webtoon_id}/recommands`,
+    headers: { 'Content-Type': 'application/json' },
+  };
+  try {
+    const res = await axios.request(options);
+    const answer = res.data;
+    return answer;
+  } catch (error) {
+    return null;
+  }
+};

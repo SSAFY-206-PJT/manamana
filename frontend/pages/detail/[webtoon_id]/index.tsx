@@ -18,11 +18,6 @@ interface IdName {
   name: string;
 }
 
-interface Day {
-  id: number;
-  codeId: number;
-}
-
 interface Webtoon {
   id: number;
   name: string;
@@ -37,12 +32,22 @@ interface Webtoon {
   colorHsl: string;
   authors: Array<IdName>;
   genres: Array<IdName>;
-  days: Array<Day>;
+  days: {
+    id: number;
+    codeId: number;
+  }[];
   additions: {
     view: number;
     scoreCount: number;
     scoreAverage: string;
   };
+}
+
+interface SimilarWebtoon {
+  id: number;
+  name: string;
+  imagePath: string;
+  authors: IdName[];
 }
 
 interface Props {
@@ -201,6 +206,7 @@ function DetailPage({ webtoon }: Props) {
     const [ratingModal, setRatingModal] = useState<any>(false);
     const [afterRating, setAfterRating] = useState<boolean>(false);
     const [ratingInput, setRatingInput] = useState<number>(0);
+    const [myScore, setMyScore] = useState<number | null>(null);
 
     const openRatingModal = async () => {
       setRatingModal(true);
@@ -215,8 +221,10 @@ function DetailPage({ webtoon }: Props) {
       const data = await api.postWebtoonMyScore(webtoon.id, ratingInput);
       if (data && data.isSuccess) {
         setAfterRating(true);
+        setMyScore(ratingInput);
       }
     };
+
     const goComment = () => {
       router.push({
         pathname: `/detail/${webtoon.id}/comment`,
@@ -246,8 +254,6 @@ function DetailPage({ webtoon }: Props) {
       </div>
     );
 
-    // 사용자의 기존 평점
-    const [myScore, setMyScore] = useState<number | null>(null);
     const getMyScore = async () => {
       const data = await api.getWebtoonMyScore(webtoon.id);
       if (data) {
@@ -255,10 +261,7 @@ function DetailPage({ webtoon }: Props) {
       }
     };
 
-    useEffect(() => {
-      getMyScore();
-    }, []);
-
+    // 사용자의 기존 평가
     const userScoreDiv = () => {
       if (myScore === null) {
         return null;
@@ -368,45 +371,60 @@ function DetailPage({ webtoon }: Props) {
       </div>
     );
 
-    // 유사웹툰 목록
-    const similarWebtoon = [
-      {
-        id: 4,
-        imageUrl:
-          'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-        webtoonName: '역대급 영지 설계사',
-        status: '연재중',
-      },
-      {
-        id: 2,
-        imageUrl:
-          'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-        webtoonName: '역대급 영지 설계사',
-        status: '연재중',
-      },
-      {
-        id: 3,
-        imageUrl:
-          'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-        webtoonName: '역대급 영지 설계사',
-        status: '연재중',
-      },
-    ];
+    // 유사웹툰 목록2
+    const [similarWebtoon, setSimilarWebtoon] = useState<SimilarWebtoon[] | null>(null);
+    const getElseRecommend = async () => {
+      const data = await api.getElseWebtoon(webtoon.id);
+      if (data) {
+        setSimilarWebtoon(data.result);
+      }
+    };
+    // const similarWebtoon = [
+    //   {
+    //     id: 4,
+    //     imageUrl:
+    //       'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
+    //     webtoonName: '역대급 영지 설계사',
+    //     status: '연재중',
+    //   },
+    //   {
+    //     id: 2,
+    //     imageUrl:
+    //       'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
+    //     webtoonName: '역대급 영지 설계사',
+    //     status: '연재중',
+    //   },
+    //   {
+    //     id: 3,
+    //     imageUrl:
+    //       'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
+    //     webtoonName: '역대급 영지 설계사',
+    //     status: '연재중',
+    //   },
+    // ];
+
     const elseWebtoons = (
       <div>
         <p className="text-2xl font-bold text-FontPrimaryDark">이런 웹툰은 어때요?</p>
-        <div>
-          {similarWebtoon.map(webtoon => (
-            <WebtoonItem
-              key={webtoon.id}
-              webtoonName={webtoon.webtoonName}
-              imageUrl={webtoon.imageUrl}
-              status={webtoon.status}
-            />
-          ))}
+        <div className="!text-FontPrimaryDark">
+          {similarWebtoon
+            ? similarWebtoon.map(webtoon => (
+                <WebtoonItem
+                  key={webtoon.id}
+                  webtoonName={webtoon.name}
+                  imageUrl={webtoon.imagePath}
+                  status={'연재중'}
+                />
+              ))
+            : null}
         </div>
       </div>
     );
+
+    useEffect(() => {
+      getMyScore();
+      getElseRecommend();
+    }, []);
 
     return (
       <div>
@@ -443,7 +461,7 @@ function DetailPage({ webtoon }: Props) {
           <hr className="white my-6 border-white bg-white" />
           <div className="mx-3 h-fit">{wordCloudDiv}</div>
           <hr className="white my-6 border-white bg-white" />
-          <div className="mx-3 h-fit">{elseWebtoons}</div>
+          <div className="mx-3 mb-6 h-fit">{elseWebtoons}</div>
         </div>
         {popupDiv}
       </div>
