@@ -18,7 +18,7 @@ interface IdName {
   name: string;
 }
 
-interface Webtoon {
+export interface WebtoonDetail {
   id: number;
   name: string;
   imagePath: string;
@@ -51,7 +51,7 @@ interface SimilarWebtoon {
 }
 
 interface Props {
-  webtoon: Webtoon | null;
+  webtoon: WebtoonDetail | null;
 }
 
 function DetailPage({ webtoon }: Props) {
@@ -226,14 +226,7 @@ function DetailPage({ webtoon }: Props) {
     };
 
     const goComment = () => {
-      router.push({
-        pathname: `/detail/${webtoon.id}/comment`,
-        query: {
-          WEBTOON_THEME_COLOR,
-          imagePath: webtoon.imagePath,
-          name: webtoon.name,
-        },
-      });
+      router.push(`/detail/${webtoon.id}/comment`);
     };
 
     // 현재 평점
