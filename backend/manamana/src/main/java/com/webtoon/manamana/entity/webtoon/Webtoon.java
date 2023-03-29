@@ -1,6 +1,7 @@
 package com.webtoon.manamana.entity.webtoon;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webtoon.manamana.config.entity.BaseTimeEntity;
 import com.webtoon.manamana.entity.user.UserWebtoon;
 import lombok.Builder;
@@ -53,23 +54,26 @@ public class Webtoon extends BaseTimeEntity {
     @JoinColumn(name = "provider_id")
     private WebtoonProvider providerId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "webtoon")
     private Set<Comment> comment = new HashSet<>();
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "webtoon")
     private Set<Author> authors = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy= "webtoon")
     private Set<WebtoonDay> webtoonDays = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "webtoon")
     private Set<WebtoonGenre> webtoonGenres = new HashSet<>();
 
     @OneToOne(mappedBy = "webtoon", fetch = FetchType.LAZY)
     private WebtoonAddition webtoonAddition;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "webtoon")
     private Set<UserWebtoon> userWebtoons = new HashSet<>();
 

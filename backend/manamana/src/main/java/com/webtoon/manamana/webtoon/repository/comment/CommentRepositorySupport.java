@@ -49,6 +49,7 @@ public class CommentRepositorySupport extends QuerydslRepositorySupport {
                 .distinct().fetch();
     }
 
+    //TODO : 조인했기 때문에 수정필요 - 일단은 임시방편으로 distinct를 사용해서 처리함.
     /*댓글 전체 조회*/
     public List<Comment> findCommentAll(long webtoonId, Pageable pageable){
 

@@ -71,7 +71,6 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
                 .where(webtoon.isDeleted.eq(false), webtoon.id.eq(webtoonId))
                 .leftJoin(webtoon.userWebtoons, QUserWebtoon.userWebtoon)
                 .fetchJoin()
-                .where(webtoon.userWebtoons.any().user.id.eq(userId))
                 .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay)
                 .fetchJoin()
                 .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre)
