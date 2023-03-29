@@ -63,7 +63,7 @@ public class RecommandController {
 
         // TODO : webtoonId PathVariable 어디에 사용?
 
-        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandAssociationWebtoon();
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandAssociationWebtoon(webtoonId);
 
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }

@@ -98,10 +98,11 @@ public class RecommandServiceImpl implements RecommandService {
 
     /* 관련 웹툰 추천 */
     @Override
-    public  List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon() throws Exception {
+    public  List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon(long webtoonId) throws Exception {
 
         /*
-            TODO : DB users_and_webtoons 테이블에서 모든 정보 가져와야함, Exception 던졌던거 처리
+            TODO : webtoonId는 어떻게 처리?
+            TODO : Exception 던졌던거 처리
          */
 
         List<UserWebtoon> userWebtoons =  userWebtoonRepository.findAllByIsDeletedFalse();
@@ -118,62 +119,21 @@ public class RecommandServiceImpl implements RecommandService {
             );
         }
 
-        /* 테스트용
-        assosiationApiRequestDTOS.add(
-                AssosiationApiRequestDTO.builder()
-                        .userId(1L)
-                        .webtoonId(1L)
-                        .score(3)
-                        .build()
-        );
-
-        assosiationApiRequestDTOS.add(
-                AssosiationApiRequestDTO.builder()
-                        .userId(2L)
-                        .webtoonId(2L)
-                        .score(5)
-                        .build()
-        );
-
-        assosiationApiRequestDTOS.add(
-                AssosiationApiRequestDTO.builder()
-                        .userId(3L)
-                        .webtoonId(1L)
-                        .score(1)
-                        .build()
-        );
-        테스트용 */
-
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         ObjectMapper objectMapper = new ObjectMapper();
-
         String request = objectMapper.writeValueAsString(assosiationApiRequestDTOS);
 
         HttpEntity entity = new HttpEntity(request, httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
-
-        // url 바꿔야함
         ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/assosiation", HttpMethod.POST, entity, String.class);
 
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
-
-        log.info(response.getBody());
-        log.info(assosiationWebtoonResponseDTOS.toString());
-
-        /*
-            TODO : 추천된 webtoon id로 DB접근해서 webtoon 정보 반환
-         */
-
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
 
         for (AssosiationWebtoonResponseDTO assosiationWebtoonResponseDTO : assosiationWebtoonResponseDTOS) {
-
-            /*
-                TODO : webtoonId별 웹툰정보 DB에서 가져와야함
-             */
 
             Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId())
                     .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
@@ -197,33 +157,6 @@ public class RecommandServiceImpl implements RecommandService {
                             .authors(apiAuthorDTOS)
                             .build()
             );
-
-            /* 테스트용 데이터
-            List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
-
-            apiAuthorDTOS.add(
-                    ApiAuthorDTO.builder()
-                            .id(1)
-                            .name("시니")
-                            .build()
-            );
-
-            apiAuthorDTOS.add(
-                    ApiAuthorDTO.builder()
-                            .id(2)
-                            .name("광운")
-                            .build()
-            );
-
-//            System.out.println(assosiationWebtoonResponseDTO.getWebtoonId());
-            recommandWebtoonResponseDTOS.add(RecommandWebtoonResponseDTO.builder()
-                    .id(assosiationWebtoonResponseDTO.getWebtoonId())
-                    .name("1초")
-                    .imagePath("image")
-                    .authors(apiAuthorDTOS)
-                    .build());
-            테스트용 데이터 */
-
         }
 
         return recommandWebtoonResponseDTOS;

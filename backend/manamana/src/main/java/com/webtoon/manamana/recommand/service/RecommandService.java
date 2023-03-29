@@ -12,7 +12,7 @@ public interface RecommandService {
 
     List<RecommandWebtoonResponseDTO> recommandUserWebtoon() throws Exception;
 
-    List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon() throws Exception;
+    List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon(long webtoonId) throws Exception;
 
     List<WorldCupResponseDTO> worldCupWebtoonSearch();
 
