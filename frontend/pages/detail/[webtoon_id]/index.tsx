@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Rating } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import * as api from '@/pages/api/detail';
 
 import WebtoonItem from '@/components/common/WebtoonItem';
 import ConfirmBtn from '@/components/confirmBtn';
@@ -18,12 +18,7 @@ interface IdName {
   name: string;
 }
 
-interface Day {
-  id: number;
-  codeId: number;
-}
-
-interface Webtoon {
+export interface WebtoonDetail {
   id: number;
   name: string;
   imagePath: string;
@@ -37,7 +32,10 @@ interface Webtoon {
   colorHsl: string;
   authors: Array<IdName>;
   genres: Array<IdName>;
-  days: Array<Day>;
+  days: {
+    id: number;
+    codeId: number;
+  }[];
   additions: {
     view: number;
     scoreCount: number;
@@ -45,8 +43,15 @@ interface Webtoon {
   };
 }
 
+interface SimilarWebtoon {
+  id: number;
+  name: string;
+  imagePath: string;
+  authors: IdName[];
+}
+
 interface Props {
-  webtoon: Webtoon | null;
+  webtoon: WebtoonDetail | null;
 }
 
 function DetailPage({ webtoon }: Props) {
@@ -54,7 +59,6 @@ function DetailPage({ webtoon }: Props) {
     return <div>axios error</div>;
   } else {
     const router = useRouter();
-
     // 그라데이션 스타일
     const hsls = webtoon.colorHsl.split(',');
     const WEBTOON_THEME_COLOR = `hsl(${hsls[0]}, ${hsls[1]}%, 20%)`;
@@ -63,22 +67,23 @@ function DetailPage({ webtoon }: Props) {
     const coverStyle0 = { background: WEBTOON_THEME_COLOR };
 
     // 좋아요
-    const [likeWebtoon, setLikeWebtoon] = useState<boolean>(false);
+    const [isLike, setIsLike] = useState<boolean>(false);
     const likeInput = async () => {
-      if (!likeWebtoon) {
-        const res = await likeWebtoonAPI(webtoon.id);
-        if (res.isSuccess) {
-          setLikeWebtoon(true);
+      if (!isLike) {
+        const data = await api.likeWebtoon(webtoon.id);
+        if (data && data.isSuccess) {
+          setIsLike(true);
         } else {
-          alert(res.message);
+          console.log(data);
+          alert(data?.message);
         }
       } else {
-        const res = await unLikeWebtoonAPI(webtoon.id);
-        console.log(res);
-        if (res.isSuccess) {
-          setLikeWebtoon(false);
+        const data = await api.unlikeWebtoon(1, [webtoon.id]);
+        if (data && data.isSuccess) {
+          setIsLike(false);
         } else {
-          alert(res.message);
+          console.log(data);
+          alert(data?.message);
         }
       }
     };
@@ -126,7 +131,7 @@ function DetailPage({ webtoon }: Props) {
       </div>
     );
 
-    // 웹툰 정보
+    // 웹툰 정보 = 제목 ~ 감상하러가기
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const webtoonInfoDiv = (
@@ -188,8 +193,8 @@ function DetailPage({ webtoon }: Props) {
           ))}
         </div>
         <div>
-          {infoList.map((info, index) => (
-            <p className="mr-1 text-sm text-FontPrimaryDark" key={index}>
+          {infoList.map(info => (
+            <p className="mr-1 text-sm text-FontPrimaryDark" key={info.content}>
               {info.content}
             </p>
           ))}
@@ -200,29 +205,33 @@ function DetailPage({ webtoon }: Props) {
     // 평점
     const [ratingModal, setRatingModal] = useState<any>(false);
     const [afterRating, setAfterRating] = useState<boolean>(false);
-    const [ratingInput, setRatingInput] = useState<number | null>(0);
+    const [ratingInput, setRatingInput] = useState<number>(0);
+    const [myScore, setMyScore] = useState<number | null>(null);
 
-    const openRatingModal = () => {
+    const openRatingModal = async () => {
       setRatingModal(true);
     };
+
     const closeModal = () => {
       setRatingModal(false);
       setAfterRating(false);
       setRatingInput(0);
     };
-    const postRating = () => {
-      console.log(ratingInput, '점을 제출');
-      setAfterRating(true);
+
+    const postRating = async () => {
+      const data = await api.postWebtoonMyScore(webtoon.id, ratingInput);
+      if (data && data.isSuccess) {
+        setAfterRating(true);
+        setMyScore(ratingInput);
+      } else if (data) {
+        alert(data.message);
+      } else {
+        alert('통신오류');
+      }
     };
+
     const goComment = () => {
-      router.push({
-        pathname: `/detail/${webtoon.id}/comment`,
-        query: {
-          WEBTOON_THEME_COLOR,
-          imagePath: webtoon.imagePath,
-          name: webtoon.name,
-        },
-      });
+      router.push(`/detail/${webtoon.id}/comment`);
     };
 
     // 현재 평점
@@ -243,9 +252,45 @@ function DetailPage({ webtoon }: Props) {
       </div>
     );
 
+    const getMyScore = async () => {
+      const data = await api.getWebtoonMyScore(webtoon.id);
+      if (data.isSuccess) {
+        setMyScore(data.result.score);
+      }
+    };
+
+    // 사용자의 기존 평가
+    const userScoreDiv = () => {
+      if (myScore === null) {
+        return null;
+      } else {
+        return (
+          <div>
+            <div className="flex justify-center">
+              <p className="text-FontSecondaryLight">기존 평점 : {myScore}</p>
+            </div>
+            <div className="flex justify-center">
+              <Rating
+                defaultValue={myScore}
+                precision={0.5}
+                readOnly
+                sx={{
+                  fontSize: '4rem',
+                }}
+              />
+            </div>
+            <div className="flex justify-center">
+              <p className="text-FontSecondaryLight">새롭게 평가 하시겠습니까?</p>
+            </div>
+          </div>
+        );
+      }
+    };
+
     // 평가하기
     const ratingInputDiv = (
       <div className="m-3 flex flex-col">
+        <div>{userScoreDiv()}</div>
         <div className="h-2"></div>
         <div className="flex items-end justify-start">
           <p className="mr-1 text-lg">웹툰 평가</p>
@@ -324,56 +369,44 @@ function DetailPage({ webtoon }: Props) {
       </div>
     );
 
-    // 유사웹툰 목록
-    const similarWebtoon = [
-      {
-        id: 4,
-        imageUrl:
-          'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-        webtoonName: '역대급 영지 설계사',
-        status: '연재중',
-      },
-      {
-        id: 2,
-        imageUrl:
-          'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-        webtoonName: '역대급 영지 설계사',
-        status: '연재중',
-      },
-      {
-        id: 3,
-        imageUrl:
-          'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-        webtoonName: '역대급 영지 설계사',
-        status: '연재중',
-      },
-    ];
+    // 유사웹툰 목록2
+    const [similarWebtoon, setSimilarWebtoon] = useState<SimilarWebtoon[] | null>(null);
+    const getElseRecommend = async () => {
+      const data = await api.getElseWebtoon(webtoon.id);
+      if (data && data.isSuccess) {
+        setSimilarWebtoon(data.result);
+      } else if (data) {
+        alert(data.message);
+      } else {
+        alert('통신오류');
+      }
+    };
+
     const elseWebtoons = (
       <div>
         <p className="text-2xl font-bold text-FontPrimaryDark">이런 웹툰은 어때요?</p>
-        <div>
-          {similarWebtoon.map(webtoon => (
-            <WebtoonItem
-              key={webtoon.id}
-              webtoonName={webtoon.webtoonName}
-              imageUrl={webtoon.imageUrl}
-              status={webtoon.status}
-            />
-          ))}
+        <div className="!text-FontPrimaryDark">
+          {similarWebtoon
+            ? similarWebtoon.map((webtoon, index) => (
+                <WebtoonItem
+                  key={index}
+                  webtoonName={webtoon.name}
+                  imageUrl={webtoon.imagePath}
+                  status={'연재중'}
+                />
+              ))
+            : null}
         </div>
       </div>
     );
 
+    useEffect(() => {
+      getMyScore();
+      getElseRecommend();
+    }, []);
+
     return (
       <div>
-        {/* <Image
-        className="absolute h-auto w-full"
-        src={webtoon.imagePath}
-        alt="웹툰 이미지"
-        width={300}
-        height={500}
-        priority
-      /> */}
         <div style={coverStyle0} className="absolute h-full w-full"></div>
         <div className="flex justify-center">
           <img src={webtoon.imagePath} alt="웹툰이미지" className="absolute h-[550px]" />
@@ -382,7 +415,7 @@ function DetailPage({ webtoon }: Props) {
           <div className="m-3 flex h-12 justify-between">
             <img src="/images/HeaderBar_Back.png" alt="goBack" onClick={() => router.back()}></img>
             <button className="h-full" onClick={likeInput}>
-              {likeWebtoon ? (
+              {isLike ? (
                 <Heart width="100%" height="100%" fill="red" stroke="red" />
               ) : (
                 <Heart width="100%" height="100%" fillOpacity="0" stroke="white" />
@@ -399,7 +432,7 @@ function DetailPage({ webtoon }: Props) {
           <hr className="white my-6 border-white bg-white" />
           <div className="mx-3 h-fit">{wordCloudDiv}</div>
           <hr className="white my-6 border-white bg-white" />
-          <div className="mx-3 h-fit">{elseWebtoons}</div>
+          <div className="mx-3 mb-6 h-fit">{elseWebtoons}</div>
         </div>
         {popupDiv}
       </div>
@@ -409,68 +442,13 @@ function DetailPage({ webtoon }: Props) {
 
 export default DetailPage;
 
-// api
-// detail 정보
+/**페이지 최초 prop
+ *
+ * @param context
+ * @returns
+ */
 export const getServerSideProps: GetServerSideProps = async context => {
-  // const DETAIL_URL = 'https://j8b206.p.ssafy.io/api';
-  const DETAIL_URL = process.env.API_URL;
   const { webtoon_id } = context.query;
-  const URL = `/webtoons/${webtoon_id}`;
-  try {
-    const res = await axios.get(DETAIL_URL + URL);
-    const webtoon = res.data.result;
-    return { props: { webtoon } };
-  } catch (error) {
-    return { props: { webtoon: null } };
-  }
+  const data = await api.getWebtoonDetail(webtoon_id);
+  return { props: { webtoon: data.result } };
 };
-
-/**
- * 관심등록
- * @param webtoon_id 웹툰 아이디
- * @returns
- */
-const likeWebtoonAPI = async (webtoon_id: number) => {
-  // const DETAIL_URL = process.env.API_URL;
-  const DETAIL_URL = 'https://j8b206.p.ssafy.io/api';
-  try {
-    const res = await axios.patch(DETAIL_URL + `/webtoons/${webtoon_id}/like`);
-    return res.data;
-  } catch (error) {
-    return null;
-  }
-};
-
-/**
- * 관심등록 해제
- * @param webtoon_id 웹툰 아이디
- * @returns
- */
-const unLikeWebtoonAPI = async (webtoon_id: number) => {
-  // const DETAIL_URL = process.env.API_URL;
-  const DETAIL_URL = 'https://j8b206.p.ssafy.io/api';
-  try {
-    const res = await axios.delete(DETAIL_URL + `/users/1/webtoons`, {
-      data: {
-        id: [webtoon_id],
-      },
-    });
-    return res.data;
-  } catch (erorr) {
-    return null;
-  }
-};
-
-// 사용자 평점 가져오기
-// const getUserScore = async (webtoon_id: number) => {
-//   const APIURL = 'https://j8b206.p.ssafy.io/api';
-//   const URL = `/webtoons/${webtoon_id}/scores`;
-//   try {
-//     const res = await axios.get(APIURL + URL);
-//     return res.data.result.score;
-//   } catch (error) {
-//     return null;
-//   }
-// };
-
-// 평점 입력

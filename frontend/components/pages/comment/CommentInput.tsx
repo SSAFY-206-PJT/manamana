@@ -18,18 +18,20 @@ export interface CommentUserInput {
 
 interface CommentInputProps {
   defaultValue: CommentUserInput;
-  comment: (commentInput: CommentUserInput) => void;
+  comment: (commentInput: CommentUserInput) => Promise<boolean>;
 }
 
 function CommentInput({ defaultValue, comment }: CommentInputProps) {
   const [commentInput, setCommentInput] = useState<string>(defaultValue.content);
   const [spoilerInput, setSpoilerInput] = useState<boolean>(defaultValue.spoiler);
 
-  const commentPost = () => {
+  const commentPost = async () => {
     console.log(commentInput, spoilerInput);
-    comment({ content: commentInput, spoiler: spoilerInput });
-    setCommentInput('');
-    setSpoilerInput(false);
+    const result = await comment({ content: commentInput, spoiler: spoilerInput });
+    if (result) {
+      setCommentInput('');
+      setSpoilerInput(false);
+    }
   };
 
   return (
