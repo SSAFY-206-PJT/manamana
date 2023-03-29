@@ -55,10 +55,16 @@ interface Props {
 }
 
 function DetailPage({ webtoon }: Props) {
+  const router = useRouter();
   if (webtoon === null) {
+    const go404 = () => {
+      router.push('/404');
+    };
+    useEffect(() => {
+      go404();
+    }, []);
     return <div>axios error</div>;
   } else {
-    const router = useRouter();
     // 그라데이션 스타일
     const hsls = webtoon.colorHsl.split(',');
     const WEBTOON_THEME_COLOR = `hsl(${hsls[0]}, ${hsls[1]}%, 20%)`;
@@ -451,5 +457,9 @@ export default DetailPage;
 export const getServerSideProps: GetServerSideProps = async context => {
   const { webtoon_id } = context.query;
   const data = await api.getWebtoonDetail(webtoon_id);
-  return { props: { webtoon: data.result } };
+  if (data && data.isSuccess) {
+    return { props: { webtoon: data.result } };
+  } else {
+    return { props: { webtoon: null } };
+  }
 };
