@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from '@emotion/styled';
+import { GetServerSideProps } from 'next';
 
 type User = {
   id: number;
@@ -39,7 +40,7 @@ export default function ProfilePage({ userData }: any) {
   };
 
   // 회원정보 수정 axios
-  function axiosPatch() {
+  const axiosPatch = () => {
     let id = info.id;
     let nickname = info.nickname;
     let imagePath = info.imagePath;
@@ -56,12 +57,13 @@ export default function ProfilePage({ userData }: any) {
         },
       })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
+        alert('프로필 수정 완료');
       })
       .catch(error => {
         console.error(error);
       });
-  }
+  };
 
   // 저장 눌렀을 때 바뀐 정보 저장
   const changeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +76,8 @@ export default function ProfilePage({ userData }: any) {
   // 처음 프로필 페이지 들어오면 수정중이 아닌 상태
   useEffect(() => {
     setIsEditState(false);
-    console.log(userData);
+    // console.log(userData);
+    // console.log(info);
   }, []);
 
   const BtnUpload = styled.div`
@@ -191,11 +194,14 @@ export default function ProfilePage({ userData }: any) {
   );
 }
 
-export const getServerSideProps: any = async () => {
+export const getServerSideProps: GetServerSideProps = async context => {
+  // const { user_id } = context.query;
+  const user_id = 1; // 로그인 구현 전이라 임시로 user_id 설정
   try {
-    const response = await axios.get('https://j8b206.p.ssafy.io/api/users/1');
+    const response = await axios.get(`https://j8b206.p.ssafy.io/api/users/${user_id}`);
     const userData: User = response.data.result;
     console.log(userData);
+    // console.log(context);
     return {
       props: { userData },
     };
