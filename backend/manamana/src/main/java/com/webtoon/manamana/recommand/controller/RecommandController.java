@@ -11,6 +11,7 @@ import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.ApiResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
+import com.webtoon.manamana.recommand.dto.response.WorldCupResponseDTO;
 import com.webtoon.manamana.recommand.service.RecommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -45,7 +46,7 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/recommands")
-    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon() throws Exception{
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon() throws Exception {
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
 
@@ -62,9 +63,9 @@ public class RecommandController {
     })
     @GetMapping("/{webtoon-id}/recommands")
     public DataResponse< List<RecommandWebtoonResponseDTO>> recommandAssociationWebtoon(
-            @PathVariable("webtoon-id") long webtoonId) throws Exception{
+            @PathVariable("webtoon-id") long webtoonId) throws Exception {
 
-        // TODO : webtoonId PathVariable 사용하는 부분
+        // TODO : webtoonId PathVariable 어디에 사용?
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandAssociationWebtoon();
 
@@ -80,51 +81,11 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/world-cup")
-    public DataResponse<Object> worldCupWebtoon() throws Exception{
+    public DataResponse<Object> worldCupWebtoon() throws Exception {
 
-        String temp1 = "{\n" +
-                "\t\t\t\"id\": 1, \n" +
-                "\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/774044/thumbnail/thumbnail_IMAG21_81504afb-1a05-41b0-9650-0c9aa1d741d9.jpg\"\n" +
-                "\t\t}";
-        String temp2 = "{\n" +
-                "\t\t\t\"id\": 2, \n" +
-                "\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/805691/thumbnail/thumbnail_IMAG21_8b092acf-e28c-47d2-9b5f-3a02df85103f.jpg\"\n" +
-                "\t\t}";
-        String temp3 = "{\n" +
-                "\t\t\t\"id\": 3, \n" +
-                "\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/795529/thumbnail/thumbnail_IMAG21_3689631394330325350.jpg\"\n" +
-                "\t\t}";
-        String temp4 = "{\n" +
-                "\t\t\t\"id\": 4, \n" +
-                "\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/736277/thumbnail/thumbnail_IMAG21_bbbe3f76-021e-4dbc-830a-4358c1abec0c.jpg\"\n" +
-                "\t\t}";
-        String temp5 = "{\n" +
-                "\t\t\t\"id\": 5, \n" +
-                "\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/759567/thumbnail/thumbnail_IMAG21_3991657355780766050.jpg\"\n" +
-                "\t\t}";
-        String temp6 = "{\n" +
-                "\t\t\t\"id\": 6, \n" +
-                "\t\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/695796/thumbnail/thumbnail_IMAG21_332bb25b-c77d-477f-9979-5a8607ebd7a5.jpg\"\n" +
-                "\t\t}";
+        List<WorldCupResponseDTO> worldCupResponseDTOS = recommandService.worldCupWebtoonSearch();
 
-        JSONArray jsonArray = new JSONArray();
-        JSONParser jsonParser = new JSONParser();
-
-        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
-        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
-        JSONObject jsonObj3 = (JSONObject) jsonParser.parse(temp3);
-        JSONObject jsonObj4 = (JSONObject) jsonParser.parse(temp4);
-        JSONObject jsonObj5 = (JSONObject) jsonParser.parse(temp5);
-        JSONObject jsonObj6 = (JSONObject) jsonParser.parse(temp6);
-
-        jsonArray.add(jsonObj1);
-        jsonArray.add(jsonObj2);
-        jsonArray.add(jsonObj3);
-        jsonArray.add(jsonObj4);
-        jsonArray.add(jsonObj5);
-        jsonArray.add(jsonObj6);
-
-        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(worldCupResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
     /*취향 월드컵 결과 저장.*/
@@ -136,7 +97,7 @@ public class RecommandController {
     })
     @PostMapping("/world-cup")
     public DataResponse<Object> worldCupWebtoonSave(
-            @RequestBody WorldCupRequestDTO worldCupRequestDTO) throws Exception{
+            @RequestBody WorldCupRequestDTO worldCupRequestDTO) throws Exception {
 
         String temp = " {\n" +
                 "\t\t\"id\": 1,\n" +

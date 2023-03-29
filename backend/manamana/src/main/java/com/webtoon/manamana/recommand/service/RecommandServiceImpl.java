@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.AssosiationApiRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
-import com.webtoon.manamana.recommand.dto.response.ApiResponseDTO;
-import com.webtoon.manamana.recommand.dto.response.AssosiationApiResponseDTO;
-import com.webtoon.manamana.recommand.dto.response.AssosiationWebtoonResponseDTO;
-import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
+import com.webtoon.manamana.recommand.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -76,7 +73,7 @@ public class RecommandServiceImpl implements RecommandService {
         ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/test", HttpMethod.POST, entity, String.class);
 
 //        System.out.println(response.getStatusCode());
-//        System.out.println(response.getBody());
+//        log.info(response.getBody());
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), ApiResponseDTO.class).getResult();
 
@@ -147,7 +144,6 @@ public class RecommandServiceImpl implements RecommandService {
 
             /*
                 TODO : webtoonId별 웹툰정보 DB에서 가져와야함
-                TODO : 웹툰마다 DB접근 10번이면 웹툰 10개면 DB접근 100번?
              */
 
             /* 테스트용 데이터 */
@@ -179,6 +175,33 @@ public class RecommandServiceImpl implements RecommandService {
         }
 
         return recommandWebtoonResponseDTOS;
+    }
+
+    @Override
+    public List<WorldCupResponseDTO> worldCupWebtoonSearch() {
+
+        /*
+            TODO : DB 접근 로직 필요.
+            TODO : DB에서 어떤 웹툰 정보를 가져와야하는지 고민해봐야함
+         */
+
+        List<WorldCupResponseDTO> worldCupResponseDTOS = new ArrayList<>();
+
+        worldCupResponseDTOS.add(
+                WorldCupResponseDTO.builder()
+                        .id(1L)
+                        .imagePath("url1")
+                        .build()
+        );
+
+        worldCupResponseDTOS.add(
+                WorldCupResponseDTO.builder()
+                        .id(2L)
+                        .imagePath("url2")
+                        .build()
+        );
+
+        return worldCupResponseDTOS;
     }
 
     private static <T> ResponseEntity<String> springToFastAPI(T reqDTO, String url) {
