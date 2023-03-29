@@ -3,7 +3,6 @@ from colorthief import ColorThief
 import colorsys
 from time import sleep
 import urllib.request
-import os
 import requests
 
 def image_main_color_hsl(url,tmp_file='tmp.jpg'):
@@ -87,6 +86,7 @@ def scroll_slow(driver):
         if new_height == last_height:
             break
         last_height = new_height
+
 
 # post
 def post_request(data, url="http://localhost:8080"):
