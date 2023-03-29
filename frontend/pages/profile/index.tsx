@@ -155,7 +155,7 @@ export default function ProfilePage({ userData }: any) {
 
       <div className="flex h-full w-full flex-col gap-4 bg-BackgroundLight p-2">
         <div className="flex items-center rounded-2xl bg-BackgroundLightComponent p-8">
-          <div className="relative flex w-full gap-4">
+          <div className="relative flex w-full">
             <img
               src={info.imagePath}
               alt="프로필 이미지"
@@ -184,10 +184,10 @@ export default function ProfilePage({ userData }: any) {
             ) : (
               <></>
             )}
-            <div className="flex w-full flex-col justify-center gap-2">
+            <div className="mx-4 flex w-full flex-col justify-center gap-2">
               {isEditState ? (
                 <input
-                  className="w-full border-[1px] text-xl font-medium text-FontPrimaryLight"
+                  className="w-full border-b-[2px] text-xl font-medium text-FontPrimaryLight"
                   type="text"
                   maxLength="8"
                   value={info.nickname}
@@ -198,21 +198,28 @@ export default function ProfilePage({ userData }: any) {
               )}
               <div className="text-base text-FontSecondaryLight">{info.email}</div>
             </div>
-          </div>
-          <div className="flex-grow-1 w-8" onClick={onEditClick}>
-            {isEditState ? (
-              <div className="font-bold" onClick={editProfileAxios}>
-                저장
-              </div>
-            ) : (
-              <Image src={'/images/Profile_Edit.png'} alt="설정 이미지" width={24} height={24} />
-            )}
+            <div className="flex w-8 items-center justify-center" onClick={onEditClick}>
+              {isEditState ? (
+                <div className="w-8 font-bold" onClick={editProfileAxios}>
+                  저장
+                </div>
+              ) : (
+                <div>
+                  <Image
+                    src={'/images/Profile_Edit.png'}
+                    alt="설정 이미지"
+                    width={24}
+                    height={24}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex justify-center rounded-2xl bg-BackgroundLightComponent p-8">
           <div className="flex w-full flex-col items-center justify-center gap-2">
             <div>
-              <Image src={'/images/Heart_Logo.png'} alt="내 웹툰" width={50} height={50} />
+              <Image src={'/images/Heart_Logo.png'} alt="내 웹툰" width={48} height={48} />
             </div>
             <div className="text-xl font-bold">{info.likeCount}</div>
             <Link href={'/my-webtoon'}>
@@ -223,7 +230,7 @@ export default function ProfilePage({ userData }: any) {
           </div>
           <div className="flex w-full flex-col items-center justify-center gap-2">
             <div>
-              <Image src={'/images/Comment_Logo.png'} alt="내 댓글" width={45} height={45} />
+              <Image src={'/images/Comment_Logo.png'} alt="내 댓글" width={48} height={48} />
             </div>
             <div className="text-xl font-bold">{info.scoreCount}</div>
             <Link href={'/my-comment'}>
