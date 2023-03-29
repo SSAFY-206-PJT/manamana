@@ -76,7 +76,6 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
                 .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).where(genreContain(webtoonFilterDTO.getGenreId())).fetchJoin()
                 .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition).fetchJoin()
                 .leftJoin(webtoon.authors, QAuthor.author).fetchJoin()
-                .leftJoin(webtoon.comment, QComment.comment).where(QComment.comment.isDeleted.eq(false)).fetchJoin()
                 .where(
                         webtoon.isDeleted.eq(false),
                         containsKey(webtoonFilterDTO.getKeyword()),
@@ -85,7 +84,6 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
                 )
                 .orderBy(sortTypeOrder(webtoonFilterDTO.getSortType()))
                 .fetch();
-
 
     }
 
