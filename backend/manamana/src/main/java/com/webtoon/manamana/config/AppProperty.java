@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Getter
-@Component
+//@Component
 public class AppProperty {
 
     @Value("${app.auth.token-secret}")
-    private String toeknSecret;
+    private String tokenSecret;
 
     @Value("${app.auth.token-expiration-time}")
     private String tokenExpirationTime;
@@ -24,5 +24,10 @@ public class AppProperty {
 
     @Value("${app.oauth2.authorized-redirect-uris}")
     private String authorizedRedirectUris;
+
+    @Value("${app.auth.refresh-token-secret}")
+    private String refreshTokenSecret;
+    @Value("${app.auth.refresh-token-expiration-time}")
+    private String refreshTokenExpirationTime;
 
 }
