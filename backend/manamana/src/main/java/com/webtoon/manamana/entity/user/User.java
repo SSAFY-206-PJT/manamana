@@ -1,6 +1,7 @@
 package com.webtoon.manamana.entity.user;
 
 //import com.webtoon.manamana.auth.oauth2.dto.OAuth2UserInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webtoon.manamana.config.entity.BaseTimeEntity;
 import com.webtoon.manamana.entity.webtoon.Comment;
 import com.webtoon.manamana.user.dto.request.UserUpdateRequestDTO;
@@ -49,6 +50,7 @@ public class User extends BaseTimeEntity {
     private LoginProvider loginProvider;
 
     //유저가 쓴 댓글을 조회하는 요구사항이 있기 때문에 필요.
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Comment> comment = new ArrayList<>();
 
