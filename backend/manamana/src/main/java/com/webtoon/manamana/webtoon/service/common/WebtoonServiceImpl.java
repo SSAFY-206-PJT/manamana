@@ -64,9 +64,10 @@ public class WebtoonServiceImpl implements WebtoonService{
     @Override
     public WebtoonDetailDTO findWebtoonOne(long userId,long webtoonId) {
 
+        //TODO : 유저id로 관심등록 했는지 확인.
 
         //웹툰 조회.
-        Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(userId, webtoonId)
+        Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(webtoonId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
 
         //웹툰 연재 상태 코드표 조회
