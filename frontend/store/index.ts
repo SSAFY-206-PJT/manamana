@@ -27,11 +27,13 @@ const RootReducer = (state: RootState, action: AnyAction): CombinedState<RootSta
 const persistConfig = {
   key: 'root',
   storage,
-  whiteList: ['isLogin'],
+  whiteList: ['searchTag', 'genreTasteList', 'isLogin'],
 };
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
+    searchTag: CurSearchTagSlice.reducer,
+    genreTasteList: GenreTasteSlice.reducer,
     isLogin: LoginSlice.reducer,
   }),
 );
