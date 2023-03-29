@@ -12,6 +12,7 @@ import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.ApiResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.WorldCupResponseDTO;
+import com.webtoon.manamana.recommand.dto.response.WorldCupResultDTO;
 import com.webtoon.manamana.recommand.service.RecommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -99,17 +100,8 @@ public class RecommandController {
     public DataResponse<Object> worldCupWebtoonSave(
             @RequestBody WorldCupRequestDTO worldCupRequestDTO) throws Exception {
 
-        String temp = " {\n" +
-                "\t\t\"id\": 1,\n" +
-                "\t\t\"name\": \"호랑이형님\",\n" +
-                "\t\t\"imagePath\": \"https://image-comic.pstatic.net/webtoon/650305/thumbnail/thumbnail_IMAG21_3631086797392995425.jpg\"\n" +
-                "\t}";
+        WorldCupResultDTO worldCupResultDTO = recommandService.worldCupWebtoonSave(worldCupRequestDTO);
 
-        JSONParser jsonParser = new JSONParser();
-
-        JSONObject jsonObj = (JSONObject) jsonParser.parse(temp);
-
-        log.info(worldCupRequestDTO.getId().toString());
-        return responseService.getDataResponse(jsonObj,CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(worldCupResultDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 }

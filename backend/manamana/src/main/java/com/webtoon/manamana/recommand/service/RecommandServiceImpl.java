@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.AssosiationApiRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
+import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -182,7 +183,7 @@ public class RecommandServiceImpl implements RecommandService {
 
         /*
             TODO : DB 접근 로직 필요.
-            TODO : DB에서 어떤 웹툰 정보를 가져와야하는지 고민해봐야함
+            TODO : 장르별 평점 TOP 10 중 랜덤 2개 뽑아서 반환
          */
 
         List<WorldCupResponseDTO> worldCupResponseDTOS = new ArrayList<>();
@@ -202,6 +203,25 @@ public class RecommandServiceImpl implements RecommandService {
         );
 
         return worldCupResponseDTOS;
+    }
+
+    @Override
+    public WorldCupResultDTO worldCupWebtoonSave(WorldCupRequestDTO worldCupRequestDTO) {
+
+        log.info(worldCupRequestDTO.getId().toString());
+
+        /*
+            TODO : DB 접근 로직 필요
+            TODO : 유저가 선택한 웹툰의 장르를 기반으로 해당 장르 평점 TOP 10 중 하나씩 뽑고, 그 중 1개 뽑아서 리턴 ?
+         */
+
+        WorldCupResultDTO worldCupResultDTO = WorldCupResultDTO.builder()
+                .id(1L)
+                .name("호랑이형님")
+                .imagePath("https://image-comic.pstatic.net/webtoon/650305/thumbnail/thumbnail_IMAG21_3631086797392995425.jpg")
+                .build();
+
+        return worldCupResultDTO;
     }
 
     private static <T> ResponseEntity<String> springToFastAPI(T reqDTO, String url) {
