@@ -3,6 +3,13 @@ import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import { wrapper } from '../store/index';
 
+import { Provider } from 'react-redux';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import store from '../store/index';
+
+const persistor = persistStore(store);
+
 declare global {
   interface Window {
     Kakao: any;
@@ -19,7 +26,13 @@ function App({ Component, pageProps }: AppProps) {
     }
   }, []);
 
-  return <Component {...pageProps} />;
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <Component {...pageProps} />;
+      </PersistGate>
+    </Provider>
+  );
 }
 
 export default wrapper.withRedux(App);

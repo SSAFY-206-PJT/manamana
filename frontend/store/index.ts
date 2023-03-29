@@ -1,14 +1,17 @@
 import { configureStore, combineReducers, AnyAction, CombinedState } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import { Reducer } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
 import CurSearchTagSlice, { CurSearchTagState } from './CurSearchTagSlice';
 import GenreTasteSlice, { GenreTasteState } from './GenreTasteSlice';
-import LoginSlice, { Login } from './LoginSlice';
+import LoginSlice, { IsLogin } from './LoginSlice';
 
 export interface RootState {
   searchTag: CurSearchTagState;
   genreTasteList: GenreTasteState;
-  login: Login;
+  isLogin: IsLogin;
 }
 
 const RootReducer = (state: RootState, action: AnyAction): CombinedState<RootState> => {
@@ -16,10 +19,28 @@ const RootReducer = (state: RootState, action: AnyAction): CombinedState<RootSta
   const combinedReducer = combineReducers({
     searchTag: CurSearchTagSlice.reducer,
     genreTasteList: GenreTasteSlice.reducer,
-    login: LoginSlice.reducer,
+    isLogin: LoginSlice.reducer,
   });
   return combinedReducer(state, action);
 };
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whiteList: ['isLogin'],
+};
+const persistedReducer = persistReducer(
+  persistConfig,
+  combineReducers({
+    isLogin: LoginSlice.reducer,
+  }),
+);
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
+});
+
+export default store;
 
 const makeStore = () =>
   configureStore({
