@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
+import Swal from 'sweetalert2';
 
 type User = {
   id: number;
@@ -35,12 +36,45 @@ export default function ProfilePage({ userData }: any) {
     setIsEditState(!isEditState);
   };
 
+  // 로그아웃 클릭시 예/아니오 선택지 나옴. 예 클릭시 .then 로직으로 이동
   const onLogOutClick = () => {
-    console.log('로그아웃 클릭됨');
+    Swal.fire({
+      icon: 'warning',
+      title: '로그아웃 하시겠습니까?',
+      showCancelButton: true,
+      confirmButtonColor: '#96999C',
+      cancelButtonColor: '#BE3455',
+      confirmButtonText: '예',
+      cancelButtonText: '아니오',
+    }).then(result => {
+      if (result.isConfirmed) {
+        Swal.fire({ icon: 'success', title: '로그아웃 로직 작성 후 로그인 페이지로 보내!' });
+      }
+    });
+  };
+
+  // 회원탈퇴 클릭시 예/아니오 선택지 나옴. 예 클릭시 .then 로직으로 이동
+  const onRemoveUserClick = () => {
+    {
+      Swal.fire({
+        title: '정말 마나마나를 \n 탈퇴하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#96999C',
+        cancelButtonColor: '#BE3455',
+        confirmButtonText: '예',
+        cancelButtonText: '아니오',
+      }).then(result => {
+        if (result.isConfirmed) {
+          removeUserAxios();
+          Swal.fire({ icon: 'success', title: '회원탈퇴 완료' });
+        }
+      });
+    }
   };
 
   // 회원정보 수정 axios
-  const axiosPatch = () => {
+  const editProfileAxios = () => {
     let id = info.id;
     let nickname = info.nickname;
     let imagePath = info.imagePath;
@@ -50,7 +84,7 @@ export default function ProfilePage({ userData }: any) {
     formData.append('userImg', imagePath);
 
     axios
-      .patch('https://j8b206.p.ssafy.io/api/users/1', formData, {
+      .patch(`https://j8b206.p.ssafy.io/api/users/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           accept: '*/*',
@@ -58,7 +92,25 @@ export default function ProfilePage({ userData }: any) {
       })
       .then(response => {
         // console.log(response.data);
-        alert('프로필 수정 완료');
+        {
+          Swal.fire({
+            title: '프로필이 변경되었습니다.',
+            icon: 'success',
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  // 회원탈퇴 axios
+  const removeUserAxios = async () => {
+    let id = info.id;
+    await axios
+      .delete(`https://j8b206.p.ssafy.io/api/users/${id}`)
+      .then(response => {
+        console.log(response.data);
       })
       .catch(error => {
         console.error(error);
@@ -149,7 +201,7 @@ export default function ProfilePage({ userData }: any) {
           </div>
           <div className="flex-grow-1 w-8" onClick={onEditClick}>
             {isEditState ? (
-              <div className="font-bold" onClick={axiosPatch}>
+              <div className="font-bold" onClick={editProfileAxios}>
                 저장
               </div>
             ) : (
@@ -181,12 +233,21 @@ export default function ProfilePage({ userData }: any) {
             </Link>
           </div>
         </div>
-        <button
-          className="w-24 rounded-2xl bg-PrimaryLight p-4 pt-2 pb-2 text-base font-bold text-FontPrimaryDark"
-          onClick={onLogOutClick}
-        >
-          로그아웃
-        </button>
+
+        <div className="flex justify-center">
+          <button
+            className="m-4 w-24 rounded-2xl border-2 border-PrimaryLight p-4 pt-2 pb-2 text-base font-bold text-PrimaryLight"
+            onClick={onLogOutClick}
+          >
+            로그아웃
+          </button>
+          <button
+            className="m-4 w-24 rounded-2xl bg-PrimaryLight p-4 pt-2 pb-2 text-base font-bold text-FontPrimaryDark"
+            onClick={onRemoveUserClick}
+          >
+            회원탈퇴
+          </button>
+        </div>
         <div className="mt-4 flex w-full flex-col items-center justify-center"></div>
       </div>
       <Navbar />
@@ -196,12 +257,11 @@ export default function ProfilePage({ userData }: any) {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // const { user_id } = context.query;
-  const user_id = 1; // 로그인 구현 전이라 임시로 user_id 설정
+  const user_id = 3; // 로그인 구현 전이라 임시로 user_id 설정
   try {
     const response = await axios.get(`https://j8b206.p.ssafy.io/api/users/${user_id}`);
     const userData: User = response.data.result;
     console.log(userData);
-    // console.log(context);
     return {
       props: { userData },
     };
