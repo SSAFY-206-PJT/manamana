@@ -8,7 +8,7 @@ interface ChatListModalProps {
   open: boolean;
   close: () => void;
   deleteComment: (ee: any) => void;
-  modifyComment: (oldComment: MyChat, newComment: MyChat) => void;
+  modifyComment: (oldComment: MyChat, newComment: MyChat) => Promise<boolean>;
 }
 
 function MyCommentListModal({
@@ -33,7 +33,7 @@ function MyCommentListModal({
     deleteComment(chat);
     closeModal();
   };
-  const modifyChat = (e: CommentUserInput) => {
+  const modifyChat = async (e: CommentUserInput) => {
     const oldComment = chat;
     const newComment = {
       id: chat.id,
@@ -46,8 +46,9 @@ function MyCommentListModal({
         imagePath: chat.webtoons.imagePath,
       },
     };
-    modifyComment(oldComment, newComment);
+    const result = await modifyComment(oldComment, newComment);
     closeModal();
+    return result;
   };
   const reportChat = () => {
     // api 통신 후에

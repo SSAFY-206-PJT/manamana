@@ -189,7 +189,7 @@ export default function ProfilePage({ userData }: any) {
                 <input
                   className="w-full border-[1px] text-xl font-medium text-FontPrimaryLight"
                   type="text"
-                  maxLength="8"
+                  maxLength={8}
                   value={info.nickname}
                   onChange={changeNickname}
                 ></input>
