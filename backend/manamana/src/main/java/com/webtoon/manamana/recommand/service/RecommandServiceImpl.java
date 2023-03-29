@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.UserWebtoon;
+import com.webtoon.manamana.entity.webtoon.Author;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.AssosiationApiRequestDTO;
@@ -13,6 +14,7 @@ import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.*;
 import com.webtoon.manamana.user.repository.user.UserWebtoonRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
+import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +35,7 @@ public class RecommandServiceImpl implements RecommandService {
 
     private final UserWebtoonRepository userWebtoonRepository;
     private final WebtoonRepository webtoonRepository;
+    private final WebtoonRepositorySupport webtoonRepositorySupport;
 
     /* 추천 알고리즘을 통한 웹툰 조회 */
     @Override
@@ -153,7 +156,7 @@ public class RecommandServiceImpl implements RecommandService {
         RestTemplate restTemplate = new RestTemplate();
 
         // url 바꿔야함
-        ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/test", HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/assosiation", HttpMethod.POST, entity, String.class);
 
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
 
@@ -172,12 +175,30 @@ public class RecommandServiceImpl implements RecommandService {
                 TODO : webtoonId별 웹툰정보 DB에서 가져와야함
              */
 
-            Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(assosiationWebtoonResponseDTO.getWebtoonId())
+            Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId())
                     .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
 
-            
+            List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
 
-            /* 테스트용 데이터 */
+            for (Author author : webtoon.getAuthors()) {
+                apiAuthorDTOS.add(
+                        ApiAuthorDTO.builder()
+                                .id(author.getId())
+                                .name(author.getName())
+                                .build()
+                );
+            }
+
+            recommandWebtoonResponseDTOS.add(
+                    RecommandWebtoonResponseDTO.builder()
+                            .id(webtoon.getId())
+                            .name(webtoon.getName())
+                            .imagePath(webtoon.getImagePath())
+                            .authors(apiAuthorDTOS)
+                            .build()
+            );
+
+            /* 테스트용 데이터
             List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
 
             apiAuthorDTOS.add(
@@ -201,7 +222,7 @@ public class RecommandServiceImpl implements RecommandService {
                     .imagePath("image")
                     .authors(apiAuthorDTOS)
                     .build());
-            /* 테스트용 데이터 */
+            테스트용 데이터 */
 
         }
 
