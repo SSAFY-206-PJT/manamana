@@ -45,6 +45,9 @@ public enum CustomExceptionStatus {
     /*S3관련*/
     FILE_SAVE_FAIL(false, 400, "파일 저장에 실패했습니다."),
 
+    /*login provider 관련*/
+    NOT_FOUNT_PROVIDER(false, 400, "해당하는 로그인 제공자를 찾을 수 없습니다."),
+
 
     ;
     private final boolean isSuccess;

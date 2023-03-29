@@ -12,18 +12,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-@Slf4j
-@RequiredArgsConstructor
+//@Slf4j
+//@RequiredArgsConstructor
 //@Component
-public class TokenAuthenticationFilter extends OncePerRequestFilter {
-
-
-//    private final TokenProvider tokenProvider;
-
-//    private final
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-    }
-}
+//public class TokenAuthenticationFilter extends OncePerRequestFilter {
+//
+//
+////    private final TokenProvider tokenProvider;
+//
+////    private final
+//
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+//
+//    }
+//}
