@@ -56,7 +56,8 @@ public class CommentRepositorySupport extends QuerydslRepositorySupport {
         QComment comment = QComment.comment;
 
         return queryFactory
-                .selectFrom(comment)
+                .select(comment).distinct()
+                .from(comment)
                 .where(comment.isDeleted.eq(false))
                 .leftJoin(comment.user, QUser.user)
                 .fetchJoin()
