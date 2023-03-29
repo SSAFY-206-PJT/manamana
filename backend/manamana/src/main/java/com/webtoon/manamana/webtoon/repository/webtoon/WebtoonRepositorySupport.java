@@ -64,7 +64,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
     }
 
     /*웹툰 상세정보*/
-    public Optional<Webtoon> findWebtoonOne(long userId, long webtoonId){
+    public Optional<Webtoon> findWebtoonOne(long webtoonId){
         QWebtoon webtoon = QWebtoon.webtoon;
         return Optional.ofNullable(queryFactory
                 .selectFrom(webtoon)
