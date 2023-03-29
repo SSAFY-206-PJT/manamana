@@ -25,6 +25,19 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
+//    //뽑아낸 정보로 페이지네이션
+//    public List<Webtoon> findByPageableWebtoonId(WebtoonFilterDTO webtoonFilterDTO,Pageable pageable){
+//
+//        QWebtoon webtoon = QWebtoon.webtoon;
+//        return queryFactory
+//                .selectFrom(webtoon)
+//                .where(webtoon.isDeleted.eq(false),
+//                        containsKey(webtoonFilterDTO.getKeyword()),
+//                        statusEq(webtoonFilterDTO.getStatusId()),
+//                        gradeEq(webtoonFilterDTO.getGradeId()))
+//
+//    }
+
     //웹툰 전체 조회
     public List<Webtoon> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable){
 
@@ -45,8 +58,8 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
                 .leftJoin(webtoon.comment, QComment.comment).fetchJoin()
                 .where(QComment.comment.isDeleted.eq(false))
                 .orderBy(sortTypeOrder(webtoonFilterDTO.getSortType()))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize())
                 .fetch();
 
 
