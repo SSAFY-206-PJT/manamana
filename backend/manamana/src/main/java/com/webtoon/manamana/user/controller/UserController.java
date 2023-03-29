@@ -2,6 +2,7 @@ package com.webtoon.manamana.user.controller;
 
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
+//import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -83,7 +85,6 @@ public class UserController {
     @DeleteMapping("/{user-id}")
     public CommonResponse deleteUser(
             @PathVariable("user-id") long userId){
-
         // TODO : 인증토큰의 ID와 PathVariable의 ID가 같은지 확인.
         long authUserId = userId;
 

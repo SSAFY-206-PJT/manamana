@@ -25,30 +25,41 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
-    //웹툰 전체 조회
+//    //뽑아낸 정보로 페이지네이션
+//    public List<Webtoon> findByPageableWebtoonId(WebtoonFilterDTO webtoonFilterDTO,Pageable pageable){
+//
+//        QWebtoon webtoon = QWebtoon.webtoon;
+//        return queryFactory
+//                .selectFrom(webtoon)
+//                .where(webtoon.isDeleted.eq(false),
+//                        containsKey(webtoonFilterDTO.getKeyword()),
+//                        statusEq(webtoonFilterDTO.getStatusId()),
+//                        gradeEq(webtoonFilterDTO.getGradeId()))
+//
+//    }
+
+
+    // TODO : distict 이케 쓰면 안됨 - 메모리에 올려서 중복제거를 하기 떄문에 in 쿼리를 이용해서 해결 할 수 있도록 바꿔야됨.
     public List<Webtoon> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable){
 
         QWebtoon webtoon = QWebtoon.webtoon;
 
         return queryFactory
-                .selectFrom(webtoon)
+                .select(webtoon).distinct()
+                .from(webtoon)
                 .where(webtoon.isDeleted.eq(false),
+                        webtoon.isDeleted.eq(false),
                         containsKey(webtoonFilterDTO.getKeyword()),
                         statusEq(webtoonFilterDTO.getStatusId()),
                         gradeEq(webtoonFilterDTO.getGradeId()))
-                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin()
-                .where(dayContain(webtoonFilterDTO.getDayId()))
-                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin()
-                .where(genreContain(webtoonFilterDTO.getGenreId()))
+                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin().where(dayContain(webtoonFilterDTO.getDayId()))
+                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin().where(genreContain(webtoonFilterDTO.getGenreId()))
                 .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition).fetchJoin()
                 .leftJoin(webtoon.authors, QAuthor.author).fetchJoin()
-                .leftJoin(webtoon.comment, QComment.comment).fetchJoin()
-                .where(QComment.comment.isDeleted.eq(false))
                 .orderBy(sortTypeOrder(webtoonFilterDTO.getSortType()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
 
     }
 
@@ -58,20 +69,12 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         return Optional.ofNullable(queryFactory
                 .selectFrom(webtoon)
                 .where(webtoon.isDeleted.eq(false), webtoon.id.eq(webtoonId))
-                .leftJoin(webtoon.userWebtoons, QUserWebtoon.userWebtoon)
-                .fetchJoin()
-                .where(webtoon.userWebtoons.any().user.id.eq(userId))
-                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay)
-                .fetchJoin()
-                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre)
-                .fetchJoin()
-                .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition)
-                .fetchJoin()
-                .leftJoin(webtoon.authors, QAuthor.author)
-                .fetchJoin()
-                .leftJoin(webtoon.comment, QComment.comment)
-                .fetchJoin()
-                .where(QComment.comment.isDeleted.eq(false))
+                .leftJoin(webtoon.userWebtoons, QUserWebtoon.userWebtoon).fetchJoin()
+                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin()
+                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin()
+                .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition).fetchJoin()
+                .leftJoin(webtoon.authors, QAuthor.author).fetchJoin()
+                .leftJoin(webtoon.comment, QComment.comment).fetchJoin()
                 .fetchOne());
 
     }
