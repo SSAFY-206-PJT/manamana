@@ -1,12 +1,14 @@
 import { configureStore, combineReducers, AnyAction, CombinedState } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
+import { Reducer } from '@reduxjs/toolkit';
 import CurSearchTagSlice, { CurSearchTagState } from './CurSearchTagSlice';
 import GenreTasteSlice, { GenreTasteState } from './GenreTasteSlice';
-import { Reducer } from '@reduxjs/toolkit';
+import LoginSlice, { Login } from './LoginSlice';
 
 export interface RootState {
   searchTag: CurSearchTagState;
   genreTasteList: GenreTasteState;
+  login: Login;
 }
 
 const RootReducer = (state: RootState, action: AnyAction): CombinedState<RootState> => {
@@ -14,6 +16,7 @@ const RootReducer = (state: RootState, action: AnyAction): CombinedState<RootSta
   const combinedReducer = combineReducers({
     searchTag: CurSearchTagSlice.reducer,
     genreTasteList: GenreTasteSlice.reducer,
+    login: LoginSlice.reducer,
   });
   return combinedReducer(state, action);
 };
