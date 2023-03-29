@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 interface Data {
-    key: number,
-    value: string
+    id: number,
+    status: string
 }
 
 interface Props {
@@ -20,11 +20,11 @@ export default function PublishStateBlock(props: Props) {
     *  */
     const onButtonClick = () => {
         if(!selectStatus){
-            props.selectBlock({key: props.value.key, value: props.value.value});
+            props.selectBlock({id: props.value.id, status: props.value.status});
             setSelectStatus(true);
         }
         else{
-            props.unSelectBlock({key: props.value.key, value: props.value.value});
+            props.unSelectBlock({id: props.value.id, status: props.value.status});
             setSelectStatus(false);
         }
     }
@@ -34,11 +34,11 @@ export default function PublishStateBlock(props: Props) {
             {
                 selectStatus ?
                     <button className="w-full h-12 rounded-md bg-SecondaryLight text-FontPrimaryDark text-center" onClick={onButtonClick}>
-                        {props.value.value}
+                        {props.value.status}
                     </button>
                     :
                     <button className="w-full h-12 rounded-md bg-BackgroundLightComponent text-FontPrimaryLight text-center" onClick={onButtonClick}>
-                        {props.value.value}
+                        {props.value.status}
                     </button>
             }
         </div>

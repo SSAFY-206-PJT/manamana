@@ -49,6 +49,7 @@ export default function MyWebtoonPage(props : Props) {
 
   const selectDayButton = (data: Data) => {
     selectedDays.push(data);
+    console.log(data)
   };
 
   const selectStatusButton = (data: Data) => {
@@ -121,8 +122,10 @@ export default function MyWebtoonPage(props : Props) {
 
   useEffect(
     () => {
-      
       console.log(props.days);
+      console.log(props.status);
+      console.log(selectedDays)
+      console.log(selectedStatus)
     }, []
   )
 
