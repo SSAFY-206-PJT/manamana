@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useState, useEffect } from "react"
 import PublishDayBlock from '@/components/pages/search/filter/PublishDayBlock';
 import PublishStateBlock from '@/components/pages/search/filter/PublishStateBlock';
+import axios from 'axios';
 
 enum FocusState {
   DAY,
@@ -10,10 +11,23 @@ enum FocusState {
   NULL
 }
 
-export default function MyWebtoonPage() {
+interface Data {
+  key: number;
+  value: string;
+}
+
+interface Props {
+  days: Data[];
+  status: Data[];
+}
+
+export default function MyWebtoonPage(props : Props) {
   const [focus, setFocus] = useState<FocusState>(FocusState.NULL);
-  const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
   const [detailElement, setDetailElement] = useState<any>();
+
+  const [selectedDays, setSelectedDays] = useState<Data[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<Data[]>([]);
+
 
   const onDayClick = () => {
     if (focus === FocusState.DAY) {
@@ -33,14 +47,27 @@ export default function MyWebtoonPage() {
     }
   };
 
-  const selectButton = (value: string) => {
-    selectedBlocks.push(value);
+  const selectDayButton = (data: Data) => {
+    selectedDays.push(data);
   };
 
-  const unSelectBlock = (value: string) => {
-    for (let i = 0; i < selectedBlocks.length; i++) {
-      if (selectedBlocks[i] === value) {
-        selectedBlocks.splice(i, 1);
+  const selectStatusButton = (data: Data) => {
+    selectedStatus.push(data);
+  };
+
+  const unSelectDayButton = (data: Data) => {
+    for (let i = 0; i < selectedDays.length; i++) {
+      if (selectedDays[i].key === data.key) {
+        selectedDays.splice(i, 1);
+        break;
+      }
+    }
+  };
+  
+  const unSelectStatusButton = (data: Data) => {
+    for (let i = 0; i < selectedStatus.length; i++) {
+      if (selectedStatus[i].key === data.key) {
+        selectedStatus.splice(i, 1);
         break;
       }
     }
@@ -54,16 +81,16 @@ export default function MyWebtoonPage() {
       setDetailElement(
         <div className='w-full text-center mt-4'>
           {
-            ['월', '화', '수', '목', '금', '토', '일'].map(
-              (value) => {
+            props.days.map(
+              (data) => {
                 let status = false;
-                for (let i = 0; i < selectedBlocks.length; i++) {
-                  if (selectedBlocks[i] === value) {
+                for (let i = 0; i < selectedDays.length; i++) {
+                  if (selectedDays[i].key === data.key) {
                     status = true;
                     break;
                   }
                 }
-                return <PublishDayBlock status={status} key={value} value={value} selectBlock={selectButton} unSelectBlock={unSelectBlock} />
+                return <PublishDayBlock status={status} key={data.key} value={data} selectBlock={selectDayButton} unSelectBlock={unSelectDayButton} />
               }
             )
           }
@@ -74,16 +101,16 @@ export default function MyWebtoonPage() {
       setDetailElement(
         <div className='flex mt-4 gap-2'>
           {
-            ['완결', '미완결'].map(
-              (value) => {
+            props.status.map(
+              (data) => {
                 let status = false;
-                for (let i = 0; i < selectedBlocks.length; i++) {
-                  if (selectedBlocks[i] === value) {
+                for (let i = 0; i < selectedStatus.length; i++) {
+                  if (selectedStatus[i].key === data.key) {
                     status = true;
                     break;
                   }
                 }
-                return <PublishStateBlock status={status} key={value} value={value} selectBlock={selectButton} unSelectBlock={unSelectBlock} />
+                return <PublishStateBlock status={status} key={data.key} value={data} selectBlock={selectStatusButton} unSelectBlock={unSelectStatusButton} />
               }
             )
           }
@@ -134,4 +161,16 @@ export default function MyWebtoonPage() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const daysRes = await axios.get("https://j8b206.p.ssafy.io/api/webtoons/list/days");
+  const statusRes = await axios.get("https://j8b206.p.ssafy.io/api/webtoons/list/status");
+
+  return {
+    props: {
+      days: daysRes.data.result,
+      status: statusRes.data.result
+    }
+  }
 }

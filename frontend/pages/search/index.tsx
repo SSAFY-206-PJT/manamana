@@ -5,7 +5,6 @@ import Image from 'next/image';
 import AngleDown from '../../public/images/fi-rs-angle-small-down.svg';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { withRouter } from 'next/router';
 import { RootState } from "../../store/index";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteDayTag, deleteGenreTag, deleteGradeTag, deleteStatusTag } from '@/store/CurSearchTagSlice';
@@ -136,13 +135,6 @@ export default function SearchPage() {
         });
     }
   }, [searchText]);
-
-  // useEffect(
-  //   () => {
-  //     reloadTag();
-  //   },
-  //   []
-  // )
 
   useEffect(
     () => {
