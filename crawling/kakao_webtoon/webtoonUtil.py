@@ -1,5 +1,4 @@
 from colorthief import ColorThief
-# from HSL.hsl import rgb_to_hsl
 import colorsys
 from time import sleep
 import urllib.request
@@ -25,10 +24,8 @@ def image_main_color_hsl(url,tmp_file='tmp.jpg'):
     dominant_color = color_thief.get_color(quality=1)
     # os.remove("test.png")
     r, g, b = dominant_color
-    print(r,g,b)
     ONE_255 = 1.0 / 255.0
 
-    # h, s, l = map(lambda x: int(round(x*100, 0)), rgb_to_hsl(r * ONE_255, g * ONE_255, b * ONE_255))
     h, l, s = map(lambda x: int(round(x*100, 0)), colorsys.rgb_to_hls(r * ONE_255, g * ONE_255, b * ONE_255))
     
     return f'{int(round(h*3.6,0))},{s},{l}'
