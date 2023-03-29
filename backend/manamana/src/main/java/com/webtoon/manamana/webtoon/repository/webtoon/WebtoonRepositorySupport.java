@@ -69,19 +69,12 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         return Optional.ofNullable(queryFactory
                 .selectFrom(webtoon)
                 .where(webtoon.isDeleted.eq(false), webtoon.id.eq(webtoonId))
-                .leftJoin(webtoon.userWebtoons, QUserWebtoon.userWebtoon)
-                .fetchJoin()
-                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay)
-                .fetchJoin()
-                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre)
-                .fetchJoin()
-                .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition)
-                .fetchJoin()
-                .leftJoin(webtoon.authors, QAuthor.author)
-                .fetchJoin()
-                .leftJoin(webtoon.comment, QComment.comment)
-                .fetchJoin()
-                .where(QComment.comment.isDeleted.eq(false))
+                .leftJoin(webtoon.userWebtoons, QUserWebtoon.userWebtoon).fetchJoin()
+                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin()
+                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin()
+                .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition).fetchJoin()
+                .leftJoin(webtoon.authors, QAuthor.author).fetchJoin()
+                .leftJoin(webtoon.comment, QComment.comment).fetchJoin()
                 .fetchOne());
 
     }
