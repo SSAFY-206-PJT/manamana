@@ -103,7 +103,7 @@ function CommentListItem({ chat, itemInfo }: ChatProp) {
             >
               {chat.content}
             </p>
-            <div className="mr-0">
+            <div className="ml-auto">
               <button
                 className="w-4"
                 onClick={() => {
