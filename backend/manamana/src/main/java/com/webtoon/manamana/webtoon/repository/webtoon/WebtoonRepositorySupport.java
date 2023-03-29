@@ -71,18 +71,17 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
 
         return queryFactory
                 .selectFrom(webtoon)
-                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin()
-                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin()
+                .where()
+                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).where(dayContain(webtoonFilterDTO.getDayId())).fetchJoin()
+                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).where(genreContain(webtoonFilterDTO.getGenreId())).fetchJoin()
                 .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition).fetchJoin()
                 .leftJoin(webtoon.authors, QAuthor.author).fetchJoin()
-                .leftJoin(webtoon.comment, QComment.comment).fetchJoin()
-                .where(QComment.comment.isDeleted.eq(false),
+                .leftJoin(webtoon.comment, QComment.comment).where(QComment.comment.isDeleted.eq(false)).fetchJoin()
+                .where(
                         webtoon.isDeleted.eq(false),
                         containsKey(webtoonFilterDTO.getKeyword()),
                         statusEq(webtoonFilterDTO.getStatusId()),
-                        gradeEq(webtoonFilterDTO.getGradeId()),
-                        dayContain(webtoonFilterDTO.getDayId()),
-                        genreContain(webtoonFilterDTO.getGenreId())
+                        gradeEq(webtoonFilterDTO.getGradeId())
                 )
                 .orderBy(sortTypeOrder(webtoonFilterDTO.getSortType()))
                 .fetch();
