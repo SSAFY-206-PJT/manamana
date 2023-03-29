@@ -1,6 +1,6 @@
 package com.webtoon.manamana.entity.user;
 
-import com.webtoon.manamana.auth.oauth2.dto.OAuth2UserInfo;
+//import com.webtoon.manamana.auth.oauth2.dto.OAuth2UserInfo;
 import com.webtoon.manamana.config.entity.BaseTimeEntity;
 import com.webtoon.manamana.entity.webtoon.Comment;
 import com.webtoon.manamana.user.dto.request.UserUpdateRequestDTO;
@@ -86,24 +86,24 @@ public class User extends BaseTimeEntity {
 
     //TODO : age의 경우, 테이블은 int인데 카카오에서 제공하는 값은 연령대로 1~9 형태임, 따라서 앞의 숫자만 따서 저장.
     //Oauth 로그인시에 정보가 다르면 업데이트 함 - 프로필 사진은 업데이트 안함
-    public void loginInfoUpdate(OAuth2UserInfo oAuth2UserInfo){
-        this.nickname = oAuth2UserInfo.getName();
-        this.email = oAuth2UserInfo.getEmail();
-        this.gender = oAuth2UserInfo.getGender();
-        this.age = Integer.parseInt(oAuth2UserInfo.getAge().split("~")[0]);
-    }
-
-    //유저 생성
-    public static User createUser(OAuth2UserInfo oAuth2UserInfo, LoginProvider loginProvider){
-        return User.builder()
-                .email(oAuth2UserInfo.getEmail())
-                .nickname(oAuth2UserInfo.getName())
-                .imagePath(oAuth2UserInfo.getProfileImage())
-                .age(Integer.parseInt(oAuth2UserInfo.getAge().split("~")[0]))
-                .gender(oAuth2UserInfo.getGender())
-                .isDeleted(false)
-                .loginProvider(loginProvider).build();
-    }
+//    public void loginInfoUpdate(OAuth2UserInfo oAuth2UserInfo){
+//        this.nickname = oAuth2UserInfo.getName();
+//        this.email = oAuth2UserInfo.getEmail();
+//        this.gender = oAuth2UserInfo.getGender();
+//        this.age = Integer.parseInt(oAuth2UserInfo.getAge().split("~")[0]);
+//    }
+//
+//    //유저 생성
+//    public static User createUser(OAuth2UserInfo oAuth2UserInfo, LoginProvider loginProvider){
+//        return User.builder()
+//                .email(oAuth2UserInfo.getEmail())
+//                .nickname(oAuth2UserInfo.getName())
+//                .imagePath(oAuth2UserInfo.getProfileImage())
+//                .age(Integer.parseInt(oAuth2UserInfo.getAge().split("~")[0]))
+//                .gender(oAuth2UserInfo.getGender())
+//                .isDeleted(false)
+//                .loginProvider(loginProvider).build();
+//    }
 
     @Override
     public String toString() {
