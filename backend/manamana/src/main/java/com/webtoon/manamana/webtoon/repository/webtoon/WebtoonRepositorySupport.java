@@ -70,7 +70,8 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         QWebtoon webtoon = QWebtoon.webtoon;
 
         return queryFactory
-                .selectFrom(webtoon)
+                .select(webtoon).distinct()
+                .from(webtoon)
                 .where(webtoon.isDeleted.eq(false),
                         webtoon.isDeleted.eq(false),
                         containsKey(webtoonFilterDTO.getKeyword()),
