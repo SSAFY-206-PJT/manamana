@@ -27,11 +27,14 @@ export default function WebtoonItem(props: Props) {
           {status === '휴재중' ? <WebtoonBreakLabel /> : <></>}
           {status === '완결' ? <WebtoonCompleteLabel /> : <></>}
           <div className="flex items-center justify-center text-[16px] text-semibold">
-            {/* 길이가 길면 잘라서 출력하도록 */}
-            {webtoonName.length > 6 ?
+            {/* 웹툰제목 길이가 길면 6글자만 출력 */}
+            {/* 휴재/완결 버튼 있고 웹툰제목 길이가 길면 4글자만 출력 */}
+            {(status === '휴재중' || status === '완결') && webtoonName.length > 4 ?
+              webtoonName.substring(0, 4).concat("...") :
+              webtoonName.length > 6 ?
               webtoonName.substring(0, 6).concat("...")
               : webtoonName
-            }
+             }
           </div>
         </div>
       </div>

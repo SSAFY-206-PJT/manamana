@@ -211,11 +211,11 @@ export default function SearchPage() {
           <Lottie loop animationData={EmptyLottie} play className='w-2/3 h-2/3' />
         </div>
         :
-        <div className='bg-BackgroundLightComponent m-2 p-4 rounded-2xl text-center'>
+        <div className='bg-BackgroundLightComponent m-2 mt-2 p-4 rounded-2xl text-center'>
           {webtoonListElement}
         </div>
       }
       <Navbar />
     </div>
-  );
+  )
 }
