@@ -4,6 +4,7 @@ from time import sleep
 from naver_auth import login
 from webdriver import create_webdriver
 from webtoon_util import scroll_down, image_main_color_to_hsl,scroll_page_down
+from selenium import webdriver
 import json
 # import sys,io
 
@@ -164,7 +165,16 @@ def status_parse(content_info,week):
 
 def crawling_start():
     
-    driver = create_webdriver()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
+
+    # linux 환경에서 필요한 option
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+
+    driver = webdriver.Chrome("/home/ubuntu/S08P22B206/crawling/kakao_webtoon/chromedriver", options=chrome_options)
+
+    #driver = create_webdriver()
     
     # 성인웹툰 크롤링을 위해 네이버 로그인
     login(driver)
