@@ -257,7 +257,7 @@ export default function ProfilePage({ userData }: any) {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // const { user_id } = context.query;
-  const user_id = 3; // 로그인 구현 전이라 임시로 user_id 설정
+  const user_id = 2; // 로그인 구현 전이라 임시로 user_id 설정
   try {
     const response = await axios.get(`https://j8b206.p.ssafy.io/api/users/${user_id}`);
     const userData: User = response.data.result;

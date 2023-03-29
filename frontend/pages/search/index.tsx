@@ -121,7 +121,7 @@ export default function SearchPage() {
       getWebtoons({
         keyword: searchText,
         page: pageNum,   // 페이지 숫자
-        size: 12,   // 한 페이지에 몇 개를 받을 건지
+        size: 21,   // 한 페이지에 몇 개를 받을 건지
         sortType: 1,
         statusId: curSearchTag.status.map((v) => v.key),
         genreId: curSearchTag.genres.map((v) => v.key),
@@ -143,7 +143,7 @@ export default function SearchPage() {
       getWebtoons({
         keyword: '',
         page: pageNum,   // 페이지 숫자
-        size: 12,   // 한 페이지에 몇 개를 받을 건지
+        size: 21,   // 한 페이지에 몇 개를 받을 건지
         sortType: 1,
         statusId: curSearchTag.status.map((v) => v.key),
         genreId: curSearchTag.genres.map((v) => v.key),
@@ -169,7 +169,7 @@ export default function SearchPage() {
     [webtoonList]);
 
   return (
-    <div className='bg-BackgroundLight h-screen'>
+    <div className='bg-BackgroundLight w-full h-full pb-12'>
       <Headerbar showBackBtn={true} pageName="탐색" rightBtn="EDIT" />
       <div className='bg-BackgroundLightComponent m-2 p-4 pb-2 rounded-2xl'>
         <SearchBar onSearchBarChange={onSearchBarChange} />
@@ -211,7 +211,7 @@ export default function SearchPage() {
           <Lottie loop animationData={EmptyLottie} play className='w-2/3 h-2/3' />
         </div>
         :
-        <div className='bg-BackgroundLightComponent m-2 p-4 rounded-2xl'>
+        <div className='bg-BackgroundLightComponent m-2 p-4 rounded-2xl text-center'>
           {webtoonListElement}
         </div>
       }
