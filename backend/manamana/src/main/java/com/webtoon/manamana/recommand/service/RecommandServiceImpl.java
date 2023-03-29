@@ -2,16 +2,23 @@ package com.webtoon.manamana.recommand.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webtoon.manamana.config.response.exception.CustomException;
+import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
+import com.webtoon.manamana.entity.user.UserWebtoon;
+import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.AssosiationApiRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.*;
+import com.webtoon.manamana.user.repository.user.UserWebtoonRepository;
+import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
@@ -21,8 +28,13 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RecommandServiceImpl implements RecommandService {
 
+    private final UserWebtoonRepository userWebtoonRepository;
+    private final WebtoonRepository webtoonRepository;
+
+    /* 추천 알고리즘을 통한 웹툰 조회 */
     @Override
     public List<RecommandWebtoonResponseDTO> recommandUserWebtoon() throws Exception {
 
@@ -81,6 +93,7 @@ public class RecommandServiceImpl implements RecommandService {
         return recommandWebtoonResponseDTOS;
     }
 
+    /* 관련 웹툰 추천 */
     @Override
     public  List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon() throws Exception {
 
@@ -88,14 +101,26 @@ public class RecommandServiceImpl implements RecommandService {
             TODO : DB users_and_webtoons 테이블에서 모든 정보 가져와야함, Exception 던졌던거 처리
          */
 
+        List<UserWebtoon> userWebtoons =  userWebtoonRepository.findAllByIsDeletedFalse();
+
         List<AssosiationApiRequestDTO> assosiationApiRequestDTOS = new ArrayList<>();
 
-        /* 테스트용 */
+        for (UserWebtoon userWebtoon : userWebtoons) {
+            assosiationApiRequestDTOS.add(
+                    AssosiationApiRequestDTO.builder()
+                            .userId(userWebtoon.getUser().getId())
+                            .webtoonId(userWebtoon.getWebtoon().getId())
+                            .score(userWebtoon.getScore())
+                            .build()
+            );
+        }
+
+        /* 테스트용
         assosiationApiRequestDTOS.add(
                 AssosiationApiRequestDTO.builder()
                         .userId(1L)
                         .webtoonId(1L)
-                        .score(5)
+                        .score(3)
                         .build()
         );
 
@@ -103,7 +128,7 @@ public class RecommandServiceImpl implements RecommandService {
                 AssosiationApiRequestDTO.builder()
                         .userId(2L)
                         .webtoonId(2L)
-                        .score(3)
+                        .score(5)
                         .build()
         );
 
@@ -114,7 +139,7 @@ public class RecommandServiceImpl implements RecommandService {
                         .score(1)
                         .build()
         );
-        /* 테스트용 */
+        테스트용 */
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -147,6 +172,11 @@ public class RecommandServiceImpl implements RecommandService {
                 TODO : webtoonId별 웹툰정보 DB에서 가져와야함
              */
 
+            Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(assosiationWebtoonResponseDTO.getWebtoonId())
+                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
+
+            
+
             /* 테스트용 데이터 */
             List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
 
@@ -178,6 +208,7 @@ public class RecommandServiceImpl implements RecommandService {
         return recommandWebtoonResponseDTOS;
     }
 
+    /* 취향 월드컵 조회 */
     @Override
     public List<WorldCupResponseDTO> worldCupWebtoonSearch() {
 
@@ -205,7 +236,9 @@ public class RecommandServiceImpl implements RecommandService {
         return worldCupResponseDTOS;
     }
 
+    /* 취향 월드컵 결과 저장 */
     @Override
+    @Transactional
     public WorldCupResultDTO worldCupWebtoonSave(WorldCupRequestDTO worldCupRequestDTO) {
 
         log.info(worldCupRequestDTO.getId().toString());
