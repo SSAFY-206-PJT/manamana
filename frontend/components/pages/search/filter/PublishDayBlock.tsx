@@ -1,11 +1,15 @@
 import { useState } from "react";
 
+interface Data {
+    key: number,
+    value: string
+}
+
 interface Props {
-    value: string;
+    value: Data;
     status: boolean;
-    key: string;
-    selectBlock: (value: string) => void;
-    unSelectBlock: (value: string) => void;
+    selectBlock: (data: Data) => void;
+    unSelectBlock: (data: Data) => void;
 }
 
 export default function PublishDayBlock(props: Props) {
@@ -16,11 +20,11 @@ export default function PublishDayBlock(props: Props) {
     *  */
     const onButtonClick = () => {
         if(!selectStatus){
-            props.selectBlock(props.value);
+            props.selectBlock({key: props.value.key, value: props.value.value});
             setSelectStatus(true);
         }
         else{
-            props.unSelectBlock(props.value);
+            props.unSelectBlock({key: props.value.key, value: props.value.value});
             setSelectStatus(false);
         }
     }
@@ -29,11 +33,11 @@ export default function PublishDayBlock(props: Props) {
         <div className="inline-block m-2">
             {selectStatus ?
                 <button className="w-12 h-12 rounded-full bg-SecondaryLight text-FontPrimaryDark text-center" onClick={onButtonClick}>
-                    {props.value}
+                    {props.value.value}
                 </button>
                 :
                 <button className="w-12 h-12 rounded-full bg-BackgroundLightComponent text-FontPrimaryLight text-center" onClick={onButtonClick}>
-                    {props.value}
+                    {props.value.value}
                 </button>
             }
 
