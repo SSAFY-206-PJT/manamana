@@ -90,7 +90,7 @@ export default function MyWebtoonPage(props : Props) {
                     break;
                   }
                 }
-                return <PublishDayBlock status={status} key={data.key} value={data} selectBlock={selectDayButton} unSelectBlock={unSelectDayButton} />
+                return <PublishDayBlock key={data.key} status={status} value={data} selectBlock={selectDayButton} unSelectBlock={unSelectDayButton} />
               }
             )
           }
@@ -110,7 +110,7 @@ export default function MyWebtoonPage(props : Props) {
                     break;
                   }
                 }
-                return <PublishStateBlock status={status} key={data.key} value={data} selectBlock={selectStatusButton} unSelectBlock={unSelectStatusButton} />
+                return <PublishStateBlock key={data.key} status={status} value={data} selectBlock={selectStatusButton} unSelectBlock={unSelectStatusButton} />
               }
             )
           }
@@ -118,6 +118,13 @@ export default function MyWebtoonPage(props : Props) {
       )
     }
   }, [focus]);
+
+  useEffect(
+    () => {
+      
+      console.log(props.days);
+    }, []
+  )
 
   return (
     <div>
