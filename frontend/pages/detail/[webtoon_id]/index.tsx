@@ -393,6 +393,7 @@ function DetailPage({ webtoon }: Props) {
                   webtoonName={webtoon.name}
                   imageUrl={webtoon.imagePath}
                   status={'연재중'}
+                  id={webtoon.id}
                 />
               ))
             : null}
