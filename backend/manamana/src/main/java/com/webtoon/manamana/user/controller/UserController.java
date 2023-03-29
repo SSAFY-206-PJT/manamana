@@ -43,7 +43,7 @@ public class UserController {
             @PathVariable("user-id") long userId){
 
         // TODO : oauth2 기능 완성 후 수정필요.
-        long authUserId = 1L;
+        long authUserId = userId;
 
         UserResponseDTO userResponseDTO = userService.getUser(authUserId);
 
@@ -66,7 +66,7 @@ public class UserController {
 
         // TODO : oauth2 기능 완성 후 수정필요.
         // TODO : 파일 처리 필요.
-        long authUserId = 1L;
+        long authUserId = userId;
 
         userService.updateUser(userId, userUpdateRequestDTO, multipartFile);
 
@@ -85,7 +85,7 @@ public class UserController {
             @PathVariable("user-id") long userId){
 
         // TODO : 인증토큰의 ID와 PathVariable의 ID가 같은지 확인.
-        long authUserId = 1L;
+        long authUserId = userId;
 
         userService.removeUser(authUserId);
 
