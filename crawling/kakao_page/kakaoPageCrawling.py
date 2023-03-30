@@ -16,7 +16,7 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 
-driver = webdriver.Chrome("./chromedriver",  options=chrome_options)
+driver = webdriver.Chrome("chromedriver",  options=chrome_options)
 time.sleep(2)
 
 login(driver)  # 로그인
