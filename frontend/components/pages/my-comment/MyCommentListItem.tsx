@@ -51,7 +51,7 @@ function MyCommentListItem({ chat, itemInfo }: ChatProp) {
                 console.log('더보기클릭함');
               }}
             >
-              <Image src="/images/More.png" width={20} height={20} alt="#" />
+              <img src="/images/More.png" className="h-5 w-5" alt="#"></img>
             </button>
           </div>
         </div>
