@@ -28,14 +28,14 @@ pipeline {
         }
         stage("env copy") {
             steps {
-                dir("${APPLICATION_YML_PATH}"){
+                dir("${APPLICATION_ENV_PATH}"){
                     sh "pwd"
                     sh "cp -f fronted_env/.env manamana-frontend/frontend/.env"
                 }
             }
         }
 
-        stage("Clean Container&Image") {
+        stage("Clean Container&Image") {s
             steps {
                 script{
                     // //컨테이너 확인 후 정지
