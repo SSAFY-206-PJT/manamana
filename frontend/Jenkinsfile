@@ -26,8 +26,8 @@ pipeline {
                 }
             }
         }
-        stage("env copy"){
-            steps{
+        stage("env copy") {
+            steps {
                 dir("${APPLICATION_YML_PATH}"){
                     sh "pwd"
                     sh "cp -f fronted_env/.env manamana-frontend/frontend/.env"
@@ -35,8 +35,8 @@ pipeline {
             }
         }
 
-        stage("Clean Container&Image"){
-            steps{
+        stage("Clean Container&Image") {
+            steps {
                 script{
                     // //컨테이너 확인 후 정지
                     sh "docker ps -f name=${CONTAINER_NAME} -q | xargs --no-run-if-empty docker container stop"
