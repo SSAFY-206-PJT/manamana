@@ -8,8 +8,15 @@ from webtoonUtil import *
 import os
 import sys
 import webtoon
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-
+"""
+def set_chrome_driver():
+    chrome_options = webdriver.ChromeOptions()
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    return driver
+"""
 # 로그인하기
 def login(driver):
     # .env 로드
@@ -224,9 +231,16 @@ if __name__ == "__main__":
 
     f = open("./webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
 
-    driver = webdriver.Chrome("./chromedriver") # 크롬 브라우저를 사용
-    driver.implicitly_wait(10)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
 
+    # linux 환경에서 필요한 option
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+
+    driver = webdriver.Chrome("/mount/code/crawling_develop/crawling/kakao_webtoon/chromedriver", options=chrome_options) # 크롬 브라우저를 사용
+    driver.implicitly_wait(10)
+    #driver = set_chrome_driver()
     login(driver) # 카카오 웹툰 로그인
     for week_string in week_arr:
         crawling(driver, week_string, f)
