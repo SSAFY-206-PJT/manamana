@@ -3,6 +3,7 @@ package com.webtoon.manamana.webtoon.controller;
 import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
+import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,9 +48,10 @@ public class WebtoonAdditionController {
     @PatchMapping("/{webtoon-id}/comments/{comment-id}/report")
     public CommonResponse reportComment(
             @PathVariable("webtoon-id") long webtoonId,
-            @PathVariable("comment-id") long commentId){
+            @PathVariable("comment-id") long commentId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
 
         webtoonAdditionService.commentReport(authUserId,webtoonId,commentId);
 
@@ -64,9 +67,10 @@ public class WebtoonAdditionController {
     })
     @PatchMapping("/{webtoon-id}/like")
     public CommonResponse likeComment(
-            @PathVariable("webtoon-id") long webtoonId){
+            @PathVariable("webtoon-id") long webtoonId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
         log.info("[관심등록 확인] - webtoon-id : {} ", webtoonId);
         webtoonAdditionService.createLikeWebtoon(authUserId,webtoonId);
 
@@ -83,8 +87,7 @@ public class WebtoonAdditionController {
     })
     @GetMapping("/{webtoon-id}/word-cloud")
     public DataResponse<Object> wordCloudComment(
-            @PathVariable("webtoon-id") long webtoonId
-    )throws Exception{
+            @PathVariable("webtoon-id") long webtoonId)throws Exception{
 
 
         String temp1 = "{\n" +
@@ -117,11 +120,11 @@ public class WebtoonAdditionController {
     })
     @GetMapping("/{webtoon-id}/scores")
     public DataResponse<Object> scoreWebtoon(
-            @PathVariable("webtoon-id") long webtoonId
-    ) throws Exception{
+            @PathVariable("webtoon-id") long webtoonId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
         log.info("[개인이 평가한 평점 확인] - webtoon-id : {} ", webtoonId);
         
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
 
         ScoreResponseDTO webtoonUserScore = webtoonAdditionService.getWebtoonUserScore(authUserId, webtoonId);
 
@@ -139,9 +142,10 @@ public class WebtoonAdditionController {
     @PostMapping("/{webtoon-id}/scores")
     public CommonResponse createWebtoonScore(
             @PathVariable("webtoon-id") long webtoonId,
-            @RequestBody ScoreRequestDTO scoreRequestDTO){
+            @RequestBody ScoreRequestDTO scoreRequestDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
         log.info("[작품 평점 생성 확인] - webtoon-id : {}, score : {}", webtoonId, scoreRequestDTO.getScore());
 
         webtoonAdditionService.createWebtoonUserScore(authUserId,webtoonId,scoreRequestDTO.getScore());
