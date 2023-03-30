@@ -36,10 +36,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
                 .addMapping("/**")
+                .allowedOrigins("http://localhost:3000") //TODO : 테스트를 위해 잠시로컬에 지정.
                 .allowedOriginPatterns("*")//외부에서 들어오는 모든 url 허용
                 .allowedMethods("GET","POST","PATCH","DELETE") //허용되는 메서드
                 .allowedHeaders("*")//허용되는 헤더 지원
-                .allowCredentials(false) //자격증명 허용 // TODO : 테스트가 끝나면 다시 true로 되돌려야 됨.
+                .allowCredentials(true) //자격증명 허용
                 .maxAge(MAX_AGE_SECS);
     }
 }
