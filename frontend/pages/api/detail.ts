@@ -14,11 +14,11 @@ export const getWebtoonDetail = async (webtoon_id: any) => {
     headers: { 'Content-Type': 'application/json' },
   };
   try {
-    const url = `/webtoons/${webtoon_id}`;
     const res = await axios.request(options);
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -39,6 +39,7 @@ export const getWebtoonProviders = async (webtoon_id: any) => {
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -48,17 +49,19 @@ export const getWebtoonProviders = async (webtoon_id: any) => {
  * @param webtoon_id
  * @returns
  */
-export const getWebtoonComments = async (webtoon_id: any) => {
+export const getWebtoonComments = async (webtoon_id: any, page: number) => {
   const options = {
     method: 'GET',
     url: `/webtoons/${webtoon_id}/comments`,
     headers: { 'Content-Type': 'application/json' },
+    params: { page },
   };
   try {
     const res = await axios.request(options);
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -83,6 +86,7 @@ export const postWebtoonComment = async (webtoon_id: any, content: string, isSpo
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -113,6 +117,7 @@ export const modifyWebtoonComment = async (
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -136,6 +141,7 @@ export const deleteWebtoonComment = async (webtoon_id: any, id: number) => {
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -158,6 +164,7 @@ export const reportWebtoonComment = async (webtoon_id: any, comment_id: number) 
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -179,6 +186,7 @@ export const likeWebtoon = async (webtoon_id: any) => {
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -199,6 +207,7 @@ export const getWebtoonMyScore = async (webtoon_id: any) => {
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -220,6 +229,7 @@ export const postWebtoonMyScore = async (webtoon_id: any, score: number) => {
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -244,6 +254,7 @@ export const unlikeWebtoon = async (user_id: any, webtoon_ids: number[]) => {
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     console.log(error);
     return null;
   }
@@ -271,6 +282,27 @@ export const myWebtoonComment = async (user_id: any) => {
   }
 };
 
+/** 유저 정보 조회
+ *
+ * @returns
+ */
+export const getUserInfo = async () => {
+  const options = {
+    method: 'GET',
+    url: `/users/1`,
+    headers: { 'Content-Type': 'application/json' },
+  };
+
+  try {
+    const res = await axios.request(options);
+    const answer = res.data;
+    return answer;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 ///////////////////* 웹툰 추천 관련 기능 *///////////////////
 export const getElseWebtoon = async (webtoon_id: any) => {
   const options = {
@@ -283,6 +315,7 @@ export const getElseWebtoon = async (webtoon_id: any) => {
     const answer = res.data;
     return answer;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };

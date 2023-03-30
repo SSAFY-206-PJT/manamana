@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import Navbar from '../components/common/Navbar';
 import WebtoonContainer from '../components/common/WebtoonContainer';
 import WebtoonItem from '../components/common/WebtoonItem';
 import Top10 from '../components/common/Top10';
+import { GetServerSideProps } from 'next';
 
 // 웹툰
 interface Webtoon {
@@ -24,7 +26,7 @@ interface Webtoon {
   imagePath: string;
 }
 
-export default function Home() {
+function Home() {
   // 스크롤 이동 함수
   const scrollToCoordinate = (x: number, y: number) => {
     window.scrollTo({
@@ -262,3 +264,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;

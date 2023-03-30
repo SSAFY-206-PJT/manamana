@@ -1,69 +1,43 @@
-import MovingLogo from '@/components/pages/login/MovingLogo';
-import { css } from "@emotion/react";
-import MNMNLogo from '../../public/images/MANAMANA.svg';
-import Image from 'next/image';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import { getUserInfo } from '../api/detail';
 
-export default function LoginPage() {
-
-  const loginClick = () => {
-    alert("login clicked");
-  };
-
-  return (
-    <div className='flex flex-col bg-gray-800 w-screen h-screen'>
-      <div>
-        <MovingLogo direction='left' startIdx={2}></MovingLogo>
-        <MovingLogo direction='right' startIdx={1}></MovingLogo>
-        <MovingLogo direction='left' startIdx={0}></MovingLogo>
-        <MovingLogo direction='right' startIdx={3}></MovingLogo>
-      </div>
-      <div css={
-        css`
-        z-index: 1;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.58) 28.23%, #000000 52.04%);
-        width: 100%;
-        height: 100vh;
-        position: absolute;
-        `
-      }
-        className='flex flex-col justify-center items-center'
-      >
-        <MNMNLogo width='150' height='150' />
-
-        <div className='text-FontSecondaryDark mb-5 m-12 text-lg'>
-          <p>오직 당신을 위한</p>
-          <p>웹툰 추천 플랫폼</p>
-        </div>
-
-        <div 
-        css={
-          css`
-            font-weight: bold;
-          `
-        }
-        className='text-FontPrimaryDark m-8 mt-6 text-4xl'>
-          마나마나
-        </div>
-
-        <button 
-        className='w-80 h-12 m-8'
-        css={
-          css`
-          background-image: url("/images/kakao_login_medium_wide.png");
-          background-size: cover;
-          cursor: pointer; 
-          `
-        }
-        onClick={
-          loginClick
-        }
-        ></button>
-
-        <div className='text-FontSecondaryDark text-center m-8'>
-          <p>Copyright 2023.</p>
-          <p>Team-Beef-Jerky All rights reserved.</p>
-        </div>
-      </div>
-    </div>
-  );
+interface Props {
+  token: string | null;
 }
+
+function Login({ token }: Props) {
+  const router = useRouter();
+  if (token) {
+    // api 통신 사용자 정보 받아오기 등등 ~
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
+
+    getUserInfo().then(data => console.log(data));
+    return <div>로그인 성공, 사용자 정보 받아오는중</div>;
+  } else {
+    const test1 = () => {
+      fetch('https://j8b206.p.ssafy.io/api/oauth2/authorization/kakao', { credentials: 'include' });
+    };
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <a href="https://j8b206.p.ssafy.io/api/oauth2/authorization/kakao">
+          <button className="text-4xl">카카오 로그인</button>
+        </a>
+        <button onClick={test1}>testtest</button>
+      </div>
+    );
+  }
+}
+
+export default Login;
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const { token } = context.query;
+  if (token) {
+    return { props: { token } };
+  } else {
+    return { props: { token: null } };
+  }
+};
