@@ -10,6 +10,8 @@ WORKDIR $APP_HOME
 COPY . .
 
 RUN yarn install
+
+RUN npm run build
 #어떤 포트에서 listen할지
 EXPOSE 3000
 

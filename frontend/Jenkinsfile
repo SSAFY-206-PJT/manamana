@@ -9,7 +9,7 @@ pipeline {
                     IMAGE_STORAGE = "https://registry.hub.docker.com"
                     IMAGE_STORAGE_CREDENTIAL = "docker-auth"
                     NODE_BUILD_PATH = "./build"
-                    APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
+                    APPLICATION_ENV_PATH = "/var/jenkins_home/workspace"
                     ESLINTIGNORE_PATH = "/var/jenkins_home/workspace/manamana-frontend"
                     CONTAINER_NAME = "manamana-fronted"
                     PROJECT_DIR = "frontend"
@@ -23,6 +23,13 @@ pipeline {
                 dir("${ESLINTIGNORE_PATH}"){
                     sh "pwd"
                     sh "cp -f eslintignore frontend/eslintignore"
+                }
+            }
+        }
+        staget("env copy"){
+            steps{
+                dir("${APPLICATION_YML_PATH}"){
+                    sh "cp -f fronted_env/.env manamana-frontend/frontend/.env"
                 }
             }
         }
