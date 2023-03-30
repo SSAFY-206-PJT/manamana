@@ -63,6 +63,7 @@ class Webtoon:
         """
         json으로 반환
         """
+        print(self.webtoons_dict)
         webtoon_json = json.dumps(self.webtoons_dict, ensure_ascii=False)
         return webtoon_json
 
