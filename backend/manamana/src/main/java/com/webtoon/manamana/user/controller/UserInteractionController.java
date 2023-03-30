@@ -3,6 +3,7 @@ package com.webtoon.manamana.user.controller;
 import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
+import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,10 +44,11 @@ public class UserInteractionController {
     })
     @GetMapping("/{user-id}/comments")
     public DataResponse<Object> findUserComment(
-            @PathVariable("user-id") long userId){
+            @PathVariable("user-id") long userId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
         // TODO : OAuth 완성후 userId 수정필요
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
 
         List<UserCommentResponseDTO> commentResponseDTOS = userService.getUserCommentAll(authUserId);
 
@@ -67,9 +70,10 @@ public class UserInteractionController {
     @GetMapping("/{user-id}/webtoons")
     public DataResponse<Object>  findUserWebtoon(
             @PathVariable("user-id") long userId,
-            @RequestParam(name = "day",required = false) Integer dayId){
+            @RequestParam(name = "day",required = false) Integer dayId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
 
         List<WebtoonInfoDTO> webtoonInfoDTOS = userService.getUserWebtoonAll(authUserId, dayId);
 
@@ -92,9 +96,10 @@ public class UserInteractionController {
     @DeleteMapping("/{user-id}/webtoons")
     public CommonResponse deleteUserWebtoon(
             @PathVariable("user-id") long userId,
-            @RequestBody IdLongMultiSelectRequestDTO idLongMultiSelectRequestDTO){
+            @RequestBody IdLongMultiSelectRequestDTO idLongMultiSelectRequestDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
 
         userService.deleteUserWebtoon(authUserId,idLongMultiSelectRequestDTO.getId());
 
@@ -111,9 +116,10 @@ public class UserInteractionController {
     @PostMapping("/{user-id}/genre/select")
     public CommonResponse userSelectGenre(
             @PathVariable("user-id") long userId,
-            @RequestBody GenreRequestDTO genreRequestDTO){
+            @RequestBody GenreRequestDTO genreRequestDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
 
         userService.selectLikeGenre(authUserId,genreRequestDTO.getId());
 
@@ -131,10 +137,11 @@ public class UserInteractionController {
     @PostMapping("/{user-id}/webtoon/select")
     public CommonResponse userSelectWebtoon(
             @PathVariable("user-id") long userId,
-            @RequestBody WebtoonRequestDTO webtoonRequestDTO){
+            @RequestBody WebtoonRequestDTO webtoonRequestDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
 
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
 
         userService.selectLikeWebtoon(authUserId,webtoonRequestDTO.getId());
 

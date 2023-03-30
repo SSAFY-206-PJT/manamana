@@ -1,5 +1,6 @@
 package com.webtoon.manamana.webtoon.controller;
 
+import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,7 +54,6 @@ public class WebtoonController {
 
         log.info("page = {}, size = {}",pageable.getOffset(),pageable.getPageSize());
 
-
         //body의 검색조건이 null이면
         if(webtoonFilterDTO == null) webtoonFilterDTO = new WebtoonFilterDTO();
 
@@ -76,9 +77,10 @@ public class WebtoonController {
     })
     @GetMapping("/{webtoon-id}")
     public DataResponse<WebtoonDetailDTO> webtoonDetail(
-            @PathVariable("webtoon-id") long webtoonId){
+            @PathVariable("webtoon-id") long webtoonId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
 
         WebtoonDetailDTO webtoonOne = webtoonService.findWebtoonOne(authUserId, webtoonId);
 

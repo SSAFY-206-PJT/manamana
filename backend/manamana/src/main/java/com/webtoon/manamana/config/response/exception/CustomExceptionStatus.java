@@ -13,6 +13,25 @@ public enum CustomExceptionStatus {
     //INVALID_USER_JWT(false,403,"권한이 없는 유저의 접근입니다."),
     //NOT_AUTHENTICATED_ACCOUNT(false, 403, "로그인이 필요합니다."),
 
+    NOT_FOUND_REFRESH_TOKEN(false, 400, "리프레시 토큰이 없습니다."),
+
+    NOT_INVALID_REFRESH_TOKEN(false, 401, "유효하지 않은 리프레시 토큰입니다."),
+
+
+    //
+    REFRESH_TOKEN_RENEWAL(false, 401, "리프레시 토큰 재발급 필요."),
+
+    /*인가*/
+    HAVE_NO_AUTHORITY(false, 403, "권한이 없습니다."),
+
+    /*인증 - 토큰 관련*/
+    TOKEN_INVALID(false,401,"유효하지 않은 토큰입니다."),
+    TOKEN_EXPIRE(false,401,"토큰이 만료되었습니다."),
+
+    TOKEN_UNSUPPORTED(false,401,"지원하지 않는 토큰입니다."),
+    TOKEN_ILLEGAL(false,401,"잘못된 토큰입니다."),
+
+
     REQUEST_QUERY_ERROR(false, 400, "잘못된 쿼리 요청입니다."),
 
     /*association user*/

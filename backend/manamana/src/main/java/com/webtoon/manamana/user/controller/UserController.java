@@ -2,7 +2,7 @@ package com.webtoon.manamana.user.controller;
 
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
-//import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -42,10 +42,11 @@ public class UserController {
     })
     @GetMapping("/{user-id}")
     public DataResponse<UserResponseDTO> findUser(
-            @PathVariable("user-id") long userId){
+            @PathVariable("user-id") long userId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        // TODO : oauth2 기능 완성 후 수정필요.
-        long authUserId = userId;
+        //TODO : pathvariable의 id랑 jwt의 id랑 비교처리 필요.
+        long authUserId = userPrincipal.getId();
 
         UserResponseDTO userResponseDTO = userService.getUser(authUserId);
 
@@ -64,13 +65,13 @@ public class UserController {
     public CommonResponse updateUser(
             @PathVariable("user-id") long userId,
             @RequestPart("data") UserUpdateRequestDTO userUpdateRequestDTO,
-            @RequestPart(value = "userImg",required = false) MultipartFile multipartFile){
+            @RequestPart(value = "userImg",required = false) MultipartFile multipartFile,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        // TODO : oauth2 기능 완성 후 수정필요.
-        // TODO : 파일 처리 필요.
-        long authUserId = userId;
+        //TODO : pathvariable의 id랑 jwt의 id랑 비교처리 필요.
+        long authUserId = userPrincipal.getId();
 
-        userService.updateUser(userId, userUpdateRequestDTO, multipartFile);
+        userService.updateUser(authUserId, userUpdateRequestDTO, multipartFile);
 
         return responseService.getSuccessResponse();
     }
@@ -84,9 +85,11 @@ public class UserController {
     })
     @DeleteMapping("/{user-id}")
     public CommonResponse deleteUser(
-            @PathVariable("user-id") long userId){
+            @PathVariable("user-id") long userId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
+
         // TODO : 인증토큰의 ID와 PathVariable의 ID가 같은지 확인.
-        long authUserId = userId;
+        long authUserId = userPrincipal.getId();
 
         userService.removeUser(authUserId);
 
