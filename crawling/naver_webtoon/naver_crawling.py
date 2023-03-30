@@ -175,7 +175,7 @@ def crawling_start(weeks):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
 
-    driver = webdriver.Chrome("/home/ubuntu/S08P22B206/crawling/kakao_webtoon/chromedriver", options=chrome_options)
+    driver = webdriver.Chrome("chromedriver", options=chrome_options)
 
     #driver = create_webdriver()
     
