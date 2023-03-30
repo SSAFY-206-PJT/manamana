@@ -51,6 +51,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         //리프레시 토큰 쿠키에 담기.
         CookieUtils.addCookie(response,"refresh-token",refreshToken,Integer.parseInt(appProperty.getRefreshTokenExpirationTime()));
 
+//        String targetUrl = determineTargetUrl(request, response, authentication);
         String targetUrl = determineTargetUrl(request, response, authentication);
         if (response.isCommitted()) {
             logger.debug("응답이 이미 커밋되었습니다. " + targetUrl + "로 리다이렉션 할 수 없습니다.");
@@ -58,8 +59,8 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         }
 
         clearAuthenticationAttributes(request, response);
-        response.sendRedirect(appProperty.getRedirect_page());
-//        getRedirectStrategy().sendRedirect(request,response,appProperty.getRedirect_page()); //리다이렉션.
+//        response.sendRedirect(appProperty.getRedirect_page());
+        getRedirectStrategy().sendRedirect(request,response,targetUrl); //리다이렉션.
     }
 
     protected String determineTargetUrl(HttpServletRequest request,
@@ -79,13 +80,13 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String token = tokenProvider.creatToken(authentication); //access 토큰 생성.
 
-        CookieUtils.addCookie(response,"access-token", token,Integer.parseInt(appProperty.getTokenExpirationTime()));
+//        CookieUtils.addCookie(response,"access-token", token,Integer.parseInt(appProperty.getTokenExpirationTime()));
 
-//        return UriComponentsBuilder.fromUriString(targetUrl)
-//                .queryParam("token", token)
-//                .build().toString();
+        return UriComponentsBuilder.fromUriString(appProperty.getRedirect_page())
+                .queryParam("token", token)
+                .build().toString();
 
-        return targetUrl;
+//        return targetUrl;
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request,

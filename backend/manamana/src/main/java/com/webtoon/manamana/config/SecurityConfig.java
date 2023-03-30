@@ -74,9 +74,6 @@ public class SecurityConfig {
                 .authenticationEntryPoint(tokenAuthenticationEntryPoint) //인증실패시
                 .accessDeniedHandler(tokenAccessDeniedHandler); //인가 실패시.
 
-
-
-
         return http.build();
     }
 
