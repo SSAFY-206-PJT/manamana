@@ -15,9 +15,8 @@ import json
 search_url = "https://comic.naver.com/webtoon?tab="
 provider_url = "https://comic.naver.com"
 fail_list = []
-# weeks = ['mon','tue','wed','thu','fri','sat','sun','dailyPlus','finish']
+# weeks_index = ['mon','tue','wed','thu','fri','sat','sun','dailyPlus','finish']
 weeks_dict = {'mon':'월','tue':'화','wed':'수','thu':'목','fri':'금','sat':'토','sun':'금'}
-weeks = ['mon']
 fails = {"fail" : []}
 
 webtoon_info_dict = dict()
@@ -167,7 +166,7 @@ def status_parse(content_info,week):
     
     return content_info.get_text()
 
-def crawling_start():
+def crawling_start(weeks):
     
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
