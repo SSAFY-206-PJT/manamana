@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -101,7 +102,6 @@ public class RecommandServiceImpl implements RecommandService {
     public  List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon(long webtoonId) throws Exception {
 
         /*
-            TODO : webtoonId는 어떻게 처리?
             TODO : Exception 던졌던거 처리
          */
 
@@ -119,11 +119,14 @@ public class RecommandServiceImpl implements RecommandService {
             );
         }
 
+        HashMap<Long, List<AssosiationApiRequestDTO>> map = new HashMap<>();
+        map.put(webtoonId, assosiationApiRequestDTOS);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String request = objectMapper.writeValueAsString(assosiationApiRequestDTOS);
+        String request = objectMapper.writeValueAsString(map);
 
         HttpEntity entity = new HttpEntity(request, httpHeaders);
 

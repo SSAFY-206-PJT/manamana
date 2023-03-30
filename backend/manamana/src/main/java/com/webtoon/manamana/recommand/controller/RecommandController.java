@@ -34,7 +34,7 @@ public class RecommandController {
     private final RecommandService recommandService;
     private final ResponseService responseService;
 
-    /*추천 알고리즘을 통한 웹툰 조회*/
+    /* 추천 알고리즘을 통한 웹툰 조회 */
     @Tag(name = "추천 관련 기능")
     @Operation(summary = "사용자 별 웹툰 추천 기능", description =  "사용자에 맞춘 웹툰 추천 기능")
     @ApiResponses({
@@ -50,7 +50,7 @@ public class RecommandController {
     }
 
 
-    /*관련 웹툰 추천*/
+    /* 관련 웹툰 추천 */
     @Tag(name = "추천 관련 기능")
     @Operation(summary = "관련 웹툰 추천", description =  "관련 웹툰 추천 기능")
     @ApiResponses({
@@ -61,15 +61,13 @@ public class RecommandController {
     public DataResponse< List<RecommandWebtoonResponseDTO>> recommandAssociationWebtoon(
             @PathVariable("webtoon-id") long webtoonId) throws Exception {
 
-        // TODO : webtoonId PathVariable 어디에 사용?
-
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandAssociationWebtoon(webtoonId);
 
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
 
-    /*취향 월드컵 조회*/
+    /* 취향 월드컵 조회 */
     @Tag(name = "추천 관련 기능")
     @Operation(summary = "취향 월드컵 조회", description =  "취향 월드컵에 사용할 웹툰 조회 기능")
     @ApiResponses({
@@ -84,7 +82,7 @@ public class RecommandController {
         return responseService.getDataResponse(worldCupResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
-    /*취향 월드컵 결과 저장.*/
+    /* 취향 월드컵 결과 저장 */
     @Tag(name = "추천 관련 기능")
     @Operation(summary = "취향 월드컵 결과 저장", description =  "취향 월드컵에서 나온 결과 저장 기능")
     @ApiResponses({
