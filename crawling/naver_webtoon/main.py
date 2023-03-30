@@ -23,4 +23,4 @@ if __name__ == "__main__":
     
     elif arguments[0] == "all": crawling_start(weeks)
     
-    else: crawling_start(arguments) 
+    else: crawling_start(arguments)
