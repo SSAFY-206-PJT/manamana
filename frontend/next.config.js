@@ -1,17 +1,13 @@
 /** @type {import('next').NextConfig} */
 const withPlugins = require('next-compose-plugins');
-const withPWA = require('next-pwa');
+const withPWA = require('next-pwa')({
+  dest: 'public',
+});
 
 const nextConfig = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'i.namu.wiki',
-        port: '',
-        pathname: '/i/**',
-      },
       {
         protocol: 'https',
         hostname: 'image-comic.pstatic.net',
@@ -40,19 +36,4 @@ const nextConfig = {
     return config;
   },
 };
-
-module.exports = withPlugins(
-  [
-    [
-      withPWA,
-      {
-        pwa: {
-          dest: 'public',
-          disable: process.env.NODE_ENV === 'development',
-        },
-      },
-    ],
-    // 추가 플러그인
-  ],
-  nextConfig,
-);
+module.exports = withPWA(nextConfig);
