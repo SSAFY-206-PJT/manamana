@@ -93,9 +93,6 @@ public class RecommandServiceImpl implements RecommandService {
         // url 바꿔야함
         ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/test", HttpMethod.POST, entity, String.class);
 
-//        System.out.println(response.getStatusCode());
-//        log.info(response.getBody());
-
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), ApiResponseDTO.class).getResult();
 
         return recommandWebtoonResponseDTOS;
@@ -213,7 +210,17 @@ public class RecommandServiceImpl implements RecommandService {
     @Transactional
     public WorldCupResultDTO worldCupWebtoonSave(WorldCupRequestDTO worldCupRequestDTO) {
 
-        log.info(worldCupRequestDTO.getId().toString());
+//        log.info(worldCupRequestDTO.getId().toString());
+        System.out.println("=====");
+        for (Long webtoonId : worldCupRequestDTO.getId()) {
+
+//            List<WebtoonGenre> findByWebtoonId(long webtoonId);
+            List<WebtoonGenre> webtoonGenres = webtoonGenreRepository.findByWebtoonId(webtoonId);
+
+            for (WebtoonGenre x : webtoonGenres) {
+                System.out.println(x);
+            }
+        }
 
         /*
             TODO : DB 접근 로직 필요
@@ -227,29 +234,5 @@ public class RecommandServiceImpl implements RecommandService {
                 .build();
 
         return worldCupResultDTO;
-    }
-
-    private static <T> ResponseEntity<String> springToFastAPI(T reqDTO, String url) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String request = null;
-
-        try {
-            request = objectMapper.writeValueAsString(reqDTO);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        HttpEntity entity = new HttpEntity(request, httpHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        // url 바꿔야함
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-
-        return response;
     }
 }
