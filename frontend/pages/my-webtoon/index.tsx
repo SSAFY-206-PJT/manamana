@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import PublishDayBlock from '@/components/pages/search/filter/PublishDayBlock';
 import PublishStateBlock from '@/components/pages/search/filter/PublishStateBlock';
 import axios from 'axios';
-import { StateData } from '@/components/pages/search/filter/PublishStateBlock';
-import { DayData } from '@/components/pages/search/filter/PublishDayBlock';
 
 enum FocusState {
   DAY,
@@ -12,17 +10,22 @@ enum FocusState {
   NULL,
 }
 
+interface Data {
+  key: number;
+  value: string;
+}
+
 interface Props {
-  days: DayData[];
-  status: StateData[];
+  days: Data[];
+  status: Data[];
 }
 
 export default function MyWebtoonPage(props: Props) {
   const [focus, setFocus] = useState<FocusState>(FocusState.NULL);
   const [detailElement, setDetailElement] = useState<any>();
 
-  const [selectedDays, setSelectedDays] = useState<DayData[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<StateData[]>([]);
+  const [selectedDays, setSelectedDays] = useState<Data[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<Data[]>([]);
 
   const onDayClick = () => {
     if (focus === FocusState.DAY) {
@@ -40,19 +43,19 @@ export default function MyWebtoonPage(props: Props) {
     }
   };
 
-  const selectDayButton = (data: DayData) => {
+  const selectDayButton = (data: Data) => {
     selectedDays.push(data);
     setSelectedDays([...selectedDays]);
   };
 
-  const selectStatusButton = (data: StateData) => {
+  const selectStatusButton = (data: Data) => {
     selectedStatus.push(data);
     setSelectedStatus([...selectedStatus]);
   };
 
-  const unSelectDayButton = (data: DayData) => {
+  const unSelectDayButton = (data: Data) => {
     for (let i = 0; i < selectedDays.length; i++) {
-      if (selectedDays[i].id === data.id) {
+      if (selectedDays[i].key === data.key) {
         selectedDays.splice(i, 1);
         break;
       }
@@ -60,9 +63,9 @@ export default function MyWebtoonPage(props: Props) {
     setSelectedDays([...selectedDays]);
   };
 
-  const unSelectStatusButton = (data: StateData) => {
+  const unSelectStatusButton = (data: Data) => {
     for (let i = 0; i < selectedStatus.length; i++) {
-      if (selectedStatus[i].id === data.id) {
+      if (selectedStatus[i].key === data.key) {
         selectedStatus.splice(i, 1);
         break;
       }
@@ -79,14 +82,14 @@ export default function MyWebtoonPage(props: Props) {
           {props.days.map(data => {
             let status = false;
             for (let i = 0; i < selectedDays.length; i++) {
-              if (selectedDays[i].id === data.id) {
+              if (selectedDays[i].key === data.key) {
                 status = true;
                 break;
               }
             }
             return (
               <PublishDayBlock
-                key={data.id}
+                key={data.key}
                 status={status}
                 value={data}
                 selectBlock={selectDayButton}
@@ -103,14 +106,14 @@ export default function MyWebtoonPage(props: Props) {
           {props.status.map(data => {
             let status = false;
             for (let i = 0; i < selectedStatus.length; i++) {
-              if (selectedStatus[i].id === data.id) {
+              if (selectedStatus[i].key === data.key) {
                 status = true;
                 break;
               }
             }
             return (
               <PublishStateBlock
-                key={data.id}
+                key={data.key}
                 status={status}
                 value={data}
                 selectBlock={selectStatusButton}
@@ -141,10 +144,18 @@ export default function MyWebtoonPage(props: Props) {
         <div className="m-4 rounded-xl bg-BackgroundLightComponent p-4">
           <div className="flex">
             <div onClick={onDayClick} className="w-full text-center text-lg font-bold">
-              {FocusState.DAY === focus ? <span className="text-PrimaryLight">요일</span> : <span>요일</span>}
+              {FocusState.DAY === focus ? (
+                <span className="text-PrimaryLight">요일</span>
+              ) : (
+                <span>요일</span>
+              )}
             </div>
             <div onClick={onEndClick} className="w-full text-center text-lg font-bold">
-              {FocusState.END === focus ? <span className="text-PrimaryLight">완결여부</span> : <span>완결여부</span>}
+              {FocusState.END === focus ? (
+                <span className="text-PrimaryLight">완결여부</span>
+              ) : (
+                <span>완결여부</span>
+              )}
             </div>
           </div>
           {detailElement}
@@ -166,10 +177,23 @@ export async function getServerSideProps() {
   const daysRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/days');
   const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status');
 
-  return {
-    props: {
-      days: daysRes.data.result,
-      status: statusRes.data.result,
-    },
-  };
+  let dayProp: any[] = [];
+  daysRes.data.result.map((day: any) => {
+    const oneday = {
+      key: day.id,
+      value: day.day,
+    };
+    dayProp.push(oneday);
+  });
+
+  let statusProp: any[] = [];
+  statusRes.data.result.map((state: any) => {
+    const onestate = {
+      key: state.id,
+      value: state.status,
+    };
+    statusProp.push(onestate);
+  });
+
+  return { props: { days: dayProp, status: statusProp } };
 }

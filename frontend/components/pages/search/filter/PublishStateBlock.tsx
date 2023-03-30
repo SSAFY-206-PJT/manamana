@@ -1,15 +1,15 @@
 import { useState } from 'react';
 
-export interface StateData {
-  id: number;
-  status: string;
+interface Data {
+  key: number;
+  value: string;
 }
 
 interface Props {
-  value: StateData;
+  value: Data;
   status: boolean;
-  selectBlock: (data: StateData) => void;
-  unSelectBlock: (data: StateData) => void;
+  selectBlock: (data: Data) => void;
+  unSelectBlock: (data: Data) => void;
 }
 
 export default function PublishStateBlock(props: Props) {
@@ -20,10 +20,10 @@ export default function PublishStateBlock(props: Props) {
    *  */
   const onButtonClick = () => {
     if (!selectStatus) {
-      props.selectBlock({ id: props.value.id, status: props.value.status });
+      props.selectBlock({ key: props.value.key, value: props.value.value });
       setSelectStatus(true);
     } else {
-      props.unSelectBlock({ id: props.value.id, status: props.value.status });
+      props.unSelectBlock({ key: props.value.key, value: props.value.value });
       setSelectStatus(false);
     }
   };
@@ -35,14 +35,14 @@ export default function PublishStateBlock(props: Props) {
           className="h-12 w-full rounded-md bg-SecondaryLight text-center text-FontPrimaryDark"
           onClick={onButtonClick}
         >
-          {props.value.status}
+          {props.value.value}
         </button>
       ) : (
         <button
           className="h-12 w-full rounded-md bg-BackgroundLightComponent text-center text-FontPrimaryLight"
           onClick={onButtonClick}
         >
-          {props.value.status}
+          {props.value.value}
         </button>
       )}
     </div>

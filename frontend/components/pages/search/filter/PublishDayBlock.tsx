@@ -1,15 +1,15 @@
 import { useState } from 'react';
 
-export interface DayData {
-  id: number;
-  day: string;
+interface Data {
+  key: number;
+  value: string;
 }
 
 interface Props {
-  value: DayData;
+  value: Data;
   status: boolean;
-  selectBlock: (data: DayData) => void;
-  unSelectBlock: (data: DayData) => void;
+  selectBlock: (data: Data) => void;
+  unSelectBlock: (data: Data) => void;
 }
 
 export default function PublishDayBlock(props: Props) {
@@ -20,10 +20,10 @@ export default function PublishDayBlock(props: Props) {
    *  */
   const onButtonClick = () => {
     if (!selectStatus) {
-      props.selectBlock({ id: props.value.id, day: props.value.day });
+      props.selectBlock({ key: props.value.key, value: props.value.value });
       setSelectStatus(true);
     } else {
-      props.unSelectBlock({ id: props.value.id, day: props.value.day });
+      props.unSelectBlock({ key: props.value.key, value: props.value.value });
       setSelectStatus(false);
     }
   };
@@ -35,14 +35,14 @@ export default function PublishDayBlock(props: Props) {
           className="h-12 w-12 rounded-full bg-SecondaryLight text-center text-FontPrimaryDark"
           onClick={onButtonClick}
         >
-          {props.value.day}
+          {props.value.value}
         </button>
       ) : (
         <button
           className="h-12 w-12 rounded-full bg-BackgroundLightComponent text-center text-FontPrimaryLight"
           onClick={onButtonClick}
         >
-          {props.value.day}
+          {props.value.value}
         </button>
       )}
     </div>
