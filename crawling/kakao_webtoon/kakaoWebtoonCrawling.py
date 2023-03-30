@@ -10,7 +10,15 @@ import sys
 import webtoon
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
+"""
+def set_chrome_driver():
+    chrome_options = webdriver.ChromeOptions()
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    return driver
+"""
 """
 def set_chrome_driver():
     chrome_options = webdriver.ChromeOptions()
@@ -110,7 +118,7 @@ def crawling(driver, day_string, f):
 
             # 연재 정보
             '''
-            연재 정보가의 태그 종류가 두가지임       
+            연재 정보가의 태그 종류가 두가지임
             하나를 먼저 확인하고, 없으면 다음 태그 종류를 확인 
             '''
             try:
@@ -150,7 +158,6 @@ def crawling(driver, day_string, f):
             
             # 웹툰 줄거리 저장
             plot = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div:nth-child(4) > div:nth-child(2) > p').string.strip()
-            #TODO 너무 줄거리가 길어서 에러뜸
             webtoon_info.plot = plot[:100]
             # 웹툰 장르 리스트 저장
             # genres = soup.select('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div:nth-child(5) > div.flex.flex-wrap.-mt-12 > a > p')
@@ -195,7 +202,7 @@ def crawling(driver, day_string, f):
             sleep(1)
         except Exception as e:
             print(e)
-            miss.append(url[idx+1:])
+            miss.append(url)
     print("done:",count)
     print("fail:", len(miss))
     print("miss:",miss)
@@ -250,7 +257,6 @@ if __name__ == "__main__":
 
 
     f.write(webtoon_json)
-    # f.write("\n")
     f.close()
     post_request(webtoon_json, url="http://127.0.0.1:8080/crawling")
 

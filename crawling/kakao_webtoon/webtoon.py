@@ -22,19 +22,19 @@ class Webtoon:
     """
     webtoons_dict = {"provider_id": 2, "data":[]}
     def __init__(self):
-        self.name: str = None
-        self.image: str = None
-        self.plot: str = None
-        self.grade: str = None
-        self.status: str = None
-        self.webtoon_url: str = None
-        self.webtoon_id: int = None
-        self.start_date: str = None
-        self.total_ep: int = None
-        self.genre_arr: list = None
-        self.day_arr: list = None
-        self.authors_arr: list = None
-        self.colorHsl: str = None
+        self.name: str = "None"
+        self.image: str = "None"
+        self.plot: str = "None"
+        self.grade: str = "None"
+        self.status: str = "None"
+        self.webtoon_url: str = "None"
+        self.webtoon_id: int = "None"
+        self.start_date: str = "None"
+        self.total_ep: int = "None"
+        self.genre_arr: list = "None"
+        self.day_arr: list = "None"
+        self.authors_arr: list = "None"
+        self.colorHsl: str = "None"
 
 
     def done(self):
@@ -63,6 +63,7 @@ class Webtoon:
         """
         json으로 반환
         """
+        print(self.webtoons_dict)
         webtoon_json = json.dumps(self.webtoons_dict, ensure_ascii=False)
         return webtoon_json
 
