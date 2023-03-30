@@ -7,12 +7,15 @@ import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.UserWebtoon;
 import com.webtoon.manamana.entity.webtoon.Author;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
+import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.AssosiationApiRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.*;
 import com.webtoon.manamana.user.repository.user.UserWebtoonRepository;
+import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepository;
+import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,6 +39,8 @@ public class RecommandServiceImpl implements RecommandService {
     private final UserWebtoonRepository userWebtoonRepository;
     private final WebtoonRepository webtoonRepository;
     private final WebtoonRepositorySupport webtoonRepositorySupport;
+    private final WebtoonGenreRepository webtoonGenreRepository;
+    private final WebtoonGenreRepositorySupport webtoonGenreRepositorySupport;
 
     /* 추천 알고리즘을 통한 웹툰 조회 */
     @Override
@@ -169,26 +173,37 @@ public class RecommandServiceImpl implements RecommandService {
     @Override
     public List<WorldCupResponseDTO> worldCupWebtoonSearch() {
 
-        /*
-            TODO : DB 접근 로직 필요.
-            TODO : 장르별 평점 TOP 10 중 랜덤 2개 뽑아서 반환
-         */
+        Set<Long> worldCupWebtoon = new HashSet<>();
+
+        for (int i = 1; i <= 16; i++) {
+            List<Long> genreTop10 = webtoonGenreRepositorySupport.findGenreWebtoonTOP10(i);
+
+            if (genreTop10.size() > 2) {
+
+                Random random = new Random();
+                List<Long> randomTwo = genreTop10.stream()
+                        .filter(e -> random.nextBoolean())
+                        .limit(2)
+                        .collect(Collectors.toList());
+
+                worldCupWebtoon.add(randomTwo.get(0));
+                worldCupWebtoon.add(randomTwo.get(1));
+            }
+        }
 
         List<WorldCupResponseDTO> worldCupResponseDTOS = new ArrayList<>();
 
-        worldCupResponseDTOS.add(
-                WorldCupResponseDTO.builder()
-                        .id(1L)
-                        .imagePath("url1")
-                        .build()
-        );
+        for (Long webtoonId : worldCupWebtoon) {
+            Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(webtoonId)
+                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
 
-        worldCupResponseDTOS.add(
-                WorldCupResponseDTO.builder()
-                        .id(2L)
-                        .imagePath("url2")
-                        .build()
-        );
+            worldCupResponseDTOS.add(
+                    WorldCupResponseDTO.builder()
+                            .id(webtoon.getId())
+                            .imagePath(webtoon.getImagePath())
+                            .build()
+            );
+        }
 
         return worldCupResponseDTOS;
     }
