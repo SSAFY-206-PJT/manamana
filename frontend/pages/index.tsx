@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
-
 import Navbar from '../components/common/Navbar';
 import WebtoonContainer from '../components/common/WebtoonContainer';
 import WebtoonItem from '../components/common/WebtoonItem';
@@ -129,8 +128,23 @@ export default function Home() {
     transform: perspective(1000px) rotateX(10deg);
   `;
 
+  // 웹툰 아이템을 감싸는 컨테이너의 스크롤바 숨기기
+  const WebtoonItemContainer = styled.div`
+    margin-bottom: 16px;
+    overflow-x: auto;
+    overflow-y: clip;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* IE 및 Edge 용 스크롤바 숨김 */
+
+    /* 웹킷 엔진 기반 브라우저의 스크롤바 숨김 */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `;
+
   return (
-    <div className=" h-full w-full bg-BackgroundLight">
+    <div className=" h-full w-full bg-BackgroundLight pb-12">
       {/* 최상위 헤더 */}
       <div className="sticky top-0 z-10 flex h-14 w-screen items-center justify-between bg-PrimaryLight px-5">
         <div className="h-6 w-6"></div>
@@ -149,16 +163,17 @@ export default function Home() {
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'내가 보는 웹툰'} route={'my-webtoon'} />
-          <div className="mb-4 overflow-x-auto whitespace-nowrap">
+          <WebtoonItemContainer>
             {myWebtoonDummy.map(webtoon => (
               <WebtoonItem
                 key={webtoon.id}
+                id={webtoon.id}
                 webtoonName={webtoon.name}
                 imageUrl={webtoon.imagePath}
                 status={webtoon.status}
               />
             ))}
-          </div>
+          </WebtoonItemContainer>
         </div>
       </div>
       <div className="mb-4 flex justify-center">
@@ -213,32 +228,34 @@ export default function Home() {
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'마나마나가 준비했어요'} />
-          <div className="mb-4 overflow-x-auto whitespace-nowrap">
+          <WebtoonItemContainer>
             {myWebtoonDummy.map(webtoon => (
               <WebtoonItem
                 key={webtoon.id}
+                id={webtoon.id}
                 webtoonName={webtoon.name}
                 imageUrl={webtoon.imagePath}
                 status={webtoon.status}
               />
             ))}
-          </div>
+          </WebtoonItemContainer>
         </div>
       </div>
       {/* 이 달의 신작 */}
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'이 달의 신작'} />
-          <div className="mb-4 overflow-x-auto  whitespace-nowrap">
+          <WebtoonItemContainer>
             {myWebtoonDummy.map(webtoon => (
               <WebtoonItem
                 key={webtoon.id}
+                id={webtoon.id}
                 webtoonName={webtoon.name}
                 imageUrl={webtoon.imagePath}
                 status={webtoon.status}
               />
             ))}
-          </div>
+          </WebtoonItemContainer>
         </div>
       </div>
       <Navbar />

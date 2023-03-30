@@ -3,16 +3,25 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import CommentInput from './CommentInput';
 import { Chat } from './CommentList';
 import { CommentUserInput } from './CommentInput';
+import { reportWebtoonComment } from '@/pages/api/detail';
 
 interface ChatListModalProps {
+  webtoonId: number;
   chat: Chat;
   open: boolean;
   close: () => void;
-  deleteComment: (ee: any) => void;
-  modifyComment: (oldComment: Chat, newComment: Chat) => void;
+  deleteComment: (chat: any) => Promise<boolean>;
+  modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
 }
 
-function CommentListModal({ chat, open, close, deleteComment, modifyComment }: ChatListModalProps) {
+function CommentListModal({
+  webtoonId,
+  chat,
+  open,
+  close,
+  deleteComment,
+  modifyComment,
+}: ChatListModalProps) {
   const myName = '김태학';
   const [modalState, setModalState] = useState<string>('init');
 
@@ -25,11 +34,11 @@ function CommentListModal({ chat, open, close, deleteComment, modifyComment }: C
   const changeModalState = (e: string) => {
     setModalState(e);
   };
-  const deleteChat = () => {
-    deleteComment(chat);
+  const deleteChat = async () => {
+    const result = await deleteComment(chat);
     closeModal();
   };
-  const modifyChat = (e: CommentUserInput) => {
+  const modify = async (e: CommentUserInput) => {
     const oldComment = chat;
     const newComment = {
       id: chat.id,
@@ -43,13 +52,24 @@ function CommentListModal({ chat, open, close, deleteComment, modifyComment }: C
         imagePath: chat.user.imagePath,
       },
     };
-    modifyComment(oldComment, newComment);
-    closeModal();
+    const result = await modifyComment(chat.id, oldComment, newComment);
+    if (result) {
+      closeModal();
+      return true;
+    } else {
+      return false;
+    }
   };
-  const reportChat = () => {
-    // api 통신 후에
-    alert('신고가 접수되었습니다.');
-    closeModal();
+  const reportChat = async () => {
+    const data = await reportWebtoonComment(webtoonId, chat.id);
+    if (data && data.isSuccess) {
+      alert('신고가 접수되었습니다.');
+      closeModal();
+    } else {
+      console.log(data);
+      alert('오류 발생');
+      closeModal();
+    }
   };
 
   const popupDelete = (
@@ -74,7 +94,7 @@ function CommentListModal({ chat, open, close, deleteComment, modifyComment }: C
         <hr className="my-2 w-full border border-PrimaryLight bg-PrimaryLight" />
         <CommentInput
           defaultValue={{ content: chat.content, spoiler: chat.isSpoiler }}
-          comment={modifyChat}
+          comment={modify}
         />
       </div>
     </div>

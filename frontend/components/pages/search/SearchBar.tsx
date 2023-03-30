@@ -1,9 +1,8 @@
 import Image from "next/image";
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 
 interface Props {
-    sendData: any;
-    onSearchBarChange: any;
+    onSearchBarChange: (e:ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function SearchBar(props: Props) {  
@@ -13,10 +12,9 @@ export default function SearchBar(props: Props) {
       * @Method
       * 입력이 변경됐을 경우 실행되는 메소드
       * */
-    const onChangeSearchContent = (event: any) => {
+    const onChangeSearchContent = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchContent(event.target.value);
-        props.sendData(event.target.value);
-        props.onSearchBarChange(event.target.value);
+        props.onSearchBarChange(event);
     };
 
     const onClickDeleteSearchContent = (event: any) => {

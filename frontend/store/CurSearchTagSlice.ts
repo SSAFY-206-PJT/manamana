@@ -1,41 +1,107 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface Data {
+    key: number,
+    value: string
+}
+
+
 export interface CurSearchTagState {
-    tags: string[];
+    days: Data[];
+    genres: Data[];
+    grades: Data[];
+    status: Data[];
 }
 
 const initialState: CurSearchTagState = {
-    tags: [],
+    days: [],
+    genres: [],
+    grades: [],
+    status: [],
 };
 
 const CurSearchTagSlice = createSlice({
     name: 'CurSearchTag',
     initialState,
     reducers: {
-        changeCurSearchTag: (
+        changeDays: (
             state: CurSearchTagState,
-            action: PayloadAction<string[]>
+            action: PayloadAction<Data[]>
         ) => {
-            state.tags = action.payload;
+            state.days = action.payload;
         },
-        getCurSearchTag: (state: CurSearchTagState) => {
-            state.tags;
-        },
-        deleteCurSearchOneTag: (
+        changeGenres: (
             state: CurSearchTagState,
-            action: PayloadAction<string>
+            action: PayloadAction<Data[]>
         ) => {
-            let newState = [...state.tags];
-            for(let i = 0; i < newState.length; i++){
-                if(newState[i] === action.payload){
+            state.genres = action.payload;
+        },
+        changeGrades: (
+            state: CurSearchTagState,
+            action: PayloadAction<Data[]>
+        ) => {
+            state.grades = action.payload;
+        },
+        changeStatus: (
+            state: CurSearchTagState,
+            action: PayloadAction<Data[]>
+        ) => {
+            state.status = action.payload;
+        },
+        deleteDayTag: (
+            state: CurSearchTagState,
+            action: PayloadAction<Data>
+        ) => {
+            let newState = [...state.days];
+            for (let i = 0; i < newState.length; i++) {
+                if (newState[i].key === action.payload.key) {
                     newState.splice(i, 1);
                     break;
                 }
             }
-            state.tags = newState;
+            state.days = newState;
+        },
+        deleteGenreTag: (
+            state: CurSearchTagState,
+            action: PayloadAction<Data>
+        ) => {
+            let newState = [...state.genres];
+            for (let i = 0; i < newState.length; i++) {
+                if (newState[i].key === action.payload.key) {
+                    newState.splice(i, 1);
+                    break;
+                }
+            }
+            state.genres = newState;
+        },
+        deleteGradeTag: (
+            state: CurSearchTagState,
+            action: PayloadAction<Data>
+        ) => {
+            let newState = [...state.grades];
+            for (let i = 0; i < newState.length; i++) {
+                if (newState[i].key === action.payload.key) {
+                    newState.splice(i, 1);
+                    break;
+                }
+            }
+            state.grades = newState;
+        },
+        deleteStatusTag: (
+            state: CurSearchTagState,
+            action: PayloadAction<Data>
+        ) => {
+            let newState = [...state.status];
+            for (let i = 0; i < newState.length; i++) {
+                if (newState[i].key === action.payload.key) {
+                    newState.splice(i, 1);
+                    break;
+                }
+            }
+            state.status = newState;
         }
     },
 });
 
-export const { changeCurSearchTag, deleteCurSearchOneTag } = CurSearchTagSlice.actions;
+export const { changeDays, changeGenres, changeGrades, changeStatus, deleteDayTag, deleteGenreTag, deleteGradeTag, deleteStatusTag} = CurSearchTagSlice.actions;
 export default CurSearchTagSlice;

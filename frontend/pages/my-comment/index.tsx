@@ -66,7 +66,7 @@ export default function MyCommentPage() {
   };
 
   // 댓글 수정
-  const modifyComment = (oldComment: MyChat, newComment: MyChat) => {
+  const modifyComment = async (oldComment: MyChat, newComment: MyChat) => {
     for (let i = 0; i < commentList.length; i++) {
       if (commentList[i] === oldComment) {
         commentList[i] = newComment;
@@ -74,6 +74,7 @@ export default function MyCommentPage() {
       }
     }
     setCommentList([...commentList]);
+    return true;
   };
 
   return (

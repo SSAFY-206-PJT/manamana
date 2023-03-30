@@ -17,14 +17,16 @@ export interface Chat {
 }
 
 interface CommentListProps {
+  webtoonId: number;
   commentList: Chat[];
   commentEnd: boolean;
   loadComment: () => void;
-  deleteComment: (ee: any) => void;
-  modifyComment: (oldComment: Chat, newComment: Chat) => void;
+  deleteComment: (chat: any) => Promise<boolean>;
+  modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
 }
 
 function CommentList({
+  webtoonId,
   commentList,
   commentEnd,
   loadComment,
@@ -103,12 +105,13 @@ function CommentList({
         {scrollLoading === 'add' ? <CircularProgress /> : null}
       </div>
       <div className="m-2 flex min-h-screen max-w-full flex-col-reverse">
-        {commentList?.map((item: Chat) => (
+        {commentList?.reverse().map((item: Chat) => (
           <CommentListItem chat={item} itemInfo={itemInfo} key={item.id} />
         ))}
       </div>
       {openModal ? (
         <CommentListModal
+          webtoonId={webtoonId}
           chat={selectedChat}
           open={openModal}
           close={closeModal}

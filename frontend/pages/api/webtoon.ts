@@ -1,21 +1,49 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import axios, { AxiosRequestConfig } from "axios";
+/*
+*
+* @author zouamare
+*
+* @copyright 2023
+*/
 
-interface author{
-    id: number;
-    name: string;
+// basic axios setting
+axios.defaults.baseURL = "https://j8b206.p.ssafy.io/api";
+// axios.defaults.withCredentials = true;
+
+interface Parameters{
+    keyword: string,
+    page: number,   // 페이지 숫자
+    size: number,   // 한 페이지에 몇 개를 받을 건지
+    sortType: number,
+    statusId: number[],
+    genreId: number[],
+    gradeId: number[],
+    dayId: number[]
 }
 
-type Data = {
-    id: number;
-    name: string;
-    status: string;
-    imagePath: string;
-    authors: author[];
-}
+///////////////////* GET *///////////////////
+/**
+ * getWebtoons : 웹툰 검색
+ * @returns
+ */
+const getWebtoons = async (p : Parameters) => {
+    let url = `/webtoons?keyword=${p.keyword}&page=${p.page}&size=${p.size}&sortType=${p.sortType}`;
+    let value = null;
+    await axios
+        .get(url, {data: {
+            statusId: p.statusId,
+            genreId: p.genreId,
+            gradeId: p.gradeId,
+            dayId: p.dayId
+        }} )
+        .then(({data}) => {
+            value = data.result;
+            console.log(value);
+        })
+        .catch((err) => {
+            console.log("[ERROR] 마나 골라 웹툰 정보 가져올 때 오류 발생");
+        });
+    return value;
+};
 
-export default function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<Data[]>
-){
-    
-}
+export { getWebtoons };

@@ -1,210 +1,217 @@
-import PublishStateBlock from "@/components/pages/search/filter/PublishStateBlock";
-import PublishDayBlock from "@/components/pages/search/filter/PublishDayBlock";
-import GenreStateBlock from "@/components/pages/search/filter/GenreStateBlock";
-import AgeGradeBlock from "@/components/pages/search/filter/AgeGradeBlock";
-import {useState, useEffect} from "react";
-import ConfirmBtn from "@/components/confirmBtn";
-import { useRouter } from "next/router"
-import { RootState } from "../../../store/index";
-import { useDispatch, useSelector } from "react-redux";
-import { changeCurSearchTag } from "@/store/CurSearchTagSlice";
+import PublishStateBlock from '@/components/pages/search/filter/PublishStateBlock';
+import PublishDayBlock from '@/components/pages/search/filter/PublishDayBlock';
+import GenreStateBlock from '@/components/pages/search/filter/GenreStateBlock';
+import AgeGradeBlock from '@/components/pages/search/filter/AgeGradeBlock';
+import { useState, useEffect } from 'react';
+import ConfirmBtn from '@/components/confirmBtn';
+import { useRouter } from 'next/router';
+import { RootState } from '../../../store/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeDays, changeGenres, changeGrades, changeStatus } from '@/store/CurSearchTagSlice';
+import axios from 'axios';
 
-export default function FilterPage() {
-  /*
-  * @Variable
-  * - 필터에 필요한 데이터 입력
-  * */
-  const publishState = [
-    {
-      value: '미완결',
-    },
-    {
-      value: '완결',
-    }
-  ];
-  const publishDayOfTheWeek = [
-    {
-      value: '월',
-    },
-    {
-      value: '화',
-    },
-    {
-      value: '수',
-    },
-    {
-      value: '목',
-    },
-    {
-      value: '금',
-    },
-    {
-      value: '토',
-    },
-    {
-      value: '일',
-    }
-  ];
-  const genreState = [
-    {
-      value: '액션',
-    },
-    {
-      value: '판타지',
-    },
-    {
-      value: '학원',
-    },
-    {
-      value: '개그',
-    },
-    {
-      value: '무협',
-    },
-    {
-      value: '공포/스릴러',
-    },
-    {
-      value: '드라마',
-    },
-    {
-      value: '로맨스',
-    },
-    {
-      value: '옴니버스',
-    },
-    {
-      value: '일상',
-    },
-    {
-      value: 'BL',
-    },
-    {
-      value: 'GL',
-    },
-    {
-      value: 'SF',
-    },
-    {
-      value: '스포츠',
-    },
-    {
-      value: '시대극',
-    }
-  ];
-  const ageGrade = [
-    {
-      value: '전연령',
-    },
-    {
-      value: '성인',
-    }
-  ];
+interface Props {
+  days: { id: number; day: string }[];
+  genres: { id: number; name: string }[];
+  grades: { id: number; grade: string }[];
+  status: { id: number; status: string }[];
+}
 
+interface Data {
+  key: number;
+  value: string;
+}
+
+export default function FilterPage(props: Props) {
   /*
-  * @Variable
-  * */
+   * @Variable
+   * */
   const router = useRouter(); // 화면 전환을 위한 라우터
   const dispatch = useDispatch(); // redux 사용을 위한 dispatch
-  const curSearchTag = useSelector((state: RootState) => state.searchTag);  // 현재 redux에서 저장한 searchTag 값 가져오기
-  const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
+  const curSearchTag = useSelector((state: RootState) => state.searchTag); // 현재 redux에서 저장한 searchTag 값 가져오기
+  const [selectedDays, setSelectedDays] = useState<Data[]>([]);
+  const [selectedGenres, setSelectedGenres] = useState<Data[]>([]);
+  const [selectedGrades, setSelectedGrades] = useState<Data[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<Data[]>([]);
 
-  const selectBlock = (value: string) => {
-    selectedBlocks.push(value);
-  }
+  const selectDayBlock = (data: Data) => {
+    selectedDays.push(data);
+    console.log(data);
+  };
 
-  const unSelectBlock = (value: string) => {
-    for(let i = 0; i < selectedBlocks.length; i++){
-      if(selectedBlocks[i] === value){
-        selectedBlocks.splice(i, 1);
+  const selectGenreBlock = (data: Data) => {
+    selectedGenres.push(data);
+    console.log(data);
+  };
+
+  const selectGradeBlock = (data: Data) => {
+    selectedGrades.push(data);
+    console.log(data);
+  };
+
+  const selectStatusBlock = (data: Data) => {
+    selectedStatus.push(data);
+    console.log(data);
+  };
+
+  const unSelectDayBlock = (data: Data) => {
+    for (let i = 0; i < selectedDays.length; i++) {
+      if (selectedDays[i].key === data.key) {
+        selectedDays.splice(i, 1);
         break;
       }
     }
-  }
+  };
+
+  const unSelectGenreBlock = (data: Data) => {
+    for (let i = 0; i < selectedGenres.length; i++) {
+      if (selectedGenres[i].key === data.key) {
+        selectedGenres.splice(i, 1);
+        break;
+      }
+    }
+  };
+
+  const unSelectGradeBlock = (data: Data) => {
+    for (let i = 0; i < selectedGrades.length; i++) {
+      if (selectedGrades[i].key === data.key) {
+        selectedGrades.splice(i, 1);
+        break;
+      }
+    }
+  };
+
+  const unSelectStatusBlock = (data: Data) => {
+    for (let i = 0; i < selectedStatus.length; i++) {
+      if (selectedStatus[i].key === data.key) {
+        selectedStatus.splice(i, 1);
+        break;
+      }
+    }
+  };
 
   const onConfirmClick = () => {
     // 지금까지 선택된 selectedBlocks 데이터를 보낸다.
-    dispatch(changeCurSearchTag(selectedBlocks));
+    dispatch(changeDays(selectedDays));
+    dispatch(changeGenres(selectedGenres));
+    dispatch(changeGrades(selectedGrades));
+    dispatch(changeStatus(selectedStatus));
     // search로 이동한다.
-    router.replace({
-      pathname: '/search'
-    },
-    "/search"
+    router.replace(
+      {
+        pathname: '/search',
+      },
+      '/search',
     );
-  }
+  };
 
   const onCancelClick = () => {
     // search로 이동한다.
     router.back();
-  }
+  };
 
   useEffect(() => {
-    setSelectedBlocks([...curSearchTag.tags]);
+    setSelectedDays([...curSearchTag.days]);
+    setSelectedGenres([...curSearchTag.genres]);
+    setSelectedGrades([...curSearchTag.grades]);
+    setSelectedStatus([...curSearchTag.status]);
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 h-full w-full bg-BackgroundLight">
-      <div className="flex justify-center items-center h-16 m-2">
-        <span className="text-2xl text-PrimaryLight font-bold">필터</span>
+    <div className="flex h-full w-full flex-col gap-4 bg-BackgroundLight">
+      <div className="m-2 flex h-16 items-center justify-center">
+        <span className="text-2xl font-bold text-PrimaryLight">필터</span>
       </div>
-      <div className="flex flex-col gap-4 m-4">
+      <div className="m-4 flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <div className="text-lg">완결 여부</div>
           <div className="flex gap-2">
-            {publishState.map((v) => {
-            let status: boolean = false;
-            for(let i = 0; i < curSearchTag.tags.length; i++){
-              if(curSearchTag.tags[i] === v.value){
-                status = true;
-                break;
+            {props.status.map(v => {
+              let status: boolean = false;
+              for (let i = 0; i < curSearchTag.status.length; i++) {
+                if (curSearchTag.status[i].key === v.id) {
+                  status = true;
+                  break;
+                }
               }
-            }
-            return <PublishStateBlock key={v.value} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} status={status} />
+              return (
+                <PublishStateBlock
+                  key={v.id}
+                  value={{ key: v.id, value: v.status }}
+                  selectBlock={selectStatusBlock}
+                  unSelectBlock={unSelectStatusBlock}
+                  status={status}
+                />
+              );
             })}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-lg">연재 요일</div>
           <div className="text-center">
-            {publishDayOfTheWeek.map((v) => {
+            {props.days.map(v => {
               let status: boolean = false;
-              for(let i = 0; i < curSearchTag.tags.length; i++){
-                if(curSearchTag.tags[i] === v.value){
+              for (let i = 0; i < curSearchTag.days.length; i++) {
+                if (curSearchTag.days[i].key === v.id) {
                   status = true;
                   break;
                 }
               }
-            return <PublishDayBlock key={v.value} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} status={status} />
-          })}
+              return (
+                <PublishDayBlock
+                  key={v.id}
+                  value={{ key: v.id, value: v.day }}
+                  selectBlock={selectDayBlock}
+                  unSelectBlock={unSelectDayBlock}
+                  status={status}
+                />
+              );
+            })}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-lg">장르</div>
           <div className="text-center">
-            {genreState.map((v) => {
+            {props.genres.map(v => {
               let status: boolean = false;
-              for(let i = 0; i < curSearchTag.tags.length; i++){
-                if(curSearchTag.tags[i] === v.value){
+              for (let i = 0; i < curSearchTag.genres.length; i++) {
+                if (curSearchTag.genres[i].key === v.id) {
                   status = true;
                   break;
                 }
               }
-              return <GenreStateBlock key={v.value} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} status={status} />
+              return (
+                <GenreStateBlock
+                  key={v.id}
+                  value={{ key: v.id, value: v.name }}
+                  selectBlock={selectGenreBlock}
+                  unSelectBlock={unSelectGenreBlock}
+                  status={status}
+                />
+              );
             })}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-lg">연령등급</div>
           <div className="flex w-full justify-center gap-8">
-            {ageGrade.map((v) => {
+            {props.grades.map(v => {
               let status: boolean = false;
-              for(let i = 0; i < curSearchTag.tags.length; i++){
-                if(curSearchTag.tags[i] === v.value){
+              for (let i = 0; i < curSearchTag.grades.length; i++) {
+                if (curSearchTag.grades[i].key === v.id) {
                   status = true;
                   break;
                 }
               }
-              return <AgeGradeBlock key={v.value} value={v.value} selectBlock={selectBlock} unSelectBlock={unSelectBlock} status={status} />
+              return (
+                <AgeGradeBlock
+                  key={v.id}
+                  value={{ key: v.id, value: v.grade }}
+                  selectBlock={selectGradeBlock}
+                  unSelectBlock={unSelectGradeBlock}
+                  status={status}
+                />
+              );
             })}
           </div>
         </div>
@@ -214,4 +221,20 @@ export default function FilterPage() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const daysRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/days');
+  const genresRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/genres');
+  const gradesRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/grades');
+  const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status');
+
+  return {
+    props: {
+      days: daysRes.data.result,
+      genres: genresRes.data.result,
+      grades: gradesRes.data.result,
+      status: statusRes.data.result,
+    },
+  };
 }
