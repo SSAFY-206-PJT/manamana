@@ -39,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("*")//외부에서 들어오는 모든 url 허용
                 .allowedMethods("GET","POST","PATCH","DELETE") //허용되는 메서드
                 .allowedHeaders("*")//허용되는 헤더 지원
-                .allowCredentials(true) //자격증명 허용
+                .allowCredentials(false) //자격증명 허용 // TODO : 테스트가 끝나면 다시 true로 되돌려야 됨.
                 .maxAge(MAX_AGE_SECS);
     }
 }
