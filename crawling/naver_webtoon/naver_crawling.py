@@ -15,9 +15,9 @@ import json
 search_url = "https://comic.naver.com/webtoon?tab="
 provider_url = "https://comic.naver.com"
 fail_list = []
-weeks = ['mon','tue','wed','thu','fri','sat','sun','dailyPlus','finish']
+# weeks = ['mon','tue','wed','thu','fri','sat','sun','dailyPlus','finish']
 weeks_dict = {'mon':'월','tue':'화','wed':'수','thu':'목','fri':'금','sat':'토','sun':'금'}
-# weeks = ['finish']
+weeks = ['mon']
 fails = {"fail" : []}
 
 webtoon_info_dict = dict()
@@ -47,8 +47,12 @@ def title_parse(content_info):
     
     content_info = content_info.find('h2', class_="EpisodeListInfo__title--mYLjC")
     
-    title = content_info.get_text()
-
+    title = content_info.get_text().strip()
+    
+    ## 글자 수가 2 이상이고 뒤부터 2글자를 확인했을 때, 휴재 이면 제거.
+    if(len(title) >= 2 and title[len(title)-1: len(title)-3: -1][::-1] == "휴재"):
+        title = title[:len(title)-2]
+        
     return title
 
 ## 작가
@@ -296,7 +300,6 @@ def crawling_start():
     temp_dict = dict()
     temp_dict["provider_id"] = 1
     temp_dict["data"] = list(webtoon_info_dict.values())
-    print(len(temp_dict["data"]))
     ##json 파일로 저장.
     with open('./webtoon_json/naver_webtoon.json','w',encoding='UTF-8') as f:
         json.dump(temp_dict, f, ensure_ascii=False, indent=4)
