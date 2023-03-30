@@ -10,7 +10,15 @@ import sys
 import webtoon
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
+"""
+def set_chrome_driver():
+    chrome_options = webdriver.ChromeOptions()
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    return driver
+"""
 """
 def set_chrome_driver():
     chrome_options = webdriver.ChromeOptions()
@@ -237,7 +245,7 @@ if __name__ == "__main__":
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
 
-    driver = webdriver.Chrome("/home/ubuntu/S08P22B206/crawling/kakao_webtoon/chromedriver", options=chrome_options) # 크롬 브라우저를 사용
+    driver = webdriver.Chrome("/mount/code/crawling_develop/crawling/kakao_webtoon/chromedriver", options=chrome_options) # 크롬 브라우저를 사용
     driver.implicitly_wait(10)
     #driver = set_chrome_driver()
     login(driver) # 카카오 웹툰 로그인
