@@ -26,7 +26,7 @@ pipeline {
                 }
             }
         }
-        staget("env copy"){
+        stage("env copy"){
             steps{
                 dir("${APPLICATION_YML_PATH}"){
                     sh "cp -f fronted_env/.env manamana-frontend/frontend/.env"
