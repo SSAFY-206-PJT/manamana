@@ -210,15 +210,15 @@ public class RecommandServiceImpl implements RecommandService {
     @Transactional
     public WorldCupResultDTO worldCupWebtoonSave(WorldCupRequestDTO worldCupRequestDTO) {
 
-//        log.info(worldCupRequestDTO.getId().toString());
-        System.out.println("=====");
         for (Long webtoonId : worldCupRequestDTO.getId()) {
 
-//            List<WebtoonGenre> findByWebtoonId(long webtoonId);
             List<WebtoonGenre> webtoonGenres = webtoonGenreRepository.findByWebtoonId(webtoonId);
 
-            for (WebtoonGenre x : webtoonGenres) {
-                System.out.println(x);
+            //  선택된 웹툰의 장르들 (중복X)
+            Set<Integer> selectedGenreId = new HashSet<>();
+
+            for (WebtoonGenre genre : webtoonGenres) {
+                selectedGenreId.add(genre.getGenre().getId());
             }
         }
 
