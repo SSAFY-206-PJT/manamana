@@ -42,7 +42,7 @@ public class UserController {
     })
     @GetMapping("/{user-id}")
     public DataResponse<UserResponseDTO> findUser(
-            @PathVariable("user-id") long userId,
+            @PathVariable(name="user-id", required = false) long userId,
             @AuthenticationPrincipal UserPrincipal userPrincipal){
 
         //TODO : pathvariable의 id랑 jwt의 id랑 비교처리 필요.
