@@ -313,6 +313,24 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`reports` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `mana_db`.`prefer_genres`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mana_db`.`prefer_genres` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `genre_id` INT NOT NULL,
+  `is_canceled` TINYINT NOT NULL,
+  `user_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_prefer_genres_users1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_prefer_genres_users1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `mana_db`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
