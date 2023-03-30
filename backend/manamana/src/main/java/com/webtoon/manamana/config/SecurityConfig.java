@@ -52,7 +52,7 @@ public class SecurityConfig {
         //허용 url
         http
                 .authorizeRequests()
-                .antMatchers("/auth/**","/oauth2/**", "/token/**","/webtoons/list").permitAll()
+                .antMatchers("/auth/**","/oauth2/**", "/token/**","/webtoons/list/**").permitAll()
                 .anyRequest().authenticated()
             .and() //나머지는 모두 인증 필요.
 //                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
