@@ -1,7 +1,6 @@
 import Navbar from '../../components/common/Navbar';
 import Headerbar from '../../components/common/Headerbar';
 import SearchBar from '@/components/pages/search/SearchBar';
-import Image from 'next/image';
 import AngleDown from '../../public/images/fi-rs-angle-small-down.svg';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -199,7 +198,7 @@ export default function SearchPage() {
   }, [webtoonList]);
 
   return (
-    <div className="h-full w-full bg-BackgroundLight pb-12">
+    <div className="h-screen w-screen bg-BackgroundLight pb-12">
       <Headerbar showBackBtn={true} pageName="탐색" rightBtn="EDIT" />
       <div className="m-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-2">
         <SearchBar onSearchBarChange={onSearchBarChange} />
@@ -220,24 +219,18 @@ export default function SearchPage() {
               <AngleDown width={20} height={20} />
             </button>
             <Link href="/search/filter">
-              <Image
-                src={'/images/filter-img.svg'}
+              <img
+                src="/images/filter-img.svg"
                 alt="filter"
-                width="20"
-                height="20"
-                className="ml-2"
+                className="ml-2 h-5 w-5"
                 onClick={onfilterClick}
-              />
+              ></img>
             </Link>
           </div>
         </div>
 
         {/* 정렬버튼을 누르면 뜨는 정렬기준 선택창 */}
-        <SortModal
-          sortOpen={sortOpen}
-          closeModal={closeModal}
-          onSortChange={handleSortChange}
-        />
+        <SortModal sortOpen={sortOpen} closeModal={closeModal} onSortChange={handleSortChange} />
 
         <div className="flex- row m-2 flex flex-wrap gap-2">
           {selectedDaysElement}

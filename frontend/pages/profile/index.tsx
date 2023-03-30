@@ -171,13 +171,11 @@ export default function ProfilePage({ userData }: any) {
                 <form>
                   <label htmlFor="file">
                     <BtnUpload className="absolute left-[0px]"></BtnUpload>
-                    <Image
+                    <img
                       src={'/images/Profile_Img_Edit.png'}
                       alt="프로필 이미지 수정"
-                      width={48}
-                      height={48}
-                      className="absolute left-[26px] top-[26px]"
-                    />
+                      className="absolute left-[26px] top-[26px] h-12 w-12"
+                    ></img>
                   </label>
                   <input
                     type="file"
@@ -216,12 +214,7 @@ export default function ProfilePage({ userData }: any) {
                 </div>
               ) : (
                 <div>
-                  <Image
-                    src={'/images/Profile_Edit.png'}
-                    alt="설정 이미지"
-                    width={24}
-                    height={24}
-                  />
+                  <img src={'/images/Profile_Edit.png'} alt="설정" className="h-6 w-6"></img>
                 </div>
               )}
             </div>
@@ -230,7 +223,7 @@ export default function ProfilePage({ userData }: any) {
         <div className="flex justify-center rounded-2xl bg-BackgroundLightComponent p-8">
           <div className="flex w-full flex-col items-center justify-center gap-2">
             <div>
-              <Image src={'/images/Heart_Logo.png'} alt="내 웹툰" width={48} height={48} />
+              <img src={'/images/Heart_Logo.png'} alt="My webtoon" className="h-12 w-12"></img>
             </div>
             <div className="text-xl font-bold">{info.likeCount}</div>
             <Link href={'/my-webtoon'}>
@@ -241,7 +234,7 @@ export default function ProfilePage({ userData }: any) {
           </div>
           <div className="flex w-full flex-col items-center justify-center gap-2">
             <div>
-              <Image src={'/images/Comment_Logo.png'} alt="내 댓글" width={48} height={48} />
+              <img src={'/images/Comment_Logo.png'} alt="My comment" className="h-12 w-12"></img>
             </div>
             <div className="text-xl font-bold">{info.scoreCount}</div>
             <Link href={'/my-comment'}>
