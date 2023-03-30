@@ -1,5 +1,6 @@
 package com.webtoon.manamana.webtoon.controller;
 
+import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,10 +49,11 @@ public class WebtoonCommentController {
     @GetMapping("/{webtoon-id}/comments")
     public DataResponse<List<CommentListDTO>> commentList(
             @PathVariable("webtoon-id") long webtoonId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Pageable pageable){
 
 
-        long authUserId = 1;
+        long authUserId = userPrincipal.getId();
         log.info("page = {}, size = {}", pageable.getOffset(), pageable.getPageSize());
         List<CommentListDTO> commentListDTOS = webtoonCommentService.findCommentAll(authUserId, webtoonId, pageable);
 
@@ -70,9 +73,10 @@ public class WebtoonCommentController {
     @PostMapping("/{webtoon-id}/comments")
     public DataResponse<CommentDTO> commentCreate(
             @PathVariable("webtoon-id") long webtoonId,
-            @RequestBody CommentRequestDTO commentRequestDTO){
+            @RequestBody CommentRequestDTO commentRequestDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        int authUserId = 1;
+        long authUserId = userPrincipal.getId();
 
         CommentDTO comment = webtoonCommentService.createComment(authUserId, webtoonId, commentRequestDTO);
 
@@ -93,9 +97,10 @@ public class WebtoonCommentController {
     public DataResponse<CommentDTO> updateComment(
             @PathVariable("webtoon-id") long webtoonId,
             @PathVariable("comment-id") long commentId,
-            @RequestBody CommentRequestDTO commentRequestDTO) {
+            @RequestBody CommentRequestDTO commentRequestDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-        int authUserId = 1;
+        long authUserId = userPrincipal.getId();
 
         CommentDTO commentDTO = webtoonCommentService.updateComment(authUserId, webtoonId, commentId, commentRequestDTO);
 
@@ -113,9 +118,10 @@ public class WebtoonCommentController {
     @DeleteMapping("/{webtoon-id}/comments")
     public CommonResponse deleteComment(
             @PathVariable("webtoon-id") long webtoonId,
-            @RequestBody CommentDeleteDTO commentDeleteDTO){
+            @RequestBody CommentDeleteDTO commentDeleteDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-        int authUserId = 1;
+        long authUserId = userPrincipal.getId();
 
         webtoonCommentService.removeComment(authUserId,webtoonId,commentDeleteDTO.getId());
 
