@@ -6,7 +6,7 @@ WORKDIR $APP_HOME
 
 COPY ./crawling/build/libs/*.jar ./crawling-application.jar
 
-COPY ./resources ./crawling-resources
+COPY ./crawling-resources ./resources
 
 EXPOSE 8081
 
