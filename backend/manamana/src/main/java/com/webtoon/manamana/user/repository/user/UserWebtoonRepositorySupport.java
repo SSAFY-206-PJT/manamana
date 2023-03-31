@@ -11,6 +11,7 @@ import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.user.UserWebtoon;
 import com.webtoon.manamana.entity.webtoon.QWebtoon;
 import com.webtoon.manamana.entity.webtoon.QWebtoonDay;
+import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.entity.webtoon.codetable.QSerialStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -92,5 +93,22 @@ public class UserWebtoonRepositorySupport extends QuerydslRepositorySupport {
         if(dayId == null) return null;
 
         return QWebtoonDay.webtoonDay.codeId.eq(dayId);
+    }
+
+    /*유저가 관심등록했는지 여부 확인.*/
+    public Optional<UserWebtoon> findUserWetboonLikedByUserAndWebtoon(User user, Webtoon webtoon){
+
+        QUserWebtoon userWebtoon = QUserWebtoon.userWebtoon;
+
+        return Optional.ofNullable(
+                queryFactory
+                .selectFrom(userWebtoon)
+                .where(userWebtoon.user.eq(user),
+                        userWebtoon.webtoon.eq(webtoon),
+                        userWebtoon.isDeleted.eq(false),
+                        userWebtoon.isLiked.eq(true))
+                .fetchOne()
+        );
+
     }
 }

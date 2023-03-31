@@ -28,13 +28,15 @@ public class WebtoonDetailDTO {
     private String startDate;
     private int totalEpisode;
     private String colorHsl;
+
+    private boolean isLiked; //관심 등록 여부.
     private List<AuthorDTO> authors;
     private List<GenreDTO> genres;
     private List<DayDTO> days;
     private AdditionDTO additions;
 
     @Builder
-    public WebtoonDetailDTO(long id, String name, String imagePath, String plot, String grade, String status, String webtoonUrl, String webtoonId, String startDate, int totalEpisode, String colorHsl, List<AuthorDTO> authors, List<GenreDTO> genres, List<DayDTO> days, AdditionDTO additions) {
+    public WebtoonDetailDTO(long id, String name, String imagePath, String plot, String grade, String status, String webtoonUrl, String webtoonId, String startDate, int totalEpisode, String colorHsl, boolean isLiked, List<AuthorDTO> authors, List<GenreDTO> genres, List<DayDTO> days, AdditionDTO additions) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
@@ -46,13 +48,15 @@ public class WebtoonDetailDTO {
         this.startDate = startDate;
         this.totalEpisode = totalEpisode;
         this.colorHsl = colorHsl;
+        this.isLiked = isLiked;
         this.authors = authors;
         this.genres = genres;
         this.days = days;
         this.additions = additions;
     }
 
-    public static WebtoonDetailDTO createDTO(Webtoon webtoon,List<GenreDTO> genreDTO, Map<Integer,String> statusMap,Map<Integer,String> gradeMap){
+
+    public static WebtoonDetailDTO createDTO(Webtoon webtoon,List<GenreDTO> genreDTO, boolean isLiked,Map<Integer,String> statusMap,Map<Integer,String> gradeMap){
 
         List<AuthorDTO> authorDTOS = webtoon.getAuthors().stream()
                 .map(AuthorDTO::createDTO)
@@ -61,8 +65,6 @@ public class WebtoonDetailDTO {
         List<DayDTO> dayDTOS = webtoon.getWebtoonDays().stream()
                 .map(DayDTO::createDTO)
                 .collect(Collectors.toList());
-
-
 
         return WebtoonDetailDTO.builder()
                 .id(webtoon.getId())
@@ -76,6 +78,7 @@ public class WebtoonDetailDTO {
                 .startDate(webtoon.getStartDate().toString())
                 .totalEpisode(webtoon.getTotalEp())
                 .colorHsl(webtoon.getColorHsl())
+                .isLiked(isLiked)
                 .authors(authorDTOS)
                 .genres(genreDTO)
                 .days(dayDTOS)

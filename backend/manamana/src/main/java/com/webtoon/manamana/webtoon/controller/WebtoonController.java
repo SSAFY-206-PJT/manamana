@@ -1,6 +1,7 @@
 package com.webtoon.manamana.webtoon.controller;
 
 import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
@@ -82,6 +83,7 @@ public class WebtoonController {
 
         long authUserId = userPrincipal.getId();
 
+
         WebtoonDetailDTO webtoonOne = webtoonService.findWebtoonOne(authUserId, webtoonId);
 
         return responseService.getDataResponse(webtoonOne, CustomSuccessStatus.RESPONSE_SUCCESS);
@@ -103,5 +105,25 @@ public class WebtoonController {
         WebtoonProviderDTO webtoonProviderDTO = webtoonService.findWebtoonProviderAll(webtoonId);
 
         return responseService.getDataResponse(webtoonProviderDTO,CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
+
+    /*웹툰 보러가기 누를때 가중치 증가*/
+    @Tag(name = "웹툰 정보")
+    @Operation(summary = "웹툰 보러가기 가중치 증가", description =  "웹툰 보러가기 가중치 증가")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러")
+    })
+    @GetMapping("/{webtoon-id}/redirect/scores")
+    public CommonResponse moveToWebtoonWeight(
+            @PathVariable("webtoon-id") long webtoonId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
+
+        long authUserId = userPrincipal.getId();
+
+
+        webtoonService.upToWeightWebtoon(authUserId,webtoonId);
+
+        return responseService.getSuccessResponse();
     }
 }

@@ -103,3 +103,10 @@ select * from prefer_genres;
 
 insert into prefer_genres(genre_id,is_canceled, user_id,create_time, update_time) values(1,false,2,now(),now());
 insert into prefer_genres(genre_id,is_canceled, user_id,create_time, update_time) values(3,false,2,now(),now());
+
+update prefer_genres set is_canceled = true where id = 2;
+insert into prefer_genres(genre_id,is_canceled, user_id,create_time, update_time) values(3,false,1,now(),now());
+
+select * from users_and_genres;
+
+insert into users_and_genres(weight, create_time, update_time,user_id, genre_id) values(5,now(),now(),1,4);

@@ -36,4 +36,9 @@ public class WebtoonAddition extends BaseTimeEntity {
         this.scoreCount++;
     }
 
+    //조회스
+    public void updateViewCount(){
+        this.view++;
+    }
+
 }
