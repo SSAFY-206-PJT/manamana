@@ -35,7 +35,16 @@ module.exports = {
         ImageCover30: 'rgba(0, 0, 0, 0.3)', // Image-cover-30
         CommentBackground: 'rgba(255, 255, 255, 0.3)',
       },
+      animation: {
+        blink: "blink 1.5s ease-in-out infinite",
+      },
+      keyframes: {
+        blink: {
+          "0%, 100%": { opacity: 1 },
+          "50%": { opacity: 0.5 },
+        },
+      },
     },
-  },
-  plugins: [require('@tailwindcss/line-clamp')],
-};
+    plugins: [require('@tailwindcss/line-clamp')],
+  }
+}
