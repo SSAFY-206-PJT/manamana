@@ -4,14 +4,13 @@ import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.user.UserGenre;
+import com.webtoon.manamana.entity.user.UserWebtoon;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.entity.webtoon.WebtoonProvider;
 import com.webtoon.manamana.entity.webtoon.codetable.Grade;
 import com.webtoon.manamana.entity.webtoon.codetable.SerialStatus;
-import com.webtoon.manamana.user.repository.user.UserGenreRepository;
-import com.webtoon.manamana.user.repository.user.UserGenreRepositorySupport;
-import com.webtoon.manamana.user.repository.user.UserRepository;
+import com.webtoon.manamana.user.repository.user.*;
 import com.webtoon.manamana.util.repository.*;
 import com.webtoon.manamana.webtoon.dto.response.GenreDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
@@ -30,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,6 +49,10 @@ public class WebtoonServiceImpl implements WebtoonService{
 
     private final UserGenreRepository userGenreRepository;
     private final UserGenreRepositorySupport userGenreRepositorySupport;
+
+    private final UserWebtoonRepositorySupport userWebtoonRepositorySupport;
+
+
 
     /*웹툰 전체 조회*/
     @Override
@@ -77,6 +81,9 @@ public class WebtoonServiceImpl implements WebtoonService{
 
         //TODO : 유저id로 관심등록 했는지 확인.
 
+        User user = userRepository.findByIdAndIsDeletedFalse(userId)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_USER));
+
         //웹툰 조회.
         Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(webtoonId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
@@ -103,8 +110,15 @@ public class WebtoonServiceImpl implements WebtoonService{
                 .map(GenreDTO::createDTO)
                 .collect(Collectors.toList());
 
+        //관심등록 여부.
+        Optional<UserWebtoon> userWebtoonOptional = userWebtoonRepositorySupport.findUserWetboonLikedByUserAndWebtoon(user, webtoon);
+
+        boolean isLiked = false;
+        if(userWebtoonOptional.isPresent()) isLiked = true;
+
+
         //출력한 DTO로 변환
-        WebtoonDetailDTO webtoonDetailDTO = WebtoonDetailDTO.createDTO(webtoon, genreDTOS, statusMap, gradeMap);
+        WebtoonDetailDTO webtoonDetailDTO = WebtoonDetailDTO.createDTO(webtoon, genreDTOS, isLiked,statusMap, gradeMap);
 
         return webtoonDetailDTO;
     }

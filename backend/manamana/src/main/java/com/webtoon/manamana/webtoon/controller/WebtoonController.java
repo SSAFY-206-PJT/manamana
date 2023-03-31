@@ -120,6 +120,7 @@ public class WebtoonController {
 
         long authUserId = userPrincipal.getId();
 
+
         webtoonService.upToWeightWebtoon(authUserId,webtoonId);
 
         return responseService.getSuccessResponse();
