@@ -4,10 +4,10 @@ ENV APP_HOME=/usr/app
 
 WORKDIR $APP_HOME
 
-COPY ./crawling/build/libs/*.jar ./application.jar
+COPY ./crawling/build/libs/*.jar ./crawling-application.jar
 
-COPY ./resources ./resources
+COPY ./resources ./crawling-resources
 
 EXPOSE 8081
 
-ENTRYPOINT ["java","-jar","-Dspring.config.location=resources/application.yml,resources/application-deploy.yml", "-Dspring.profiles.active=deploy", "application.jar"]
+ENTRYPOINT ["java","-jar","-Dspring.config.location=crawling-resources/application.yml,crawling-resources/application-deploy.yml", "-Dspring.profiles.active=deploy", "crawling-application.jar"]
