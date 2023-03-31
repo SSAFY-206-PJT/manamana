@@ -48,8 +48,8 @@ public class UserGenre extends BaseTimeEntity {
                 .genre(genre).build();
     }
 
-    public void updateUserGenre(){
-        this.weight += 10;
+    public void updateUserGenre(int updateWeight){
+        this.weight += updateWeight;
     }
 
     public static UserGenre createUserWebtoonGenre(User user, Genre genre){
