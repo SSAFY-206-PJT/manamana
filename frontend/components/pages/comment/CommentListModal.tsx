@@ -4,6 +4,7 @@ import CommentInput from './CommentInput';
 import { Chat } from './CommentList';
 import { CommentUserInput } from './CommentInput';
 import { reportWebtoonComment } from '@/pages/api/detail';
+import { getCookie } from '@/util/cookie';
 
 interface ChatListModalProps {
   webtoonId: number;
@@ -22,6 +23,7 @@ function CommentListModal({
   deleteComment,
   modifyComment,
 }: ChatListModalProps) {
+  const token = getCookie('accessToken');
   const myName = '김태학';
   const [modalState, setModalState] = useState<string>('init');
 
@@ -61,7 +63,7 @@ function CommentListModal({
     }
   };
   const reportChat = async () => {
-    const data = await reportWebtoonComment(webtoonId, chat.id);
+    const data = await reportWebtoonComment(webtoonId, chat.id, token);
     if (data && data.isSuccess) {
       alert('신고가 접수되었습니다.');
       closeModal();

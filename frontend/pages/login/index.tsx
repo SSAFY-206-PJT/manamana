@@ -1,7 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { getUserInfo } from '../api/detail';
 import { setCookie } from '@/util/cookie';
 import { css } from '@emotion/react';
 
@@ -12,20 +11,13 @@ interface Props {
 function Login({ token }: Props) {
   if (token) {
     const router = useRouter();
-    const getInfo = async () => {
-      const data = await getUserInfo();
-      // redux에 유저 정보 저장
-      // router.push('/');
-    };
-
     const gogo = () => {
       router.push('/');
     };
-
     useEffect(() => {
       setCookie('accessToken', token);
       localStorage.setItem('accessToken', token);
-      getInfo();
+      gogo();
     }, []);
     return <div onClick={gogo}>로그인 성공, 사용자 정보 받아오는중</div>;
   } else {

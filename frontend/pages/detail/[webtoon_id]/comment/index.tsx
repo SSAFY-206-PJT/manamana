@@ -10,6 +10,7 @@ import CommentInput from '@/components/pages/comment/CommentInput';
 import { Chat } from '@/components/pages/comment/CommentList';
 import { CommentUserInput } from '@/components/pages/comment/CommentInput';
 import { WebtoonDetail } from '@/pages/detail/[webtoon_id]';
+import { getCookie } from '@/util/cookie';
 
 const defaultValue: CommentUserInput = {
   content: '',
@@ -148,6 +149,7 @@ function CommentPage({ webtoon, comments }: Props) {
   if (webtoon === null || comments === null) {
     return <div>오류</div>;
   } else {
+    const token = getCookie('accessToken');
     // 그라데이션 스타일
     const hsls = webtoon.colorHsl.split(',');
     const WEBTOON_THEME_COLOR = `hsl(${hsls[0]}, ${hsls[1]}%, 20%)`;
@@ -172,7 +174,7 @@ function CommentPage({ webtoon, comments }: Props) {
 
     // 댓글 로딩
     const loadComment = async () => {
-      const data = await api.getWebtoonComments(webtoon.id, commentPage);
+      const data = await api.getWebtoonComments(webtoon.id, commentPage, token);
       if (data && data.result.isSuccess) {
         const addCommentList = [];
         setCommentList([...commentList, ...dummyChatList2]);
@@ -185,6 +187,7 @@ function CommentPage({ webtoon, comments }: Props) {
         webtoon.id,
         commentInput.content,
         commentInput.spoiler,
+        token,
       );
       if (data && data.isSuccess) {
         const newComment = {
@@ -209,7 +212,7 @@ function CommentPage({ webtoon, comments }: Props) {
 
     // 댓글 삭제
     const deleteComment = async (chat: any) => {
-      const data = await api.deleteWebtoonComment(webtoon.id, chat.id);
+      const data = await api.deleteWebtoonComment(webtoon.id, chat.id, token);
       if (data && data.isSuccess) {
         for (let i = 0; i < commentList.length; i++) {
           if (commentList[i] === chat) {
@@ -230,6 +233,7 @@ function CommentPage({ webtoon, comments }: Props) {
         chatId,
         newComment.content,
         newComment.isSpoiler,
+        token,
       );
       if (result) {
         for (let i = 0; i < commentList.length; i++) {
@@ -276,7 +280,8 @@ export default CommentPage;
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const { webtoon_id } = context.query;
-  const webtoonData = await api.getWebtoonDetail(webtoon_id);
-  const commentData = await api.getWebtoonComments(webtoon_id, 0);
+  const token = context.req.cookies.accessToken;
+  const webtoonData = await api.getWebtoonDetail(webtoon_id, token);
+  const commentData = await api.getWebtoonComments(webtoon_id, 0, token);
   return { props: { webtoon: webtoonData.result, comments: commentData.result } };
 };
