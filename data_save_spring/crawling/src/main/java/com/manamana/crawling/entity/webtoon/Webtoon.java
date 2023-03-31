@@ -99,7 +99,7 @@ public class Webtoon extends BaseTimeEntity {
         this.gradeId = gradeId;
     }
 
-    public void updateStatusId(int serialId) {
+    public void updateStatusId(int statusId) {
         this.statusId = statusId;
     }
 

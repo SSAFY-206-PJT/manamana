@@ -50,17 +50,17 @@ public class WebtoonServiceImpl implements WebtoonService {
     private Webtoon saveWebtoon(int provider, WebtoonDataDTO webtoonDataDTO) {
         // 웹툰 데이터 정제
         String grade = webtoonDataDTO.getGrade().trim();
-        int gradeId = 0;
+        int gradeId = 1;
         if (grade.contains("성인")) {
-            gradeId = 1;
+            gradeId = 2;
         }
 
         String status = webtoonDataDTO.getStatus().trim();
-        int statusId = 0;
+        int statusId = 1;
         if (status.contains("휴재")) {
-            statusId = 2;
+            statusId = 3;
         } else if (status.contains("완결")) {
-            statusId = 1;
+            statusId = 2;
         }
 
         String webtoonId = Integer.toString(webtoonDataDTO.getWebtoon_id()).trim();
