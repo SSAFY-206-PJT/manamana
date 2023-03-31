@@ -237,20 +237,21 @@ public class UserServiceImpl implements UserService{
         });
 
         //id 값으로 조회 하면서 확인.
-//        genreIds.forEach(genreId -> {
-//
-//            Optional<PreferGenre> preferGenreOptional = preferGenreRepositorySupport.findSelectGenreOne(user, genreId);
-//
-//            if(preferGenreOptional.isPresent()){
-//
-//            }
-//            else{
-//
-//            }
-//
-//        });
+        genreIds.forEach(genreId -> {
 
+            Optional<PreferGenre> preferGenreOptional = preferGenreRepositorySupport.findSelectGenreOne(user, genreId);
 
+            if(preferGenreOptional.isPresent()){
+                PreferGenre preferGenre = preferGenreOptional.get();
+                preferGenre.updatePreferGenre(false);
+
+            }
+            //값이 없으면 새로 추가.
+            else{
+                preferGenreRepository.save(PreferGenre.createPreferGenre(user,genreId));
+            }
+
+        });
     }
 
     /*선호했던 장르 조회*/
