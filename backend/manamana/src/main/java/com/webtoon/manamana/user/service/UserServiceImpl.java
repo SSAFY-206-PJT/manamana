@@ -6,29 +6,24 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
-import com.webtoon.manamana.entity.user.User;
-import com.webtoon.manamana.entity.user.UserGenre;
-import com.webtoon.manamana.entity.user.UserGenreId;
-import com.webtoon.manamana.entity.user.UserWebtoon;
+import com.webtoon.manamana.entity.user.*;
 import com.webtoon.manamana.entity.webtoon.Comment;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.entity.webtoon.codetable.Genre;
 import com.webtoon.manamana.user.dto.request.UserUpdateRequestDTO;
+import com.webtoon.manamana.user.dto.response.GenreResponseDTO;
 import com.webtoon.manamana.user.dto.response.UserCommentResponseDTO;
 import com.webtoon.manamana.user.dto.response.UserResponseDTO;
 import com.webtoon.manamana.user.dto.response.WebtoonInfoDTO;
-import com.webtoon.manamana.user.repository.user.UserGenreRepository;
-import com.webtoon.manamana.user.repository.user.UserRepository;
-import com.webtoon.manamana.user.repository.user.UserRepositorySupport;
-import com.webtoon.manamana.user.repository.user.UserWebtoonRepository;
-import com.webtoon.manamana.user.repository.user.UserWebtoonRepositorySupport;
+import com.webtoon.manamana.user.repository.user.*;
 import com.webtoon.manamana.util.repository.GenreCodeRepository;
 import com.webtoon.manamana.webtoon.repository.comment.CommentRepository;
 import com.webtoon.manamana.webtoon.repository.comment.CommentRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,6 +40,7 @@ import static com.webtoon.manamana.config.aws.AwsDirectoryName.PROFILE_IMAGE;
 import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.*;
 import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.NOT_FOUNT_USER;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService{
@@ -58,6 +55,8 @@ public class UserServiceImpl implements UserService{
     private final GenreCodeRepository genreCodeRepository;
     private final WebtoonRepository webtoonRepository;
     private final WebtoonGenreRepository webtoonGenreRepository;
+    private final PreferGenreRepository preferGenreRepository;
+    private final PreferGenreRepositorySupport preferGenreRepositorySupport;
 
     //aws 업로드
     private final AmazonS3Client amazonS3Client;
@@ -89,7 +88,6 @@ public class UserServiceImpl implements UserService{
     }
 
     /*회원 정보 수정*/
-    // TODO : 이미지 파일을 받아서 S3 저장하는 로직 필요.
     @Transactional
     @Override
     public void updateUser(long userId, UserUpdateRequestDTO userUpdateRequestDTO, MultipartFile file) {
@@ -98,6 +96,8 @@ public class UserServiceImpl implements UserService{
         User user = userCheck(userId);
 
         String updateFilePath = "";
+
+        log.info("user update : {}", file);
 
         //TODO : 파일 업로드 처리 로직 필요.
         if(file != null){
@@ -108,9 +108,9 @@ public class UserServiceImpl implements UserService{
         }
 
 
+        log.info("update Test");
         //유저 업데이트
         user.updateUser(userUpdateRequestDTO);
-
 
     }
 
@@ -188,24 +188,87 @@ public class UserServiceImpl implements UserService{
         //유저 조회
         User user = userCheck(userId);
 
+
+
         genreIds.forEach(id -> {
+
+            /*유저 장르 연결테이블에 가중치 추가.*/
 
             //선택된 장르들을 하나씩 조회.
             Genre genre = genreCodeRepository.findById(id)
                     .orElseThrow(() -> new CustomException(NOT_FOUNT_GENRE));
 
 
-            //해당 장르를 유저가 전에 선택했는지 확인.
-            userGenreRepository.findById(UserGenreId.createUserGenreId(user.getId(), genre.getId()))
-                    .ifPresentOrElse(
-                            //장르가 있으면 +10
-                            userGenre -> userGenre.updateUserGenre(),
-                            //입력한적 없으면 생성
-                            () ->{
-                                UserGenre userGenre = UserGenre.createUserGenre(user, genre);
-                                userGenreRepository.save(userGenre);
-                            } );
+            Optional<UserGenre> userGenreOptional = userGenreRepository.findById(UserGenreId.createUserGenreId(user.getId(), genre.getId()));
+
+            //유저 - 장르가 있으면
+            if(userGenreOptional.isPresent()){
+                UserGenre userGenre = userGenreOptional.get();
+
+                //유저가 이전에 선택했는지 확인
+                Optional<PreferGenre> selectGenreOne = preferGenreRepositorySupport.findSelectGenreOne(user, userGenre.getUserGenreId().getGenreId());
+
+                //장르를 이전에 한번이라도 선택했었다면,
+                if(selectGenreOne.isPresent()){
+                    userGenre.updateUserGenre(10);
+                }
+                //장르를 선택한적 없다면,
+                else{
+                    //장르를 직접 선택한적은 없지만, 웹툰, 관심등록을 통해 간접적으로 생성했기 때문에, 50점을 추가하는 식으로
+                    userGenre.updateUserGenre(50);
+                }
+            }
+            //유저 - 장르가 없으면 - 새로 생성함.
+            else{
+                //유저가 이전에 선택을 한 적이 없으면,유저가 이전에 선택한 선호장르 목록을 확인할 필요 없이 생성하면 됨.
+                //만약 이전에 선호장르에서 선택했으면 무조건 유저-장르 테이블도 생성했을것이므로 그냥 생성하면 됨.
+                UserGenre newUserGenre = UserGenre.createUserGenre(user, genre);
+                userGenreRepository.save(newUserGenre);
+            }
+
         });
+        /*선택한 값 업데이트.*/
+        //모든 선택장르 가져오기
+        List<PreferGenre> selectGenres = preferGenreRepositorySupport.findSelectGenreAll(user);
+
+        //모든 선택된 장르 취소 상태로 만들기
+        selectGenres.forEach(selectGenre -> {
+            selectGenre.updatePreferGenre(true);
+        });
+
+        //id 값으로 조회 하면서 확인.
+        genreIds.forEach(genreId -> {
+
+            Optional<PreferGenre> preferGenreOptional = preferGenreRepositorySupport.findSelectGenreOne(user, genreId);
+
+            if(preferGenreOptional.isPresent()){
+                PreferGenre preferGenre = preferGenreOptional.get();
+                preferGenre.updatePreferGenre(false);
+
+            }
+            //값이 없으면 새로 추가.
+            else{
+                preferGenreRepository.save(PreferGenre.createPreferGenre(user,genreId));
+            }
+
+        });
+    }
+
+    /*선호했던 장르 조회*/
+    @Override
+    public GenreResponseDTO findSelectLikeGenre(long userId) {
+
+        //유저 조회
+        User user = userRepository.findByIdAndIsDeletedFalse(userId)
+                .orElseThrow(() -> new CustomException(NOT_FOUNT_USER));
+
+        //유저가 선택한 장르 조회
+        List<PreferGenre> selectGenre = preferGenreRepositorySupport.findSelectGenre(user);
+
+        //DTO 변환.
+        GenreResponseDTO genreResponseDTO = GenreResponseDTO.createDTO(selectGenre);
+
+        return genreResponseDTO;
     }
 
 
@@ -224,7 +287,6 @@ public class UserServiceImpl implements UserService{
 
             List<WebtoonGenre> webtoonGenres = webtoonGenreRepository.findByWebtoonId(webtoon.getId());
 
-
             webtoonGenres.forEach(webtoonGenre ->
                 userGenreRepository.findById(UserGenreId.createUserGenreId(user.getId(), webtoonGenre.getGenre().getId()))
                         .ifPresentOrElse(
@@ -241,7 +303,7 @@ public class UserServiceImpl implements UserService{
 
     /*유틸 메서드*/
     //유저 조회하는 메서드
-    private User userCheck(long userId) {
+    public User userCheck(long userId) {
 
         User user = userRepository.findByIdAndIsDeletedFalse(userId)
                 .orElseThrow(() -> new CustomException(NOT_FOUNT_USER));
@@ -249,7 +311,7 @@ public class UserServiceImpl implements UserService{
     }
 
     /*S3 파일 저장.*/
-    private String saveFile(long userId, MultipartFile file) {
+    public String saveFile(long userId, MultipartFile file) {
         String storageFileUrl;
 
         //저장에 필요한 메타데이터

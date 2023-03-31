@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class UserUpdateRequestDTO {
 
-    private long id;
     private String nickname;
 
     private String userImage;
