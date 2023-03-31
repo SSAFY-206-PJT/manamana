@@ -14,7 +14,7 @@ pipeline {
                     CONTAINER_NAME = "crawling-api"
                     PROJECT_DIR = "crawling-spring-boot/data_save_spring/"
                     DOCKER_FILE_PATH = "data_save_spring/"
-                    DOCKER_COMPOSE_PATH = "crawling/"
+                    DOCKER_COMPOSE_PATH = "/var/jenkins_home/workspace/crawling/"
                 }
             }
         }
@@ -85,10 +85,10 @@ pipeline {
                         sh "docker images"
 
                         // 도커 컴포즈 down
-                        sh "docker-compose down"
+                        sh "${DOCKER_COMPOSE_PATH}docker-compose down"
 
                         // 도커 컴포즈 start
-                        sh "docker-compose up -d"
+                        sh "${DOCKER_COMPOSE_PATH}docker-compose up -d"
 
                         // 최신 이미지 RUN
                         // sh "docker run -d --name ${CONTAINER_NAME} -p 8081:8080 ${IMAGE_NAME}:latest"
