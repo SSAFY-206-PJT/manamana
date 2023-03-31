@@ -20,6 +20,7 @@ type User = {
 };
 
 export default function ProfilePage({ userData }: any) {
+  console.log(userData);
   const [isEditState, setIsEditState] = useState<boolean>(false);
   const [info, setInfo] = useState<User>({
     id: userData.id,
@@ -122,7 +123,11 @@ export default function ProfilePage({ userData }: any) {
     setInfo({ ...info, nickname: e.target.value });
   };
   const changeImagePath = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInfo({ ...info, imagePath: e.target.value });
+    const targetFile = e.target.files?.[0];
+    if (targetFile) {
+      const selectedFile = URL.createObjectURL(targetFile);
+      setInfo({ ...info, imagePath: selectedFile });
+    }
   };
 
   // 처음 프로필 페이지 들어오면 수정중이 아닌 상태
@@ -163,23 +168,27 @@ export default function ProfilePage({ userData }: any) {
             />
             {isEditState ? (
               <>
-                <label htmlFor="file">
-                  <BtnUpload className="absolute left-[0px]"></BtnUpload>
-                  <Image
-                    src={'/images/Profile_Img_Edit.png'}
-                    alt="프로필 이미지 수정"
-                    width={48}
-                    height={48}
-                    className="absolute left-[26px] top-[26px]"
-                  />
-                </label>
-                <input
-                  type="file"
-                  name="file"
-                  id="file"
-                  onChange={changeImagePath}
-                  className="hidden"
-                ></input>
+                <form>
+                  <label htmlFor="file">
+                    <BtnUpload className="absolute left-[0px]"></BtnUpload>
+                    <img
+                      src={'/images/Profile_Img_Edit.png'}
+                      alt="프로필 이미지 수정"
+                      className="absolute left-[26px] top-[26px] h-12 w-12"
+                    ></img>
+                  </label>
+                  <input
+                    type="file"
+                    name="file"
+                    id="file"
+                    accept="image/*"
+                    onChange={changeImagePath}
+                    className="hidden"
+                  ></input>
+                  {/* <div>
+                    <img src={} className='w-12 h-12' alt="profileImg" />
+                  </div> */}
+                </form>
               </>
             ) : (
               <></>
@@ -205,12 +214,7 @@ export default function ProfilePage({ userData }: any) {
                 </div>
               ) : (
                 <div>
-                  <Image
-                    src={'/images/Profile_Edit.png'}
-                    alt="설정 이미지"
-                    width={24}
-                    height={24}
-                  />
+                  <img src={'/images/Profile_Edit.png'} alt="설정" className="h-6 w-6"></img>
                 </div>
               )}
             </div>
@@ -219,7 +223,7 @@ export default function ProfilePage({ userData }: any) {
         <div className="flex justify-center rounded-2xl bg-BackgroundLightComponent p-8">
           <div className="flex w-full flex-col items-center justify-center gap-2">
             <div>
-              <Image src={'/images/Heart_Logo.png'} alt="내 웹툰" width={48} height={48} />
+              <img src={'/images/Heart_Logo.png'} alt="My webtoon" className="h-12 w-12"></img>
             </div>
             <div className="text-xl font-bold">{info.likeCount}</div>
             <Link href={'/my-webtoon'}>
@@ -230,7 +234,7 @@ export default function ProfilePage({ userData }: any) {
           </div>
           <div className="flex w-full flex-col items-center justify-center gap-2">
             <div>
-              <Image src={'/images/Comment_Logo.png'} alt="내 댓글" width={48} height={48} />
+              <img src={'/images/Comment_Logo.png'} alt="My comment" className="h-12 w-12"></img>
             </div>
             <div className="text-xl font-bold">{info.scoreCount}</div>
             <Link href={'/my-comment'}>
