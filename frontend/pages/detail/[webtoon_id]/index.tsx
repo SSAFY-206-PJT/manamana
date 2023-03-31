@@ -109,7 +109,7 @@ function DetailPage({ webtoon }: Props) {
           className={
             morePlot
               ? 'whitespace-pre-wrap break-all text-sm font-bold text-FontPrimaryDark'
-              : 'whitespace-pre-wrap break-all text-sm font-bold text-FontPrimaryDark line-clamp-2'
+              : 'line-clamp-2 whitespace-pre-wrap break-all text-sm font-bold text-FontPrimaryDark'
           }
         >
           {webtoon.plot}
@@ -473,9 +473,9 @@ export default DetailPage;
 export const getServerSideProps: GetServerSideProps = async context => {
   const { webtoon_id } = context.query;
   const token = context.req.cookies.accessToken;
-  const data = await api.getWebtoonDetail(webtoon_id, token);
-  if (data && data.isSuccess) {
-    return { props: { webtoon: data.result } };
+  if (token) {
+    const data = await api.getWebtoonDetail(webtoon_id, token);
+    return { props: { webtoon: data } };
   } else {
     return { props: { webtoon: null } };
   }

@@ -17,129 +17,6 @@ const defaultValue: CommentUserInput = {
   spoiler: false,
 };
 
-const dummyChatList2: Chat[] = [
-  {
-    id: 11, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: false, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2023-03-08 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '싸피', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 22, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: true, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2023-03-05 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '김태학', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 33, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: false, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2023-03-05 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '싸피', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 44, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: true, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2023-03-04 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '싸피', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 55, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: false, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2023-02-13 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '싸피', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 66, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: true, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2023-01-13 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '싸피', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 77, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: false, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2022-03-13 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '김태학', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 88, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: true, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2021-03-13 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '싸피', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 99, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: false, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2020-03-13 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '싸피', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-  {
-    id: 100, // 댓글 식별자
-    content: '이것은 댓글 내용요요용요요요요요요용', // 내용
-    isSpoiler: true, // 스포 여부
-    report: 0, // 신고 횟수
-    createTime: '2019-03-13 11:22:33',
-    user: {
-      id: 1, // 유저 식별자
-      nickname: '싸피', // 닉네임
-      imagePath: 'url', //유저 프로필
-    },
-  },
-];
-
 interface Props {
   webtoon: WebtoonDetail;
   comments: Chat[];
@@ -174,10 +51,15 @@ function CommentPage({ webtoon, comments }: Props) {
 
     // 댓글 로딩
     const loadComment = async () => {
-      const data = await api.getWebtoonComments(webtoon.id, commentPage, token);
-      if (data && data.result.isSuccess) {
-        const addCommentList = [];
-        setCommentList([...commentList, ...dummyChatList2]);
+      if (!commentEnd) {
+        const nextpage = commentPage + 1;
+        setCommentPage(nextpage);
+        const data = await api.getWebtoonComments(webtoon.id, nextpage, token);
+        console.log(data);
+        if (data && data.isSuccess) {
+          const addCommentList = data.result;
+          setCommentList([...commentList, ...addCommentList]);
+        }
       }
     };
 
@@ -281,7 +163,11 @@ export default CommentPage;
 export const getServerSideProps: GetServerSideProps = async context => {
   const { webtoon_id } = context.query;
   const token = context.req.cookies.accessToken;
-  const webtoonData = await api.getWebtoonDetail(webtoon_id, token);
-  const commentData = await api.getWebtoonComments(webtoon_id, 0, token);
-  return { props: { webtoon: webtoonData.result, comments: commentData.result } };
+  if (token) {
+    const webtoonData = await api.getWebtoonDetail(webtoon_id, token);
+    const commentData = await api.getWebtoonComments(webtoon_id, 0, token);
+    return { props: { webtoon: webtoonData, comments: commentData.result } };
+  } else {
+    return { props: { webtoon: null, comments: null } };
+  }
 };
