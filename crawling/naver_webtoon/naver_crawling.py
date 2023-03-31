@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from time import sleep
 from naver_auth import login
 from webdriver import create_webdriver
-from webtoon_util import scroll_down, image_main_color_to_hsl,scroll_page_down
+from webtoon_util import scroll_down, image_main_color_to_hsl,scroll_page_down, post_request
 from selenium import webdriver
 import json
 # import sys,io
@@ -301,8 +301,9 @@ def crawling_start(weeks):
     temp_dict["data"] = list(webtoon_info_dict.values())
     ##json 파일로 저장.
     with open('./webtoon_json/naver_webtoon.json','w',encoding='UTF-8') as f:
-        json.dump(temp_dict, f, ensure_ascii=False, indent=4)
+        json.dump(temp_dict, f, ensure_ascii=False, default=str, indent=4)
             
     with open('./webtoon_json/fail.json','w',encoding='UTF-8') as f:
-        json.dump(fails, f, ensure_ascii=False, indent=4)
+        json.dump(fails, f, ensure_ascii=False, default=str, indent=4)
 
+    
