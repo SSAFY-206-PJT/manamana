@@ -93,7 +93,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
     /*연재여부*/
     private BooleanExpression statusEq(List<Integer> statusId){
 
-        if(statusId.isEmpty()) return null;
+        if(statusId.isEmpty() || statusId == null) return null;
 
         return QWebtoon.webtoon.statusId.in(statusId);
     }
@@ -103,14 +103,14 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
     /*연령 등급*/
     private BooleanExpression gradeEq(List<Integer> gradeId){
 
-        if(gradeId.isEmpty()) return null;
+        if(gradeId.isEmpty() || gradeId == null) return null;
 
         return QWebtoon.webtoon.gradeId.in(gradeId);
     }
     /*요일*/
     private BooleanExpression dayContain(List<Integer> dayId){
 
-        if(dayId.isEmpty()) return null;
+        if(dayId.isEmpty() || dayId == null) return null;
 
         return QWebtoon.webtoon.webtoonDays.any().codeId.in(dayId);
 
@@ -118,7 +118,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
     /*장르*/
     private BooleanExpression genreContain(List<Integer> genreId){
 
-        if(genreId.isEmpty()) return null;
+        if(genreId.isEmpty() || genreId == null) return null;
 
         return QWebtoon.webtoon.webtoonGenres.any().genre.id.in(genreId);
     }
