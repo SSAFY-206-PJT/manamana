@@ -62,6 +62,7 @@ public class WebtoonController {
         webtoonFilterDTO.setKeyword(keyword);
         webtoonFilterDTO.setSortType(sortType);
 
+        log.info("webtoon find All DTO : {}", webtoonFilterDTO);
 
         List<WebtoonListDTO> webtoonListDTOS = webtoonService.findWebtoonAll(webtoonFilterDTO, pageable);
 

@@ -16,4 +16,16 @@ public class WebtoonFilterDTO {
 
     private String keyword;
     private Integer sortType;
+
+    @Override
+    public String toString() {
+        return "WebtoonFilterDTO{" +
+                "statusId=" + statusId +
+                ", genreId=" + genreId +
+                ", gradeId=" + gradeId +
+                ", dayId=" + dayId +
+                ", keyword='" + keyword + '\'' +
+                ", sortType=" + sortType +
+                '}';
+    }
 }
