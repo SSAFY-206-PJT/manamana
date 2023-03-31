@@ -25,6 +25,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
+
 //    //뽑아낸 정보로 페이지네이션
 //    public List<Webtoon> findByPageableWebtoonId(WebtoonFilterDTO webtoonFilterDTO,Pageable pageable){
 //
@@ -47,15 +48,16 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
         return queryFactory
                 .select(webtoon).distinct()
                 .from(webtoon)
-                .where(webtoon.isDeleted.eq(false),
-                        webtoon.isDeleted.eq(false),
-                        containsKey(webtoonFilterDTO.getKeyword()),
-                        statusEq(webtoonFilterDTO.getStatusId()),
-                        gradeEq(webtoonFilterDTO.getGradeId()))
-                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin().where(dayContain(webtoonFilterDTO.getDayId()))
-                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin().where(genreContain(webtoonFilterDTO.getGenreId()))
+                .where(webtoon.isDeleted.eq(false))
+                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin().where()
+                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin().where()
                 .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition).fetchJoin()
                 .leftJoin(webtoon.authors, QAuthor.author).fetchJoin()
+                .where(dayContain(webtoonFilterDTO.getDayId()),
+                        genreContain(webtoonFilterDTO.getGenreId()),
+                        statusEq(webtoonFilterDTO.getStatusId()),
+                        gradeEq(webtoonFilterDTO.getGradeId()),
+                        containsKey(webtoonFilterDTO.getKeyword()))
                 .orderBy(sortTypeOrder(webtoonFilterDTO.getSortType()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
