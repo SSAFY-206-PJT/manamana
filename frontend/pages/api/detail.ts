@@ -6,11 +6,11 @@ axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
  * 헤더에 기존 accessToken, 쿠키에는 refreshToken이 담겨있어야 함
  * @returns 새로운 accessToken
  */
-export const renewToken = async () => {
+export const renewToken = async (token: any) => {
   const options = {
     method: 'GET',
     url: `/auth/reissue`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
   try {
     const res = await axios.request(options);
@@ -29,11 +29,14 @@ export const renewToken = async () => {
  * @param webtoon_id
  * @returns Webtoon
  */
-export const getWebtoonDetail = async (webtoon_id: any) => {
+export const getWebtoonDetail = async (webtoon_id: any, token: any) => {
   const options = {
     method: 'GET',
     url: `/webtoons/${webtoon_id}`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
   };
   try {
     const res = await axios.request(options);
@@ -51,11 +54,11 @@ export const getWebtoonDetail = async (webtoon_id: any) => {
  * @param webtoon_id
  * @returns
  */
-export const getWebtoonProviders = async (webtoon_id: any) => {
+export const getWebtoonProviders = async (webtoon_id: any, token: any) => {
   const options = {
     method: 'GET',
     url: `/webtoons/${webtoon_id}/providers`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
   try {
     const res = await axios.request(options);
@@ -72,11 +75,11 @@ export const getWebtoonProviders = async (webtoon_id: any) => {
  * @param webtoon_id
  * @returns
  */
-export const getWebtoonComments = async (webtoon_id: any, page: number) => {
+export const getWebtoonComments = async (webtoon_id: any, page: number, token: any) => {
   const options = {
     method: 'GET',
     url: `/webtoons/${webtoon_id}/comments`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
     params: { page },
   };
   try {
@@ -96,11 +99,16 @@ export const getWebtoonComments = async (webtoon_id: any, page: number) => {
  * @param isSpoiler 스포일러 여부
  * @returns
  */
-export const postWebtoonComment = async (webtoon_id: any, content: string, isSpoiler: boolean) => {
+export const postWebtoonComment = async (
+  webtoon_id: any,
+  content: string,
+  isSpoiler: boolean,
+  token: any,
+) => {
   const options = {
     method: 'POST',
     url: `/webtoons/${webtoon_id}/comments`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
     data: { content, isSpoiler },
   };
 
@@ -127,11 +135,12 @@ export const modifyWebtoonComment = async (
   comment_id: number,
   content: string,
   isSpoiler: boolean,
+  token: any,
 ) => {
   const options = {
     method: 'PATCH',
     url: `/webtoons/${webtoon_id}/comments/${comment_id}`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
     data: { content, isSpoiler },
   };
 
@@ -151,11 +160,11 @@ export const modifyWebtoonComment = async (
  * @param id 댓글 id
  * @returns
  */
-export const deleteWebtoonComment = async (webtoon_id: any, id: number) => {
+export const deleteWebtoonComment = async (webtoon_id: any, id: number, token: any) => {
   const options = {
     method: 'DELETE',
     url: `/webtoons/${webtoon_id}/comments`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
     data: { id: [id] },
   };
 
@@ -175,11 +184,11 @@ export const deleteWebtoonComment = async (webtoon_id: any, id: number) => {
  * @param comment_id
  * @returns
  */
-export const reportWebtoonComment = async (webtoon_id: any, comment_id: number) => {
+export const reportWebtoonComment = async (webtoon_id: any, comment_id: number, token: any) => {
   const options = {
     method: 'PATCH',
     url: `/webtoons/${webtoon_id}/comments/${comment_id}/report`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
 
   try {
@@ -197,11 +206,11 @@ export const reportWebtoonComment = async (webtoon_id: any, comment_id: number) 
  * @param webtoon_id
  * @returns 응답 or null
  */
-export const likeWebtoon = async (webtoon_id: any) => {
+export const likeWebtoon = async (webtoon_id: any, token: any) => {
   const options = {
     method: 'PATCH',
     url: `/webtoons/${webtoon_id}/like`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
 
   try {
@@ -219,11 +228,11 @@ export const likeWebtoon = async (webtoon_id: any) => {
  * @param webtoon_id
  * @returns
  */
-export const getWebtoonMyScore = async (webtoon_id: any) => {
+export const getWebtoonMyScore = async (webtoon_id: any, token: any) => {
   const options = {
     method: 'GET',
     url: `/webtoons/${webtoon_id}/scores`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
   try {
     const res = await axios.request(options);
@@ -240,11 +249,11 @@ export const getWebtoonMyScore = async (webtoon_id: any) => {
  * @param webtoon_id
  * @returns
  */
-export const postWebtoonMyScore = async (webtoon_id: any, score: number) => {
+export const postWebtoonMyScore = async (webtoon_id: any, score: number, token: any) => {
   const options = {
     method: 'POST',
     url: `/webtoons/${webtoon_id}/scores`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
     data: { score },
   };
   try {
@@ -264,11 +273,11 @@ export const postWebtoonMyScore = async (webtoon_id: any, score: number) => {
  * @param webtoon_ids 웹툰 아이디 목록 []
  * @returns 응답 or null
  */
-export const unlikeWebtoon = async (user_id: any, webtoon_ids: number[]) => {
+export const unlikeWebtoon = async (user_id: any, webtoon_ids: number[], token: any) => {
   const options = {
     method: 'DELETE',
     url: `/users/${webtoon_ids}/webtoons`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
     data: { id: [1] },
   };
 
@@ -288,11 +297,11 @@ export const unlikeWebtoon = async (user_id: any, webtoon_ids: number[]) => {
  * @param user_id
  * @returns
  */
-export const myWebtoonComment = async (user_id: any) => {
+export const myWebtoonComment = async (user_id: any, token: any) => {
   const options = {
     method: 'GET',
     url: `/users/${user_id}/comments`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
 
   try {
@@ -309,11 +318,11 @@ export const myWebtoonComment = async (user_id: any) => {
  *
  * @returns
  */
-export const getUserInfo = async () => {
+export const getUserInfo = async (token: any) => {
   const options = {
     method: 'GET',
     url: `/users/1`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
 
   try {
@@ -327,11 +336,11 @@ export const getUserInfo = async () => {
 };
 
 ///////////////////* 웹툰 추천 관련 기능 *///////////////////
-export const getElseWebtoon = async (webtoon_id: any) => {
+export const getElseWebtoon = async (webtoon_id: any, token: any) => {
   const options = {
     method: 'GET',
     url: `/webtoons/${webtoon_id}/recommands`,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
   try {
     const res = await axios.request(options);

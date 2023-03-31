@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Rating } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import * as api from '@/pages/api/detail';
+import axios from 'axios';
 
 import WebtoonItem from '@/components/common/WebtoonItem';
 import ConfirmBtn from '@/components/confirmBtn';
 import GoSee from '@/components/pages/detail/GoSee';
 import CommentIcon from '@/public/images/Comment_List.svg';
 import Heart from '@/public/images/Heart.svg';
+import { getCookie } from '@/util/cookie';
 
 // 응답 result
 interface IdName {
@@ -57,14 +59,16 @@ interface Props {
 function DetailPage({ webtoon }: Props) {
   const router = useRouter();
   if (webtoon === null) {
-    const go404 = () => {
-      router.push('/404');
-    };
-    useEffect(() => {
-      go404();
-    }, []);
+    // const go404 = () => {
+    //   router.push('/404');
+    // };
+    // useEffect(() => {
+    //   go404();
+    // }, []);
+    console.log(axios.defaults.headers);
     return <div>axios error</div>;
   } else {
+    const token = getCookie('accessToken');
     // 그라데이션 스타일
     const hsls = webtoon.colorHsl.split(',');
     const WEBTOON_THEME_COLOR = `hsl(${hsls[0]}, ${hsls[1]}%, 20%)`;
@@ -76,7 +80,7 @@ function DetailPage({ webtoon }: Props) {
     const [isLike, setIsLike] = useState<boolean>(false);
     const likeInput = async () => {
       if (!isLike) {
-        const data = await api.likeWebtoon(webtoon.id);
+        const data = await api.likeWebtoon(webtoon.id, token);
         if (data && data.isSuccess) {
           setIsLike(true);
         } else {
@@ -84,7 +88,7 @@ function DetailPage({ webtoon }: Props) {
           alert(data?.message);
         }
       } else {
-        const data = await api.unlikeWebtoon(1, [webtoon.id]);
+        const data = await api.unlikeWebtoon(1, [webtoon.id], token);
         if (data && data.isSuccess) {
           setIsLike(false);
         } else {
@@ -237,7 +241,7 @@ function DetailPage({ webtoon }: Props) {
     };
 
     const postRating = async () => {
-      const data = await api.postWebtoonMyScore(webtoon.id, ratingInput);
+      const data = await api.postWebtoonMyScore(webtoon.id, ratingInput, token);
       if (data && data.isSuccess) {
         setAfterRating(true);
         setMyScore(ratingInput);
@@ -271,7 +275,7 @@ function DetailPage({ webtoon }: Props) {
     );
 
     const getMyScore = async () => {
-      const data = await api.getWebtoonMyScore(webtoon.id);
+      const data = await api.getWebtoonMyScore(webtoon.id, token);
       if (data.isSuccess) {
         setMyScore(data.result.score);
       }
@@ -390,7 +394,7 @@ function DetailPage({ webtoon }: Props) {
     // 유사웹툰 목록2
     const [similarWebtoon, setSimilarWebtoon] = useState<SimilarWebtoon[] | null>(null);
     const getElseRecommend = async () => {
-      const data = await api.getElseWebtoon(webtoon.id);
+      const data = await api.getElseWebtoon(webtoon.id, token);
       if (data && data.isSuccess) {
         setSimilarWebtoon(data.result);
       } else if (data) {
@@ -468,7 +472,8 @@ export default DetailPage;
  */
 export const getServerSideProps: GetServerSideProps = async context => {
   const { webtoon_id } = context.query;
-  const data = await api.getWebtoonDetail(webtoon_id);
+  const token = context.req.cookies.accessToken;
+  const data = await api.getWebtoonDetail(webtoon_id, token);
   if (data && data.isSuccess) {
     return { props: { webtoon: data.result } };
   } else {

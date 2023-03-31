@@ -269,8 +269,11 @@ export default function ProfilePage({ userData }: any) {
 export const getServerSideProps: GetServerSideProps = async context => {
   // const { user_id } = context.query;
   const user_id = 4; // 로그인 구현 전이라 임시로 user_id 설정
+  const token = context.req.cookies.accessToken;
   try {
-    const response = await axios.get(`/users/${user_id}`);
+    const response = await axios.get(`/users/${user_id}`, {
+      headers: { Authorization: 'Bearer ' + token },
+    });
     const userData: User = response.data.result;
     console.log(userData);
     return {
