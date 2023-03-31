@@ -17,9 +17,9 @@ RUN apt-get -qq update \
 RUN cp ./crawling-env/cronjob /etc/cron.d/cronjob
 RUN chmod +x /etc/cron.d/cronjob
 RUN crontab /etc/cron.d/cronjob
-RUN cp ./crawling-env/.env /kakao_webtoon/.env
-RUN cp ./crawling-env/.env /kakao_page/.env
-RUN cp ./crawling-env/config.py /naver_webtoon/config.py
+RUN cp ./crawling-env/.env ./kakao_webtoon/.env
+RUN cp ./crawling-env/.env ./kakao_page/.env
+RUN cp ./crawling-env/config.py ./naver_webtoon/config.py
 
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && apt install -y ./google-chrome-stable_current_amd64.deb \
