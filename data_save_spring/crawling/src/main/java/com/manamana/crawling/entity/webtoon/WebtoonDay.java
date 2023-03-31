@@ -1,5 +1,6 @@
 package com.manamana.crawling.entity.webtoon;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class WebtoonDay {
     @JoinColumn(name = "webtoon_id")
     private Webtoon webtoon;
 
+    @Builder
+    public WebtoonDay(long id, int codeId, Webtoon webtoon) {
+        this.id = id;
+        this.codeId = codeId;
+        this.webtoon = webtoon;
+    }
 }

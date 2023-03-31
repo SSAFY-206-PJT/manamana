@@ -22,4 +22,5 @@ public class DayCode {
     @Column(name = "day")
     private String day;
 
+
 }
