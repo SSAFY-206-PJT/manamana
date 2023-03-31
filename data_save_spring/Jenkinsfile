@@ -4,9 +4,7 @@ pipeline {
         stage("Set Variable") {
             steps {
                 script {
-                    IMAGE_NAME = "sh80165/crawling
-                    
-                    -springboot"
+                    IMAGE_NAME = "sh80165/crawling-springboot"
                     IMAGE_STORAGE = "https://registry.hub.docker.com"
                     IMAGE_STORAGE_CREDENTIAL = "docker-auth"
                     // SSH_CONNECTION = "ubuntu@j8b206.p.ssafy.io"
