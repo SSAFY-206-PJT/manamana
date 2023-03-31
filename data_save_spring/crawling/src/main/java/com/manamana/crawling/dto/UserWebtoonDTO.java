@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ResponseWebtoonDTO {
+public class UserWebtoonDTO {
     private long userId;
 
     private long webtoonId;
@@ -14,14 +14,14 @@ public class ResponseWebtoonDTO {
     private int score;
 
     @Builder
-    public ResponseWebtoonDTO(long userId, long webtoonId, int score) {
+    public UserWebtoonDTO(long userId, long webtoonId, int score) {
         this.userId = userId;
         this.webtoonId = webtoonId;
         this.score = score;
     }
 
-    public static ResponseWebtoonDTO createDTO(long userId, long webtoonId, int score) {
-        return ResponseWebtoonDTO.builder()
+    public static UserWebtoonDTO createDTO(long userId, long webtoonId, int score) {
+        return UserWebtoonDTO.builder()
                 .userId(userId)
                 .webtoonId(webtoonId)
                 .score(score)
