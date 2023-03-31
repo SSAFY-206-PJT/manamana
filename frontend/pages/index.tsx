@@ -8,6 +8,7 @@ import WebtoonContainer from '../components/common/WebtoonContainer';
 import WebtoonItem from '../components/common/WebtoonItem';
 import Top10 from '../components/common/Top10';
 import { GetServerSideProps } from 'next';
+import axios from 'axios';
 
 // 웹툰
 interface Webtoon {
@@ -27,6 +28,7 @@ interface Webtoon {
 }
 
 function Home() {
+  console.log(axios.defaults.headers);
   // 스크롤 이동 함수
   const scrollToCoordinate = (x: number, y: number) => {
     window.scrollTo({
