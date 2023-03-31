@@ -7,6 +7,7 @@ import ConfirmBtn from '../../components/confirmBtn';
 import { changeGenreTaste } from '@/store/GenreTasteSlice';
 import { GetServerSideProps } from 'next';
 import axios from 'axios';
+import { getCookie } from '@/util/cookie';
 
 type Genres = {
   id: number;
@@ -18,17 +19,15 @@ export default function GenreTastePage({ genreLists }: any) {
   const dispatch = useDispatch();
   const genreTastes = useSelector((state: RootState) => state.genreTasteList);
 
-  const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
+  const [selectedBlocks, setSelectedBlocks] = useState<number[]>([]);
   const genres: Genres[] = genreLists;
-  console.log('genres');
-  console.log(genres);
 
-  const selectBlock = (name: string) => {
-    // selectedBlocks에 name이 이미 있으면 제외하고, 없으면 추가
-    setSelectedBlocks(selectblocks =>
-      selectblocks.includes(name)
-        ? selectblocks.filter(block => block !== name)
-        : [...selectblocks, name],
+  const selectBlock = (id: number) => {
+    // selectedBlocks에 id가 이미 있으면 제외하고, 없으면 추가
+    setSelectedBlocks(selectedBlocks =>
+      selectedBlocks.includes(id)
+        ? selectedBlocks.filter(block => block !== id)
+        : [...selectedBlocks, id],
     );
   };
 
@@ -36,6 +35,7 @@ export default function GenreTastePage({ genreLists }: any) {
     axiosPost();
     // 지금까지 선택된 selectedBlocks 데이터를 보낸다.
     dispatch(changeGenreTaste(selectedBlocks));
+    console.log(selectedBlocks);
     // search로 이동한다.
     router.replace(
       {
@@ -53,23 +53,23 @@ export default function GenreTastePage({ genreLists }: any) {
     setSelectedBlocks([...genreTastes.genreTasteList]);
   }, []);
 
+  // 토큰 가져오기
+  const token = getCookie('accessToken');
   // 선택된 선호 장르 POST
   const axiosPost = () => {
     // 임의 데이터 (추후에 선택된 데이터를 담는 로직도 필요함)
-    const data = {
-      id: [1, 2, 4],
-    };
+    const data = selectedBlocks;
+    console.log('데이터', data);
     axios
       // user_id 가져오는 로직도 짜야함
-      // .post(`https://j8b206.p.ssafy.io/api/users/${user_id}/genre/select`, data, {
-      .post(`https://j8b206.p.ssafy.io/api/users/1/genre/select`, data, {
+      .post(`https://j8b206.p.ssafy.io/api/users/15/genre/select`, data, {
         headers: {
           'Content-Type': 'application/json',
-          accept: '*/*',
+          Authorization: 'Bearer ' + token,
         },
       })
       .then(response => {
-        // console.log(response.data);
+        console.log('리스폰스데이터', response.data);
         alert('선호 장르 선택 완료');
       })
       .catch(error => {
@@ -87,17 +87,17 @@ export default function GenreTastePage({ genreLists }: any) {
           return (
             // 클릭된 상태의 버튼 UI
             <div key={genre.id} className="m-2 inline-block h-24 w-24">
-              {selectedBlocks.includes(genre.name) ? (
+              {selectedBlocks.includes(genre.id) ? (
                 <button
                   className="text-bold flex h-full w-full items-center justify-center rounded-xl bg-PrimaryLight text-xl text-FontPrimaryDark"
-                  onClick={() => selectBlock(genre.name)}
+                  onClick={() => selectBlock(genre.id)}
                 >
                   {genre.name}
                 </button>
               ) : (
                 <button
                   className="text-bold flex h-full w-full items-center justify-center rounded-xl bg-BackgroundLightComponent text-xl"
-                  onClick={() => selectBlock(genre.name)}
+                  onClick={() => selectBlock(genre.id)}
                 >
                   {genre.name}
                 </button>
@@ -112,9 +112,16 @@ export default function GenreTastePage({ genreLists }: any) {
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
+  const token = context.req.cookies.accessToken;
   try {
-    const response = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/genres');
+    const response = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/genres', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    });
     const genreLists: Genres[] = response.data.result;
+    console.log('장르리스트', genreLists);
     return {
       props: { genreLists },
     };

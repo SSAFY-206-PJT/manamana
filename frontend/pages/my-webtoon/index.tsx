@@ -1,5 +1,6 @@
 import Headerbar from '../../components/common/Headerbar';
 import { useState, useEffect } from 'react';
+import { GetServerSideProps } from 'next';
 import PublishDayBlock from '@/components/pages/search/filter/PublishDayBlock';
 import PublishStateBlock from '@/components/pages/search/filter/PublishStateBlock';
 import axios from 'axios';
@@ -173,9 +174,21 @@ export default function MyWebtoonPage(props: Props) {
   );
 }
 
-export async function getServerSideProps() {
-  const daysRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/days');
-  const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status');
+export const getServerSideProps: GetServerSideProps = async context => {
+  const token = context.req.cookies.accessToken;
+
+  const daysRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/days', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+  const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
 
   let dayProp: any[] = [];
   daysRes.data.result.map((day: any) => {
@@ -196,4 +209,4 @@ export async function getServerSideProps() {
   });
 
   return { props: { days: dayProp, status: statusProp } };
-}
+};
