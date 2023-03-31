@@ -51,6 +51,51 @@ public class RecommandController {
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
+    /* 추천 알고리즘을 통한 웹툰 조회 */
+    @Tag(name = "추천 관련 기능")
+    @Operation(summary = "사용자 선호 장르 기반 웹툰 추천 기능", description =  "사용자 선호 장르에 맞춘 웹툰 추천 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
+    @GetMapping("/recommands")
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedGenre() throws Exception {
+
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
+
+        return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
+
+    /* 추천 알고리즘을 통한 웹툰 조회 */
+    @Tag(name = "추천 관련 기능")
+    @Operation(summary = "사용자 연령대 기반 웹툰 추천 기능", description =  "사용자 연령대에 맞춘 웹툰 추천 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
+    @GetMapping("/recommands")
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedAge() throws Exception {
+
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
+
+        return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
+
+    /* 추천 알고리즘을 통한 웹툰 조회 */
+    @Tag(name = "추천 관련 기능")
+    @Operation(summary = "사용자 성별 기반 웹툰 추천 기능", description =  "사용자 성별에 맞춘 웹툰 추천 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
+    @GetMapping("/recommands")
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedGender() throws Exception {
+
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
+
+        return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
+
 
     /* 관련 웹툰 추천 */
     @Tag(name = "추천 관련 기능")
