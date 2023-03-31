@@ -47,8 +47,8 @@ public class WebtoonServiceImpl implements WebtoonService{
 
     private final UserRepository userRepository;
 
-    private UserGenreRepository userGenreRepository;
-    private UserGenreRepositorySupport userGenreRepositorySupport;
+    private final UserGenreRepository userGenreRepository;
+    private final UserGenreRepositorySupport userGenreRepositorySupport;
 
     /*웹툰 전체 조회*/
     @Override
@@ -138,12 +138,16 @@ public class WebtoonServiceImpl implements WebtoonService{
         Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(webtoonId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
 
+
         //웹툰에 속한 장르 조회
         List<WebtoonGenre> webtoonGenres = webtoonGenreRepositorySupport.findGenrebyWebtoonAll(webtoonId);
 
+
         //각 장르로 유저 장르 테이블 조회
         webtoonGenres.forEach(webtoonGenre -> {
+
             List<UserGenre> userGenres = userGenreRepositorySupport.findUserGenreAll(user, webtoonGenre.getGenre());
+
 
             //해당하는 장르를 이전에 저장한 적 있으면 1증가.
             userGenres.forEach(userGenre -> {
