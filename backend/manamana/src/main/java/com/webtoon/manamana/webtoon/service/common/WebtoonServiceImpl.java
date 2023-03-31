@@ -6,6 +6,7 @@ import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.user.UserGenre;
 import com.webtoon.manamana.entity.user.UserWebtoon;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
+import com.webtoon.manamana.entity.webtoon.WebtoonAddition;
 import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.entity.webtoon.WebtoonProvider;
 import com.webtoon.manamana.entity.webtoon.codetable.Grade;
@@ -16,6 +17,7 @@ import com.webtoon.manamana.webtoon.dto.response.GenreDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
+import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonAdditionRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
@@ -51,6 +53,7 @@ public class WebtoonServiceImpl implements WebtoonService{
     private final UserGenreRepositorySupport userGenreRepositorySupport;
 
     private final UserWebtoonRepositorySupport userWebtoonRepositorySupport;
+    private final WebtoonAdditionRepositorySupport webtoonAdditionRepositorySupport;
 
 
 
@@ -109,6 +112,14 @@ public class WebtoonServiceImpl implements WebtoonService{
         List<GenreDTO> genreDTOS = webtoonGenres.stream()
                 .map(GenreDTO::createDTO)
                 .collect(Collectors.toList());
+
+        //웹툰 상호작용정보 조회 - 조회수 증가를 위해.
+        WebtoonAddition webtoonAddition = webtoonAdditionRepositorySupport.findAdditionByWebtoonId(webtoonId)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON_ADDITION));
+
+        //조회수 증가.
+        webtoonAddition.updateViewCount();
+
 
         //관심등록 여부.
         Optional<UserWebtoon> userWebtoonOptional = userWebtoonRepositorySupport.findUserWetboonLikedByUserAndWebtoon(user, webtoon);

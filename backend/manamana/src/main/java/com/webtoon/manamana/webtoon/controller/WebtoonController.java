@@ -83,6 +83,7 @@ public class WebtoonController {
 
         long authUserId = userPrincipal.getId();
 
+
         WebtoonDetailDTO webtoonOne = webtoonService.findWebtoonOne(authUserId, webtoonId);
 
         return responseService.getDataResponse(webtoonOne, CustomSuccessStatus.RESPONSE_SUCCESS);
