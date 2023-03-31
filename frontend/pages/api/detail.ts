@@ -1,10 +1,6 @@
 import axios from 'axios';
 
-export const aaToken =
-  'Bearer ' +
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNCIsImlhdCI6MTY4MDIyMTUwOSwiZXhwIjoxNjgwMzA3OTA5fQ.l-jaigMguzURzRpa06EM1oCLMgSY_Q39H6UGDQ3oCgcVuUe7y_rVhzbXD_8BFufxhVbc2wIJZzIODfzFVoCx3w';
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
-axios.defaults.headers.common['Authorization'] = aaToken;
 
 /** 로그인 갱신
  * 헤더에 기존 accessToken, 쿠키에는 refreshToken이 담겨있어야 함
@@ -44,9 +40,7 @@ export const getWebtoonDetail = async (webtoon_id: any) => {
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(aaToken);
     console.log(axios.defaults.headers.common);
-
     console.log(error);
     return null;
   }
