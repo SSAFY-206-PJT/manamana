@@ -18,4 +18,7 @@ public interface WebtoonService {
 
     /*웹툰 플랫폼 정보*/
     WebtoonProviderDTO findWebtoonProviderAll(long webtoonId);
+
+    /*웹툰 보러가기시 가중치 증가(포함된 장르 증가.)*/
+    void upToWeightWebtoon(long userId,long webtoonId);
 }
