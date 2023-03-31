@@ -125,8 +125,19 @@ function DetailPage({ webtoon }: Props) {
       </div>
     );
 
+    const codeToDay: any = {
+      1: '월요일',
+      2: '화요일',
+      3: '수요일',
+      4: '목요일',
+      5: '금요일',
+      6: '토요일',
+      7: '일요일',
+      8: '기타',
+    };
+
     // 태그로 만들 것들
-    const tagList = [webtoon.genres[0].name, webtoon.days[0].codeId, webtoon.grade];
+    const tagList = [webtoon.genres[0].name, codeToDay[webtoon.days[0].codeId], webtoon.grade];
     const tagListDiv = (
       <div className="my-2 flex">
         {tagList.map(tag => (
@@ -219,6 +230,7 @@ function DetailPage({ webtoon }: Props) {
     };
 
     const closeModal = () => {
+      console.log('밖을 클릭함');
       setRatingModal(false);
       setAfterRating(false);
       setRatingInput(0);
@@ -332,7 +344,7 @@ function DetailPage({ webtoon }: Props) {
         <div className="h-2"></div>
         <div className="flex items-end justify-start">
           <p className="mr-1 text-lg">웹툰 평가</p>
-          <p className="mr-1">7명 참여</p>
+          <p className="mr-1">{webtoon.additions.scoreCount}명 참여</p>
         </div>
         <p className="text-center">별점</p>
         <div className="grid h-16 grid-cols-1 items-center">

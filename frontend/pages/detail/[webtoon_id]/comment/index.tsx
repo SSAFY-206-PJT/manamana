@@ -166,13 +166,17 @@ function CommentPage({ webtoon, comments }: Props) {
 
     // 댓글 리스트
     const [commentList, setCommentList] = useState<Chat[]>(comments);
+    const [commentPage, setCommentPage] = useState<number>(1);
     // 더이상 로딩할 댓글이 없으면 true
     const [commentEnd, setCommentEnd] = useState<boolean>(false);
 
     // 댓글 로딩
-    const loadComment = () => {
-      console.log('댓글 로딩');
-      setCommentList([...commentList, ...dummyChatList2]);
+    const loadComment = async () => {
+      const data = await api.getWebtoonComments(webtoon.id, commentPage);
+      if (data && data.result.isSuccess) {
+        const addCommentList = [];
+        setCommentList([...commentList, ...dummyChatList2]);
+      }
     };
 
     // 댓글 입력
@@ -273,6 +277,6 @@ export default CommentPage;
 export const getServerSideProps: GetServerSideProps = async context => {
   const { webtoon_id } = context.query;
   const webtoonData = await api.getWebtoonDetail(webtoon_id);
-  const commentData = await api.getWebtoonComments(webtoon_id);
+  const commentData = await api.getWebtoonComments(webtoon_id, 0);
   return { props: { webtoon: webtoonData.result, comments: commentData.result } };
 };
