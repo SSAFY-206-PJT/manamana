@@ -9,11 +9,11 @@ pipeline {
                     IMAGE_STORAGE_CREDENTIAL = "docker-auth"
                     // SSH_CONNECTION = "ubuntu@j8b206.p.ssafy.io"
                     // SSH_CONNECTION_CREDENTIAL = "deploy-ec2-ssh"
-                    SPRING_BUILD_PATH = "./crawling"
+                    SPRING_BUILD_PATH = "./data_save_spring"
                     APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
                     CONTAINER_NAME = "crawling-api"
-                    PROJECT_DIR = "spring-boot/crawling/"
-                    DOCKER_FILE_PATH = "crawling/"
+                    PROJECT_DIR = "spring-boot/data_save_spring/"
+                    DOCKER_FILE_PATH = "data_save_spring/"
                 }
             }
         }
