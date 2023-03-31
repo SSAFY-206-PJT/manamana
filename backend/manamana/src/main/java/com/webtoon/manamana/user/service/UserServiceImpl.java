@@ -97,6 +97,8 @@ public class UserServiceImpl implements UserService{
 
         String updateFilePath = "";
 
+        log.info("user update : {}", file);
+
         //TODO : 파일 업로드 처리 로직 필요.
         if(file != null){
             updateFilePath = saveFile(userId, file);
