@@ -8,6 +8,6 @@ COPY ./crawling/build/libs/*.jar ./application.jar
 
 COPY ./resources ./resources
 
-EXPOSE 8081
+EXPOSE 8080
 
 ENTRYPOINT ["java","-jar","-Dspring.config.location=resources/application.yml,resources/application-deploy.yml", "-Dspring.profiles.active=deploy", "crawling-application.jar"]
