@@ -19,14 +19,12 @@ RUN chmod +x /etc/cron.d/cronjob
 RUN crontab /etc/cron.d/cronjob
 RUN cp ./crawling-env/.env /kakao_webtoon/ \
     && cp ./crawling-env/.env /kakao_page/ \
-    && cp ./crawling-env/config.py /naver_webtoon
+    && cp ./crawling-env/config.py /naver_webtoon/
 
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && apt install -y ./google-chrome-stable_current_amd64.deb \
     && rm google-chrome-stable_current_amd64.deb
 
-RUN python -m venv venv \
-    && . venv/bin/activate \
-    && pip install -r requirements.txt \
+RUN pip install -r requirements.txt
 
 CMD ["cron", "-f"]
