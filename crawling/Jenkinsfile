@@ -9,7 +9,7 @@ pipeline {
                     IMAGE_STORAGE_CREDENTIAL = "docker-auth"
                     APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
                     CONTAINER_NAME = "crawling"
-                    PROJECT_DIR = "crawling/"
+                    PROJECT_DIR = "crawling/crawling/"
                     DOCKER_FILE_PATH = "crawling/"
                 }
             }
