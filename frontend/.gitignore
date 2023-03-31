@@ -40,4 +40,8 @@ next-env.d.ts
 public/sw.js
 public/sw.js.map
 public/workbox-327c579b.js
+<<<<<<< HEAD
 public/workbox-327c579b.js.map
+=======
+public/workbox-327c579b.js.map
+>>>>>>> b01408dcbcb805f69d95643fcc04f0ad7ba6ea9f
