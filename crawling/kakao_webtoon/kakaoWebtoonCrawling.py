@@ -236,7 +236,7 @@ if __name__ == "__main__":
     
     start = time.time()
 
-    f = open("./webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
+    f = open("webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
@@ -258,7 +258,7 @@ if __name__ == "__main__":
 
     f.write(webtoon_json)
     f.close()
-    post_request(webtoon_json, url="http://127.0.0.1:8080/crawling")
+    post_request(webtoon_json, url="crawling-spring-boot")
 
     end = time.time()
     print(miss)
