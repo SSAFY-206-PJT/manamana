@@ -8,11 +8,4 @@ import lombok.Setter;
 public class AssosiationWebtoonResponseDTO {
 
     private long webtoonId;
-
-    @Override
-    public String toString() {
-        return "AssosiationWebtoonResponseDTO{" +
-                "webtoonId=" + webtoonId +
-                '}';
-    }
 }

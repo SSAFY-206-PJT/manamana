@@ -1,15 +1,13 @@
 package com.webtoon.manamana.recommand.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.UserWebtoon;
 import com.webtoon.manamana.entity.webtoon.Author;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
-import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
-import com.webtoon.manamana.recommand.dto.request.AssosiationApiRequestDTO;
+import com.webtoon.manamana.recommand.dto.request.RecommendApiRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.*;
@@ -20,7 +18,6 @@ import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,11 +105,11 @@ public class RecommandServiceImpl implements RecommandService {
 
         List<UserWebtoon> userWebtoons =  userWebtoonRepository.findAllByIsDeletedFalse();
 
-        List<AssosiationApiRequestDTO> assosiationApiRequestDTOS = new ArrayList<>();
+        List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
 
         for (UserWebtoon userWebtoon : userWebtoons) {
-            assosiationApiRequestDTOS.add(
-                    AssosiationApiRequestDTO.builder()
+            recommendApiRequestDTOS.add(
+                    RecommendApiRequestDTO.builder()
                             .userId(userWebtoon.getUser().getId())
                             .webtoonId(userWebtoon.getWebtoon().getId())
                             .score(userWebtoon.getScore())
@@ -120,8 +117,8 @@ public class RecommandServiceImpl implements RecommandService {
             );
         }
 
-        HashMap<Long, List<AssosiationApiRequestDTO>> map = new HashMap<>();
-        map.put(webtoonId, assosiationApiRequestDTOS);
+        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
+        map.put(webtoonId, recommendApiRequestDTOS);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -208,56 +205,51 @@ public class RecommandServiceImpl implements RecommandService {
     /* 취향 월드컵 결과 저장 */
     @Override
     @Transactional
-    public WorldCupResultDTO worldCupWebtoonSave(WorldCupRequestDTO worldCupRequestDTO) {
+    public WorldCupResultDTO worldCupWebtoonSave(long userId, WorldCupRequestDTO worldCupRequestDTO) throws Exception {
 
-        /*
-            TODO :
-         */
+        // users_and_webtoons 테이블 정보
+        List<UserWebtoon> userWebtoons =  userWebtoonRepository.findAllByIsDeletedFalse();
+        List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
 
-        //  선택된 웹툰의 장르들 (중복X)
-        Set<Integer> selectedGenreId = new HashSet<>();
-
-        for (Long webtoonId : worldCupRequestDTO.getId()) {
-
-            List<WebtoonGenre> webtoonGenres = webtoonGenreRepository.findByWebtoonId(webtoonId);
-
-            for (WebtoonGenre genre : webtoonGenres) {
-                selectedGenreId.add(genre.getGenre().getId());
-            }
+        for (UserWebtoon userWebtoon : userWebtoons) {
+            recommendApiRequestDTOS.add(
+                    RecommendApiRequestDTO.builder()
+                            .userId(userWebtoon.getUser().getId())
+                            .webtoonId(userWebtoon.getWebtoon().getId())
+                            .score(userWebtoon.getScore())
+                            .build()
+            );
         }
 
-        // 장르별 웹툰 상위 10개씩
-        Set<Long> genreWebtoonId = new HashSet<>();
-        for (int genreId : selectedGenreId) {
-            List<Long> genreTop10 = webtoonGenreRepositorySupport.findGenreWebtoonTOP10(genreId);
-
-            for (long webtoonId : genreTop10) {
-                genreWebtoonId.add(webtoonId);
-            }
+        // 유저가 선택한 웹툰 정보 추가 (DB에 반영 X)
+        for (long webtoonId : worldCupRequestDTO.getId()) {
+            recommendApiRequestDTOS.add(
+                    RecommendApiRequestDTO.builder()
+                            .userId(userId)
+                            .webtoonId(webtoonId)
+                            .score(5)
+                            .build()
+            );
         }
 
-        // 랜덤으로 webtoonId 1개 추출
-//        List<Long> recommWebtoonId = new ArrayList<>();
-        long recommWebtoonId = 0L;
-        if (genreWebtoonId.size() > 0) {
-            Random random = new Random();
-//            recommWebtoonId = genreWebtoonId.stream()
-//                    .filter(e -> random.nextBoolean())
-//                    .limit(1)
-//                    .collect(Collectors.toList());
-            int randomIdx = random.nextInt(genreWebtoonId.size());
+        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendApiRequestDTOS);
 
-            int i = 0;
-            for (long val : genreWebtoonId) {
-                if (i == randomIdx) {
-                    recommWebtoonId = val;
-                    break;
-                }
-                i++;
-            }
-        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(recommWebtoonId)
+        ObjectMapper objectMapper = new ObjectMapper();
+        String request = objectMapper.writeValueAsString(map);
+
+        HttpEntity entity = new HttpEntity(request, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/worldcup", HttpMethod.POST, entity, String.class);
+
+        List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
+        long recommendWebtoonId = assosiationWebtoonResponseDTOS.get(0).getWebtoonId();
+
+        Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(recommendWebtoonId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
 
         WorldCupResultDTO worldCupResultDTO = WorldCupResultDTO.builder()

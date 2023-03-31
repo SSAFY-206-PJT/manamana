@@ -16,5 +16,5 @@ public interface RecommandService {
 
     List<WorldCupResponseDTO> worldCupWebtoonSearch();
 
-    WorldCupResultDTO worldCupWebtoonSave(WorldCupRequestDTO worldCupRequestDTO);
+    WorldCupResultDTO worldCupWebtoonSave(long userId, WorldCupRequestDTO worldCupRequestDTO) throws Exception;
 }

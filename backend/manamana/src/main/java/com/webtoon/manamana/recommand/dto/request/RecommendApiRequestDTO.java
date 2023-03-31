@@ -8,14 +8,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AssosiationApiRequestDTO {
+public class RecommendApiRequestDTO {
 
     private long userId;
     private long webtoonId;
     private int score;
 
     @Builder
-    public AssosiationApiRequestDTO(long userId, long webtoonId, int score) {
+    public RecommendApiRequestDTO(long userId, long webtoonId, int score) {
         this.userId = userId;
         this.webtoonId = webtoonId;
         this.score = score;

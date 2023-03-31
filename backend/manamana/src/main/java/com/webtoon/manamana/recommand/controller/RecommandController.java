@@ -1,6 +1,7 @@
 package com.webtoon.manamana.recommand.controller;
 
 
+import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -91,9 +93,12 @@ public class RecommandController {
     })
     @PostMapping("/world-cup")
     public DataResponse<Object> worldCupWebtoonSave(
-            @RequestBody WorldCupRequestDTO worldCupRequestDTO) throws Exception {
+            @RequestBody WorldCupRequestDTO worldCupRequestDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        WorldCupResultDTO worldCupResultDTO = recommandService.worldCupWebtoonSave(worldCupRequestDTO);
+        long authUserId = userPrincipal.getId();
+
+        WorldCupResultDTO worldCupResultDTO = recommandService.worldCupWebtoonSave(authUserId, worldCupRequestDTO);
 
         return responseService.getDataResponse(worldCupResultDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
