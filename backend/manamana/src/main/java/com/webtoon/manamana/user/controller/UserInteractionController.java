@@ -11,6 +11,7 @@ import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.user.dto.request.GenreRequestDTO;
 import com.webtoon.manamana.user.dto.request.IdLongMultiSelectRequestDTO;
 import com.webtoon.manamana.user.dto.request.WebtoonRequestDTO;
+import com.webtoon.manamana.user.dto.response.GenreResponseDTO;
 import com.webtoon.manamana.user.dto.response.UserCommentResponseDTO;
 import com.webtoon.manamana.user.dto.response.WebtoonInfoDTO;
 import com.webtoon.manamana.user.service.UserService;
@@ -126,6 +127,28 @@ public class UserInteractionController {
         return responseService.getSuccessResponse();
     }
 
+    //선호장르 조회
+    @Tag(name = "회원 상호작용 기능")
+    @Operation(summary = "선호 장르 조회", description =  "선호 장르 조회 기능")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "API 정상 동작"),
+            @ApiResponse(responseCode = "400",description = "API 에러"),
+    })
+    @GetMapping("/{user-id}/genre/select")
+    public DataResponse<GenreResponseDTO> findUserSelectGenre(
+            @PathVariable("user-id") long userId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal){
+
+        // TODO : 토큰 값과, user-id값이 동일한지 확인하는 로직 필요.
+        long authUserId = userPrincipal.getId();
+
+
+        GenreResponseDTO selectLikeGenre = userService.findSelectLikeGenre(authUserId);
+        if(selectLikeGenre.getId().size() == 0) responseService.getDataResponse(selectLikeGenre,CustomSuccessStatus.RESPONSE_NO_CONTENT);
+
+        return responseService.getDataResponse(selectLikeGenre,CustomSuccessStatus.RESPONSE_SUCCESS);
+    }
+
 
     /*선호 웹툰 선택*/
     @Tag(name = "회원 상호작용 기능")
@@ -147,4 +170,6 @@ public class UserInteractionController {
 
         return responseService.getSuccessResponse();
     }
+
+
 }

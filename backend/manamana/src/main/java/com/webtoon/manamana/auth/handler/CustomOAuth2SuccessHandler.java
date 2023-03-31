@@ -45,7 +45,6 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String refreshToken = tokenProvider.createRefreshToken(); //리프레시 토큰
 
-        System.out.println(userPrincipal.getId());
         saveRefreshToken(userPrincipal,refreshToken); //리프레시 토큰 저장 - 로그인을 했으면 리프레시 토큰을 새로 발급해줌.
 
         //리프레시 토큰 쿠키에 담기.

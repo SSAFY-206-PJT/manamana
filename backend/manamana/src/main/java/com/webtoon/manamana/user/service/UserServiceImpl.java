@@ -6,23 +6,17 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
-import com.webtoon.manamana.entity.user.User;
-import com.webtoon.manamana.entity.user.UserGenre;
-import com.webtoon.manamana.entity.user.UserGenreId;
-import com.webtoon.manamana.entity.user.UserWebtoon;
+import com.webtoon.manamana.entity.user.*;
 import com.webtoon.manamana.entity.webtoon.Comment;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.entity.webtoon.codetable.Genre;
 import com.webtoon.manamana.user.dto.request.UserUpdateRequestDTO;
+import com.webtoon.manamana.user.dto.response.GenreResponseDTO;
 import com.webtoon.manamana.user.dto.response.UserCommentResponseDTO;
 import com.webtoon.manamana.user.dto.response.UserResponseDTO;
 import com.webtoon.manamana.user.dto.response.WebtoonInfoDTO;
-import com.webtoon.manamana.user.repository.user.UserGenreRepository;
-import com.webtoon.manamana.user.repository.user.UserRepository;
-import com.webtoon.manamana.user.repository.user.UserRepositorySupport;
-import com.webtoon.manamana.user.repository.user.UserWebtoonRepository;
-import com.webtoon.manamana.user.repository.user.UserWebtoonRepositorySupport;
+import com.webtoon.manamana.user.repository.user.*;
 import com.webtoon.manamana.util.repository.GenreCodeRepository;
 import com.webtoon.manamana.webtoon.repository.comment.CommentRepository;
 import com.webtoon.manamana.webtoon.repository.comment.CommentRepositorySupport;
@@ -58,6 +52,8 @@ public class UserServiceImpl implements UserService{
     private final GenreCodeRepository genreCodeRepository;
     private final WebtoonRepository webtoonRepository;
     private final WebtoonGenreRepository webtoonGenreRepository;
+    private final PreferGenreRepository preferGenreRepository;
+    private final PreferGenreRepositorySupport preferGenreRepositorySupport;
 
     //aws 업로드
     private final AmazonS3Client amazonS3Client;
@@ -206,6 +202,23 @@ public class UserServiceImpl implements UserService{
                                 userGenreRepository.save(userGenre);
                             } );
         });
+    }
+
+    /*선호했던 장르 조회*/
+    @Override
+    public GenreResponseDTO findSelectLikeGenre(long userId) {
+
+        //유저 조회
+        User user = userRepository.findByIdAndIsDeletedFalse(userId)
+                .orElseThrow(() -> new CustomException(NOT_FOUNT_USER));
+
+        //유저가 선택한 장르 조회
+        List<PreferGenre> selectGenre = preferGenreRepositorySupport.findSelectGenre(user);
+
+        //DTO 변환.
+        GenreResponseDTO genreResponseDTO = GenreResponseDTO.createDTO(selectGenre);
+
+        return genreResponseDTO;
     }
 
 

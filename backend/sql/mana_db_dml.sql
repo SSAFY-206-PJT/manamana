@@ -99,3 +99,7 @@ insert into webtoon_additions(view,total_score,score_count,create_time,update_ti
 values(10,20,4,now(),now(),1);
 
 select * from login_providers;
+select * from prefer_genres;
+
+insert into prefer_genres(genre_id,is_canceled, user_id,create_time, update_time) values(1,false,2,now(),now());
+insert into prefer_genres(genre_id,is_canceled, user_id,create_time, update_time) values(3,false,2,now(),now());

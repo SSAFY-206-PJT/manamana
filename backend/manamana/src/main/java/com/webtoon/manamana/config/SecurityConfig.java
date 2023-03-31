@@ -49,10 +49,12 @@ public class SecurityConfig {
                 .formLogin().disable() //로그인 폼 미사용
                 .httpBasic().disable();
 //                exceptionHandling().authenticationEntryPoint(new RestAuth) //인증핸들러 등록
+
+        //TODO : 테스트를 위해서 잠시 모든 경로 허용하도록.
         //허용 url
         http
                 .authorizeRequests()
-                .antMatchers("/auth/**","/oauth2/**", "/token/**","/webtoons/list/**").permitAll()
+                .antMatchers("/**","/auth/**","/oauth2/**", "/token/**","/webtoons/list/**").permitAll()
                 .anyRequest().authenticated()
             .and() //나머지는 모두 인증 필요.
 //                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

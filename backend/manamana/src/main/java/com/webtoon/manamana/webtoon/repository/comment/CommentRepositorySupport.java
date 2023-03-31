@@ -45,7 +45,7 @@ public class CommentRepositorySupport extends QuerydslRepositorySupport {
                 .selectFrom(QComment.comment)
                 .where(QComment.comment.user.eq(user))
                 .leftJoin(QComment.comment.webtoon, QWebtoon.webtoon)
-                .fetchJoin()
+                .fetchJoin().orderBy(QComment.comment.createTime.desc())
                 .distinct().fetch();
     }
 
@@ -64,7 +64,7 @@ public class CommentRepositorySupport extends QuerydslRepositorySupport {
                 .leftJoin(comment.webtoon, QWebtoon.webtoon)
                 .fetchJoin()
                 .where(comment.webtoon.id.eq(webtoonId))
-                .orderBy()
+                .orderBy(comment.createTime.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
