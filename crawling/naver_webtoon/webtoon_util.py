@@ -6,6 +6,7 @@ import numpy as np
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+import requests
 
 
 def image_main_color_to_hsl(url):
@@ -65,3 +66,18 @@ def scroll_page_down(driver):
         sleep(0.5)
         
         last_height = new_height
+
+# post
+def post_request(data, url="http://localhost:8080"):
+    """
+    JSON 데이터를 POST 요청
+        ARGS:
+            data: JSON
+            url: "http://localhost:8080"(default)
+    """
+    headers = { 'content-type': 'application/json' }
+    http_post_request = requests.post(url, headers=headers, data=data.encode('utf-8'))
+    print("HTTP POST REQUEST!")
+    print(http_post_request.text)
+    print(http_post_request.status_code)
+
