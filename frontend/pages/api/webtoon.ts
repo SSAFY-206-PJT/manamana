@@ -32,20 +32,24 @@ const getWebtoons = async (p: Parameters) => {
   let value = null;
   const token = getCookie('accessToken');
   await axios
-    .get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        statusId: p.statusId,
-        genreId: p.genreId,
-        gradeId: p.gradeId,
-        dayId: p.dayId,
-      },
+    .post(url, {
+      statusId: p.statusId,
+      genreId: p.genreId,
+      gradeId: p.gradeId,
+      dayId: p.dayId,
+    },{
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+      // data: {
+      //   statusId: p.statusId,
+      //   genreId: p.genreId,
+      //   gradeId: p.gradeId,
+      //   dayId: p.dayId,
+      // },
     })
     .then(({ data }) => {
+      console.log(data)
       value = data.result;
-      console.log(value);
+      console.log('value', value);
     })
     .catch(err => {
       console.log('[ERROR] 마나 골라 웹툰 정보 가져올 때 오류 발생');

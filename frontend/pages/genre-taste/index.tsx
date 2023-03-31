@@ -8,6 +8,7 @@ import { changeGenreTaste } from '@/store/GenreTasteSlice';
 import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import { getCookie } from '@/util/cookie';
+import Swal from 'sweetalert2';
 
 type Genres = {
   id: number;
@@ -70,12 +71,15 @@ export default function GenreTastePage({ genreLists }: any) {
       })
       .then(response => {
         console.log('리스폰스데이터', response.data);
-        alert('선호 장르 선택 완료');
+        Swal.fire({
+          title: '선호 장르가 변경되었습니다.',
+          icon: 'success',
       })
       .catch(error => {
         console.error(error);
       });
-  };
+    })
+  }
 
   return (
     <div className="flex h-full w-full flex-col gap-4 bg-BackgroundLight">
@@ -133,4 +137,4 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     };
   }
-};
+}

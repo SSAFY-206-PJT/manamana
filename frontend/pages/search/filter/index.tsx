@@ -239,13 +239,13 @@ export const getServerSideProps: GetServerSideProps = async context => {
       Authorization: 'Bearer ' + token,
     },
   });
-  const gradesRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/grades'{
+  const gradesRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/grades', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     },
   });
-  const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status'{
+  const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,

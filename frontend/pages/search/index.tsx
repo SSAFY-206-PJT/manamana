@@ -149,7 +149,7 @@ export default function SearchPage() {
         keyword: searchText,
         page: pageNum, // 페이지 숫자
         size: 21, // 한 페이지에 몇 개를 받을 건지
-        sortType: 1,
+        sortType: sortType,
         statusId: curSearchTag.status.map(v => v.key),
         genreId: curSearchTag.genres.map(v => v.key),
         gradeId: curSearchTag.grades.map(v => v.key),
@@ -166,20 +166,24 @@ export default function SearchPage() {
     reloadTag();
     // 필터값을 이용하여 웹툰을 검색한다.
     getWebtoons({
-      keyword: '',
+      keyword: searchText,
       page: pageNum, // 페이지 숫자
       size: 21, // 한 페이지에 몇 개를 받을 건지
-      sortType: 1,
+      sortType: sortType,
       statusId: curSearchTag.status.map(v => v.key),
       genreId: curSearchTag.genres.map(v => v.key),
       gradeId: curSearchTag.grades.map(v => v.key),
       dayId: curSearchTag.days.map(v => v.key),
     }).then(res => {
       if (res != null) {
+        console.log('여기 봐야함', curSearchTag)
+        console.log('sortType', sortType)
+        console.log('statusId', curSearchTag.status.map(v => v.key))
+        console.log('gradeId', curSearchTag.grades.map(v => v.key))
         setWebtoonList(res);
       }
     });
-  }, [curSearchTag]);
+  }, [sortType, curSearchTag]);
 
   useEffect(() => {
     setWebtoonListElement(
@@ -198,7 +202,7 @@ export default function SearchPage() {
   }, [webtoonList]);
 
   return (
-    <div className="h-screen w-screen bg-BackgroundLight pb-12">
+    <div className="h-screen w-screen bg-BackgroundLight">
       <Headerbar showBackBtn={true} pageName="탐색" rightBtn="EDIT" />
       <div className="m-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-2">
         <SearchBar onSearchBarChange={onSearchBarChange} />
@@ -244,7 +248,7 @@ export default function SearchPage() {
           <Lottie loop animationData={EmptyLottie} play className="h-2/3 w-2/3" />
         </div>
       ) : (
-        <div className="m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 text-center">
+        <div className="m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-14 text-center">
           {webtoonListElement}
         </div>
       )}
