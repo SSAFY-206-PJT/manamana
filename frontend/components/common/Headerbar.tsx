@@ -18,7 +18,7 @@ export default function Headerbar(props: Props) {
   let backBtn =
     // 왼쪽 : 뒤로가기, 오른쪽 : 편집 버튼인 경우
     showBackBtn && rightBtnOpt === 'EDIT' ? (
-      <div className="w-12 h-6">
+      <div className="h-6 w-12">
         <img src="/images/HeaderBar_Back.png" alt="goBack" onClick={() => router.back()}></img>
       </div>
     ) : // 왼쪽 : 뒤로가기, 오른쪽 : 편집 버튼이 아닌 경우
@@ -28,7 +28,7 @@ export default function Headerbar(props: Props) {
       </div>
     ) : (
       // 왼쪽에 뒤로가기가 없는 경우
-      <div className="w-6 h-6"></div>
+      <div className="h-6 w-6"></div>
     );
 
   // 오른쪽 버튼 (알림, 편집, null)
@@ -45,21 +45,21 @@ export default function Headerbar(props: Props) {
       break;
     case 'EDIT': // 편집
       showRightBtn = (
-        <div className="flex justify-center items-center w-12 h-6 text-sm border-2 rounded-md border-BackgroundLightComponentBolder">
+        <div className="flex h-6 w-12 items-center justify-center rounded-md border-2 border-BackgroundLightComponentBolder text-sm">
           편집
         </div>
       );
       break;
     default:
-      showRightBtn = <div className="w-6 h-6"></div>;
+      showRightBtn = <div className="h-6 w-6"></div>;
       break;
   }
 
   return (
-    <div className="flex justify-between items-center p-5 h-14 bg-BackgroundLightComponent">
+    <div className="z-30 flex h-14 items-center justify-between bg-BackgroundLightComponent p-5">
       {backBtn}
       <div className="">
-        <p className="font-bold text-xl">{pageName}</p>
+        <p className="text-xl font-bold">{pageName}</p>
       </div>
       {showRightBtn}
     </div>

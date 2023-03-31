@@ -14,13 +14,12 @@ module.exports = {
         SecondaryVariantDark: 'rgba(138, 111, 121, 1)', // Magenta-Dark3
 
         // Background, Component color
-
-        BackgroundDark: 'rgba(18, 18, 18, 1)',  // Background-Dark
+        BackgroundDark: 'rgba(18, 18, 18, 1)', // Background-Dark
         BackgroundDarkComponent: 'rgba(37, 37, 37, 1)', // Background-Dark-Component
         BackgroundLight: 'rgba(243, 243, 243, 1)', // Background-Light
         BackgroundLightComponent: 'rgba(255, 255, 255, 1)',  // Background-Light-Component
-        BackgroundLightComponentBolder: 'rgba(234, 234, 234, 1)', // Background-Light-Component-bolder
-        BackgroundDarkComponentBolder: 'rgba(47, 47, 47, 1)', // Background-Light-Component-bolder
+        BackgroundLightComponentBorder: 'rgba(234, 234, 234, 1)', // Background-Light-Component-bolder
+        BackgroundDarkComponentBorder: 'rgba(47, 47, 47, 1)', // Background-Light-Component-bolder
 
         // Font color
         FontPrimaryLight: 'rgba(0, 0, 0, 1)', // Font-Light
@@ -34,8 +33,9 @@ module.exports = {
         FooterBackground: 'rgba(240, 240, 240, 1)', // footer-background
         ImageCover70: 'rgba(0, 0, 0, 0.7)', // Image-cover-70
         ImageCover30: 'rgba(0, 0, 0, 0.3)', // Image-cover-30
+        CommentBackground: 'rgba(255, 255, 255, 0.3)',
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
 };
