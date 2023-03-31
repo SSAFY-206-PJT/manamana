@@ -2,11 +2,16 @@ package com.webtoon.manamana.webtoon.service.common;
 
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
+import com.webtoon.manamana.entity.user.User;
+import com.webtoon.manamana.entity.user.UserGenre;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import com.webtoon.manamana.entity.webtoon.WebtoonProvider;
 import com.webtoon.manamana.entity.webtoon.codetable.Grade;
 import com.webtoon.manamana.entity.webtoon.codetable.SerialStatus;
+import com.webtoon.manamana.user.repository.user.UserGenreRepository;
+import com.webtoon.manamana.user.repository.user.UserGenreRepositorySupport;
+import com.webtoon.manamana.user.repository.user.UserRepository;
 import com.webtoon.manamana.util.repository.*;
 import com.webtoon.manamana.webtoon.dto.response.GenreDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
@@ -39,6 +44,12 @@ public class WebtoonServiceImpl implements WebtoonService{
     private final WebtoonProviderRepository webtoonProviderRepository;
     private final GradeCodeRepository gradeCodeRepository;
     private final WebtoonGenreRepositorySupport webtoonGenreRepositorySupport;
+
+    private final UserRepository userRepository;
+
+    private UserGenreRepository userGenreRepository;
+    private UserGenreRepositorySupport userGenreRepositorySupport;
+
     /*웹툰 전체 조회*/
     @Override
     public List<WebtoonListDTO> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable) {
@@ -112,5 +123,33 @@ public class WebtoonServiceImpl implements WebtoonService{
         WebtoonProviderDTO webtoonProviderDTO = WebtoonProviderDTO.createDTO(webtoonProvider);
 
         return webtoonProviderDTO;
+    }
+
+    /*웹툰 보러가기시 가중치 증가(포함된 장르 증가.)*/
+    @Override
+    public void upToWeightWebtoon(long userId, long webtoonId) {
+
+        //유저 조회
+        User user = userRepository.findByIdAndIsDeletedFalse(userId)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_USER));
+
+
+        //해당 웹툰 조회
+        Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(webtoonId)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
+
+        //웹툰에 속한 장르 조회
+        List<WebtoonGenre> webtoonGenres = webtoonGenreRepositorySupport.findGenrebyWebtoonAll(webtoonId);
+
+        //각 장르로 유저 장르 테이블 조회
+        webtoonGenres.forEach(webtoonGenre -> {
+            List<UserGenre> userGenres = userGenreRepositorySupport.findUserGenreAll(user, webtoonGenre.getGenre());
+
+            //해당하는 장르를 이전에 저장한 적 있으면 1증가.
+            userGenres.forEach(userGenre -> {
+                userGenre.updateUserGenre(1);
+            });
+        });
+
     }
 }
