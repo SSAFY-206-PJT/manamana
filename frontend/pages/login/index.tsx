@@ -1,65 +1,88 @@
-import MovingLogo from '@/components/pages/login/MovingLogo';
-import { css } from "@emotion/react";
-import MNMNLogo from '../../public/images/MANAMANA.svg';
-import Image from 'next/image';
+import { css } from '@emotion/react';
 
 export default function LoginPage() {
+  // 로고 이미지 변수에 저장
+  const lezhinLogo = (
+    <img
+      src={'/images/Lezhin_Comics_Logo.png'}
+      alt="lezhin commics"
+      className="inline-block w-[25%] rounded-2xl"
+    ></img>
+  );
+
+  const naverLogo = (
+    <img
+      src={'/images/Naver_Webtoon_Logo.svg'}
+      alt="naver webtoon"
+      className="inline-block w-[25%] rounded-2xl"
+    ></img>
+  );
+
+  const kakaoPageLogo = (
+    <img
+      src={'/images/Kakao_Page_Logo.png'}
+      alt="kakao page"
+      className="inline-block w-[25%] rounded-2xl"
+    ></img>
+  );
+
+  const kakaoWebtoonLogo = (
+    <img
+      src={'/images/Kakao_Webtoon_Logo.png'}
+      alt="kakao webtoon"
+      className="inline-block w-[25%] rounded-2xl"
+    ></img>
+  );
 
   const loginClick = () => {
-    alert("login clicked");
+    alert('login clicked');
   };
 
   return (
-    <div className='flex flex-col bg-gray-800 w-screen h-screen'>
-      <div>
-        <MovingLogo direction='left' startIdx={2}></MovingLogo>
-        <MovingLogo direction='right' startIdx={1}></MovingLogo>
-        <MovingLogo direction='left' startIdx={0}></MovingLogo>
-        <MovingLogo direction='right' startIdx={3}></MovingLogo>
+    <div className="flex h-screen w-screen flex-col">
+      <div className="z-[-1]">
+        <div className="inline-block">
+          {lezhinLogo}
+          {kakaoPageLogo}
+          {naverLogo}
+          {kakaoWebtoonLogo}
+        </div>
+        <div className="inline-block">
+          {kakaoWebtoonLogo}
+          {lezhinLogo}
+          {kakaoPageLogo}
+          {naverLogo}
+        </div>
+        <div className="inline-block">
+          {naverLogo}
+          {kakaoWebtoonLogo}
+          {lezhinLogo}
+          {kakaoPageLogo}
+        </div>
       </div>
-      <div css={
-        css`
-        z-index: 1;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.58) 28.23%, #000000 52.04%);
-        width: 100%;
-        height: 100vh;
-        position: absolute;
-        `
-      }
-        className='flex flex-col justify-center items-center'
-      >
-        <MNMNLogo width='150' height='150' />
+      <div className="from-40% via-70% to-100% absolute z-[-1] h-screen w-screen bg-gradient-to-t from-black via-black to-gray-300 opacity-80 "></div>
+      <div className="top-[10%] flex flex-col items-center">
+        <img src="/images/MANAMANA.svg" alt="manamana" className="h-[150px] w-[150px] pb-8"></img>
 
-        <div className='text-FontSecondaryDark mb-5 m-12 text-lg'>
+        <div className=" text-lg text-FontSecondaryDark">
           <p>오직 당신을 위한</p>
           <p>웹툰 추천 플랫폼</p>
         </div>
 
-        <div 
-        css={
-          css`
+        <div
+          css={css`
             font-weight: bold;
-          `
-        }
-        className='text-FontPrimaryDark m-8 mt-6 text-4xl'>
+          `}
+          className="text-4xl text-FontPrimaryDark"
+        >
           마나마나
         </div>
 
-        <button 
-        className='w-80 h-12 m-8'
-        css={
-          css`
-          background-image: url("/images/kakao_login_medium_wide.png");
-          background-size: cover;
-          cursor: pointer; 
-          `
-        }
-        onClick={
-          loginClick
-        }
-        ></button>
+        <button className="m-8 h-[45px] w-[300px]" onClick={loginClick}>
+          <img src="images/kakao_login_medium_wide.png" alt="카카오 로그인"></img>
+        </button>
 
-        <div className='text-FontSecondaryDark text-center m-8'>
+        <div className="text-center text-FontSecondaryDark">
           <p>Copyright 2023.</p>
           <p>Team-Beef-Jerky All rights reserved.</p>
         </div>
