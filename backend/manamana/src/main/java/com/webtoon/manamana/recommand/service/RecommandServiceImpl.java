@@ -210,27 +210,60 @@ public class RecommandServiceImpl implements RecommandService {
     @Transactional
     public WorldCupResultDTO worldCupWebtoonSave(WorldCupRequestDTO worldCupRequestDTO) {
 
+        /*
+            TODO :
+         */
+
+        //  선택된 웹툰의 장르들 (중복X)
+        Set<Integer> selectedGenreId = new HashSet<>();
+
         for (Long webtoonId : worldCupRequestDTO.getId()) {
 
             List<WebtoonGenre> webtoonGenres = webtoonGenreRepository.findByWebtoonId(webtoonId);
-
-            //  선택된 웹툰의 장르들 (중복X)
-            Set<Integer> selectedGenreId = new HashSet<>();
 
             for (WebtoonGenre genre : webtoonGenres) {
                 selectedGenreId.add(genre.getGenre().getId());
             }
         }
 
-        /*
-            TODO : DB 접근 로직 필요
-            TODO : 유저가 선택한 웹툰의 장르를 기반으로 해당 장르 평점 TOP 10 중 하나씩 뽑고, 그 중 1개 뽑아서 리턴 ?
-         */
+        // 장르별 웹툰 상위 10개씩
+        Set<Long> genreWebtoonId = new HashSet<>();
+        for (int genreId : selectedGenreId) {
+            List<Long> genreTop10 = webtoonGenreRepositorySupport.findGenreWebtoonTOP10(genreId);
+
+            for (long webtoonId : genreTop10) {
+                genreWebtoonId.add(webtoonId);
+            }
+        }
+
+        // 랜덤으로 webtoonId 1개 추출
+//        List<Long> recommWebtoonId = new ArrayList<>();
+        long recommWebtoonId = 0L;
+        if (genreWebtoonId.size() > 0) {
+            Random random = new Random();
+//            recommWebtoonId = genreWebtoonId.stream()
+//                    .filter(e -> random.nextBoolean())
+//                    .limit(1)
+//                    .collect(Collectors.toList());
+            int randomIdx = random.nextInt(genreWebtoonId.size());
+
+            int i = 0;
+            for (long val : genreWebtoonId) {
+                if (i == randomIdx) {
+                    recommWebtoonId = val;
+                    break;
+                }
+                i++;
+            }
+        }
+
+        Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(recommWebtoonId)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
 
         WorldCupResultDTO worldCupResultDTO = WorldCupResultDTO.builder()
-                .id(1L)
-                .name("호랑이형님")
-                .imagePath("https://image-comic.pstatic.net/webtoon/650305/thumbnail/thumbnail_IMAG21_3631086797392995425.jpg")
+                .id(webtoon.getId())
+                .name(webtoon.getName())
+                .imagePath(webtoon.getImagePath())
                 .build();
 
         return worldCupResultDTO;
