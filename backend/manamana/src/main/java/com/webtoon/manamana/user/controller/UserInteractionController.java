@@ -141,6 +141,7 @@ public class UserInteractionController {
 
         // TODO : 토큰 값과, user-id값이 동일한지 확인하는 로직 필요.
         long authUserId = userPrincipal.getId();
+        System.out.println(authUserId);
 
 
         GenreResponseDTO selectLikeGenre = userService.findSelectLikeGenre(authUserId);
