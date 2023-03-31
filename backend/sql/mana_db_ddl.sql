@@ -321,6 +321,8 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`prefer_genres` (
   `genre_id` INT NOT NULL,
   `is_canceled` TINYINT NOT NULL,
   `user_id` BIGINT NOT NULL,
+  `create_time` TIMESTAMP NOT NULL,
+  `update_time` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_prefer_genres_users1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_prefer_genres_users1`

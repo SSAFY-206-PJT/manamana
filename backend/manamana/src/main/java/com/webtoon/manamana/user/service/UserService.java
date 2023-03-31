@@ -1,6 +1,7 @@
 package com.webtoon.manamana.user.service;
 
 import com.webtoon.manamana.user.dto.request.UserUpdateRequestDTO;
+import com.webtoon.manamana.user.dto.response.GenreResponseDTO;
 import com.webtoon.manamana.user.dto.response.UserCommentResponseDTO;
 import com.webtoon.manamana.user.dto.response.UserResponseDTO;
 import com.webtoon.manamana.user.dto.response.WebtoonInfoDTO;
@@ -30,6 +31,9 @@ public interface UserService {
 
     /*선호 장르 선택*/
     void selectLikeGenre(long userId,List<Integer> genreIds);
+
+    /*선호된 장르 조회*/
+    GenreResponseDTO findSelectLikeGenre(long userId);
 
     /*선호 웹툰 선택*/
     void selectLikeWebtoon(long userId,List<Long> webtoonIds);
