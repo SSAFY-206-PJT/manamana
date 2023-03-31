@@ -44,7 +44,8 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/recommands")
-    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon() throws Exception {
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
 
@@ -58,8 +59,9 @@ public class RecommandController {
             @ApiResponse(responseCode = "200",description = "API 정상 동작"),
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
-    @GetMapping("/recommands")
-    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedGenre() throws Exception {
+    @GetMapping("/recommands/genre")
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedGenre(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
 
@@ -73,8 +75,9 @@ public class RecommandController {
             @ApiResponse(responseCode = "200",description = "API 정상 동작"),
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
-    @GetMapping("/recommands")
-    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedAge() throws Exception {
+    @GetMapping("/recommands/age-group")
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedAge(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
 
@@ -88,8 +91,9 @@ public class RecommandController {
             @ApiResponse(responseCode = "200",description = "API 정상 동작"),
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
-    @GetMapping("/recommands")
-    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedGender() throws Exception {
+    @GetMapping("/recommands/gender")
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedGender(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
 
@@ -105,8 +109,9 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/{webtoon-id}/recommands")
-    public DataResponse< List<RecommandWebtoonResponseDTO>> recommandAssociationWebtoon(
-            @PathVariable("webtoon-id") long webtoonId) throws Exception {
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandAssociationWebtoon(
+            @PathVariable("webtoon-id") long webtoonId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandAssociationWebtoon(webtoonId);
 
@@ -122,7 +127,8 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/world-cup")
-    public DataResponse<Object> worldCupWebtoon() throws Exception {
+    public DataResponse<List<WorldCupResponseDTO>> worldCupWebtoon(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         List<WorldCupResponseDTO> worldCupResponseDTOS = recommandService.worldCupWebtoonSearch();
 
@@ -137,7 +143,7 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @PostMapping("/world-cup")
-    public DataResponse<Object> worldCupWebtoonSave(
+    public DataResponse<WorldCupResultDTO> worldCupWebtoonSave(
             @RequestBody WorldCupRequestDTO worldCupRequestDTO,
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
