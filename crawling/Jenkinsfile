@@ -11,7 +11,7 @@ pipeline {
                     CONTAINER_NAME = "crawling"
                     PROJECT_DIR = "crawling/crawling/"
                     DOCKER_FILE_PATH = "crawling/"
-                    DOCKER_COMPOSE_PATH = "crawling/"
+                    DOCKER_COMPOSE_PATH = "/var/jenkins_home/workspace/crawling/"
                 }
             }
         }
