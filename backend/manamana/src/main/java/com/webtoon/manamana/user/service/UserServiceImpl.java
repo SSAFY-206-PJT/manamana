@@ -214,11 +214,9 @@ public class UserServiceImpl implements UserService{
 
         //유저가 선택한 장르 조회
         List<PreferGenre> selectGenre = preferGenreRepositorySupport.findSelectGenre(user);
-        System.out.println(selectGenre);
 
         //DTO 변환.
         GenreResponseDTO genreResponseDTO = GenreResponseDTO.createDTO(selectGenre);
-
 
         return genreResponseDTO;
     }
