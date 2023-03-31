@@ -10,6 +10,9 @@ RUN apt-get -qq update \
     && apt-get -qq autoremove \
     && apt-get -qq clean
 
+RUN pwd
+RUN ls
+
 COPY ./crawling-env ./crawling-env
 
 RUN cp /home/ubuntu/test/docker/code/cronjob /etc/cron.d/cronjob
