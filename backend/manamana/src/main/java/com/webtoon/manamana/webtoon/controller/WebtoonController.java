@@ -46,7 +46,7 @@ public class WebtoonController {
             @ApiResponse(responseCode = "200",description = "API 정상 동작"),
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
-    @GetMapping
+    @PostMapping
     public DataResponse<List<WebtoonListDTO>> webtoonList(
             @Parameter(description = "키워드", required = false, example = "박태준") @RequestParam(required = false) String keyword,
             @Parameter(description = "정렬조건", required = false, example = "1") @RequestParam(required = false) Integer sortType,
