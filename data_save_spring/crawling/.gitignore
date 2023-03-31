@@ -38,6 +38,6 @@ out/
 
 
 ### setting ###
-/*.yaml
-/*.yml
+*.yaml
+*.yml
 resources/
