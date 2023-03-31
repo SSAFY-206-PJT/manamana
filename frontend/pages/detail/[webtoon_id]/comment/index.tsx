@@ -156,14 +156,6 @@ function CommentPage({ webtoon, comments }: Props) {
     const commentHeader = (
       <div className="flex h-16">
         <div>
-          {/* <Image
-            className="h-full w-auto"
-            src={webtoon.imagePath}
-            alt="웹툰 이미지"
-            width={100}
-            height={200}
-            priority
-          />{' '} */}
           <img src={webtoon.imagePath} alt="웹툰이미지" className="h-full w-auto" />
         </div>
         <div className="ml-3 flex items-center">
