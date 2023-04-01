@@ -67,7 +67,8 @@ class Webtoon:
         webtoon_json = json.dumps(self.webtoons_dict, default=str, ensure_ascii=False)
         return webtoon_json
 
-
+    def check_none(self):
+        return "None" in {self.name, self.image, self.plot, self.grade, self.status, self.webtoon_url, self.webtoon_id, self.start_date, self.total_ep, self.genre_arr, self.day_arr, self.authors_arr, self.colorHsl}
         
     def check_null(self):
         arr = [("name", self.name), ("image", self.image), ("plot", self.plot), ("grade", self.grade), ("status", self.status), ("webtoon_url", self.webtoon_url), ("webtoon_id", self.webtoon_id), ("start_date", self.start_date), ("total_ep", self.total_ep), ("genre_arr", self.genre_arr), ("day_arr", self.day_arr), ("authors_arr", self.authors_arr), ("colorHsl", self.colorHsl)]
