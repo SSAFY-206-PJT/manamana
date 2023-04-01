@@ -243,20 +243,17 @@ public class WebtoonServiceImpl implements WebtoonService {
     }
 
     private void saveAddition(Webtoon webtoon) {
-        WebtoonAddition webtoonAddition = WebtoonAddition.builder()
-                .view(0)
-                .totalScore(0)
-                .scoreCount(0)
-                .webtoon(webtoon)
-                .build();
 
-        webtoonAdditionRepository.save(webtoonAddition);
+        Optional<WebtoonAddition> additionByWebtoon = webtoonAdditionRepository.findByWebtoon(webtoon);
+
+        if (additionByWebtoon.isEmpty()) {
+            WebtoonAddition webtoonAddition = WebtoonAddition.builder()
+                    .view(0)
+                    .totalScore(0)
+                    .scoreCount(0)
+                    .webtoon(webtoon)
+                    .build();
+            webtoonAdditionRepository.save(webtoonAddition);
+        }
     }
-
-//    public ResponseWebtoonDTO temp() {
-//
-//
-//    }
-
-
 }

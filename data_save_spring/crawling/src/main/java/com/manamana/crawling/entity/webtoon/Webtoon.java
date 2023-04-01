@@ -1,6 +1,8 @@
 package com.manamana.crawling.entity.webtoon;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.manamana.crawling.config.entity.BaseTimeEntity;
+import com.manamana.crawling.entity.user.UserWebtoon;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -59,8 +63,25 @@ public class Webtoon extends BaseTimeEntity {
     @JoinColumn(name = "provider_id")
     private WebtoonProvider providerId;
 
-//    @OneToMany(mappedBy = "webtoon")
-//    private List<Comment> comment = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "webtoon")
+    private Set<Author> authors = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy= "webtoon")
+    private Set<WebtoonDay> webtoonDays = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "webtoon")
+    private Set<WebtoonGenre> webtoonGenres = new HashSet<>();
+
+    @OneToOne(mappedBy = "webtoon", fetch = FetchType.LAZY)
+    private WebtoonAddition webtoonAddition;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "webtoon")
+    private Set<UserWebtoon> userWebtoons = new HashSet<>();
+
 
     @Builder
     public Webtoon(long id, String name, String imagePath, String plot, int gradeId, int statusId, String webtoonUrl, String webtoonId, LocalDate startDate, int totalEp, String colorHsl, boolean isDeleted, WebtoonProvider providerId) {
@@ -79,9 +100,6 @@ public class Webtoon extends BaseTimeEntity {
         this.providerId = providerId;
     }
 
-    public void updateId(long id) {
-        this.id = id;
-    }
 
     public void updateName(String name) {
         this.name = name;
@@ -107,10 +125,6 @@ public class Webtoon extends BaseTimeEntity {
         this.webtoonUrl = webtoonUrl;
     }
 
-    public void updateWebtoonId(String webtoonId) {
-        this.webtoonId = webtoonId;
-    }
-
     public void updateStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
@@ -119,17 +133,10 @@ public class Webtoon extends BaseTimeEntity {
         this.totalEp = totalEp;
     }
 
-    public void updateDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
     public void updateColorHsl(String colorHsl) {
         this.colorHsl = colorHsl;
     }
 
-    public void updateProviderId(WebtoonProvider providerId) {
-        this.providerId = providerId;
-    }
 
 
 }
