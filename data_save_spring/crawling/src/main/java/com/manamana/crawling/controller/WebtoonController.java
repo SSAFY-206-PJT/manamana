@@ -23,11 +23,6 @@ public class WebtoonController {
     private final WebtoonService webtoonService;
     private final RecommendService recommendService;
 
-//    @GetMapping("/crawling")
-//    public Webtoon getWebtoon() {
-//        return webtoonService.findOne(2L);
-//    }
-
     @PostMapping("/crawling")
     public Long saveWebtoon(@RequestBody WebtoonDataArrayDTO webtoonDataArrayDTO) {
         webtoonService.webtoonsData(webtoonDataArrayDTO);
