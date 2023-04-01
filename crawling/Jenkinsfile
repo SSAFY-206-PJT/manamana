@@ -49,21 +49,12 @@ pipeline {
             steps {
                 script {
 
-                    // // //컨테이너 확인 후 정지
-                    // sh "docker ps -f name=${CONTAINER_NAME} -q | xargs --no-run-if-empty docker container stop"
-
-                    // // //컨테이너 삭제
-                    // sh "docker container ls -a -f name=${CONTAINER_NAME} -q | xargs -r docker container rm"
-
-                    // //기존 이미지 삭제
-                    // sh "docker images sh80165/crawling -q | xargs -r docker rmi -f"
-
-                    // //컨테이너 확인
-                    // sh "docker ps -a"
-
                     // 도커 컴포즈 down
                     sh "docker compose down"
 
+                    //컨테이너 확인
+                    sh "docker ps -a"
+                    
                     // 최신 이미지 PULL
                     sh "docker pull ${IMAGE_NAME}:latest"
 
@@ -73,11 +64,9 @@ pipeline {
                     // 도커 컴포즈 start
                     sh "docker compose up -d"
 
-                    // 최신 이미지 RUN
-                    // sh "docker run -d --name ${CONTAINER_NAME} ${IMAGE_NAME}:latest"
-
                     // 컨테이너 확인 - 로그 확인용
                     sh "docker ps -a"
+
                 }
             }
         }
