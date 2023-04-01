@@ -9,10 +9,7 @@ import com.webtoon.manamana.entity.webtoon.Comment;
 import com.webtoon.manamana.entity.webtoon.Report;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.entity.webtoon.WebtoonAddition;
-import com.webtoon.manamana.user.repository.user.UserRepository;
-import com.webtoon.manamana.user.repository.user.UserRepositorySupport;
-import com.webtoon.manamana.user.repository.user.UserWebtoonRepository;
-import com.webtoon.manamana.user.repository.user.UserWebtoonRepositorySupport;
+import com.webtoon.manamana.user.repository.user.*;
 import com.webtoon.manamana.webtoon.dto.request.ScoreRequestDTO;
 import com.webtoon.manamana.webtoon.dto.response.addition.ScoreResponseDTO;
 import com.webtoon.manamana.webtoon.repository.comment.CommentReportRepository;
@@ -25,11 +22,15 @@ import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.*;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
 
@@ -49,6 +50,11 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
     private final UserWebtoonRepositorySupport userWebtoonRepositorySupport;
 
     private final WebtoonAdditionRepositorySupport webtoonAdditionRepositorySupport;
+
+    private final UserGenreRepository userGenreRepository;
+    private final UserGenreRepositorySupport userGenreRepositorySupport;
+
+//    private final UserGenreRepositorySupport userGenreRepositoryS
 
     /*작품 댓글 신고기능*/
     @Override
@@ -137,41 +143,52 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
         WebtoonAddition webtoonAddition = webtoonAdditionRepositorySupport.findAdditionByWebtoonId(webtoonId)
                 .orElseThrow(() -> new CustomException(NOT_FOUNT_WEBTOON_ADDITION));
 
-        //평가한 사람수 증가
-        webtoonAddition.updateScoreCount();
+        //유저장르 연결 테이블 조회 - 가중치 누적을 위해서.
 
-        //평가 누적점수 추가
-        webtoonAddition.updateTotalScore(score);
+
+        //1,2,3점이면 패스, 4점이면 1, 5점이면 3을 추가함.
+
 
         //유저 작품 연계 테이블 조회
-        userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId,webtoonId)
-                .ifPresentOrElse(
-                        userWebtoon -> {
-                            //점수가 0인경우.
-                            if(userWebtoon.getScore() == 0){
-                                //평가한 사람수 증가
-                                webtoonAddition.updateScoreCount();
+        Optional<UserWebtoon> userWebtoonOptional = userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId, webtoonId);
 
-                                //평가 누적점수 추가
-                                webtoonAddition.updateTotalScore(score);
-                                userWebtoon.updateScoreUserWebtoon(score);
-                            }
-                            //점수가 0이 아니면
-                            else {
-                                //점수 누적
-                                webtoonAddition.updateTotalScore(score - userWebtoon.getScore());
-                                // 기존에 있는 값 수정
-                                userWebtoon.updateScoreUserWebtoon(score);
-                            }
-                        },
-                        //테이블에 없다면 생성
-                        () -> {
-                            UserWebtoon scoreUserWebtoon = UserWebtoon.createScoreUserWebtoon(user, webtoon, score);
-                            userWebtoonRepository.save(scoreUserWebtoon);
-                            webtoonAddition.updateTotalScore(score);
-                            webtoonAddition.updateScoreCount();
-                        }
-                );
+        UserWebtoon userWebtoon = null;
+        // 값이 있을떄,
+        if(userWebtoonOptional.isPresent()){
+            log.info("check1");
+            userWebtoon = userWebtoonOptional.get();
+            //점수가 0인경우.
+            if(userWebtoon.getScore() == 0){
+                log.info("check2");
+                //평가한 사람수 증가
+                webtoonAddition.updateScoreCount();
+
+                //평가 누적점수 추가
+                webtoonAddition.updateTotalScore(score);
+                userWebtoon.updateScoreUserWebtoon(score);
+            }
+            //점수가 0이 아니면
+            else {
+                log.info("check3");
+                log.info("check3- score - {}", score);
+                log.info("check3- getScore - {}", userWebtoon.getScore());
+                log.info("check3- totalScore - {}", score - userWebtoon.getScore());
+                log.info("check3 - totalScore2 - {}", webtoonAddition.getTotalScore());
+                //점수 누적
+                webtoonAddition.updateTotalScore(score - userWebtoon.getScore());
+                // 기존에 있는 값 수정
+                userWebtoon.updateScoreUserWebtoon(score);
+            }
+        }
+        //값이 없을때
+        else{
+            log.info("check4");
+            userWebtoon = UserWebtoon.createScoreUserWebtoon(user, webtoon, score);
+            userWebtoonRepository.save(userWebtoon);
+            webtoonAddition.updateTotalScore(score);
+            webtoonAddition.updateScoreCount();
+        }
+
     }
 
 }

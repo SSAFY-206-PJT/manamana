@@ -66,6 +66,8 @@ public class WebtoonController {
 
         List<WebtoonListDTO> webtoonListDTOS = webtoonService.findWebtoonAll(webtoonFilterDTO, pageable);
 
+        log.info("data size : {}", webtoonListDTOS.size());
+
         if(webtoonListDTOS.isEmpty()) return responseService.getDataResponse(webtoonListDTOS,CustomSuccessStatus.RESPONSE_NO_CONTENT);
 
         return responseService.getDataResponse(webtoonListDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
