@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import colorsys
 import time
 import os
-
+import requests
 
 def image_main_color_hsl(url, tmp_file='tmp.jpg'):
     """
@@ -60,3 +60,18 @@ def login(driver):
     driver.find_element(By.NAME, 'password').send_keys(pw)
     driver.find_element(
         By.XPATH, '//*[@id="mainContent"]/div/div/form/div[4]/button[1]').click()
+    
+# post
+def post_request(data, url="http://localhost:8080"):
+    """
+    JSON 데이터를 POST 요청
+        ARGS:
+            data: JSON
+            url: "http://localhost:8080"(default)
+    """
+    headers = { 'content-type': 'application/json' }
+    http_post_request = requests.post(url, headers=headers, data=data.encode('utf-8'))
+    print("HTTP POST REQUEST!")
+    print(http_post_request.text)
+    print(http_post_request.status_code)
+

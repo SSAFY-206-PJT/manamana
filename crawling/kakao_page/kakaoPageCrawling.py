@@ -176,5 +176,6 @@ webtoon_json = webtoon_info.make_json()
 f.write(webtoon_json)
 f.write("\n")
 f.close()
+post_request(webtoon_json, url="http://crawling-spring-boot:8080/crawling")
 
 print(len(error_list))
