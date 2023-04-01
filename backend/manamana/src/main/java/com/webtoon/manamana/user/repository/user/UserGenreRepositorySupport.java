@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserGenreRepositorySupport extends QuerydslRepositorySupport {
@@ -22,14 +23,19 @@ public class UserGenreRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
-    public List<UserGenre> findUserGenreAll(User user, Genre genre){
+    //해당 웹툰에 속해있는 모든 장르 조회
+
+
+    public Optional<UserGenre> findUserGenre(User user, Genre genre){
 
         QUserGenre userGenre = QUserGenre.userGenre;
 
-        return queryFactory
+        return Optional.ofNullable(
+                queryFactory
                 .selectFrom(userGenre)
                 .where(userGenre.user.eq(user), userGenre.genre.eq(genre))
-                .fetch();
+                .fetchOne()
+        );
     }
 
 }

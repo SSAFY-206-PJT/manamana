@@ -124,8 +124,9 @@ public class WebtoonAdditionController {
             @AuthenticationPrincipal UserPrincipal userPrincipal){
         log.info("[개인이 평가한 평점 확인] - webtoon-id : {} ", webtoonId);
         
-//        long authUserId = userPrincipal.getId();
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
+
+
         ScoreResponseDTO webtoonUserScore = webtoonAdditionService.getWebtoonUserScore(authUserId, webtoonId);
 
         return responseService.getDataResponse(webtoonUserScore,CustomSuccessStatus.RESPONSE_SUCCESS);
@@ -145,9 +146,8 @@ public class WebtoonAdditionController {
             @RequestBody ScoreRequestDTO scoreRequestDTO,
             @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-//        long authUserId = userPrincipal.getId();
+        long authUserId = userPrincipal.getId();
 
-        long authUserId = 1L;
         log.info("[작품 평점 생성 확인] - webtoon-id : {}, score : {}", webtoonId, scoreRequestDTO.getScore());
 
         webtoonAdditionService.createWebtoonUserScore(authUserId,webtoonId,scoreRequestDTO.getScore());
