@@ -258,7 +258,7 @@ if __name__ == "__main__":
 
     f.write(webtoon_json)
     f.close()
-    post_request(webtoon_json, url="crawling-spring-boot")
+    post_request(webtoon_json, url="http://crawling-spring-boot:8080/crawling")
 
     end = time.time()
     print(miss)
