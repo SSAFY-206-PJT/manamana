@@ -66,7 +66,7 @@ pipeline {
                 script {
                     
                     // 도커 컴포즈 down
-                    sh "docker-compose down"
+                    sh "docker compose down"
 
                     //컨테이너 확인
                     sh "docker ps -a"
@@ -78,11 +78,11 @@ pipeline {
                     sh "docker images"
 
                     // 도커 컴포즈 start
-                    sh "docker-compose up -d"
+                    sh "docker compose up -d"
 
                     // 컨테이너 확인 - 로그 확인용
                     sh "docker ps -a"
-                    
+
                 }
             }
         }
