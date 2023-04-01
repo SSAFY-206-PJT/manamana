@@ -147,6 +147,8 @@ def crawling(driver, day_string, f):
                 # 전체 회차 저장
                 html = driver.page_source
                 soup = BeautifulSoup(html, 'html.parser')
+                test = driver.findElements(By.cssSelector("#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li")).size()
+                print("TEST :",test)
                 total_ep = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li:nth-child(1) > a > div.px-8.pt-9.pb-8.h-46 > p').string.strip()
                 idx = total_ep.index("화")
                 webtoon_info.total_ep = total_ep[:idx]
