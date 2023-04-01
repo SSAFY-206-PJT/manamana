@@ -48,9 +48,13 @@ pipeline {
         stage("Server Run") {
             steps {
                 script {
+
                     // 도커 컴포즈 down
                     sh "docker compose down"
 
+                    //컨테이너 확인
+                    sh "docker ps -a"
+                    
                     // 최신 이미지 PULL
                     sh "docker pull ${IMAGE_NAME}:latest"
 
@@ -62,6 +66,7 @@ pipeline {
 
                     // 컨테이너 확인 - 로그 확인용
                     sh "docker ps -a"
+
                 }
             }
         }
