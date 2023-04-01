@@ -147,10 +147,16 @@ def crawling(driver, day_string, f):
                 # 전체 회차 저장
                 html = driver.page_source
                 soup = BeautifulSoup(html, 'html.parser')
-                test = driver.findElements(By.cssSelector("#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li")).size()
-                print("TEST :",test)
+                total_temp1 = len(driver.find_element(By.CSS_SELECTOR, '#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li'))
                 total_ep = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li:nth-child(1) > a > div.px-8.pt-9.pb-8.h-46 > p').string.strip()
                 idx = total_ep.index("화")
+                total_temp2 = total_ep[:idx]
+                if total_temp2.isdigit():
+                    webtoon_info.total_ep = max(total_temp1, total_temp1)
+                else:
+                    webtoon_info.total_ep = total_temp1
+
+                    
                 webtoon_info.total_ep = total_ep[:idx]
                 driver.find_element(By.CSS_SELECTOR, '#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.bottom-73.z-5.relative.flex-center.pointer-events-none > button').click()
                 sleep(0.5)
@@ -222,9 +228,12 @@ if __name__ == "__main__":
     driver.implicitly_wait(10)
 
     try:
+        print("-----Login-----")
         login(driver) # 카카오 웹툰 로그인
     except Exception:
+        print("-----Fail-----")
         sleep(5)
+        print("-----Login-----")
         login(driver) # 카카오 웹툰 로그인
 
     for week_string in week_arr:
