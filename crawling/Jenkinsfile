@@ -72,6 +72,8 @@ pipeline {
 
                         sh "ls"
 
+                        sh "docker-compose --version"
+
                         // 도커 컴포즈 down
                         sh "docker-compose down"
 
