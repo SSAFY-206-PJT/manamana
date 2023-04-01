@@ -70,6 +70,8 @@ pipeline {
 
                         sh "pwd"
 
+                        sh "ls"
+
                         // 도커 컴포즈 down
                         sh "docker-compose down"
 
