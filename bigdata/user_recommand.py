@@ -1,13 +1,7 @@
-from sklearn.decomposition import TruncatedSVD
 from scipy.sparse.linalg import svds
-
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 import numpy as np
 import warnings
-import json
-import requests
 warnings.filterwarnings("ignore")
 
 def recommand_movies(df_svd_preds, user_id, ori_webtoons_df, ori_scores_df, num_recommandations=5):
@@ -20,16 +14,18 @@ def recommand_movies(df_svd_preds, user_id, ori_webtoons_df, ori_scores_df, num_
     
     # 원본 평점 데이터에서 user id에 해당하는 데이터를 뽑아낸다. 
     user_data = ori_scores_df[ori_scores_df.userId == user_id]
-    
+
     # 위에서 뽑은 user_data와 원본 영화 데이터를 합친다. 
     # user_history = user_data.merge(ori_webtoons_df, on = 'webtoonId').sort_values(['score'], ascending=False)
     user_history = user_data.merge(ori_webtoons_df, on = 'webtoonId')
     # user_history = user_data
-    
+
     # 원본 영화 데이터에서 사용자가 본 영화 데이터를 제외한 데이터를 추출
     recommandations = ori_webtoons_df[~ori_webtoons_df['webtoonId'].isin(user_history['webtoonId'])]
+
     # 사용자의 영화 평점이 높은 순으로 정렬된 데이터와 위 recommandations을 합친다. 
     recommandations = recommandations.merge( pd.DataFrame(sorted_user_predictions).reset_index(), on = 'webtoonId')
+
     # 컬럼 이름 바꾸고 정렬해서 return
     recommandations = recommandations.rename(columns = {user_row_number: 'Predictions'}).sort_values('Predictions', ascending = False).iloc[:num_recommandations, :]
 
@@ -48,20 +44,21 @@ def recommand_to_user(data, user_id):
             recommand: DataFrame
     """
     df = pd.DataFrame(data)
+    
     temp = []
-    for i in range(100):
+
+    for i in set(map(lambda x : x['webtoonId'], data)):
         temp_dict = {"webtoonId": i}
         temp.append(temp_dict)
+        
     df_ori = pd.DataFrame(temp)
     
     df_ori.drop_duplicates(subset=None, keep='first', inplace=False, ignore_index=False)
-    print(df_ori)
     df_user_webtoon_scores = df.pivot(
         index='userId',
         columns='webtoonId',
         values='score'
     ).fillna(0)
-
     # matrix는 pivot_table 값을 numpy matrix로 만든 것 
     matrix = df_user_webtoon_scores.values
 
@@ -85,4 +82,6 @@ def recommand_to_user(data, user_id):
     df_svd_preds = pd.DataFrame(svd_user_predicted_scores, columns = df_user_webtoon_scores.columns)
 
     already_rated, predictions = recommand_movies(df_svd_preds, user_id, df_ori, df, 10)
+    if not predictions:
+        print("모든 웹툰을 봤습니다.")
     return predictions['webtoonId'].values.tolist()
