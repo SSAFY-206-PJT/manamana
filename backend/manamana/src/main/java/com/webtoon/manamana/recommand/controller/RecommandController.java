@@ -47,7 +47,9 @@ public class RecommandController {
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
+        long authUserId = userPrincipal.getId();
+
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon(authUserId);
 
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
@@ -60,10 +62,12 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/recommands/genre")
-    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedGenre(
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandByGenre(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
+        long authUserId = userPrincipal.getId();
+
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByGenre(authUserId);
 
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
@@ -76,10 +80,13 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/recommands/age-group")
-    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedAge(
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandByAge(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
+//        long authUserId = userPrincipal.getId();
+        long authUserId = 16L;
+
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByAge(authUserId);
 
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
@@ -92,10 +99,12 @@ public class RecommandController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @GetMapping("/recommands/gender")
-    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandBasedGender(
+    public DataResponse<List<RecommandWebtoonResponseDTO>> recommandByGender(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon();
+        long authUserId = userPrincipal.getId();
+
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByGender(authUserId);
 
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
@@ -147,7 +156,8 @@ public class RecommandController {
             @RequestBody WorldCupRequestDTO worldCupRequestDTO,
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        long authUserId = userPrincipal.getId();
+//        long authUserId = userPrincipal.getId();
+        long authUserId = 1L;
 
         WorldCupResultDTO worldCupResultDTO = recommandService.worldCupWebtoonSave(authUserId, worldCupRequestDTO);
 
