@@ -6,6 +6,7 @@ import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.webtoon.Comment;
 import com.webtoon.manamana.entity.webtoon.QComment;
 import com.webtoon.manamana.entity.webtoon.QWebtoon;
+import com.webtoon.manamana.entity.webtoon.Webtoon;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -89,5 +90,16 @@ public class CommentRepositorySupport extends QuerydslRepositorySupport {
                         .fetchOne());
     }
 
+
+    /*워드 클라우드를 위해 웹툰에 해당하는 댓글 전체 조회*/
+    public List<Comment> findCommentByWebtoonAll(Webtoon webtoon){
+
+        QComment comment = QComment.comment;
+
+        return queryFactory
+                .selectFrom(comment)
+                .where(comment.isDeleted.eq(false), comment.webtoon.eq(webtoon), comment.isSpoiler.eq(false))
+                .fetch();
+    }
 
 }

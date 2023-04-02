@@ -19,6 +19,8 @@ configurations {
 
 repositories {
 	mavenCentral()
+	//wordcloud - 형태소 분석기(komoran)
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -53,6 +55,9 @@ dependencies {
 
 	//webclient
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	//wordcloud - 형태소 분석기(komoran)
+	implementation 'com.github.shin285:KOMORAN:3.3.9'
 
 }
 

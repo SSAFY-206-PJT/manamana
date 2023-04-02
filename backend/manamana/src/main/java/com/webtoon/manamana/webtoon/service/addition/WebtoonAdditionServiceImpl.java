@@ -1,15 +1,15 @@
 package com.webtoon.manamana.webtoon.service.addition;
 
-import com.fasterxml.jackson.databind.deser.BasicDeserializerFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webtoon.manamana.config.response.exception.CustomException;
-import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.user.UserGenre;
 import com.webtoon.manamana.entity.user.UserWebtoon;
 import com.webtoon.manamana.entity.webtoon.*;
 import com.webtoon.manamana.user.repository.user.*;
-import com.webtoon.manamana.webtoon.dto.request.ScoreRequestDTO;
 import com.webtoon.manamana.webtoon.dto.response.addition.ScoreResponseDTO;
+import com.webtoon.manamana.webtoon.dto.response.addition.WordCloudResponseDTO;
 import com.webtoon.manamana.webtoon.repository.comment.CommentReportRepository;
 import com.webtoon.manamana.webtoon.repository.comment.CommentReportRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.comment.CommentRepository;
@@ -18,13 +18,15 @@ import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonAdditionRepository
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
+import kr.co.shineware.nlp.komoran.core.Komoran;
+import kr.co.shineware.nlp.komoran.model.KomoranResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.*;
 
@@ -55,6 +57,11 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
     private final UserGenreRepositorySupport userGenreRepositorySupport;
 
     private final WebtoonGenreRepositorySupport webtoonGenreRepositorySupport;
+
+    //형태소 분석기 등록
+    private final Komoran komoran;
+
+    private final ObjectMapper objectMapper;
 
 
     /*작품 댓글 신고기능*/
@@ -104,6 +111,63 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
                         },
                         () -> UserWebtoon.createLikeUserWebtoon(user,webtoon)
                 );
+    }
+
+    // TODO: 2023-04-02 분석속도가 느리기 때문에, 댓글을 입력받을 때마다 형태소 분석기를 돌려서 댓글별로 키워드를 저장해두도록 변경필요.
+    @Override
+    public List<WordCloudResponseDTO> getWordCloudData(long webtoonId) throws JsonProcessingException {
+
+        //웹툰 조회
+        Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(webtoonId)
+                .orElseThrow(() -> new CustomException(NOT_FOUNT_WEBTOON));
+
+        //웹툰에 해당하는 댓글 조회
+        List<Comment> comments = commentRepositorySupport.findCommentByWebtoonAll(webtoon);
+
+        //내용만 뽑기
+        List<String> contents = comments.stream()
+                .map(Comment::getContent)
+                .collect(Collectors.toList());
+
+        //품사 목록 - NNG(일반명사), NNB(의존 명사),VV(동사), VA(형용사), SL(외국어)
+        List<String> morphes = getMorphes();
+
+        //키워드와 등장횟수 저장.
+        Map<String, Long> keywordCount = new HashMap<>();
+
+        //형태소 분석
+        // TODO: 2023-04-02 스레드 10개를 사용하는데, 테스트 시에 몇개정도를 썼을때 최적의 시간이 나오는지 측정 후 설정 필요
+        List<KomoranResult> analyzes = komoran.analyze(contents, 10);
+
+        //분석하고, 설정한 품사만 뽑아서 맵에 저장.
+        // TODO: 2023-04-02 스트림으로 바꿀수 있을 것 같은데.....
+        analyzes.forEach(analyze -> {
+            List<String> morphesByTags = analyze.getMorphesByTags(morphes);
+
+            morphesByTags.forEach(morphesByTag -> {
+                keywordCount.put(morphesByTag, keywordCount.getOrDefault(morphesByTag,0L) + 1);
+            });
+        });
+
+
+        //DTO 변환.
+        List<WordCloudResponseDTO> wordCloudResponseDTOS = keywordCount.entrySet().stream()
+                .map(keyValue -> WordCloudResponseDTO.createDTO(keyValue.getKey(), keyValue.getValue()))
+                .collect(Collectors.toList());
+
+        return wordCloudResponseDTOS;
+    }
+
+    private static List<String> getMorphes() {
+        List<String> morphes = new ArrayList<>();
+
+        morphes.add("NNG");
+        morphes.add("NNB");
+        morphes.add("VV");
+        morphes.add("VA");
+        morphes.add("SL");
+
+        return morphes;
     }
 
     /*개인이 평가한 평점*/
