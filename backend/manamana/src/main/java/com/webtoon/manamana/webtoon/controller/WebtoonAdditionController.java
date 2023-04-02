@@ -1,5 +1,6 @@
 package com.webtoon.manamana.webtoon.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
@@ -10,17 +11,24 @@ import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.webtoon.dto.request.ScoreRequestDTO;
 import com.webtoon.manamana.webtoon.dto.response.addition.ScoreResponseDTO;
+import com.webtoon.manamana.webtoon.dto.response.addition.WordCloudResponseDTO;
 import com.webtoon.manamana.webtoon.service.addition.WebtoonAdditionServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
+import kr.co.shineware.nlp.komoran.core.Komoran;
+import kr.co.shineware.nlp.komoran.model.KomoranResult;
+import kr.co.shineware.nlp.komoran.model.Token;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -87,28 +95,15 @@ public class WebtoonAdditionController {
     })
     @GetMapping("/{webtoon-id}/word-cloud")
     public DataResponse<Object> wordCloudComment(
-            @PathVariable("webtoon-id") long webtoonId)throws Exception{
+            @PathVariable("webtoon-id") long webtoonId) throws JsonProcessingException {
+
+        List<WordCloudResponseDTO> wordCloudData = webtoonAdditionService.getWordCloudData(webtoonId);
+
+        //분석한 데이터가 없다면 빈값 리턴.
+        if(wordCloudData.isEmpty()) responseService.getDataResponse(wordCloudData,CustomSuccessStatus.RESPONSE_NO_CONTENT);
 
 
-        String temp1 = "{\n" +
-                "\t\t\t\t\"context\": \"재미\",\n" +
-                "\t\t\t\t\"rank\": 1,\n" +
-                "\t\t\t}";
-        String temp2 = "{\n" +
-                "\t\t\t\t\"context\": \"양산\",\n" +
-                "\t\t\t\t\"rank\": 2,\n" +
-                "\t\t\t}";
-
-        JSONArray jsonArray = new JSONArray();
-        JSONParser jsonParser = new JSONParser();
-
-        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(temp1);
-        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(temp2);
-
-        jsonArray.add(jsonObj1);
-        jsonArray.add(jsonObj2);
-        log.info("[워드 클라우드 확인] - webtoon-id : {} ", webtoonId);
-        return responseService.getDataResponse(jsonArray, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(wordCloudData, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
     /*개인이 평가한 평점*/
