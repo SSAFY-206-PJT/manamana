@@ -33,4 +33,6 @@ public class AppProperty {
     @Value("${app.auth.redirect-page}")
     private String redirect_page;
 
+
+
 }
