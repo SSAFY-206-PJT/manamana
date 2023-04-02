@@ -290,9 +290,9 @@ public class UserServiceImpl implements UserService{
             webtoonGenres.forEach(webtoonGenre ->
                 userGenreRepository.findById(UserGenreId.createUserGenreId(user.getId(), webtoonGenre.getGenre().getId()))
                         .ifPresentOrElse(
-                                //장르가 있으면 +5
+                                //장르가 있으면 +2
                                 userGenre -> userGenre.updateUserWebtoonGenre(),
-                                //입력한적 없으면 2점으로 생성
+                                //입력한적 없으면 5점으로 생성
                                 () -> {
                                     UserGenre userGenre = UserGenre.createUserWebtoonGenre(user, webtoonGenre.getGenre());
                                     userGenreRepository.save(userGenre);

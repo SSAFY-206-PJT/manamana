@@ -171,13 +171,13 @@ public class WebtoonServiceImpl implements WebtoonService{
         //각 장르로 유저 장르 테이블 조회
         webtoonGenres.forEach(webtoonGenre -> {
 
-            List<UserGenre> userGenres = userGenreRepositorySupport.findUserGenreAll(user, webtoonGenre.getGenre());
+            Optional<UserGenre> userGenreOptional = userGenreRepositorySupport.findUserGenre(user, webtoonGenre.getGenre());
 
+            if(userGenreOptional.isPresent()){
+                //해당하는 장르를 이전에 저장한 적 있으면 1증가.
+                userGenreOptional.get().updateUserGenre(1);
+            }
 
-            //해당하는 장르를 이전에 저장한 적 있으면 1증가.
-            userGenres.forEach(userGenre -> {
-                userGenre.updateUserGenre(1);
-            });
         });
 
     }
