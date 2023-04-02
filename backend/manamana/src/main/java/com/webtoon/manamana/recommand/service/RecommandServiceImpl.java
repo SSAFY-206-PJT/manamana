@@ -121,10 +121,6 @@ public class RecommandServiceImpl implements RecommandService {
 
         int userAge = user.getAge();
 
-        /*
-            TODO : 추천 로직
-         */
-
         List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
 
         // 유저랑 같은 연령대 조회
@@ -198,53 +194,67 @@ public class RecommandServiceImpl implements RecommandService {
 
         String userGender = user.getGender();
 
-        /*
-            TODO : 추천 로직
-         */
+        List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
 
-        /* 테스트용 */
-        List<RecommandWebtoonRequestDTO> recommandWebtoonRequestDTOS = new ArrayList<>();
+        // 유저랑 같은 성별 조회
+        List<Long> userIdByGenderList = userRepositorySupport.findUserIdByGender(userGender);
 
-        recommandWebtoonRequestDTOS.add(
-                RecommandWebtoonRequestDTO.builder()
-                        .id(1)
-                        .name("1초")
-                        .grade("전체이용가")
-                        .status("연재중")
-                        .authors("시니")
-                        .genres("드라마")
-                        .days("금")
-                        .build()
-        );
+        for (long userIdByGender : userIdByGenderList) {
+            List<UserWebtoon> userWebtoonList = userWebtoonRepositorySupport.findByUserIdAndIsDeletedFalse(userIdByGender);
 
-        recommandWebtoonRequestDTOS.add(
-                RecommandWebtoonRequestDTO.builder()
-                        .id(2)
-                        .name("상남자")
-                        .grade("전체이용가")
-                        .status("연재중")
-                        .authors("하늘소")
-                        .genres("드라마")
-                        .days("금")
-                        .build()
-        );
-        /* 테스트용 */
+            for (UserWebtoon userWebtoon : userWebtoonList) {
+                recommendApiRequestDTOS.add(
+                        RecommendApiRequestDTO.builder()
+                                .userId(userWebtoon.getUser().getId())
+                                .webtoonId(userWebtoon.getWebtoon().getId())
+                                .score(userWebtoon.getScore())
+                                .build()
+                );
+            }
+        }
+
+        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendApiRequestDTOS);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         ObjectMapper objectMapper = new ObjectMapper();
-
-        String request = objectMapper.writeValueAsString(recommandWebtoonRequestDTOS);
+        String request = objectMapper.writeValueAsString(map);
 
         HttpEntity entity = new HttpEntity(request, httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
-
-        // url 바꿔야함
         ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/userbased", HttpMethod.POST, entity, String.class);
 
-        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), ApiResponseDTO.class).getResult();
+        List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
+
+        for (AssosiationWebtoonResponseDTO assosiationWebtoonResponseDTO : assosiationWebtoonResponseDTOS) {
+
+            Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId())
+                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
+
+            List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
+
+            for (Author author : webtoon.getAuthors()) {
+                apiAuthorDTOS.add(
+                        ApiAuthorDTO.builder()
+                                .id(author.getId())
+                                .name(author.getName())
+                                .build()
+                );
+            }
+
+            recommandWebtoonResponseDTOS.add(
+                    RecommandWebtoonResponseDTO.builder()
+                            .id(webtoon.getId())
+                            .name(webtoon.getName())
+                            .imagePath(webtoon.getImagePath())
+                            .authors(apiAuthorDTOS)
+                            .build()
+            );
+        }
 
         return recommandWebtoonResponseDTOS;
     }

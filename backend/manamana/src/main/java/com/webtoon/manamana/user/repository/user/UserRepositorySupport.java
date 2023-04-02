@@ -54,6 +54,15 @@ public class UserRepositorySupport extends QuerydslRepositorySupport {
                 .fetch();
     }
 
+    public List<Long> findUserIdByGender(String gender) {
 
+        QUser user = QUser.user;
+
+        return queryFactory
+                .select(user.id)
+                .from(user)
+                .where(user.gender.eq(gender))
+                .fetch();
+    }
 
 }
