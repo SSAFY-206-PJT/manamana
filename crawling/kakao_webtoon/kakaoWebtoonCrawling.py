@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
-from time import sleep
+from time import sleep, time
 from dotenv import load_dotenv
 from datetime import datetime
 from webtoonUtil import *
@@ -19,13 +19,15 @@ def login(driver):
 
     # 로그인 페이지로 이동
     driver.get('https://webtoon.kakao.com/more')
+    sleep(0.5)
     driver.find_element(By.CSS_SELECTOR, '#root > main > div > div > div.absolute.top-0.left-0.w-full.z-navigationBar > div.px-18.m-auto.items-center.flex.h-header-height.fixed.top-0.left-0.right-0.z-navigationBar > div.ml-auto.flex.flex-none > a').click()
+    sleep(0.5)
     driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(20) > div > div > div > div.overflow-x-hidden.overflow-y-auto.\!overflow-hidden.flex.flex-col > div.text-center.pb-\[117px\].overflow-y-auto > div > div > button').click()
-    
+    sleep(0.5)
     # 아이디, 비밀번호 입력
     driver.find_element(By.CSS_SELECTOR, '#loginKey--1').send_keys(id)
     driver.find_element(By.CSS_SELECTOR, '#password--2').send_keys(pw)
-    
+    sleep(0.5)
     # 로그인버튼 클릭
     driver.find_element(By.CSS_SELECTOR, '#mainContent > div > div > form > div.confirm_btn > button.btn_g.highlight.submit').click()
     sleep(1)
@@ -72,7 +74,7 @@ def crawling(driver, day_string, f):
         webtoon_info = webtoon.Webtoon() # 웬툰 클래스 생성
 
         webtoon_url = kakao_base_url + url # 웹툰 주소 생성
-        while cnt <= 2 and webtoon_info.check_none():
+        while cnt <= 2:
             try:
                 driver.get(webtoon_url) # 이동
                 
@@ -82,9 +84,14 @@ def crawling(driver, day_string, f):
                 sleep(0.5)
                 html = driver.page_source
                 soup = BeautifulSoup(html, 'html.parser')
-                genre = soup.select('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(2) > p')
-                webtoon_info.genre_arr = genre[0].string.strip().split()
-                
+                genre = soup.select('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(1) > p')
+                genre = genre[0].string.strip()
+                if genre[-2:] == "무료":
+                    genre = soup.select('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(2) > p')
+                    genre = genre[0].string.strip()
+                webtoon_info.genre_arr = genre.split()
+                #root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(1) > p
+                #root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(2) > p
                 try:
                     driver.find_element(By.CSS_SELECTOR, '#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div').click()
                 except Exception as err:
@@ -119,6 +126,8 @@ def crawling(driver, day_string, f):
                 grade = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > div.flex.flex-wrap > div > img')
                 if not grade:
                     grade = "전체이용가"
+                else:
+                    grade = "성인"
                 webtoon_info.grade = grade
 
                 # 웹툰 이름 저장
@@ -147,17 +156,15 @@ def crawling(driver, day_string, f):
                 # 전체 회차 저장
                 html = driver.page_source
                 soup = BeautifulSoup(html, 'html.parser')
-                total_temp1 = len(driver.find_element(By.CSS_SELECTOR, '#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li'))
-                total_ep = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li:nth-child(1) > a > div.px-8.pt-9.pb-8.h-46 > p').string.strip()
-                idx = total_ep.index("화")
-                total_temp2 = total_ep[:idx]
-                if total_temp2.isdigit():
-                    webtoon_info.total_ep = max(total_temp1, total_temp1)
-                else:
-                    webtoon_info.total_ep = total_temp1
-
-                    
-                webtoon_info.total_ep = total_ep[:idx]
+                
+                total_ep = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li:nth-child(1) > a > div.px-8.pt-9.pb-8.h-46 > p')
+                if total_ep:
+                    total_ep = total_ep.string.strip()
+                    idx = total_ep.index("화")
+                    total_ep = total_ep[:idx]
+                    if not total_ep.isdigit():
+                        total_ep = len(driver.find_elements(By.CSS_SELECTOR, '#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li'))
+                webtoon_info.total_ep = total_ep
                 driver.find_element(By.CSS_SELECTOR, '#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.bottom-73.z-5.relative.flex-center.pointer-events-none > button').click()
                 sleep(0.5)
 
@@ -182,6 +189,23 @@ def crawling(driver, day_string, f):
                 print(e)
                 miss.add(url)
             cnt += 1
+            if not webtoon_info.check_none():
+                break
+        else:
+            print(f'name: {webtoon_info.name}')
+            print(f'image: {webtoon_info.image}')
+            print(f'plot: {webtoon_info.plot}')
+            print(f'grade: {webtoon_info.grade}')
+            print(f'status: {webtoon_info.status}')
+            print(f'webtoon_url: {webtoon_info.webtoon_url}')
+            print(f'webtoon_id: {webtoon_info.webtoon_id}')
+            print(f'start_date: {webtoon_info.start_date}')
+            print(f'total_ep: {webtoon_info.total_ep}')
+            print(f'genre_arr: {webtoon_info.genre_arr}')
+            print(f'day_arr: {webtoon_info.day_arr}')
+            print(f'authors_arr: {webtoon_info.authors_arr}')
+            print(f'colorHsl: {webtoon_info.colorHsl}')
+
     print("done:",count)
     print("fail:", len(miss))
     print("miss:",miss)
@@ -190,10 +214,6 @@ def crawling(driver, day_string, f):
 miss = set() # 크롤링에 필패한 웹툰을 기록할 리스트
 week = ["mon", "tue", "wed", "thu", "fri", "sat", "sun", "complete"]
 today = week[datetime.today().weekday()]
-
-
-import time
-
 
 
 if __name__ == "__main__":
@@ -213,7 +233,7 @@ if __name__ == "__main__":
         print(f'Crawling {today}')
     print("====================")
     
-    start = time.time()
+    start = time()
 
     f = open("webtoon.json", 'w', encoding="UTF-8") # json을 저장할 파일 지정
 
@@ -232,11 +252,13 @@ if __name__ == "__main__":
         login(driver) # 카카오 웹툰 로그인
     except Exception:
         print("-----Fail-----")
+        print("-----retry-----")
         sleep(5)
         print("-----Login-----")
         login(driver) # 카카오 웹툰 로그인
-
+    print("-----succes-----")
     for week_string in week_arr:
+        print(f"-----{week_string}-----")
         crawling(driver, week_string, f)
 
     total_webtoon = webtoon.Webtoon()
@@ -247,7 +269,7 @@ if __name__ == "__main__":
     f.close()
     post_request(webtoon_json, url="http://crawling-spring-boot:8080/crawling")
 
-    end = time.time()
+    end = time()
     print(miss)
     print(f"{end - start:.5f} sec")
 
