@@ -69,27 +69,4 @@ class Webtoon:
 
     def check_none(self):
         return "None" in [self.name, self.image, self.plot, self.grade, self.status, self.webtoon_url, self.webtoon_id, self.start_date, self.total_ep, self.genre_arr, self.day_arr, self.authors_arr, self.colorHsl]
-        
-    def check_null(self):
-        arr = [("name", self.name), ("image", self.image), ("plot", self.plot), ("grade", self.grade), ("status", self.status), ("webtoon_url", self.webtoon_url), ("webtoon_id", self.webtoon_id), ("start_date", self.start_date), ("total_ep", self.total_ep), ("genre_arr", self.genre_arr), ("day_arr", self.day_arr), ("authors_arr", self.authors_arr), ("colorHsl", self.colorHsl)]
-        error_arr = []
-        for string, value in arr:
-            if value is None:
-                error_arr.append(string)
-        if error_arr:
-            print("====================")
-            print("입력되지 않은 값이 있습니다.")
-            print("----------")
-            print(*error_arr, sep=",")
-            print("----------")
-            print("계속하려면 Y, 멈추려면 N을 입력하세요.")
-            print("====================")
-            while True:
-                print("입력: ", end="")
-                y_or_n = input().strip().upper()
-                if y_or_n == "Y":
-                    break
-                elif y_or_n == "N":
-                    print("크롤링 중지")
-                    sys.exit("종료")
-                print("입력좀 하지?")
+

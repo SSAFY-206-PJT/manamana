@@ -90,8 +90,6 @@ def crawling(driver, day_string, f):
                     genre = soup.select('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(2) > p')
                     genre = genre[0].string.strip()
                 webtoon_info.genre_arr = genre.split()
-                #root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(1) > p
-                #root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div > div > div:nth-child(2) > p
                 try:
                     driver.find_element(By.CSS_SELECTOR, '#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.w-full.left-0.top-0.relative > div.content-main-wrapper.opacity-0.invisible.relative.current-content-main.opacity-100.\!visible.z-1 > div.pb-20.pt-96.relative.z-1 > div.relative.mx-auto.my-0.w-full.lg\:w-default-max-width > div.mx-20.flex.justify-between.relative.z-1.pointer-events-auto.pt-12 > div').click()
                 except Exception as err:
@@ -160,8 +158,9 @@ def crawling(driver, day_string, f):
                 total_ep = soup.select_one('#root > main > div > div.page.bg-background-02.activePage > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-no-swiping.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li:nth-child(1) > a > div.px-8.pt-9.pb-8.h-46 > p')
                 if total_ep:
                     total_ep = total_ep.string.strip()
-                    idx = total_ep.index("화")
-                    total_ep = total_ep[:idx]
+                    if "화" in total_ep:
+                        idx = total_ep.index("화")
+                        total_ep = total_ep[:idx]
                     if not total_ep.isdigit():
                         total_ep = len(driver.find_elements(By.CSS_SELECTOR, '#root > main > div > div > div > div.h-full.overflow-hidden.w-full.z-1.fixed.inset-0.bg-dark-background > div.relative.z-1.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div.relative.h-full > div > div > div.swiper-slide.swiper-slide-active > div > div > div > div > ul > li'))
                 webtoon_info.total_ep = total_ep
