@@ -9,7 +9,7 @@ import CommentList from '@/components/pages/comment/CommentList';
 import CommentInput from '@/components/pages/comment/CommentInput';
 import { Chat } from '@/components/pages/comment/CommentList';
 import { CommentUserInput } from '@/components/pages/comment/CommentInput';
-import { WebtoonDetail } from '@/pages/detail/[webtoon_id]';
+import { WebtoonDetail } from '@/pages/api/detail';
 import { getCookie } from '@/util/cookie';
 
 const defaultValue: CommentUserInput = {
@@ -166,7 +166,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   if (token) {
     const webtoonData = await api.getWebtoonDetail(webtoon_id, token);
     const commentData = await api.getWebtoonComments(webtoon_id, 0, token);
-    return { props: { webtoon: webtoonData, comments: commentData.result } };
+    return { props: { webtoon: webtoonData.result, comments: commentData.result } };
   } else {
     return { props: { webtoon: null, comments: null } };
   }

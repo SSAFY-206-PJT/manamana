@@ -1,6 +1,5 @@
 import Navbar from '../../components/common/Navbar';
 import Headerbar from '@/components/common/Headerbar';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -269,40 +268,20 @@ export default function ProfilePage({ userData }: any) {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const token = context.req.cookies.accessToken;
-  const data = await userInfo(token);
-  console.log('=========================');
-  console.log(data);
-  console.log('=========================');
-  if (data !== 'manaError') {
-    const userData: User = data.data.result;
-    return { props: { userData } };
+  if (token) {
+    const res = await userInfo(token);
+    if (res.success) {
+      const userData: User = res.result;
+      return { props: { userData } };
+    } else {
+      return { props: { userData: null } };
+    }
   } else {
-    return { props: { userData: null } };
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   }
-  // const { user_id } = context.query;
-  // const user_id = 4; // 로그인 구현 전이라 임시로 user_id 설정
-  // const options = {
-  //   method: 'GET',
-  //   url: `/mana/users/${user_id}`,
-  //   headers: {
-  //     Authorization: 'Bearer ' + token,
-  //   },
-  // };
-  // try {
-  //   const response = await axios.request(options);
-  //   const userData: User = response.data.result;
-  //   console.log('===========================');
-  //   console.log(userData);
-  //   console.log('===========================');
-  //   return {
-  //     props: { userData },
-  //   };
-  // } catch (error) {
-  //   console.error(error);
-  //   return {
-  //     props: {
-  //       userData: null,
-  //     },
-  //   };
-  // }
 };

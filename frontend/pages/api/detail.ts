@@ -1,11 +1,17 @@
 import { setCookie } from '@/util/cookie';
 import axios from 'axios';
-import { WebtoonDetail } from '../detail/[webtoon_id]';
 
 // axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 axios.defaults.baseURL = 'http://localhost:3000';
 
-interface Response {
+/**
+ * success 올바른 응답여부
+ * error 에러코드 API, LOGIN
+ * result 결과
+ */
+export interface Response {
+  success: boolean;
+  error?: string;
   result: any;
   newToken?: string;
 }
@@ -23,15 +29,19 @@ export const renewToken = async (token: string): Promise<Response> => {
   try {
     const res = await axios.request(options);
     const answer = res.data;
-    // token 을 응답
-    return { result: answer };
+    return { success: true, result: answer };
   } catch (error) {
     console.log(error);
-    return { result: null };
+    return { success: false, error: 'API', result: { message: 'API통신오류' } };
   }
 };
 
-export const userInfo = async (token: string) => {
+/**유저 정보 가져오기
+ *
+ * @param token
+ * @returns
+ */
+export const userInfo = async (token: string): Promise<Response> => {
   const user_id = 4;
   const options = {
     method: 'GET',
@@ -42,22 +52,57 @@ export const userInfo = async (token: string) => {
   };
   try {
     const res = await axios.request(options);
-    const answer = res;
+    const answer = res.data;
     // token 을 응답
-    return answer;
+    return { success: true, result: answer };
   } catch (error) {
     console.log(error);
-    return 'manaError';
+    return { success: false, error: 'API', result: { message: 'API통신오류' } };
   }
 };
 
 ///////////////////* 웹툰 상세 기능 *///////////////////
-/**웹툰 상세정보 조회
+export interface IdName {
+  id: number;
+  name: string;
+}
+export interface WebtoonDetail {
+  id: number;
+  name: string;
+  imagePath: string;
+  plot: string;
+  grade: string;
+  status: string;
+  webtoonUrl: string;
+  webtoonId: number;
+  startDate: string;
+  totalEpisode: number;
+  colorHsl: string;
+  authors: Array<IdName>;
+  genres: Array<IdName>;
+  days: {
+    id: number;
+    codeId: number;
+  }[];
+  additions: {
+    view: number;
+    scoreCount: number;
+    scoreAverage: string;
+  };
+}
+
+/**웹툰 상세 정보 /webtoons/{webtoon-id}
  *
  * @param webtoon_id
- * @returns Webtoon
+ * @param token
+ * @param isAgain
+ * @returns
  */
-export const getWebtoonDetail = async (webtoon_id: any, token: string) => {
+export const getWebtoonDetail = async (
+  webtoon_id: any,
+  token: string,
+  isAgain = false,
+): Promise<Response> => {
   const options = {
     method: 'GET',
     url: `/mana/webtoons/${webtoon_id}`,
@@ -68,12 +113,26 @@ export const getWebtoonDetail = async (webtoon_id: any, token: string) => {
   };
   try {
     const res = await axios.request(options);
-    const answer: WebtoonDetail = res.data.result;
-    return answer;
+
+    // 응답은 왔는데 200 ~ 299 가 아닌경우
+    if (res.data.code && res.data.code >= 300 && !isAgain) {
+      const newres = await renewToken(token);
+      if (newres.success) {
+        const newAnswer: any = await getWebtoonDetail(webtoon_id, newres.result.token, true);
+        return { success: true, result: newAnswer.data.result, newToken: newres.result.token };
+      } else {
+        return { success: false, error: 'LOGIN', result: { message: '토큰 갱신 실패' } };
+      }
+    }
+
+    if (res.data.isSuccess) {
+      const answer = res.data.result;
+      return { success: true, result: answer };
+    } else {
+      return { success: false, error: res.data.code, result: '' };
+    }
   } catch (error) {
-    console.log(axios.defaults.headers.common);
-    console.log(error);
-    return null;
+    return { success: false, error: 'API', result: { message: 'API통신오류' } };
   }
 };
 
@@ -94,9 +153,9 @@ export const getWebtoonProviders = async (webtoon_id: any, token: string, isAgai
 
     if (answer.code !== 200 && !isAgain) {
       const res = await renewToken(token);
-      if (res.newToken) {
-        setCookie('accessToken', res.newToken);
-        const newAnswer: any = await getWebtoonProviders(webtoon_id, res.newToken, true);
+      if (res.result.token) {
+        setCookie('accessToken', res.result.token);
+        const newAnswer: any = await getWebtoonProviders(webtoon_id, res.result.token, true);
         return newAnswer;
       } else {
         return answer;
