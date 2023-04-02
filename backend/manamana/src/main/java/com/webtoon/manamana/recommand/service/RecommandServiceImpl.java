@@ -12,10 +12,7 @@ import com.webtoon.manamana.recommand.dto.request.RecommendApiRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.*;
-import com.webtoon.manamana.user.repository.user.UserRepository;
-import com.webtoon.manamana.user.repository.user.UserRepositorySupport;
-import com.webtoon.manamana.user.repository.user.UserWebtoonRepository;
-import com.webtoon.manamana.user.repository.user.UserWebtoonRepositorySupport;
+import com.webtoon.manamana.user.repository.user.*;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
@@ -41,6 +38,7 @@ public class RecommandServiceImpl implements RecommandService {
 
     private final UserRepository userRepository;
     private final UserRepositorySupport userRepositorySupport;
+    private final UserGenreRepositorySupport userGenreRepositorySupport;
     private final UserWebtoonRepository userWebtoonRepository;
     private final UserWebtoonRepositorySupport userWebtoonRepositorySupport;
     private final WebtoonRepository webtoonRepository;
@@ -108,7 +106,21 @@ public class RecommandServiceImpl implements RecommandService {
     @Override
     public List<RecommandWebtoonResponseDTO> recommandByGenre(long userId) throws Exception {
 
+        List<Integer> userGenreMaxWeightList = userGenreRepositorySupport.findByMaxWeightGenre(userId);
+        int listLen = userGenreMaxWeightList.size();
 
+        int genreId;
+        switch (listLen) {
+            case 0: // 선호 장르가 없을 때
+                
+                break;
+            case 1:
+
+                break;
+            default: // 선호 장르 가중치가 최대인 값이 여러개일 때
+
+                break;
+        }
 
         return null;
     }

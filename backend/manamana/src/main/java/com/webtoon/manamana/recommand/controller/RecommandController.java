@@ -65,7 +65,8 @@ public class RecommandController {
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandByGenre(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        long authUserId = userPrincipal.getId();
+//        long authUserId = userPrincipal.getId();
+        long authUserId = 3L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByGenre(authUserId);
 
@@ -157,8 +158,7 @@ public class RecommandController {
             @RequestBody WorldCupRequestDTO worldCupRequestDTO,
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-//        long authUserId = userPrincipal.getId();
-        long authUserId = 1L;
+        long authUserId = 0L; // userId 0으로 고정시켜야함
 
         WorldCupResultDTO worldCupResultDTO = recommandService.worldCupWebtoonSave(authUserId, worldCupRequestDTO);
 
