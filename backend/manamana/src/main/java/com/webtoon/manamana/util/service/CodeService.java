@@ -1,5 +1,6 @@
 package com.webtoon.manamana.util.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.webtoon.manamana.util.dto.response.*;
 import com.webtoon.manamana.util.repository.DayCodeRepository;
 
@@ -25,6 +26,6 @@ public interface CodeService {
     /*웹툰 제공자 정보 조회*/
     List<WebtoonProviderResponseDTO> providers();
 
-    // TODO : 네이버 api와 연동해서 적용해야 됨.
     /*웹툰 키워드 top 10*/
+    List<Top10ResponseDTO> getKeywordTop10() throws JsonProcessingException;
 }

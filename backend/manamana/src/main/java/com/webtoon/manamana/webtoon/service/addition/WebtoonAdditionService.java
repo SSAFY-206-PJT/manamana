@@ -1,7 +1,11 @@
 package com.webtoon.manamana.webtoon.service.addition;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.webtoon.manamana.webtoon.dto.request.ScoreRequestDTO;
 import com.webtoon.manamana.webtoon.dto.response.addition.ScoreResponseDTO;
+import com.webtoon.manamana.webtoon.dto.response.addition.WordCloudResponseDTO;
+
+import java.util.List;
 
 public interface WebtoonAdditionService {
 
@@ -12,7 +16,7 @@ public interface WebtoonAdditionService {
     void createLikeWebtoon(long userId,long webtoonId);
 
     /*댓글 워드 클라우드*/
-    //TODO : 워드클라우드 기능은 보류
+    List<WordCloudResponseDTO> getWordCloudData(long webtoonId) throws JsonProcessingException;
 
     /*개인이 평가한 평점*/
     ScoreResponseDTO getWebtoonUserScore(long userId, long webtoonId);
