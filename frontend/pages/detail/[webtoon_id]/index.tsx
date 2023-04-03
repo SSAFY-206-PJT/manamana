@@ -37,6 +37,7 @@ interface Props {
 
 function DetailPage({ res }: Props) {
   if (!res.success) {
+    console.log(res);
     return (
       <div>
         ERROR: {res.error} | MESSAGE: {res.result.message}

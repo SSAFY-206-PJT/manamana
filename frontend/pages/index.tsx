@@ -345,17 +345,18 @@ export async function getServerSideProps(context: any) {
   }
 
   const res = await api.getUserLike(token);
-  let likeWebtoons = res.result;
-  const defaultLikeWebtoon = [
-    {
-      id: 0,
-      name: '등록해보세요',
-      imagePath: '/images/Plus-Button.png',
-      status: '연재중',
-    },
-  ];
-  if (likeWebtoons && likeWebtoons?.length === 0) {
-    likeWebtoons = defaultLikeWebtoon;
+  if (res && res.result.length > 0) {
+    const likeWebtoons = res.result;
+    return { props: { likeWebtoons } };
+  } else {
+    const likeWebtoons = [
+      {
+        id: 0,
+        name: '등록해보세요',
+        imagePath: '/images/Plus-Button.png',
+        status: '연재중',
+      },
+    ];
+    return { props: { likeWebtoons } };
   }
-  return { props: { likeWebtoons } };
 }
