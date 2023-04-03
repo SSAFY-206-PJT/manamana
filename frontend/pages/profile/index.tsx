@@ -1,12 +1,12 @@
 import Navbar from '../../components/common/Navbar';
 import Headerbar from '@/components/common/Headerbar';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Swal from 'sweetalert2';
+import { userInfo } from '../api/detail';
 
 type User = {
   id: number;
@@ -267,23 +267,20 @@ export default function ProfilePage({ userData }: any) {
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  // const { user_id } = context.query;
-  const user_id = 4; // 로그인 구현 전이라 임시로 user_id 설정
   const token = context.req.cookies.accessToken;
-  try {
-    const response = await axios.get(`/users/${user_id}`, {
-      headers: { Authorization: 'Bearer ' + token },
-    });
-    const userData: User = response.data.result;
-    console.log(userData);
+  if (token) {
+    const res = await userInfo(token);
+    if (res.success) {
+      const userData: User = res.result;
+      return { props: { userData } };
+    } else {
+      return { props: { userData: null } };
+    }
+  } else {
     return {
-      props: { userData },
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        userData: null,
+      redirect: {
+        destination: '/login',
+        permanent: false,
       },
     };
   }

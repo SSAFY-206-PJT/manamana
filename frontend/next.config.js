@@ -6,6 +6,14 @@ const withPWA = require('next-pwa')({
 
 const nextConfig = {
   reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: '/mana/:path*',
+        destination: 'https://j8b206.p.ssafy.io/api/:path*',
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

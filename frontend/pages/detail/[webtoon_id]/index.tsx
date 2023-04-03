@@ -12,38 +12,8 @@ import ConfirmBtn from '@/components/confirmBtn';
 import GoSee from '@/components/pages/detail/GoSee';
 import CommentIcon from '@/public/images/Comment_List.svg';
 import Heart from '@/public/images/Heart.svg';
-import { getCookie } from '@/util/cookie';
-
-// 응답 result
-interface IdName {
-  id: number;
-  name: string;
-}
-
-export interface WebtoonDetail {
-  id: number;
-  name: string;
-  imagePath: string;
-  plot: string;
-  grade: string;
-  status: string;
-  webtoonUrl: string;
-  webtoonId: number;
-  startDate: string;
-  totalEpisode: number;
-  colorHsl: string;
-  authors: Array<IdName>;
-  genres: Array<IdName>;
-  days: {
-    id: number;
-    codeId: number;
-  }[];
-  additions: {
-    view: number;
-    scoreCount: number;
-    scoreAverage: string;
-  };
-}
+import { getCookie, setCookie } from '@/util/cookie';
+import { IdName } from '@/pages/api/detail';
 
 interface SimilarWebtoon {
   id: number;
@@ -53,25 +23,30 @@ interface SimilarWebtoon {
 }
 
 interface Props {
-  webtoon: WebtoonDetail | null;
+  res: api.Response;
 }
 
-function DetailPage({ webtoon }: Props) {
-  const router = useRouter();
-  if (webtoon === null) {
-    // const go404 = () => {
-    //   router.push('/404');
-    // };
-    // useEffect(() => {
-    //   go404();
-    // }, []);
-    console.log(axios.defaults.headers);
-    return <div>axios error</div>;
+function DetailPage({ res }: Props) {
+  if (!res.success) {
+    return (
+      <div>
+        ERROR: {res.error} | MESSAGE: {res.result.message}
+      </div>
+    );
   } else {
-    const token = getCookie('accessToken');
+    const router = useRouter();
+    const webtoon: api.WebtoonDetail = res.result;
+    let token: string;
+    if (res.newToken) {
+      setCookie('accessToken', res.newToken);
+      token = res.newToken;
+    } else {
+      token = getCookie('accessToken');
+    }
+
     // 그라데이션 스타일
     const hsls = webtoon.colorHsl.split(',');
-    const WEBTOON_THEME_COLOR = `hsl(${hsls[0]}, ${hsls[1]}%, 20%)`;
+    const WEBTOON_THEME_COLOR = `hsl(${hsls[0]}, ${hsls[1]}%, 30%)`;
     const WEBTOON_GRADATION_COLOR = `linear-gradient(180deg, transparent, ${WEBTOON_THEME_COLOR} 530px)`;
     const coverStyle = { background: WEBTOON_GRADATION_COLOR };
     const coverStyle0 = { background: WEBTOON_THEME_COLOR };
@@ -109,7 +84,7 @@ function DetailPage({ webtoon }: Props) {
           className={
             morePlot
               ? 'whitespace-pre-wrap break-all text-sm font-bold text-FontPrimaryDark'
-              : 'whitespace-pre-wrap break-all text-sm font-bold text-FontPrimaryDark line-clamp-2'
+              : 'line-clamp-2 whitespace-pre-wrap break-all text-sm font-bold text-FontPrimaryDark'
           }
         >
           {webtoon.plot}
@@ -381,11 +356,11 @@ function DetailPage({ webtoon }: Props) {
           <div className="flex w-1/2 items-center justify-center">
             <div className="flex h-full w-1/2 items-center justify-center">
               <CommentIcon height="100%" fill="white" stroke="white" />
-              <p className="whitespace-nowrap text-FontPrimaryDark">리뷰 몇개</p>
+              <p className="whitespace-nowrap text-FontPrimaryDark">리뷰</p>
             </div>
           </div>
           <button className="flex w-1/2 items-center justify-center" onClick={goComment}>
-            <p className="text-FontPrimaryDark">리뷰 보기</p>
+            <p className="text-FontPrimaryDark">리뷰 작성</p>
           </button>
         </div>
       </div>
@@ -423,6 +398,7 @@ function DetailPage({ webtoon }: Props) {
       </div>
     );
 
+    // 내 평점, 유사웹툰 불러오기
     useEffect(() => {
       getMyScore();
       getElseRecommend();
@@ -436,7 +412,11 @@ function DetailPage({ webtoon }: Props) {
         </div>
         <div style={coverStyle} className="absolute h-auto w-full">
           <div className="m-3 flex h-12 justify-between">
-            <img src="/images/HeaderBar_Back.png" alt="goBack" onClick={() => router.back()}></img>
+            <img
+              src="/images/HeaderBar_Back.png"
+              alt="goBack"
+              onClick={() => router.push('/')}
+            ></img>
             <button className="h-full" onClick={likeInput}>
               {isLike ? (
                 <Heart width="100%" height="100%" fill="red" stroke="red" />
@@ -473,10 +453,15 @@ export default DetailPage;
 export const getServerSideProps: GetServerSideProps = async context => {
   const { webtoon_id } = context.query;
   const token = context.req.cookies.accessToken;
-  const data = await api.getWebtoonDetail(webtoon_id, token);
-  if (data && data.isSuccess) {
-    return { props: { webtoon: data.result } };
+  if (token) {
+    const res = await api.getWebtoonDetail(webtoon_id, token);
+    return { props: { res: res } };
   } else {
-    return { props: { webtoon: null } };
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   }
 };
