@@ -8,6 +8,7 @@ import WebtoonItem from '../components/common/WebtoonItem';
 import Top10 from '../components/common/Top10';
 import axios from 'axios';
 import * as api from '@/pages/api/detail';
+import { useRouter } from 'next/router';
 import { getCookie } from '@/util/cookie';
 import { useRouter } from 'next/router';
 
