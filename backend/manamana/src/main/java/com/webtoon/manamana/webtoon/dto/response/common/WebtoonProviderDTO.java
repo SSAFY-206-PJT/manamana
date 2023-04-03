@@ -21,11 +21,11 @@ public class WebtoonProviderDTO {
         this.provider_image = provider_image;
     }
 
-    public static WebtoonProviderDTO createDTO(WebtoonProvider webtoonProvider){
+    public static WebtoonProviderDTO createDTO(WebtoonProvider webtoonProvider, String webtoonUrl){
 
         return WebtoonProviderDTO.builder()
                 .name(webtoonProvider.getName())
-                .url(webtoonProvider.getUrl())
+                .url(webtoonProvider.getUrl() + webtoonUrl)
                 .provider_image(webtoonProvider.getImage()).build();
     }
 }

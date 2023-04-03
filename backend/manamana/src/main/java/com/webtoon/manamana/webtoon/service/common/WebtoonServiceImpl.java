@@ -145,7 +145,7 @@ public class WebtoonServiceImpl implements WebtoonService{
         WebtoonProvider webtoonProvider = webtoonProviderRepository.findById(webtoon.getProviderId().getId())
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.BAD_PROVIDER_REQUEST));
 
-        WebtoonProviderDTO webtoonProviderDTO = WebtoonProviderDTO.createDTO(webtoonProvider);
+        WebtoonProviderDTO webtoonProviderDTO = WebtoonProviderDTO.createDTO(webtoonProvider, webtoon.getWebtoonUrl());
 
         return webtoonProviderDTO;
     }
