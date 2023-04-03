@@ -27,7 +27,6 @@ export default function PublishDayBlock(props: Props) {
       setSelectStatus(false);
     }
   };
-  console.log(selectStatus);
   return (
     <div className="m-2 inline-block">
       {selectStatus ? (

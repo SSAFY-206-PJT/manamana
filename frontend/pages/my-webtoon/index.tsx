@@ -4,12 +4,24 @@ import { GetServerSideProps } from 'next';
 import PublishDayBlock from '@/components/pages/search/filter/PublishDayBlock';
 import PublishStateBlock from '@/components/pages/search/filter/PublishStateBlock';
 import axios from 'axios';
+import { getUserLike } from '../api/detail';
+import { getCookie } from '@/util/cookie';
+import WebtoonItem from '@/components/common/WebtoonItem';
 
 enum FocusState {
   DAY,
   END,
   NULL,
 }
+
+const defaultLikeWebtoon = [
+  {
+    id: 0,
+    name: '등록해보세요',
+    imagePath: '/icon-192x192.png',
+    status: '연재중',
+  },
+];
 
 interface Data {
   key: number;
@@ -22,11 +34,23 @@ interface Props {
 }
 
 export default function MyWebtoonPage(props: Props) {
+  const token = getCookie('accessToken');
   const [focus, setFocus] = useState<FocusState>(FocusState.NULL);
   const [detailElement, setDetailElement] = useState<any>();
 
   const [selectedDays, setSelectedDays] = useState<Data[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<Data[]>([]);
+  const [likeWebtoons, setLikeWebtoons] = useState<Array<any>>(defaultLikeWebtoon);
+  const [resWebtoons, setResWebtoons] = useState<Array<any>>([]);
+  const [elseWebtoons, setElseWebtoons] = useState<Array<any>>([]);
+
+  const getMyWebtoon = async () => {
+    const res = await getUserLike(token);
+    if (res.result) {
+      setLikeWebtoons(res.result);
+      console.log(res.result);
+    }
+  };
 
   const onDayClick = () => {
     if (focus === FocusState.DAY) {
@@ -128,15 +152,23 @@ export default function MyWebtoonPage(props: Props) {
   }, [focus]);
 
   useEffect(() => {
-    console.log('props.days', props.days);
-    console.log('props.status', props.status);
-    console.log('selectedDays', selectedDays);
-    console.log('selectedStatus', selectedStatus);
+    getMyWebtoon();
   }, []);
 
   useEffect(() => {
     console.log('selectedDays', selectedDays);
-  }, [selectedDays]);
+    const newRes: Array<any> = [];
+    const newElse: Array<any> = [];
+    likeWebtoons.forEach((webtoon: any) => {
+      if (webtoon.day in selectedDays && webtoon.status in selectedStatus) {
+        newRes.push(webtoon);
+      } else {
+        newElse.push(webtoon);
+      }
+    });
+    setElseWebtoons([...newElse]);
+    setResWebtoons([...newRes]);
+  }, [selectedDays, selectedStatus]);
 
   return (
     <div>
@@ -163,11 +195,31 @@ export default function MyWebtoonPage(props: Props) {
         </div>
         <div className="m-4 rounded-xl bg-BackgroundLightComponent p-4">
           <div className="w-full text-center text-lg font-semibold">필터링 결과</div>
-          <div>이곳에.. 웹툰들을..</div>
+          <div>
+            {likeWebtoons.map((webtoon: any) => (
+              <WebtoonItem
+                key={webtoon.id}
+                id={webtoon.id}
+                webtoonName={webtoon.name}
+                imageUrl={webtoon.imagePath}
+                status={webtoon.status}
+              />
+            ))}
+          </div>
         </div>
         <div className="m-4 rounded-xl bg-BackgroundLightComponent p-4">
           <div className="w-full text-center text-lg font-semibold">그 외</div>
-          <div>이곳에.. 웹툰들을..</div>
+          <div>
+            {likeWebtoons.map((webtoon: any) => (
+              <WebtoonItem
+                key={webtoon.id}
+                id={webtoon.id}
+                webtoonName={webtoon.name}
+                imageUrl={webtoon.imagePath}
+                status={webtoon.status}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -177,13 +229,13 @@ export default function MyWebtoonPage(props: Props) {
 export const getServerSideProps: GetServerSideProps = async context => {
   const token = context.req.cookies.accessToken;
 
-  const daysRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/days', {
+  const daysRes = await axios.get('mana/webtoons/list/days', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     },
   });
-  const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status', {
+  const statusRes = await axios.get('mana/webtoons/list/status', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,

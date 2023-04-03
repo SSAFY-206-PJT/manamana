@@ -62,15 +62,16 @@ function CommentListModal({
       return false;
     }
   };
+
+  const [reportMessage, setReportMessage] = useState<string>('');
   const reportChat = async () => {
     const data = await reportWebtoonComment(webtoonId, chat.id, token);
     if (data && data.isSuccess) {
-      alert('신고가 접수되었습니다.');
-      closeModal();
+      setReportMessage('신고가 접수되었습니다.');
+      setModalState('afterReport');
     } else {
-      console.log(data);
-      alert('오류 발생');
-      closeModal();
+      setReportMessage('이미 신고한 웹툰입니다.');
+      setModalState('afterReport');
     }
   };
 
@@ -113,6 +114,14 @@ function CommentListModal({
         >
           <p className="text-center">신고하기</p>
         </button>
+      </div>
+    </div>
+  );
+
+  const afterReport = (
+    <div className="flex justify-center">
+      <div className="my-6 flex w-2/3 flex-col items-center justify-center">
+        <p className="text-center text-2xl text-PrimaryLight">{reportMessage}</p>
       </div>
     </div>
   );
@@ -173,6 +182,8 @@ function CommentListModal({
       return popupListForElse;
     } else if (modalState === 'report') {
       return popupReport;
+    } else if (modalState === 'afterReport') {
+      return afterReport;
     }
   };
 

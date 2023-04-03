@@ -5,7 +5,6 @@ import { Rating } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import * as api from '@/pages/api/detail';
-import axios from 'axios';
 
 import WebtoonItem from '@/components/common/WebtoonItem';
 import ConfirmBtn from '@/components/confirmBtn';
@@ -51,7 +50,7 @@ function DetailPage({ res }: Props) {
     const coverStyle = { background: WEBTOON_GRADATION_COLOR };
     const coverStyle0 = { background: WEBTOON_THEME_COLOR };
 
-    // 좋아요
+    // 좋아요 // CHECKED
     const [isLike, setIsLike] = useState<boolean>(false);
     const likeInput = async () => {
       if (!isLike) {
@@ -72,8 +71,19 @@ function DetailPage({ res }: Props) {
         }
       }
     };
+    const getLike = async () => {
+      const data = await api.getUserLike(token);
+      if (data && data.isSuccess) {
+        for (let value of data.result) {
+          if (value.id === webtoon.id) {
+            setIsLike(true);
+            break;
+          }
+        }
+      }
+    };
 
-    // 줄거리
+    // 줄거리 // CHECKED
     const [morePlot, setMoerPlot] = useState<Boolean>(false);
     const handleMoreBtn = () => {
       setMoerPlot(true);
@@ -104,6 +114,7 @@ function DetailPage({ res }: Props) {
       </div>
     );
 
+    // 태그로 만들 것들 // CHECKED
     const codeToDay: any = {
       1: '월요일',
       2: '화요일',
@@ -114,8 +125,6 @@ function DetailPage({ res }: Props) {
       7: '일요일',
       8: '기타',
     };
-
-    // 태그로 만들 것들
     const tagList = [webtoon.genres[0].name, codeToDay[webtoon.days[0].codeId], webtoon.grade];
     const tagListDiv = (
       <div className="my-2 flex">
@@ -127,7 +136,7 @@ function DetailPage({ res }: Props) {
       </div>
     );
 
-    // 웹툰 정보 = 제목 ~ 감상하러가기
+    // 웹툰 정보 = 제목 ~ 감상하러가기 // GOSEE check 필요 - 웹툰마다 다르게 적용해야함
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const webtoonInfoDiv = (
@@ -160,7 +169,7 @@ function DetailPage({ res }: Props) {
       </div>
     );
 
-    // 연재정보
+    // 연재정보 // CHECKED!
     const infoList = [
       {
         name: '연재시작일',
@@ -198,6 +207,7 @@ function DetailPage({ res }: Props) {
       </div>
     );
 
+    // 평점 관련 // CHECKED!
     // 평점
     const [ratingModal, setRatingModal] = useState<any>(false);
     const [afterRating, setAfterRating] = useState<boolean>(false);
@@ -223,7 +233,7 @@ function DetailPage({ res }: Props) {
       } else if (data) {
         alert(data.message);
       } else {
-        alert('통신오류');
+        alert('postRating 통신오류');
       }
     };
 
@@ -231,7 +241,14 @@ function DetailPage({ res }: Props) {
       router.push(`/detail/${webtoon.id}/comment`);
     };
 
-    // 현재 평점
+    const getMyScore = async () => {
+      const data = await api.getWebtoonMyScore(webtoon.id, token);
+      if (data.isSuccess) {
+        setMyScore(data.result.score);
+      }
+    };
+
+    // 현재 평점 //
     const scoreDiv = (
       <div>
         <div className="flex justify-center">
@@ -249,14 +266,7 @@ function DetailPage({ res }: Props) {
       </div>
     );
 
-    const getMyScore = async () => {
-      const data = await api.getWebtoonMyScore(webtoon.id, token);
-      if (data.isSuccess) {
-        setMyScore(data.result.score);
-      }
-    };
-
-    // 사용자의 기존 평가
+    // 사용자의 기존 평가 //
     const userScoreDiv = () => {
       if (myScore === null) {
         return null;
@@ -284,7 +294,7 @@ function DetailPage({ res }: Props) {
       }
     };
 
-    // 평가하기
+    // 평가하기 //
     const ratingInputDiv = (
       <div className="m-3 flex flex-col">
         <div>{userScoreDiv()}</div>
@@ -317,7 +327,7 @@ function DetailPage({ res }: Props) {
       </div>
     );
 
-    // 평가이후 댓글이동 확인
+    // 평가이후 댓글이동 확인 //
     const commentCheckDiv = (
       <div className="m-3 flex flex-col">
         <div className="h-2"></div>
@@ -345,7 +355,7 @@ function DetailPage({ res }: Props) {
       </SwipeableDrawer>
     );
 
-    // 워드 클라우드, 댓글
+    // 워드 클라우드, 댓글 // 워드 클라우드 구현 예정
     const wordCloudDiv = (
       <div>
         <p className="text-2xl font-bold text-FontPrimaryDark">
@@ -366,16 +376,17 @@ function DetailPage({ res }: Props) {
       </div>
     );
 
-    // 유사웹툰 목록2
+    // 유사웹툰 목록2 // NOTYET - 유사 웹툰 id 가 제대로 안되어 있음
     const [similarWebtoon, setSimilarWebtoon] = useState<SimilarWebtoon[] | null>(null);
     const getElseRecommend = async () => {
       const data = await api.getElseWebtoon(webtoon.id, token);
       if (data && data.isSuccess) {
         setSimilarWebtoon(data.result);
+        console.log(data.result);
       } else if (data) {
         alert(data.message);
       } else {
-        alert('통신오류');
+        alert('getElseRecommend통신오류');
       }
     };
 
@@ -402,6 +413,7 @@ function DetailPage({ res }: Props) {
     useEffect(() => {
       getMyScore();
       getElseRecommend();
+      getLike();
     }, []);
 
     return (

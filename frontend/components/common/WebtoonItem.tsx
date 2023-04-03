@@ -9,14 +9,15 @@ type Props = {
   id: number;
 };
 
-export default function WebtoonItem(props: Props) {
-  let imageUrl = props.imageUrl;
-  let webtoonName = props.webtoonName;
-  let status = props.status;
+export default function WebtoonItem({ id, imageUrl, webtoonName, status }: Props) {
   const router = useRouter();
 
   const onWebtoonClick = () => {
-    router.push(`/detail/${props.id}`);
+    if (id > 0) {
+      router.push(`/detail/${id}`);
+    } else {
+      router.push('/search');
+    }
   };
 
   return (

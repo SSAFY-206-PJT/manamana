@@ -8,7 +8,7 @@ export interface MyChat {
   content: string;
   createTime: string;
   isSpoiler: boolean;
-  webtoons: {
+  webtoon: {
     id: number;
     name: string;
     imagePath: string;
