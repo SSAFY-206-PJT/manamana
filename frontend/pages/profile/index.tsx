@@ -6,6 +6,7 @@ import axios from 'axios';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Swal from 'sweetalert2';
+import { getCookie } from '@/util/cookie';
 import { userInfo } from '../api/detail';
 
 type User = {
@@ -21,7 +22,7 @@ type User = {
 
 export default function ProfilePage({ userData }: any) {
   console.log(userData);
-  const [isEditState, setIsEditState] = useState<boolean>(false);
+  const [isEditState, setIsEditState] = useState<boolean>(true);
   const [info, setInfo] = useState<User>({
     id: userData.id,
     email: userData.email,
@@ -32,6 +33,9 @@ export default function ProfilePage({ userData }: any) {
     likeCount: userData.likeCount,
     scoreCount: userData.scoreCount,
   });
+  const [selectedFile, setSelectedFile] = useState<File>(); // 프로필 사진 수정시 담을 곳
+
+  const token = getCookie('accessToken');
 
   const onEditClick = () => {
     setIsEditState(!isEditState);
@@ -78,21 +82,21 @@ export default function ProfilePage({ userData }: any) {
   const editProfileAxios = () => {
     let id = info.id;
     let nickname = info.nickname;
-    let imagePath = info.imagePath;
+    let targetFile: any = selectedFile;
 
     let formData = new FormData();
-    formData.append('data', JSON.stringify({ id: id, nickname: nickname, userImage: imagePath }));
-    formData.append('userImg', imagePath);
+    formData.append('data', JSON.stringify({ nickname: nickname }));
+    formData.append('userImg', targetFile);
 
     axios
       .patch(`https://j8b206.p.ssafy.io/api/users/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          accept: '*/*',
+          Authorization: 'Bearer ' + token,
         },
       })
       .then(response => {
-        // console.log(response.data);
+        console.log(response.data);
         {
           Swal.fire({
             title: '프로필이 변경되었습니다.',
@@ -109,7 +113,12 @@ export default function ProfilePage({ userData }: any) {
   const removeUserAxios = async () => {
     let id = info.id;
     await axios
-      .delete(`https://j8b206.p.ssafy.io/api/users/${id}`)
+      .delete(`https://j8b206.p.ssafy.io/api/users/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      })
       .then(response => {
         console.log(response.data);
       })
@@ -125,8 +134,10 @@ export default function ProfilePage({ userData }: any) {
   const changeImagePath = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetFile = e.target.files?.[0];
     if (targetFile) {
-      const selectedFile = URL.createObjectURL(targetFile);
-      setInfo({ ...info, imagePath: selectedFile });
+      setSelectedFile(targetFile);
+      const selectedFileURL = URL.createObjectURL(targetFile);
+      console.log('여기가 138번째줄 이미지 경로', selectedFileURL);
+      setInfo({ ...info, imagePath: selectedFileURL });
     }
   };
 
@@ -213,7 +224,7 @@ export default function ProfilePage({ userData }: any) {
                   저장
                 </div>
               ) : (
-                <div>
+                <div className="h-6 w-6">
                   <img src={'/images/Profile_Edit.png'} alt="설정" className="h-6 w-6"></img>
                 </div>
               )}
@@ -267,6 +278,7 @@ export default function ProfilePage({ userData }: any) {
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
+
   const token = context.req.cookies.accessToken;
   if (token) {
     const res = await userInfo(token);

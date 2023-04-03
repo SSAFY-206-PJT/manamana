@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface GenreTasteState {
-  genreTasteList: string[];
+  genreTasteList: number[];
 }
 
 const initialState: GenreTasteState = {
@@ -12,7 +12,7 @@ const GenreTasteSlice = createSlice({
   name: 'genreTasteList',
   initialState,
   reducers: {
-    changeGenreTaste: (state: GenreTasteState, action: PayloadAction<string[]>) => {
+    changeGenreTaste: (state: GenreTasteState, action: PayloadAction<number[]>) => {
       state.genreTasteList = action.payload;
       console.log(state.genreTasteList);
     },
