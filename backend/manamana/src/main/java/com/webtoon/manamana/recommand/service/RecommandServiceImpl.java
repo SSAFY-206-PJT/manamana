@@ -110,19 +110,84 @@ public class RecommandServiceImpl implements RecommandService {
         int listLen = userGenreMaxWeightList.size();
 
         int genreId;
+        Random random = new Random();
         switch (listLen) {
             case 0: // 선호 장르가 없을 때
-                
+                genreId = random.nextInt(16) + 1;
+                System.out.println("case0 : " + genreId);
                 break;
             case 1:
-
+                genreId = userGenreMaxWeightList.get(0);
+                System.out.println("case1 : " + genreId);
                 break;
             default: // 선호 장르 가중치가 최대인 값이 여러개일 때
-
+                genreId = userGenreMaxWeightList.get(random.nextInt(listLen));
+                System.out.println("many : " + genreId);
                 break;
         }
 
-        return null;
+        List<Long> webtoonIdList = webtoonGenreRepositorySupport.findWebtoonAllByGenre(genreId);
+        List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
+
+        for (long webtoonId : webtoonIdList) {
+            System.out.println("webtoonId = " + webtoonId);
+            List<UserWebtoon>  userWebtoonList = userWebtoonRepositorySupport.findByWebtoonIdAndIsDeletedFalse(webtoonId);
+
+            for (UserWebtoon userWebtoon : userWebtoonList) {
+                recommendApiRequestDTOS.add(
+                        RecommendApiRequestDTO.builder()
+                                .userId(userWebtoon.getUser().getId())
+                                .webtoonId(userWebtoon.getWebtoon().getId())
+                                .score(userWebtoon.getScore())
+                                .build()
+                );
+            }
+        }
+
+        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendApiRequestDTOS);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String request = objectMapper.writeValueAsString(map);
+
+        HttpEntity entity = new HttpEntity(request, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/userbased", HttpMethod.POST, entity, String.class);
+
+        List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
+
+        for (AssosiationWebtoonResponseDTO assosiationWebtoonResponseDTO : assosiationWebtoonResponseDTOS) {
+
+            Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId())
+                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
+
+            List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
+
+            for (Author author : webtoon.getAuthors()) {
+                apiAuthorDTOS.add(
+                        ApiAuthorDTO.builder()
+                                .id(author.getId())
+                                .name(author.getName())
+                                .build()
+                );
+            }
+
+            recommandWebtoonResponseDTOS.add(
+                    RecommandWebtoonResponseDTO.builder()
+                            .id(webtoon.getId())
+                            .name(webtoon.getName())
+                            .imagePath(webtoon.getImagePath())
+                            .authors(apiAuthorDTOS)
+                            .build()
+            );
+        }
+
+        return recommandWebtoonResponseDTOS;
     }
 
     /* 사용자 연령대 기반 웹툰 추천 */

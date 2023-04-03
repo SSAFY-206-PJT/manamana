@@ -44,4 +44,14 @@ public class WebtoonGenreRepositorySupport extends QuerydslRepositorySupport {
                 .limit(10)
                 .fetch();
     }
+
+    /* 특정 장르에 속하는 웹툰 조회 */
+    public List<Long> findWebtoonAllByGenre(int genreId) {
+
+        return queryFactory
+                .select(QWebtoonGenre.webtoonGenre.webtoon.id)
+                .from(QWebtoonGenre.webtoonGenre)
+                .where(QWebtoonGenre.webtoonGenre.genre.id.eq(genreId))
+                .fetch();
+    }
 }
