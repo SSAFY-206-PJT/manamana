@@ -1,29 +1,57 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import json
-import os
+import recommendWebtoonList
+from starlette.requests import Request
+import webtoonRecommand
+import userRecommend
 
 app = FastAPI()
 
 
-class Data(BaseModel):
-    id: int
-    name: str
+@app.post("/assosiation")
+async def assosiateion(request: Request):
 
-@app.post("/test")
-async def root(data : Data):
+    req = await request.json()
+    k = int(list(req.keys())[0])
+    v = list(req.values())[0]
 
-    test_dict = dict()
-    test_dict["id"] = data.id
-    test_dict["name"] = data.name
-    test_dict["email"] = "test@test.com"
+    webtoonRecommand.recommand_webtoon(v)
 
-    test_json = json.dumps(test_dict)
+    recommand_List = webtoonRecommand.webtoons_recommand_top10(k)
 
-    print(data.id)
-    print(data.name)
-    print(test_dict)
-    print(test_json)
-    print(type(data))
-    
-    return test_dict
+    for i in recommand_List:
+        recommendData = recommendWebtoonList.RecommendWebtoonList()
+
+        recommendData.webtoonId = i
+
+        recommendData.done()
+
+    recommend_webtoon_json = recommendData.make_json()
+    print(recommend_webtoon_json)
+
+    return recommend_webtoon_json
+
+
+@app.post("/userbased")
+async def userbased(request: Request):
+
+    req = await request.json()
+    print(req)
+    k = int(list(req.keys())[0])
+    v = list(req.values())[0]
+    print(k)
+    print(v)
+
+    recommend_list = userRecommend.recommand_to_user(v, k)
+
+    for i in recommend_list:
+        recommendData = recommendWebtoonList.RecommendWebtoonList()
+
+        recommendData.webtoonId = i
+
+        recommendData.done()
+
+    recommend_webtoon_json = recommendData.make_json()
+    print(recommend_webtoon_json)
+
+    return recommend_webtoon_json

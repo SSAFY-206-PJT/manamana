@@ -1,5 +1,7 @@
 package com.webtoon.manamana.entity.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,5 +36,18 @@ public class UserGenreId implements Serializable {
         int result = (int) (userId ^ (userId >>> 32));
         result = 31 * result + genreId;
         return result;
+    }
+
+    @Builder
+    public UserGenreId(long userId, int genreId) {
+        this.userId = userId;
+        this.genreId = genreId;
+    }
+
+    public static UserGenreId createUserGenreId(long userId, int genreId){
+
+        return UserGenreId.builder()
+                .userId(userId)
+                .genreId(genreId).build();
     }
 }

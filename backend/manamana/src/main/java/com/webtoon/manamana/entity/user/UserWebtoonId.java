@@ -1,6 +1,8 @@
 package com.webtoon.manamana.entity.user;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,5 +36,19 @@ public class UserWebtoonId implements Serializable {
         int result = (int) (userId ^ (userId >>> 32));
         result = 31 * result + (int) (webtoonId ^ (webtoonId >>> 32));
         return result;
+    }
+
+    @Builder
+    public UserWebtoonId(long userId, long webtoonId) {
+        this.userId = userId;
+        this.webtoonId = webtoonId;
+    }
+
+    public static UserWebtoonId createUserWebtoonId(long userId, long webtoonId){
+
+        return UserWebtoonId.builder()
+                .userId(userId)
+                .webtoonId(webtoonId)
+                .build();
     }
 }

@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`webtoon_providers` (
   `id` INT NOT NULL,
   `name` VARCHAR(50) NOT NULL,
   `provider_url` VARCHAR(255) NOT NULL,
+  `provider_image` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -109,6 +110,7 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`users` (
   `create_time` TIMESTAMP NOT NULL,
   `update_time` TIMESTAMP NOT NULL,
   `provider_id` INT NOT NULL,
+  `refresh_token` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_users_login_providers1_idx` (`provider_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_login_providers1`
@@ -306,6 +308,26 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`reports` (
   CONSTRAINT `fk_reports_comments1`
     FOREIGN KEY (`comment_id`)
     REFERENCES `mana_db`.`comments` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mana_db`.`prefer_genres`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mana_db`.`prefer_genres` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `genre_id` INT NOT NULL,
+  `is_canceled` TINYINT NOT NULL,
+  `user_id` BIGINT NOT NULL,
+  `create_time` TIMESTAMP NOT NULL,
+  `update_time` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_prefer_genres_users1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_prefer_genres_users1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `mana_db`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

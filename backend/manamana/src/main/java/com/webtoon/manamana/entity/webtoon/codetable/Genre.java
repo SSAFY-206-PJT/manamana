@@ -1,10 +1,13 @@
 package com.webtoon.manamana.entity.webtoon.codetable;
 
 
+import com.webtoon.manamana.entity.user.UserGenre;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -18,5 +21,6 @@ public class Genre {
 
     @Column(name = "name")
     private String name;
+
 
 }

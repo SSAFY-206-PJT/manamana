@@ -24,9 +24,11 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
 
     public final com.webtoon.manamana.config.entity.QBaseTimeEntity _super = new com.webtoon.manamana.config.entity.QBaseTimeEntity(this);
 
+    public final SetPath<Author, QAuthor> authors = this.<Author, QAuthor>createSet("authors", Author.class, QAuthor.class, PathInits.DIRECT2);
+
     public final StringPath colorHsl = createString("colorHsl");
 
-    public final ListPath<Comment, QComment> comment = this.<Comment, QComment>createList("comment", Comment.class, QComment.class, PathInits.DIRECT2);
+    public final SetPath<Comment, QComment> comment = this.<Comment, QComment>createSet("comment", Comment.class, QComment.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createTime = _super.createTime;
@@ -45,14 +47,22 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
 
     public final QWebtoonProvider providerId;
 
-    public final NumberPath<Integer> serialId = createNumber("serialId", Integer.class);
-
     public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
+
+    public final NumberPath<Integer> statusId = createNumber("statusId", Integer.class);
 
     public final NumberPath<Integer> totalEp = createNumber("totalEp", Integer.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
+
+    public final SetPath<com.webtoon.manamana.entity.user.UserWebtoon, com.webtoon.manamana.entity.user.QUserWebtoon> userWebtoons = this.<com.webtoon.manamana.entity.user.UserWebtoon, com.webtoon.manamana.entity.user.QUserWebtoon>createSet("userWebtoons", com.webtoon.manamana.entity.user.UserWebtoon.class, com.webtoon.manamana.entity.user.QUserWebtoon.class, PathInits.DIRECT2);
+
+    public final QWebtoonAddition webtoonAddition;
+
+    public final SetPath<WebtoonDay, QWebtoonDay> webtoonDays = this.<WebtoonDay, QWebtoonDay>createSet("webtoonDays", WebtoonDay.class, QWebtoonDay.class, PathInits.DIRECT2);
+
+    public final SetPath<WebtoonGenre, QWebtoonGenre> webtoonGenres = this.<WebtoonGenre, QWebtoonGenre>createSet("webtoonGenres", WebtoonGenre.class, QWebtoonGenre.class, PathInits.DIRECT2);
 
     public final StringPath webtoonId = createString("webtoonId");
 
@@ -77,6 +87,7 @@ public class QWebtoon extends EntityPathBase<Webtoon> {
     public QWebtoon(Class<? extends Webtoon> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.providerId = inits.isInitialized("providerId") ? new QWebtoonProvider(forProperty("providerId")) : null;
+        this.webtoonAddition = inits.isInitialized("webtoonAddition") ? new QWebtoonAddition(forProperty("webtoonAddition"), inits.get("webtoonAddition")) : null;
     }
 
 }
