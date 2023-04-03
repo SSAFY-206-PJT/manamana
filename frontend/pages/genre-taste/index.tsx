@@ -56,14 +56,13 @@ export default function GenreTastePage({ genreLists }: any) {
 
   // 토큰 가져오기
   const token = getCookie('accessToken');
-  // 선택된 선호 장르 POST
+  // 선택된 선호 장르 POST  if (token) {
   const axiosPost = () => {
     // 임의 데이터 (추후에 선택된 데이터를 담는 로직도 필요함)
     const data = selectedBlocks;
-    console.log('데이터', data);
     axios
       // user_id 가져오는 로직도 짜야함
-      .post(`https://j8b206.p.ssafy.io/api/users/15/genre/select`, data, {
+      .post(`https://j8b206.p.ssafy.io/api/users/1/genre/select`, data, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + token,
@@ -74,12 +73,12 @@ export default function GenreTastePage({ genreLists }: any) {
         Swal.fire({
           title: '선호 장르가 변경되었습니다.',
           icon: 'success',
+        });
       })
       .catch(error => {
         console.error(error);
       });
-    })
-  }
+  };
 
   return (
     <div className="flex h-full w-full flex-col gap-4 bg-BackgroundLight">
@@ -137,4 +136,4 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     };
   }
-}
+};
