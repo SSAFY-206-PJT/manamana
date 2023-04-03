@@ -1,0 +1,93 @@
+.container {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 배너 컨테이너 */
+.rollingbanner {
+  position: relative;
+  font-size: 0.875rem;
+  letter-spacing: -1px;
+  padding: 7px 15px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px;
+  display: flex;
+}
+
+/* 왼쪽 아이템 */
+.leftitem {
+  width: 80px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* 오른쪽 아이템 */
+.rankfont {
+  color: rgba(190, 52, 85, 1);
+}
+.rankitemfont {
+}
+
+/* Chatgrow Icon */
+.chatgrowicon {
+  display: inline-block;
+}
+
+/* 타이틀 */
+.rollingbanner > .title {
+  font-weight: bold;
+  display: inline-block;
+  padding: 0 16px 0 8px;
+}
+/* 롤링 배너 */
+.rollingbanner > .wrap {
+  position: relative;
+  display: inline-block;
+  width: calc(100% - 80px);
+  height: 24px;
+  font-size: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rollingbanner ul {
+  list-style: none;
+}
+.rollingbanner li {
+  position: absolute;
+  top: -50px;
+  left: 0;
+}
+/* 이전, 현재, 다음 롤링 배너 표시 */
+.rollingbanner li.prev {
+  top: 50px;
+  transition: top 0.5s ease;
+}
+.rollingbanner li.current {
+  top: 0;
+  transition: top 0.5s ease;
+}
+.rollingbanner li.next {
+  top: -50px;
+}
+.rollingbanner a {
+  display: block;
+  display: -webkit-box;
+  text-decoration: none;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #000;
+}
+/* 반대 방향으로 진행 */
+.rollingbanner.reverse li.prev {
+  top: -36px;
+  transition: top 0.5s ease;
+}
+.rollingbanner.reverse li.next {
+  top: 36px;
+}
