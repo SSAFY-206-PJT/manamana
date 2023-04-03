@@ -41,9 +41,7 @@ public class RecommandServiceImpl implements RecommandService {
     private final UserGenreRepositorySupport userGenreRepositorySupport;
     private final UserWebtoonRepository userWebtoonRepository;
     private final UserWebtoonRepositorySupport userWebtoonRepositorySupport;
-    private final WebtoonRepository webtoonRepository;
     private final WebtoonRepositorySupport webtoonRepositorySupport;
-    private final WebtoonGenreRepository webtoonGenreRepository;
     private final WebtoonGenreRepositorySupport webtoonGenreRepositorySupport;
 
     /* 추천 알고리즘을 통한 웹툰 조회 */
@@ -51,53 +49,65 @@ public class RecommandServiceImpl implements RecommandService {
     public List<RecommandWebtoonResponseDTO> recommandUserWebtoon(long userId) throws Exception {
 
         /*
-            TODO : DB에서 데이터 가져오는 로직, Exception 던졌던거 다시 처리
+            TODO : Exception 던졌던거 다시 처리
          */
 
+        List<UserWebtoon> userWebtoonList = userWebtoonRepository.findAllByIsDeletedFalse();
 
-        /* 테스트용 */
-        List<RecommandWebtoonRequestDTO> recommandWebtoonRequestDTOS = new ArrayList<>();
+        List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
 
-        recommandWebtoonRequestDTOS.add(
-                RecommandWebtoonRequestDTO.builder()
-                        .id(1)
-                        .name("1초")
-                        .grade("전체이용가")
-                        .status("연재중")
-                        .authors("시니")
-                        .genres("드라마")
-                        .days("금")
-                        .build()
-        );
+        for (UserWebtoon userWebtoon : userWebtoonList) {
+            recommendApiRequestDTOS.add(
+                    RecommendApiRequestDTO.builder()
+                            .userId(userWebtoon.getUser().getId())
+                            .webtoonId(userWebtoon.getWebtoon().getId())
+                            .score(userWebtoon.getScore())
+                            .build()
+            );
+        }
 
-        recommandWebtoonRequestDTOS.add(
-                RecommandWebtoonRequestDTO.builder()
-                        .id(2)
-                        .name("상남자")
-                        .grade("전체이용가")
-                        .status("연재중")
-                        .authors("하늘소")
-                        .genres("드라마")
-                        .days("금")
-                        .build()
-        );
-        /* 테스트용 */
+        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendApiRequestDTOS);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         ObjectMapper objectMapper = new ObjectMapper();
-
-        String request = objectMapper.writeValueAsString(recommandWebtoonRequestDTOS);
+        String request = objectMapper.writeValueAsString(map);
 
         HttpEntity entity = new HttpEntity(request, httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/userbased", HttpMethod.POST, entity, String.class);
 
-        // url 바꿔야함
-        ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:8000/recommend", HttpMethod.POST, entity, String.class);
+        List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
+        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
 
-        List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), ApiResponseDTO.class).getResult();
+        for (AssosiationWebtoonResponseDTO assosiationWebtoonResponseDTO : assosiationWebtoonResponseDTOS) {
+
+            Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId())
+                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
+
+            List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
+
+            for (Author author : webtoon.getAuthors()) {
+                apiAuthorDTOS.add(
+                        ApiAuthorDTO.builder()
+                                .id(author.getId())
+                                .name(author.getName())
+                                .build()
+                );
+            }
+
+            recommandWebtoonResponseDTOS.add(
+                    RecommandWebtoonResponseDTO.builder()
+                            .id(webtoon.getId())
+                            .name(webtoon.getName())
+                            .imagePath(webtoon.getImagePath())
+                            .authors(apiAuthorDTOS)
+                            .build()
+            );
+        }
 
         return recommandWebtoonResponseDTOS;
     }
@@ -105,6 +115,11 @@ public class RecommandServiceImpl implements RecommandService {
     /* 사용자 선호 장르 기반 웹툰 추천 */
     @Override
     public List<RecommandWebtoonResponseDTO> recommandByGenre(long userId) throws Exception {
+
+        /*
+            TODO : Exception 던졌던거 처리
+            TODO : DB 조회 엄청 오래걸림
+         */
 
         List<Integer> userGenreMaxWeightList = userGenreRepositorySupport.findByMaxWeightGenre(userId);
         int listLen = userGenreMaxWeightList.size();
@@ -194,6 +209,10 @@ public class RecommandServiceImpl implements RecommandService {
     @Override
     public List<RecommandWebtoonResponseDTO> recommandByAge(long userId) throws Exception {
 
+        /*
+            TODO : Exception 던졌던거 다시 처리
+         */
+
         User user = userCheck(userId);
 
         int userAge = user.getAge();
@@ -266,6 +285,10 @@ public class RecommandServiceImpl implements RecommandService {
     /* 사용자 성별 기반 웹툰 추천 */
     @Override
     public List<RecommandWebtoonResponseDTO> recommandByGender(long userId) throws Exception {
+
+        /*
+            TODO : Exception 던졌던거 다시 처리
+         */
 
         User user = userCheck(userId);
 
@@ -344,11 +367,11 @@ public class RecommandServiceImpl implements RecommandService {
             TODO : Exception 던졌던거 처리
          */
 
-        List<UserWebtoon> userWebtoons =  userWebtoonRepository.findAllByIsDeletedFalse();
+        List<UserWebtoon> userWebtoonList =  userWebtoonRepository.findAllByIsDeletedFalse();
 
         List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
 
-        for (UserWebtoon userWebtoon : userWebtoons) {
+        for (UserWebtoon userWebtoon : userWebtoonList) {
             recommendApiRequestDTOS.add(
                     RecommendApiRequestDTO.builder()
                             .userId(userWebtoon.getUser().getId())
@@ -447,6 +470,10 @@ public class RecommandServiceImpl implements RecommandService {
     @Override
     @Transactional
     public WorldCupResultDTO worldCupWebtoonSave(long userId, WorldCupRequestDTO worldCupRequestDTO) throws Exception {
+
+        /*
+            TODO : Exception 던졌던거 다시 처리
+         */
 
         // users_and_webtoons 테이블 정보
         List<UserWebtoon> userWebtoons =  userWebtoonRepository.findAllByIsDeletedFalse();

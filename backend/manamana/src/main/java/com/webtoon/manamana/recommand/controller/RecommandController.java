@@ -47,7 +47,8 @@ public class RecommandController {
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        long authUserId = userPrincipal.getId();
+//        long authUserId = userPrincipal.getId();
+        long authUserId = 1L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon(authUserId);
 
