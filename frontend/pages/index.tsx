@@ -7,6 +7,7 @@ import WebtoonContainer from '../components/common/WebtoonContainer';
 import WebtoonItem from '../components/common/WebtoonItem';
 import Top10 from '../components/common/Top10';
 import axios from 'axios';
+import { getCookie } from '@/util/cookie';
 
 // 웹툰
 interface Webtoon {
@@ -24,9 +25,16 @@ interface Webtoon {
   colorHsl: string;
   imagePath: string;
 }
-
-function Home() {
-  console.log(axios.defaults.headers);
+interface Props {
+  home: any;
+}
+function Home({ home }: Props) {
+  const router = useRouter();
+  // 로그인 확인
+  const token = getCookie('accessToken');
+  if (!token) {
+    router.push('login');
+  }
   // 스크롤 이동 함수
   const scrollToCoordinate = (x: number, y: number) => {
     window.scrollTo({
@@ -266,3 +274,17 @@ function Home() {
 }
 
 export default Home;
+
+export async function getServerSideProps(context: any) {
+  const token = context.req.cookies.accessToken;
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: { home: null } };
+}

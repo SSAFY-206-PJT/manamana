@@ -15,7 +15,7 @@ function Login({ token }: Props) {
       router.push('/');
     };
     useEffect(() => {
-      setCookie('accessToken', token);
+      setCookie('accessToken', token, { path: '/', secure: true });
       localStorage.setItem('accessToken', token);
       gogo();
     }, []);
