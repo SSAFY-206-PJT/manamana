@@ -45,20 +45,26 @@ function CommentPage({ webtoon, comments }: Props) {
 
     // 댓글 리스트
     const [commentList, setCommentList] = useState<Chat[]>(comments);
-    const [commentPage, setCommentPage] = useState<number>(1);
+    const [commentPage, setCommentPage] = useState<number>(2);
     // 더이상 로딩할 댓글이 없으면 true
     const [commentEnd, setCommentEnd] = useState<boolean>(false);
 
     // 댓글 로딩
     const loadComment = async () => {
       if (!commentEnd) {
-        const nextpage = commentPage + 1;
-        setCommentPage(nextpage);
-        const data = await api.getWebtoonComments(webtoon.id, nextpage, token);
+        const data = await api.getWebtoonComments(webtoon.id, commentPage, token);
         // console.log(data);
         if (data && data.isSuccess) {
-          const addCommentList = data.result;
-          setCommentList([...commentList, ...addCommentList]);
+          if (data.result.length > 0) {
+            console.log('기존 리스트', commentList);
+            console.log('에다가 더할 리스트', data.result);
+            const newList2 = commentList.concat(data.result);
+            setCommentList(newList2);
+            setCommentPage(commentPage => commentPage + 1);
+          } else {
+            setCommentList([...commentList]);
+            setCommentEnd(true);
+          }
         }
       }
     };
