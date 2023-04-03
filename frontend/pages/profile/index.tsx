@@ -21,17 +21,17 @@ type User = {
 };
 
 export default function ProfilePage({ userData }: any) {
-  console.log(userData);
+  console.log('userData', userData);
   const [isEditState, setIsEditState] = useState<boolean>(true);
   const [info, setInfo] = useState<User>({
-    id: userData.id,
-    email: userData.email,
-    nickname: userData.nickname,
-    imagePath: userData.imagePath,
-    gender: userData.gender,
-    age: userData.age,
-    likeCount: userData.likeCount,
-    scoreCount: userData.scoreCount,
+    id: userData.result.id,
+    email: userData.result.email,
+    nickname: userData.result.nickname,
+    imagePath: userData.result.imagePath,
+    gender: userData.result.gender,
+    age: userData.result.age,
+    likeCount: userData.result.likeCount,
+    scoreCount: userData.result.scoreCount,
   });
   const [selectedFile, setSelectedFile] = useState<File>(); // 프로필 사진 수정시 담을 곳
 
@@ -278,7 +278,6 @@ export default function ProfilePage({ userData }: any) {
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
-
   const token = context.req.cookies.accessToken;
   if (token) {
     const res = await userInfo(token);
