@@ -129,7 +129,7 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
                 .map(Comment::getContent)
                 .collect(Collectors.toList());
 
-        //품사 목록 - NNG(일반명사), NNB(의존 명사),VV(동사), VA(형용사), SL(외국어)
+        //품사 목록 -
         List<String> morphes = getMorphes();
 
         //키워드와 등장횟수 저장.
@@ -161,6 +161,7 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
     private static List<String> getMorphes() {
         List<String> morphes = new ArrayList<>();
 
+        //NNG(일반명사), NNB(의존 명사),VV(동사), VA(형용사), SL(외국어)
         morphes.add("NNG");
         morphes.add("NNB");
         morphes.add("VV");
