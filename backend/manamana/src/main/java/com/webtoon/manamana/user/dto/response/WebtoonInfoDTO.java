@@ -23,13 +23,16 @@ public class WebtoonInfoDTO {
     private String imagePath;
     private int status;
 
+    private List<Integer> days;
+
     @Builder
-    public WebtoonInfoDTO(long id, String name, List<AuthorInfoDTO> authors, String imagePath, int status) {
+    public WebtoonInfoDTO(long id, String name, List<AuthorInfoDTO> authors, String imagePath, int status, List<Integer> days) {
         this.id = id;
         this.name = name;
         this.authors = authors;
         this.imagePath = imagePath;
         this.status = status;
+        this.days = days;
     }
 
     public static WebtoonInfoDTO createDTO(UserWebtoon userWebtoon){
@@ -38,11 +41,19 @@ public class WebtoonInfoDTO {
                 .map(AuthorInfoDTO::createDTO)
                 .collect(Collectors.toList());
 
+
+        List<Integer> days = userWebtoon.getWebtoon().getWebtoonDays().stream()
+                .map(webtoonDay -> {
+                    return webtoonDay.getCodeId();
+                })
+                .collect(Collectors.toList());
+
         return WebtoonInfoDTO.builder()
                 .id(userWebtoon.getWebtoon().getId())
                 .name(userWebtoon.getWebtoon().getName())
                 .authors(authorInfoDTOS)
                 .imagePath(userWebtoon.getWebtoon().getImagePath())
-                .status(userWebtoon.getWebtoon().getStatusId()).build();
+                .status(userWebtoon.getWebtoon().getStatusId())
+                .days(days).build();
     }
 }
