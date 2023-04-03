@@ -7,6 +7,7 @@ import WebtoonContainer from '../components/common/WebtoonContainer';
 import WebtoonItem from '../components/common/WebtoonItem';
 import Top10 from '../components/common/Top10';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { getCookie } from '@/util/cookie';
 
 // 웹툰

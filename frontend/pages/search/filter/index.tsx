@@ -5,7 +5,6 @@ import AgeGradeBlock from '@/components/pages/search/filter/AgeGradeBlock';
 import { useState, useEffect } from 'react';
 import ConfirmBtn from '@/components/confirmBtn';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
 import { RootState } from '../../../store/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeDays, changeGenres, changeGrades, changeStatus } from '@/store/CurSearchTagSlice';
@@ -224,33 +223,11 @@ export default function FilterPage(props: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async context => {
-  const token = context.req.cookies.accessToken;
-
-  const daysRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/days', {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-  });
-  const genresRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/genres', {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-  });
-  const gradesRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/grades', {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-  });
-  const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status', {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-  });
+export async function getServerSideProps() {
+  const daysRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/days');
+  const genresRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/genres');
+  const gradesRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/grades');
+  const statusRes = await axios.get('https://j8b206.p.ssafy.io/api/webtoons/list/status');
 
   return {
     props: {
@@ -260,4 +237,4 @@ export const getServerSideProps: GetServerSideProps = async context => {
       status: statusRes.data.result,
     },
   };
-};
+}
