@@ -367,6 +367,27 @@ export const postWebtoonMyScore = async (webtoon_id: any, score: number, token: 
   }
 };
 
+/**웹툰 평점 입력, 수정
+ *
+ * @param webtoon_id
+ * @returns
+ */
+export const goSeePlus = async (webtoon_id: any, token: string) => {
+  const options = {
+    method: 'GET',
+    url: `/mana/webtoons/${webtoon_id}/redirect/scores`,
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+  };
+  try {
+    const res = await axios.request(options);
+    const answer = res.data;
+    return answer;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 ///////////////////* 회원 관련 기능 *///////////////////
 /**웹툰 관심 등록 해제
  *
@@ -468,6 +489,29 @@ export const getElseWebtoon = async (webtoon_id: any, token: string) => {
   try {
     const res = await axios.request(options);
     const answer = res.data;
+    return answer;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+/**추천 알고리즘을 통한 웹툰 조회.
+ *
+ * @param token
+ * @param param 장르(genreId), 나이(age-group), 성별(gender)
+ * @returns
+ */
+export const algoWebtoons = async (token: string, param: string) => {
+  const options = {
+    method: 'GET',
+    url: `/mana/webtoons/recommands/${param}`,
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+  };
+  try {
+    const res = await axios.request(options);
+    const answer = res.data;
+    console.log(res);
     return answer;
   } catch (error) {
     console.log(error);
