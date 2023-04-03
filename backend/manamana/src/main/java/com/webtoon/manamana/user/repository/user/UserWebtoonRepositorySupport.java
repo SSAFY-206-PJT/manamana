@@ -109,6 +109,27 @@ public class UserWebtoonRepositorySupport extends QuerydslRepositorySupport {
                         userWebtoon.isLiked.eq(true))
                 .fetchOne()
         );
+    }
 
+    public List<UserWebtoon> findByUserIdAndIsDeletedFalse(long userId) {
+
+        QUserWebtoon userWebtoon = QUserWebtoon.userWebtoon;
+
+        return queryFactory
+                .selectFrom(userWebtoon)
+                .where(userWebtoon.user.id.eq(userId)
+                        .and(userWebtoon.isDeleted.eq(false)))
+                .fetch();
+    }
+
+    public List<UserWebtoon> findByWebtoonIdAndIsDeletedFalse(long webtoonId) {
+
+        QUserWebtoon userWebtoon = QUserWebtoon.userWebtoon;
+
+        return queryFactory
+                .selectFrom(userWebtoon)
+                .where(userWebtoon.webtoon.id.eq(webtoonId)
+                        .and(userWebtoon.isDeleted.eq(false)))
+                .fetch();
     }
 }

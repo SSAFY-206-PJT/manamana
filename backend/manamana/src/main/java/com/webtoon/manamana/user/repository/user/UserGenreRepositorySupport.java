@@ -1,6 +1,7 @@
 package com.webtoon.manamana.user.repository.user;
 
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.manamana.entity.user.QUserGenre;
 import com.webtoon.manamana.entity.user.User;
@@ -38,4 +39,19 @@ public class UserGenreRepositorySupport extends QuerydslRepositorySupport {
         );
     }
 
+    public List<Integer> findByMaxWeightGenre(long userId) {
+
+        QUserGenre userGenre = QUserGenre.userGenre;
+
+        return queryFactory
+                .select(userGenre.genre.id)
+                .from(userGenre)
+                .where(userGenre.user.id.eq(userId)
+                        .and(userGenre.weight.eq(
+                                JPAExpressions.select(userGenre.weight.max())
+                                        .from(userGenre)
+                                        .where(userGenre.user.id.eq(userId))
+                        )))
+                .fetch();
+    }
 }
