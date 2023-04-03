@@ -165,7 +165,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const token = context.req.cookies.accessToken;
   if (token) {
     const webtoonData = await api.getWebtoonDetail(webtoon_id, token);
-    const commentData = await api.getWebtoonComments(webtoon_id, 0, token);
+    const commentData = await api.getWebtoonComments(webtoon_id, 1, token);
     return { props: { webtoon: webtoonData.result, comments: commentData.result } };
   } else {
     return { props: { webtoon: null, comments: null } };
