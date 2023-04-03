@@ -18,6 +18,8 @@ pipeline {
             steps {
                 dir("${DOCKER_FILE_PATH}"){
                     script {
+                        sh "pwd"
+                        sh "ls"
                         image = docker.build("${IMAGE_NAME}")
                     }   
 
