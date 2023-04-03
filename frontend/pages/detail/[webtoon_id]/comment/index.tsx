@@ -55,7 +55,7 @@ function CommentPage({ webtoon, comments }: Props) {
         const nextpage = commentPage + 1;
         setCommentPage(nextpage);
         const data = await api.getWebtoonComments(webtoon.id, nextpage, token);
-        console.log(data);
+        // console.log(data);
         if (data && data.isSuccess) {
           const addCommentList = data.result;
           setCommentList([...commentList, ...addCommentList]);

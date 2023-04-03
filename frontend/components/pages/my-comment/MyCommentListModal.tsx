@@ -39,21 +39,16 @@ function MyCommentListModal({
       id: chat.id,
       content: e.content,
       createTime: chat.createTime,
-      isSpoiler: false,
-      webtoons: {
-        id: chat.webtoons.id,
-        name: chat.webtoons.name,
-        imagePath: chat.webtoons.imagePath,
+      isSpoiler: e.spoiler,
+      webtoon: {
+        id: chat.webtoon.id,
+        name: chat.webtoon.name,
+        imagePath: chat.webtoon.imagePath,
       },
     };
     const result = await modifyComment(oldComment, newComment);
     closeModal();
     return result;
-  };
-  const reportChat = () => {
-    // api 통신 후에
-    alert('신고가 접수되었습니다.');
-    closeModal();
   };
 
   const popupDelete = (

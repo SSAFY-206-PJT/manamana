@@ -1,7 +1,6 @@
-import Image from 'next/image';
 import { Avatar } from '@mui/material';
 import { MyChat } from './MyCommentList';
-import MyommentWebtoonInfo from './MyCommentWebtoonInfo';
+import MyCommentWebtoonInfo from './MyCommentWebtoonInfo';
 
 interface ChatProp {
   chat: MyChat;
@@ -9,9 +8,8 @@ interface ChatProp {
 }
 
 function MyCommentListItem({ chat, itemInfo }: ChatProp) {
-  const userImagePath =
-    'https://i.namu.wiki/i/xss2U6BFSuoMjDMssQDkkUNNvzOgpWjkTJ_pgdcRF034Qc_vlAZ6yOVI6ik1rhHBWpxovuBg5MIE55Wcf54uyLI6KplwA5lrYS5Omaa-G1MXvAawlW_QQO0gCR63K_TdrlqX75TyqynnSF89211hqg.webp';
   const myName = '김태학';
+  const userImage = '/images/character.png';
 
   // 날짜 변환
   const timeForToday = (value: string) => {
@@ -40,7 +38,7 @@ function MyCommentListItem({ chat, itemInfo }: ChatProp) {
   return (
     <div className="my-2 flex justify-end">
       <div className="max-w-[65%]">
-        <MyommentWebtoonInfo webtoonId={1} />
+        <MyCommentWebtoonInfo webtoonId={1} />
         <div className="flex rounded bg-BackgroundLightComponent p-1.5">
           <p className="whitespace-pre-wrap break-all">{chat.content}</p>
           <div className="ml-auto">
@@ -48,7 +46,7 @@ function MyCommentListItem({ chat, itemInfo }: ChatProp) {
               className="w-4"
               onClick={() => {
                 itemInfo(chat);
-                console.log('더보기클릭함');
+                console.log('더보기클릭함', chat);
               }}
             >
               <img src="/images/More.png" className="h-5 w-5" alt="#"></img>
@@ -63,7 +61,7 @@ function MyCommentListItem({ chat, itemInfo }: ChatProp) {
         </div>
       </div>
       <div className="ml-1 flex items-center">
-        <Avatar alt="Remy Sharp" src={userImagePath} />
+        <Avatar alt="Remy Sharp" src={userImage} />
       </div>
     </div>
   );

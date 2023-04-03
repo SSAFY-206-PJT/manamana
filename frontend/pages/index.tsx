@@ -1,40 +1,42 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../components/common/Navbar';
 import WebtoonContainer from '../components/common/WebtoonContainer';
 import WebtoonItem from '../components/common/WebtoonItem';
 import Top10 from '../components/common/Top10';
 import axios from 'axios';
+import * as api from '@/pages/api/detail';
 import { getCookie } from '@/util/cookie';
+import { useRouter } from 'next/router';
 
-// 웹툰
-interface Webtoon {
-  name: string;
-  authors: string;
-  plot: string;
-  genre: string;
-  day: string;
-  grade: string;
-  status: string;
-  webtoonURL: string;
-  webtoonId: string;
-  startDate: Date;
-  totalEp: number;
-  colorHsl: string;
-  imagePath: string;
-}
 interface Props {
   home: any;
 }
+
 function Home({ home }: Props) {
   const router = useRouter();
-  // 로그인 확인
   const token = getCookie('accessToken');
-  if (!token) {
-    router.push('login');
-  }
+  //// api
+  // 관심웹툰
+  const defaultLikeWebtoon = [
+    {
+      id: 0,
+      name: '등록해보세요',
+      imagePath: '/icon-192x192.png',
+      status: '연재중',
+    },
+  ];
+  const [likeWebtoons, setLikeWebtoons] = useState<Array<any>>(defaultLikeWebtoon);
+  const getUserLike = async () => {
+    const res = await api.getUserLike(token);
+    console.log(res.result);
+    if (res.result) {
+      setLikeWebtoons(res.result);
+    }
+  };
+
   // 스크롤 이동 함수
   const scrollToCoordinate = (x: number, y: number) => {
     window.scrollTo({
@@ -44,9 +46,12 @@ function Home({ home }: Props) {
     });
   };
 
+  // home화면 초기화
   useEffect(() => {
-    let prevScrollPosition = 0;
+    // api 요청
+    getUserLike();
 
+    let prevScrollPosition = 0;
     const handleScroll = () => {
       // 현재 스크롤 위치를 인식
       const { scrollTop } = document.documentElement;
@@ -109,15 +114,6 @@ function Home({ home }: Props) {
       status: '연재중',
     },
   ];
-  // Top10 더미데이터
-  let top10Dummy = [
-    { id: 1, rank: 1, webtoonname: '1초' },
-    { id: 2, rank: 2, webtoonname: '웹툰2' },
-    { id: 3, rank: 3, webtoonname: '웹툰3' },
-    { id: 4, rank: 4, webtoonname: '웹툰4' },
-    { id: 5, rank: 5, webtoonname: '웹툰5' },
-    { id: 6, rank: 6, webtoonname: '웹툰6' },
-  ];
 
   // 웹툰 취향 가는 컴포넌트 스타일
   const BannerStyle1 = styled.div`
@@ -169,12 +165,11 @@ function Home({ home }: Props) {
           <Top10 />
         </div>
       </div>
-      {/* 내가 보는 웹툰 */}
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'내가 보는 웹툰'} route={'my-webtoon'} />
           <WebtoonItemContainer>
-            {myWebtoonDummy.map(webtoon => (
+            {likeWebtoons.map((webtoon: any) => (
               <WebtoonItem
                 key={webtoon.id}
                 id={webtoon.id}
@@ -234,7 +229,6 @@ function Home({ home }: Props) {
           </BannerStyle2>
         </div>
       </div>
-      {/* 마나마나가 준비했어요 */}
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'마나마나가 준비했어요'} />
@@ -251,7 +245,6 @@ function Home({ home }: Props) {
           </WebtoonItemContainer>
         </div>
       </div>
-      {/* 이 달의 신작 */}
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'이 달의 신작'} />

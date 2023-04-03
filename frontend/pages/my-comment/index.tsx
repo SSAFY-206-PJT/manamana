@@ -1,57 +1,24 @@
 import { useState } from 'react';
+import { GetServerSideProps } from 'next';
 import Headerbar from '@/components/common/Headerbar';
 import MyCommentList from '@/components/pages/my-comment/MyCommentList';
 import { MyChat } from '@/components/pages/my-comment/MyCommentList';
+import axios from 'axios';
 
-const dummyChatList = () => {
-  let result: MyChat[] = new Array();
-  for (let i = 0; i < 10; i++) {
-    const dummyMyChat: MyChat = {
-      id: i,
-      content: '내 댓글 내용임 ㅎㅎ 옆에 이미지 추가해야함 화이팅',
-      createTime: '2023-03-13 11:22:33',
-      isSpoiler: false,
-      webtoons: {
-        id: 1,
-        name: '1초',
-        imagePath:
-          'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-      },
-    };
-    result.push(dummyMyChat);
-  }
-  return result;
-};
-const dummyChatList2 = () => {
-  let result2: MyChat[] = new Array();
-  for (let i = 10; i < 20; i++) {
-    const dummyMyChat: MyChat = {
-      id: i,
-      content: '내 댓글 내용임 ㅎㅎ 옆에 이미지 추가해야함 화이팅',
-      createTime: '2023-03-13 11:22:33',
-      isSpoiler: false,
-      webtoons: {
-        id: 1,
-        name: '1초',
-        imagePath:
-          'https://i.namu.wiki/i/0FPGuCn5XVDyejAOiSHqb_45uo-E4kwWkZQzS6YMYEwv4hHTPBNqTxD311G9nRYF9hsSkGh1IKVHsXcGUlXd_a-gEbRGbc0-3rWFQVian9aGOfj0NDrX4-qV5mRkMrEktPSaCH6_FjuIDatrhZnnGQ.webp',
-      },
-    };
-    result2.push(dummyMyChat);
-  }
-  return result2;
-};
+interface Props {
+  myComments: MyChat[];
+}
 
-export default function MyCommentPage() {
+function MyCommentPage({ myComments }: Props) {
+  console.log(myComments);
   // 댓글 리스트
-  const [commentList, setCommentList] = useState<MyChat[]>(dummyChatList());
+  const [commentList, setCommentList] = useState<MyChat[]>(myComments);
   // 더이상 로딩할 댓글이 없으면 true
   const [commentEnd, setCommentEnd] = useState<boolean>(false);
 
   // 댓글 로딩
   const loadComment = () => {
-    console.log('댓글 로딩');
-    setCommentList([...commentList, ...dummyChatList2()]);
+    setCommentList([...commentList]);
   };
 
   // 댓글 삭제
@@ -93,3 +60,17 @@ export default function MyCommentPage() {
     </div>
   );
 }
+export default MyCommentPage;
+export const getServerSideProps: GetServerSideProps = async context => {
+  const token = context.req.cookies.accessToken;
+
+  const commentRes = await axios.get('mana/users/1/comments', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+  const myComments = commentRes.data.result;
+
+  return { props: { myComments } };
+};

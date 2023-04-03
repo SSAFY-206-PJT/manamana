@@ -436,6 +436,28 @@ export const getUserInfo = async (token: string) => {
   }
 };
 
+/** 유저가 관심등록한 웹툰들
+ *
+ * @param token
+ * @returns
+ */
+export const getUserLike = async (token: string) => {
+  const options = {
+    method: 'GET',
+    url: `/mana/users/1/webtoons`,
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+  };
+
+  try {
+    const res = await axios.request(options);
+    const answer = res.data;
+    return answer;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 ///////////////////* 웹툰 추천 관련 기능 *///////////////////
 export const getElseWebtoon = async (webtoon_id: any, token: string) => {
   const options = {
