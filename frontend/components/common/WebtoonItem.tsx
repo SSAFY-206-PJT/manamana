@@ -15,6 +15,8 @@ export default function WebtoonItem({ id, imageUrl, webtoonName, status }: Props
   const onWebtoonClick = () => {
     if (id > 0) {
       router.push(`/detail/${id}`);
+    } else {
+      router.push('/search');
     }
   };
 

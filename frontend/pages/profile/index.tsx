@@ -6,8 +6,9 @@ import axios from 'axios';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Swal from 'sweetalert2';
-import { getCookie } from '@/util/cookie';
+import { getCookie, setCookie } from '@/util/cookie';
 import { userInfo } from '../api/detail';
+import { useRouter } from 'next/router';
 
 type User = {
   id: number;
@@ -21,7 +22,7 @@ type User = {
 };
 
 export default function ProfilePage({ userData }: any) {
-  console.log('userData', userData);
+  const router = useRouter();
   const [isEditState, setIsEditState] = useState<boolean>(true);
   const [info, setInfo] = useState<User>({
     id: userData.result.id,
@@ -53,7 +54,9 @@ export default function ProfilePage({ userData }: any) {
       cancelButtonText: '아니오',
     }).then(result => {
       if (result.isConfirmed) {
-        Swal.fire({ icon: 'success', title: '로그아웃 로직 작성 후 로그인 페이지로 보내!' });
+        setCookie('accessToken', '');
+        router.push('/login');
+        // Swal.fire({ icon: 'success', title: '로그아웃 로직 작성 후 로그인 페이지로 보내!' });
       }
     });
   };
@@ -120,6 +123,7 @@ export default function ProfilePage({ userData }: any) {
         },
       })
       .then(response => {
+        setCookie('accessToken', '');
         console.log(response.data);
       })
       .catch(error => {
@@ -285,7 +289,12 @@ export const getServerSideProps: GetServerSideProps = async context => {
       const userData: User = res.result;
       return { props: { userData } };
     } else {
-      return { props: { userData: null } };
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
     }
   } else {
     return {

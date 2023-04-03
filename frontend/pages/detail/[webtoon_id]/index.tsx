@@ -233,7 +233,7 @@ function DetailPage({ res }: Props) {
       } else if (data) {
         alert(data.message);
       } else {
-        alert('통신오류');
+        alert('postRating 통신오류');
       }
     };
 
@@ -386,7 +386,7 @@ function DetailPage({ res }: Props) {
       } else if (data) {
         alert(data.message);
       } else {
-        alert('통신오류');
+        alert('getElseRecommend통신오류');
       }
     };
 
