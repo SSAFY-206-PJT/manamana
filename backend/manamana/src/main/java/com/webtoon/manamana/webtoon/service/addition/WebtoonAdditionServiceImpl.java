@@ -109,7 +109,10 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
                             if(userWebtoon.isLiked())  throw new CustomException(ALREADY_LIKE_WEBTOON);
                             else userWebtoon.updateLikedUserWebtoon();
                         },
-                        () -> UserWebtoon.createLikeUserWebtoon(user,webtoon)
+                        () -> {
+                            UserWebtoon likeUserWebtoon = UserWebtoon.createLikeUserWebtoon(user, webtoon);
+                            userWebtoonRepository.save(likeUserWebtoon);
+                        }
                 );
     }
 
