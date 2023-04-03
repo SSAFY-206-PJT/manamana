@@ -31,7 +31,7 @@ function Home({ home }: Props) {
   const [likeWebtoons, setLikeWebtoons] = useState<Array<any>>(defaultLikeWebtoon);
   const getUserLike = async () => {
     const res = await api.getUserLike(token);
-    console.log(res.result);
+    // console.log(res.result);
     if (res.result && res.result.length > 0) {
       setLikeWebtoons(res.result);
     }
