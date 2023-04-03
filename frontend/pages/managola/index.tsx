@@ -8,6 +8,7 @@ import Cover from '@/components/pages/managola/Cover';
 import Link from 'next/link';
 import { managolaInit, managolaEnd } from '../api/managola';
 import useSWR from 'swr';
+import { useRouter } from 'next/router';
 import Lottie from 'react-lottie-player';
 import yesEffect from '../../public/lottie/138218-check-icon.json';
 import noEffect from '../../public/lottie/138219-x-icon.json';
@@ -89,6 +90,11 @@ export default function ManagolaPage() {
     // 웹툰 정보를 다시 받아와서 data 변수 갱신
   };
 
+  // 보러가기 클릭
+  const goSeeClick = value => {
+    const router = useRouter();
+    router.push(`/details/${value.id}`);
+  };
   /*
    * @Method
    * - 다음 단계로 이동하는 메소드
@@ -127,10 +133,17 @@ export default function ManagolaPage() {
                   </div>
                   <div className="m-4 text-center text-2xl text-FontPrimaryDark">{value.name}</div>
                 </Link>
-                <div className="rounded-xl border-2 bg-PrimaryLight pl-4 pr-4 pt-2 pb-2">
-                  <button className="text-2xl text-FontPrimaryDark" onClick={onReplayClick}>
-                    다시하기
-                  </button>
+                <div className="flex">
+                  <div className="m-2 rounded-xl border-2 bg-PrimaryLight pl-4 pr-4 pt-2 pb-2">
+                    <button className="text-2xl text-FontPrimaryDark" onClick={onReplayClick}>
+                      다시하기
+                    </button>
+                  </div>
+                  <div className="m-2 rounded-xl border-2 bg-PrimaryLight pl-4 pr-4 pt-2 pb-2">
+                    <button className="text-2xl text-FontPrimaryDark">
+                      <Link href={`/detail/${value.id}`}>보러가기</Link>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>,
