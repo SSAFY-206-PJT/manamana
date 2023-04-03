@@ -5,9 +5,11 @@ from selenium.webdriver.common.by import By
 from urllib.request import urlopen
 from webtoonUtil import *
 from tqdm import tqdm
+from datetime import datetime
 import webtoon
 import time
 import re
+import sys 
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
@@ -30,10 +32,29 @@ error_list = []
 요일별 크롤링 시작
 """
 day_id = ["1", "2", "3", "4", "5", "6", "7", "12"]
+today = day_id[datetime.today().weekday()]
+
+arguments = sys.argv
+
+print("====================")
+if len(arguments) == 2:
+    if arguments[1] == "all":
+        days = day_id
+        print("Crawling All")
+    else:
+        if arguments[1] in day_id:
+            days = arguments[1].split()
+            print(f'Crawling {arguments[1]}')
+else:
+    days = today.split()
+    print(f'Crawling {today}')
+print("====================")
+
+
 # day_id = ["1"]
 
 # for d_id in tqdm(day_id):  # 배포할때 tqdm 빼야함
-for d_id in day_id:
+for d_id in days:
 
     url = "https://page.kakao.com/menu/10/screen/5?tab_uid="
     driver.get(url + d_id)
@@ -84,7 +105,7 @@ for d_id in day_id:
     ##########################
     driver.quit()
 
-    driver = webdriver.Chrome("./chromedriver")
+    driver = webdriver.Chrome("chromedriver",  options=chrome_options)
 
     login(driver)
     time.sleep(2)
