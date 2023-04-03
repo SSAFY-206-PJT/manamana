@@ -9,7 +9,7 @@ pipeline {
                     IMAGE_STORAGE_CREDENTIAL = "docker-auth"
                     CONTAINER_NAME = "recommend-api"
                     PROJECT_DIR = "fastapi/bigdata/"
-                    DOCKER_FILE_PATH = "/var/jenkins_home/workspace/bigdata/"
+                    DOCKER_FILE_PATH = "bigdata/"
                 }
             }
         }
