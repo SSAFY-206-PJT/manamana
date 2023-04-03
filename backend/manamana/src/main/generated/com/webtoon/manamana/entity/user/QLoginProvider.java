@@ -21,7 +21,7 @@ public class QLoginProvider extends EntityPathBase<LoginProvider> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final StringPath name = createString("name");
+    public final EnumPath<AuthProvider> name = createEnum("name", AuthProvider.class);
 
     public QLoginProvider(String variable) {
         super(LoginProvider.class, forVariable(variable));

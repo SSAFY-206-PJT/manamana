@@ -1,0 +1,504 @@
+{
+    "provider_id": 1,
+    "data": [
+        {
+            "name": "뷰티풀 군바리",
+            "image": "https://image-comic.pstatic.net/webtoon/648419/thumbnail/thumbnail_IMAG21_d9398229-cbfd-47dc-9208-0a6fb936f3a7.jpg",
+            "plot": "'여자도 군대에 간다면?'본격 여자도 군대 가는 만화!",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=648419",
+            "webtoon_id": "648419",
+            "start_date": "15.02.15",
+            "total_ep": 381,
+            "genre_arr": [
+                "밀리터리",
+                "직업드라마",
+                "드라마"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "윤성원",
+                "설이"
+            ],
+            "colorHsl": "40,5,22"
+        },
+        {
+            "name": "신의 탑",
+            "image": "https://image-comic.pstatic.net/webtoon/183559/thumbnail/thumbnail_IMAG21_5f3fec31-5c95-4afe-a73f-3046288edb47.jpg",
+            "plot": "자신의 모든 것이었던 소녀를 쫓아 탑에 들어온 소년\n그리고 그런 소년을 시험하는 탑",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=183559",
+            "webtoon_id": "183559",
+            "start_date": "10.06.30",
+            "total_ep": 565,
+            "genre_arr": [
+                "판타지",
+                "이능력배틀물",
+                "세계관",
+                "소년왕도물",
+                "먼치킨"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "SIU"
+            ],
+            "colorHsl": "187,42,87"
+        },
+        {
+            "name": "퀘스트지상주의",
+            "image": "https://image-comic.pstatic.net/webtoon/783052/thumbnail/thumbnail_IMAG21_e14cbea7-8416-40e7-9aae-ccff970ac88f.jpg",
+            "plot": "[외모지상주의], [싸움독학], [인생존망]과 세계관을 공유하는 작품!\n공부, 싸움, 외모.\n뭐 하나 잘난 것 없는 평범한 고등학생 ‘김수현’의 눈앞에 갑자기 퀘스트창이 나타났다!\n첫 번째 퀘스트, [엄마한테 사과하기]를 완료한 수현은 보상으로 키가 3cm 커지게 되는데!\n퀘스트 엄청 쉽잖아?! 어떤 퀘스트든 완료해주마! 그런데 다음 퀘스트가?\n[system] 학교 일진녀와 키스하십시오",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=783052",
+            "webtoon_id": "783052",
+            "start_date": "21.10.24",
+            "total_ep": 79,
+            "genre_arr": [
+                "게임판타지",
+                "드라마",
+                "학원물"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "박태준 만화회사"
+            ],
+            "colorHsl": "306,11,77"
+        },
+        {
+            "name": "신화급 귀속 아이템을 손에 넣었다",
+            "image": "https://image-comic.pstatic.net/webtoon/795297/thumbnail/thumbnail_IMAG21_4134925888999731505.jpg",
+            "plot": "D급 무투계 레이더로 마법계 레이더들의 고기방패나 하며 별 볼 일 없이 살던 재현. \n그러던 어느 날, 던전에서 우연히 \"오딘의 눈\" 이라는 최강의 귀속 아이템을 얻게 됐다.\n신의 눈을 가진 자, 세계를 구할 신의 대적자의 운명을 개척하라!",
+            "grade": "전체이용가",
+            "status": "접기",
+            "webtoon_url": "/webtoon/list?titleId=795297",
+            "webtoon_id": "795297",
+            "start_date": "22.06.12",
+            "total_ep": 48,
+            "genre_arr": [
+                "아포칼립스",
+                "소설원작",
+                "판타지",
+                "게임판타지",
+                "사이다",
+                "소년왕도물",
+                "헌터물",
+                "구원서사",
+                "회귀",
+                "먼치킨"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "정선율",
+                "헤스"
+            ],
+            "colorHsl": "18,38,37"
+        },
+        {
+            "name": "장씨세가 호위무사",
+            "image": "https://image-comic.pstatic.net/webtoon/728750/thumbnail/thumbnail_IMAG21_47c21251-b213-4882-bacc-15adce1acfc8.jpg",
+            "plot": "‘당신이 부른 것이오. 나란 사람을... ’\n은둔고수 광휘. 호위무사 되다.\n웹소설 원작 웰메이드 무협 시대극!",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=728750",
+            "webtoon_id": "728750",
+            "start_date": "19.05.19",
+            "total_ep": 207,
+            "genre_arr": [
+                "소설원작",
+                "힘숨찐",
+                "무협/사극",
+                "사이다",
+                "판무",
+                "먼치킨"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "김인호",
+                "조형근"
+            ],
+            "colorHsl": "11,7,18"
+        },
+        {
+            "name": "윈드브레이커",
+            "image": "https://image-comic.pstatic.net/webtoon/602910/thumbnail/thumbnail_IMAG21_e861f2cf-6157-4d33-8e02-7b4cbf0a8baf.jpg",
+            "plot": "혼자서 자전거를 즐겨타던 모범생 조자현.\n원치 않게 자전거 크루의 일에 자꾸 휘말리게 되는데...\n자유를 꿈꾸는 청춘들의 스트릿라이딩 드라마!",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=602910",
+            "webtoon_id": "602910",
+            "start_date": "13.12.08",
+            "total_ep": 438,
+            "genre_arr": [
+                "스포츠성장",
+                "스포츠"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "조용석"
+            ],
+            "colorHsl": "342,57,68"
+        },
+        {
+            "name": "소녀의 세계",
+            "image": "https://image-comic.pstatic.net/webtoon/654774/thumbnail/thumbnail_IMAG21_4048794550434817075.jpg",
+            "plot": "완벽해 보이지만 사실 외로웠던 백조들과 맘씨 착한 오리가 만나\n여러 갈등을 함께 겪으며 진짜 친구가 되어가는 소녀들의 찐 우정물",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=654774",
+            "webtoon_id": "654774",
+            "start_date": "15.05.17",
+            "total_ep": 360,
+            "genre_arr": [
+                "감성드라마",
+                "학원로맨스",
+                "까칠남",
+                "삼각관계",
+                "하이틴",
+                "직진남",
+                "드라마"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "모랑지"
+            ],
+            "colorHsl": "43,33,75"
+        },
+        {
+            "name": "똑 닮은 딸",
+            "image": "https://image-comic.pstatic.net/webtoon/774866/thumbnail/thumbnail_IMAG21_cf7085c1-bfe2-49af-a82f-402e1597a02c.jpg",
+            "plot": "'우리 엄마가 살인마인 것 같다.' \n성적 우수, 품행 단정, 모범적인 자식인 길소명은 엄마가 요구하는 기준에 맞춰 완벽한 딸로 살아왔다.\n그러나 남동생이 강물에서 시체로 떠오른 그 날, 소명의 머릿속엔 섬뜩한 의혹이 피어오른다.\n자식의 인생에 방해되는 모든 것을 없애려는 엄마와 그녀에게서 벗어나려는 딸, 두 사람의 잔혹한 모녀 스릴러!\n2020 지상최대공모전 2기 우수상 수상작.",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=774866",
+            "webtoon_id": "774866",
+            "start_date": "21.08.29",
+            "total_ep": 87,
+            "genre_arr": [
+                "서스펜스",
+                "스릴러",
+                "2020 지상최대공모전"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "이담"
+            ],
+            "colorHsl": "346,10,8"
+        },
+        {
+            "name": "별난식당",
+            "image": "https://image-comic.pstatic.net/webtoon/806189/thumbnail/thumbnail_IMAG21_292de414-bd9a-418d-a4e9-d97060398223.jpg",
+            "plot": "<요리GO>의 새로운 이야기,<별난식당>.\n특급호텔에서 최연소 팀장에 오르며 승승장구하던 주인공 한별은 퇴사를 하고 작은 식당을 차린다.\n그 식당의 이름은 '별난식당'.\n\n별난식당은 상권이라고는 찾아볼 수 없는, 서울에서 제일 가난한 동네인 부자동에 위치해 있다.\n또한 메뉴도 별나다. 바로 메뉴가 없기 때문이다. 메뉴가 없이 한별 셰프가 그때그때 제철 식재료를 이용해 요리를 만드는 식당이다.\n\n이 식당의 특별한 점은 요리를 먹는 손님이 마음까지 위로 받는다는 것.\n한별 셰프는 대체 어떠한 방법으로 마음의 상처가 있는 많은 손님들을 요리로 치유하는 것일까?",
+            "grade": "전체이용가",
+            "status": "접기",
+            "webtoon_url": "/webtoon/list?titleId=806189",
+            "webtoon_id": "806189",
+            "start_date": "23.02.12",
+            "total_ep": 10,
+            "genre_arr": [
+                "성장드라마",
+                "직업드라마",
+                "드라마",
+                "음식&요리"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "HO9"
+            ],
+            "colorHsl": "32,40,59"
+        },
+        {
+            "name": "버림받은 왕녀의 은밀한 침실",
+            "image": "https://image-comic.pstatic.net/webtoon/796867/thumbnail/thumbnail_IMAG21_77aa5064-b42b-4838-912e-2c6266c53a74.jpg",
+            "plot": "한때는 추앙받았지만 지금은 비참하게 버림받은 왕녀 르웰린. 아무도 보호해 주지 않는 그녀에게 추악한 저주가 내려진다. \n그것은 바로 남자를 욕망하게 되는 저주. \n르웰린은 저주의 폭주를 막기 위해 결국 자신의 침실을 열게 되는데... \n버림받은 왕녀와 얽히고 설키는 네명의 남자들. \n저주의 진실은 밝혀질 것인가? 그리고 그녀와 함께 할 사내는 과연 누가 될 것인가?",
+            "grade": "성인",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=796867",
+            "webtoon_id": "796867",
+            "start_date": "22.07.03",
+            "total_ep": 45,
+            "genre_arr": [
+                "소설원작",
+                "고자극로맨스",
+                "까칠남",
+                "성인웹툰",
+                "로맨스",
+                "궁중로맨스"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "혜니",
+                "성혜림"
+            ],
+            "colorHsl": "11,18,78"
+        },
+        {
+            "name": "앵무살수",
+            "image": "https://image-comic.pstatic.net/webtoon/739115/thumbnail/thumbnail_IMAG21_7077747896626722102.jpg",
+            "plot": "평범한 뱃사공으로 살고 있는 노소하. \n하지만 그의 정체는 전설적인 구파검법의 후계자다. \n이제 진시황이 남긴 비서 선근경을 향한 살수행이 시작된다.",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=739115",
+            "webtoon_id": "739115",
+            "start_date": "20.02.02",
+            "total_ep": 150,
+            "genre_arr": [
+                "판무",
+                "판타지"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "김성진"
+            ],
+            "colorHsl": "0,0,78"
+        },
+        {
+            "name": "2023 요즘연애 특)",
+            "image": "https://image-comic.pstatic.net/webtoon/807831/thumbnail/thumbnail_IMAG21_0ed8d77a-8096-4ac3-ba20-6e3fb27b41ec.jpg",
+            "plot": "‘썸은 SNS로, 연애는 가볍게, 전애인과는 친구처럼’\n요즘 연애는 이렇게 한다고?ㅋㅋ 진짜? ㅋㅋ\n담당자의 말) 설렘가득한 봄날.. 이번에도 웹툰으로 대리만족하겠습니다. ^^",
+            "grade": "전체이용가",
+            "status": "접기",
+            "webtoon_url": "/webtoon/list?titleId=807831",
+            "webtoon_id": "807831",
+            "start_date": "23.03.26",
+            "total_ep": 2,
+            "genre_arr": [
+                "로맨스코미디",
+                "학원로맨스",
+                "오피스로맨스",
+                "현실로맨스",
+                "러블리",
+                "사내연애",
+                "로맨스",
+                "캠퍼스로맨스",
+                "친구>연인",
+                "청춘로맨스"
+            ],
+            "day_arr": [
+                "월",
+                "수",
+                "일"
+            ],
+            "authors_arr": [
+                "네이버웹툰 작가"
+            ],
+            "colorHsl": "317,10,15"
+        },
+        {
+            "name": "만렙돌파",
+            "image": "https://image-comic.pstatic.net/webtoon/759940/thumbnail/thumbnail_IMAG21_3976787538998813497.jpg",
+            "plot": "알 수 없는 오류로 3000년간 각성 테스트에 갇힌 김기봉.\n그 사이 현실에선 10년이 흘렀고, 온 세상은 몬스터와 던전으로 가득차게 되었다. \n만렙으로 귀환한 김기봉의 모든 것을 원래대로 돌려놓기 위한 싸움이 시작된다!",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=759940",
+            "webtoon_id": "759940",
+            "start_date": "20.11.22",
+            "total_ep": 90,
+            "genre_arr": [
+                "게임판타지",
+                "판타지",
+                "고인물",
+                "먼치킨"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "임형",
+                "성불예정",
+                "미노"
+            ],
+            "colorHsl": "248,17,30"
+        },
+        {
+            "name": "퍼니게임",
+            "image": "https://image-comic.pstatic.net/webtoon/801035/thumbnail/thumbnail_IMAG21_01fd148f-edb2-4ada-9571-910981ec3376.jpg",
+            "plot": "<머니게임>,<파이게임> 에서 실패를 맛본 주인공은, 마지막 <퍼니게임>에서\n우승하기 위해 신체를 단련하고 정신을 다잡는다. 모든 참가자 중 본인만이\n유일한 게임 경험자임을 확인한 주인공은, 승리를 위해 악마가 되기로 결심한다.",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=801035",
+            "webtoon_id": "801035",
+            "start_date": "22.10.09",
+            "total_ep": 31,
+            "genre_arr": [
+                "스릴러"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "배진수"
+            ],
+            "colorHsl": "25,57,13"
+        },
+        {
+            "name": "팔이피플휴재",
+            "image": "https://image-comic.pstatic.net/webtoon/774863/thumbnail/thumbnail_IMAG21_3689684179498578529.jpg",
+            "plot": "<마스크걸>, <위대한 방옥숙> 매미/희세 작가의 신작!\nSNS에서 육아용품 파는 평범한 유부녀 박주연, 그녀의 고등학교 동창인 김예희는 팔로워 70만의 셀럽으로 엄청난 부와 명성을 누리는 중이다.\n박주연은 김예희를 미워하는 동시에 집착하고 있는데, 과연 그녀는 김예희의 과거를 폭로하고 셀럽으로 올라설 수 있을까?",
+            "grade": "전체이용가",
+            "status": "휴재",
+            "webtoon_url": "/webtoon/list?titleId=774863",
+            "webtoon_id": "774863",
+            "start_date": "21.07.18",
+            "total_ep": 73,
+            "genre_arr": [
+                "하이퍼리얼리즘",
+                "인플루언서",
+                "드라마",
+                "계략여주"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "희세",
+                "매미"
+            ],
+            "colorHsl": "335,66,86"
+        },
+        {
+            "name": "백수세끼",
+            "image": "https://image-comic.pstatic.net/webtoon/733074/thumbnail/thumbnail_IMAG21_80df3e76-47af-4007-b57c-e8f2830835e5.jpg",
+            "plot": "백수 시절 내 곁을 지켜줬던 그녀... 돌아와 주면 안 되겠니?\n음식 메뉴마다 담겨 있는 우리들의 연애 흑역사!",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=733074",
+            "webtoon_id": "733074",
+            "start_date": "19.09.01",
+            "total_ep": 152,
+            "genre_arr": [
+                "감성드라마",
+                "드라마",
+                "음식&요리"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "치즈"
+            ],
+            "colorHsl": "32,26,45"
+        },
+        {
+            "name": "호랑신랑뎐",
+            "image": "https://image-comic.pstatic.net/webtoon/795643/thumbnail/thumbnail_IMAG21_bf51fa0f-e374-49f8-973d-c17c5385bbef.jpg",
+            "plot": "산 속에 사는 금슬 좋은 부부! 그러나 이 부부에겐 어딘가 특별한 점이 있다.\n 그건 바로.. 신랑이 사람처럼 걸어다니고 말도 할 수 있는 호랑이라는데..? \n무뚝뚝하지만 마음씨 착한 호랑이 신랑과 장난스럽고 수다스러운 인간 아내가 만나 벌어지는 좌충우돌 일상 이야기!",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=795643",
+            "webtoon_id": "795643",
+            "start_date": "22.06.05",
+            "total_ep": 92,
+            "genre_arr": [
+                "판타지",
+                "동물",
+                "연상연하",
+                "힐링"
+            ],
+            "day_arr": [
+                "월",
+                "목"
+            ],
+            "authors_arr": [
+                "고추참치"
+            ],
+            "colorHsl": "0,1,73"
+        },
+        {
+            "name": "잔불의 기사",
+            "image": "https://image-comic.pstatic.net/webtoon/768536/thumbnail/thumbnail_IMAG21_91c5c081-77e6-4516-a503-2f45aad57401.jpg",
+            "plot": "유일한 가족이자, 최고의 기사 유망주였던 쌍둥이 동생이 살해당했다.\n천재적이었던 동생과는 달리 무예에 재능이 전혀 없지만,\n동생의 복수를 위해 '강함'을 연기하기로 결심했다.\n약해빠진 나는 복수에 성공할 수 있을까.",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=768536",
+            "webtoon_id": "768536",
+            "start_date": "21.03.21",
+            "total_ep": 111,
+            "genre_arr": [
+                "판무",
+                "복수극",
+                "판타지",
+                "세계관"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "환댕"
+            ],
+            "colorHsl": "25,33,11"
+        },
+        {
+            "name": "나 없는 단톡방",
+            "image": "https://image-comic.pstatic.net/webtoon/805907/thumbnail/thumbnail_IMAG21_ab626e51-db74-46ff-8fdb-4a62edbc4fd1.jpg",
+            "plot": "여고생 안효인은 학교에서 친구들과 잘 지내는 편이었다. 학급 내에서는 분위기 파악도 할 줄 알고 때에 따라 친구들을 적당히 웃기기도 했다. \n덕분에 그녀를 적대적으로 대하는 친구들은 거의 없었다. 그러나 어느 날 부터 효인은 영문도 모른 채 묘한 따돌림을 당하기 시작한다. \n스마트 폰을 뒤늦게 산 탓 때문일까. 심지어 효인만 없는 단톡방의 존재까지 알게 된다. \n\n\"내가... 뭘... 잘못한 거지?\"",
+            "grade": "전체이용가",
+            "status": "접기",
+            "webtoon_url": "/webtoon/list?titleId=805907",
+            "webtoon_id": "805907",
+            "start_date": "23.02.12",
+            "total_ep": 12,
+            "genre_arr": [
+                "드라마",
+                "학원물"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "봉수"
+            ],
+            "colorHsl": "198,26,24"
+        },
+        {
+            "name": "꼬리잡기",
+            "image": "https://image-comic.pstatic.net/webtoon/758666/thumbnail/thumbnail_IMAG21_7364564497641911606.jpg",
+            "plot": "건물붕괴 사고로 매몰된 9명의 대학생.\n2주 뒤, 3명은 사망하고 1명은 의식불명인 상태로 발견된다.\n가까스로 구조된 생존자 5명은 그곳에서 있었던 일을 숨기려 하는데... 생존자인 척 숨어있던 살인자에 대한 정황이 드러나기 시작한다.\n수사팀은 이 밀실살인 사건의 처음과 끝을 파헤치게 된다.",
+            "grade": "전체이용가",
+            "status": "연재중",
+            "webtoon_url": "/webtoon/list?titleId=758666",
+            "webtoon_id": "758666",
+            "start_date": "21.07.11",
+            "total_ep": 93,
+            "genre_arr": [
+                "서스펜스",
+                "범죄",
+                "두뇌싸움",
+                "스릴러",
+                "서바이벌",
+                "2020 지상최대공모전"
+            ],
+            "day_arr": [
+                "월"
+            ],
+            "authors_arr": [
+                "바쉬"
+            ],
+            "colorHsl": "18,29,80"
+        }
+    ]
+}

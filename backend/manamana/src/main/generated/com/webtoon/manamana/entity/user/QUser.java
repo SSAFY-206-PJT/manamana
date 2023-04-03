@@ -45,6 +45,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath nickname = createString("nickname");
 
+    public final StringPath refreshToken = createString("refreshToken");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
 

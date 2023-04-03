@@ -1,14 +1,19 @@
 package com.webtoon.manamana.entity.webtoon;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webtoon.manamana.config.entity.BaseTimeEntity;
+import com.webtoon.manamana.entity.user.UserWebtoon;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -27,8 +32,8 @@ public class Webtoon extends BaseTimeEntity {
     private String plot;
     @Column(name = "grade_id")
     private int gradeId;
-    @Column(name = "serial_id")
-    private int serialId;
+    @Column(name = "status_id")
+    private int statusId;
     @Column(name = "webtoon_url")
     private String webtoonUrl;
 
@@ -49,7 +54,27 @@ public class Webtoon extends BaseTimeEntity {
     @JoinColumn(name = "provider_id")
     private WebtoonProvider providerId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "webtoon")
-    private List<Comment> comment = new ArrayList<>();
+    private Set<Comment> comment = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "webtoon")
+    private Set<Author> authors = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy= "webtoon")
+    private Set<WebtoonDay> webtoonDays = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "webtoon")
+    private Set<WebtoonGenre> webtoonGenres = new HashSet<>();
+
+    @OneToOne(mappedBy = "webtoon", fetch = FetchType.LAZY)
+    private WebtoonAddition webtoonAddition;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "webtoon")
+    private Set<UserWebtoon> userWebtoons = new HashSet<>();
 
 }
