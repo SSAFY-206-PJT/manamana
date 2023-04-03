@@ -155,6 +155,8 @@ public class UserServiceImpl implements UserService{
         //관심 웹툰 조회
         List<UserWebtoon> userWebtoons = userWebtoonRepositorySupport.findUserWebtoonLikeAll(user, dayId);
 
+        //
+
         //response DTO 변환
         List<WebtoonInfoDTO> webtoonInfoDTOS = userWebtoons.stream()
                 .map(WebtoonInfoDTO::createDTO)

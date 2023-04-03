@@ -1,9 +1,7 @@
 package com.webtoon.manamana.webtoon.repository.webtoon;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.webtoon.manamana.entity.webtoon.QWebtoonGenre;
-import com.webtoon.manamana.entity.webtoon.Webtoon;
-import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
+import com.webtoon.manamana.entity.webtoon.*;
 import com.webtoon.manamana.entity.webtoon.codetable.QGenre;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -33,4 +31,27 @@ public class WebtoonGenreRepositorySupport extends QuerydslRepositorySupport {
                 .fetch();
     }
 
+    /* 장르별 웹툰 조회수 TOP 10 */
+    public List<Long> findGenreWebtoonTOP10(int genreId) {
+
+        return queryFactory
+                .selectDistinct(QWebtoonGenre.webtoonGenre.webtoon.id)
+                .from(QWebtoonGenre.webtoonGenre)
+                .leftJoin(QWebtoonGenre.webtoonGenre.webtoon, QWebtoon.webtoon)
+                .leftJoin(QWebtoon.webtoon.webtoonAddition, QWebtoonAddition.webtoonAddition)
+                .where(QWebtoonGenre.webtoonGenre.genre.id.eq(genreId))
+                .orderBy(QWebtoonAddition.webtoonAddition.view.desc())
+                .limit(10)
+                .fetch();
+    }
+
+    /* 특정 장르에 속하는 웹툰 조회 */
+    public List<Long> findWebtoonAllByGenre(int genreId) {
+
+        return queryFactory
+                .select(QWebtoonGenre.webtoonGenre.webtoon.id)
+                .from(QWebtoonGenre.webtoonGenre)
+                .where(QWebtoonGenre.webtoonGenre.genre.id.eq(genreId))
+                .fetch();
+    }
 }
