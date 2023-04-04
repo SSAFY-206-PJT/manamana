@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.webtoon.manamana.config.redis.RedisProperty;
+import com.webtoon.manamana.config.redis.RedisUtil;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.*;
@@ -28,10 +30,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -64,6 +68,13 @@ public class UserServiceImpl implements UserService{
     //s3 버킷명
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+
+    //레디스
+    private final RedisUtil redisUtil;
+
+    //레디스 설정
+    private RedisProperty redisProperty;
+
 
     //TODO : jwt로 받은 유저ID와 pathvariable로 받은 유저ID가 같은지 처리하는 로직 필요. - 별도의 메서드로 만들어서 공통처리하도록.
 
@@ -179,6 +190,23 @@ public class UserServiceImpl implements UserService{
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER_WEBTOON));
 
             userWebtoon.removeUserWebtoon();
+
+            //레디스에서 저장중이던 sse 객체 삭제.
+            Map<Long, SseEmitter> sseMap = redisUtil.getData(redisProperty.getSseKey(), id);
+
+            //값이 없으면 예외
+            if(sseMap == null){
+                throw new CustomException(CustomExceptionStatus.NOT_FOUND_NOTIFICATION);
+            }
+            //값이 있지만 해당 유저의 객체가 없을때,
+            else if(!sseMap.containsKey(userId)){
+                throw new CustomException(CustomExceptionStatus.NOT_FOUND_NOTIFICATION);
+            }
+            //다 존재하면 삭제.
+            else{
+                sseMap.remove(userId);
+                redisUtil.setData(redisProperty.getSseKey(),id,sseMap);
+            }
         });
 
     }

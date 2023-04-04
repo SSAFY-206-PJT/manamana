@@ -2,7 +2,10 @@ package com.webtoon.manamana.webtoon.service.addition;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webtoon.manamana.config.redis.RedisProperty;
+import com.webtoon.manamana.config.redis.RedisUtil;
 import com.webtoon.manamana.config.response.exception.CustomException;
+import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.user.UserGenre;
 import com.webtoon.manamana.entity.user.UserWebtoon;
@@ -22,9 +25,13 @@ import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,7 +68,6 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
     //형태소 분석기 등록
     private final Komoran komoran;
 
-    private final ObjectMapper objectMapper;
 
 
     /*작품 댓글 신고기능*/
@@ -90,7 +96,7 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
         comment.commentReport();
     }
 
-    /*작품 관심 등록*/
+    /*작품 관심 등록.*/
     @Override
     public void createLikeWebtoon(long userId,long webtoonId) {
 
@@ -103,17 +109,25 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
                 .orElseThrow(() -> new CustomException(NOT_FOUNT_WEBTOON));
 
         //관심등록 테이블 조회 - 값이 있으면 isLiked 값을 확인해봐야 됨, 값이 없으면 추가
-        userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId, webtoonId)
-                .ifPresentOrElse(
-                        userWebtoon -> {
-                            if(userWebtoon.isLiked())  throw new CustomException(ALREADY_LIKE_WEBTOON);
-                            else userWebtoon.updateLikedUserWebtoon();
-                        },
-                        () -> {
-                            UserWebtoon likeUserWebtoon = UserWebtoon.createLikeUserWebtoon(user, webtoon);
-                            userWebtoonRepository.save(likeUserWebtoon);
-                        }
-                );
+        Optional<UserWebtoon> userWebtoonOptional = userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId, webtoonId);
+
+        //값이 있다면,
+        if(userWebtoonOptional.isPresent()){
+
+            UserWebtoon userWebtoon = userWebtoonOptional.get();
+
+            //이미 좋아요가 되어있다면 예외던짐.
+            if(userWebtoon.isLiked()) throw new CustomException(ALREADY_LIKE_WEBTOON);
+            //없으면 업데이트
+            else userWebtoon.updateLikedUserWebtoon();
+        }
+        //값이 없다면
+        else{
+            //새로 생성.
+            UserWebtoon likeUserWebtoon = UserWebtoon.createLikeUserWebtoon(user, webtoon);
+            userWebtoonRepository.save(likeUserWebtoon);
+        }
+
     }
 
     // TODO: 2023-04-02 분석속도가 느리기 때문에, 댓글을 입력받을 때마다 형태소 분석기를 돌려서 댓글별로 키워드를 저장해두도록 변경필요.
