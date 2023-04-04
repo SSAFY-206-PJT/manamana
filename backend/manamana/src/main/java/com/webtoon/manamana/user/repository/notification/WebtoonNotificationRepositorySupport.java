@@ -23,8 +23,8 @@ public class WebtoonNotificationRepositorySupport extends QuerydslRepositorySupp
         this.queryFactory = queryFactory;
     }
 
-    /*유저의 알람 전체 조회*/
-    List<WebtoonNotification> getWebtoonNotificationByUserAll(User user){
+    /*유저의 알람 전체 조회 - 시간순으로 내림차순 정렬*/
+    public List<WebtoonNotification> findWebtoonNotificationByUserAll(User user){
 
         QWebtoonNotification webtoonNotification = QWebtoonNotification.webtoonNotification;
         return queryFactory
@@ -32,11 +32,12 @@ public class WebtoonNotificationRepositorySupport extends QuerydslRepositorySupp
                 .leftJoin(webtoonNotification.webtoon, QWebtoon.webtoon)
                 .fetchJoin()
                 .where(webtoonNotification.isChecked.eq(false), webtoonNotification.user.eq(user))
+                .orderBy(webtoonNotification.createTime.desc())
                 .fetch();
     }
 
     /*유저의 알람에 해당하는 정보 조회*/
-    Optional<WebtoonNotification> getWebtoonNotificationByUserAndWebtoon(User user, Webtoon webtoon){
+    public Optional<WebtoonNotification> findWebtoonNotificationByUserAndWebtoon(User user, Webtoon webtoon){
 
         QWebtoonNotification webtoonNotification = QWebtoonNotification.webtoonNotification;
         return Optional.ofNullable(
