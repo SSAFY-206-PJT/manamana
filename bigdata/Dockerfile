@@ -1,12 +1,12 @@
 FROM python:3.10
 
-ENV APP_HOME=/usr/app
+ENV APP_HOME=/usr/app/bigdata
 
 WORKDIR $APP_HOME
 
-COPY . ./bigdata/
+COPY . .
 
-RUN pip install -r ./bigdata/requirements.txt
+RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
