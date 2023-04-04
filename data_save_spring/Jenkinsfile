@@ -12,6 +12,7 @@ pipeline {
                     CONTAINER_NAME = "crawling-api"
                     PROJECT_DIR = "crawling/data_save_spring/"
                     DOCKER_FILE_PATH = "data_save_spring/"
+                    DOCKER_COMPOSE_PATH = "/var/jenkins_home/workspace/crawling"
                 }
             }
         }
@@ -60,29 +61,30 @@ pipeline {
 
         stage("Server Run") {
             steps {
-                script {
-                    sh "pwd"
-                    sh "ls"
-                    sh "cd .."
-                    sh "pwd"
-                    // 도커 컴포즈 down
-                    sh "docker compose down"
+                dir("${APPLICATION_YML_PATH}"){
 
-                    //컨테이너 확인
-                    sh "docker ps -a"
+                    script {
+                        sh "pwd"
+                        sh "ls"
+                        // 도커 컴포즈 down
+                        sh "docker compose down"
 
-                    // 최신 이미지 PULL
-                    sh "docker pull ${IMAGE_NAME}:latest"
+                        //컨테이너 확인
+                        sh "docker ps -a"
 
-                    // 이미지 확인
-                    sh "docker images"
+                        // 최신 이미지 PULL
+                        sh "docker pull ${IMAGE_NAME}:latest"
 
-                    // 도커 컴포즈 start
-                    sh "docker compose up -d"
+                        // 이미지 확인
+                        sh "docker images"
 
-                    // 컨테이너 확인 - 로그 확인용
-                    sh "docker ps -a"
+                        // 도커 컴포즈 start
+                        sh "docker compose up -d"
 
+                        // 컨테이너 확인 - 로그 확인용
+                        sh "docker ps -a"
+
+                    }
                 }
             }
         }
