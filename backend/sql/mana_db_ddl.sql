@@ -333,6 +333,27 @@ CREATE TABLE IF NOT EXISTS `mana_db`.`prefer_genres` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `mana_db`.`webtoon_notifications`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mana_db`.`webtoon_notifications` (
+  `id` BIGINT NOT NULL,
+  `webtoon_id` BIGINT NOT NULL,
+  `episode` INT NOT NULL,
+  `is_checked` TINYINT NOT NULL,
+  `create_time` TIMESTAMP NOT NULL,
+  `update_time` TIMESTAMP NOT NULL,
+  `user_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_webtoon_notifications_users1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_webtoon_notifications_users1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `mana_db`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
