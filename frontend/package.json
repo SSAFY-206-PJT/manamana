@@ -13,6 +13,7 @@
     "@emotion/babel-plugin-jsx-pragmatic": "^0.2.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.13",
     "@reduxjs/toolkit": "^1.9.3",
     "@types/node": "18.15.1",

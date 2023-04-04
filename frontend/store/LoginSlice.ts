@@ -4,8 +4,8 @@ export interface IsLogin {
   isLogin: boolean;
   userId: number | null;
   email: string | null;
-  nickname: string | null;
-  imagePath: string | null;
+  nickname: string;
+  imagePath: string;
   gender: string | null;
   age: number | null;
   likeCount: number;
@@ -16,8 +16,8 @@ const initialState: IsLogin = {
   isLogin: false,
   userId: null,
   email: null,
-  nickname: null,
-  imagePath: null,
+  nickname: '',
+  imagePath: '',
   gender: null,
   age: null,
   likeCount: 0,

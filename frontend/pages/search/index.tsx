@@ -3,7 +3,7 @@ import Headerbar from '../../components/common/Headerbar';
 import SearchBar from '@/components/pages/search/SearchBar';
 import AngleDown from '../../public/images/fi-rs-angle-small-down.svg';
 import Link from 'next/link';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState, useRef } from 'react';
 import { RootState } from '../../store/index';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -35,6 +35,7 @@ export default function SearchPage() {
 
   const [webtoonList, setWebtoonList] = useState<any[]>([]); // 웹툰 정보 리스트
   const [webtoonListElement, setWebtoonListElement] = useState<any | null>(null); // 웹툰 정보를 이용하여 Element로 변환한 값
+  const [webtoonCount, setWebtoonCount] = useState<number>(9999); // 전체 웹툰 리스트의 길이
 
   const [searchText, setSearchText] = useState<string>('');
   const [tempSearchText, setTempSearchText] = useState(searchText);
@@ -42,7 +43,7 @@ export default function SearchPage() {
   const [sortType, setSortType] = useState<number>(1); // 정렬기준 1: 조회순 2: 평점 높은 순 3: 댓글 많은 순
   const [sortTypeString, setSortTypeString] = useState<string>('조회순');
   const [sortOpen, setSortOpen] = useState<boolean>(false);
-  let pageNum = 0;
+  const [pageNum, setPageNum] = useState<number>(1);
 
   /*
    * @Method
@@ -156,7 +157,7 @@ export default function SearchPage() {
         dayId: curSearchTag.days.map(v => v.key),
       }).then(res => {
         if (res != null) {
-          setWebtoonList(res);
+          setWebtoonList(res.contents);
         }
       });
     }
@@ -176,11 +177,8 @@ export default function SearchPage() {
       dayId: curSearchTag.days.map(v => v.key),
     }).then(res => {
       if (res != null) {
-        console.log('여기 봐야함', curSearchTag)
-        console.log('sortType', sortType)
-        console.log('statusId', curSearchTag.status.map(v => v.key))
-        console.log('gradeId', curSearchTag.grades.map(v => v.key))
-        setWebtoonList(res);
+        setWebtoonList(res.contents);
+        setWebtoonCount(res.count);
       }
     });
   }, [sortType, curSearchTag]);
@@ -201,8 +199,42 @@ export default function SearchPage() {
     );
   }, [webtoonList]);
 
+  const scrollRef = useRef<any>(null);
+  const scrollNext = () => {
+    const nextPage = pageNum + 1;
+    console.log(nextPage);
+    getWebtoons({
+      keyword: searchText,
+      page: nextPage, // 페이지 숫자
+      size: 21, // 한 페이지에 몇 개를 받을 건지
+      sortType: sortType,
+      statusId: curSearchTag.status.map(v => v.key),
+      genreId: curSearchTag.genres.map(v => v.key),
+      gradeId: curSearchTag.grades.map(v => v.key),
+      dayId: curSearchTag.days.map(v => v.key),
+    }).then(res => {
+      if (res != null) {
+        setPageNum(nextPage);
+        setWebtoonList([...webtoonList, ...res.contents]);
+      }
+    });
+  };
+  const scrollFn = () => {
+    // 스크롤 맨 밑에서
+    if (
+      scrollRef.current.scrollTop ===
+      scrollRef.current.scrollHeight - scrollRef.current.clientHeight
+    ) {
+      scrollNext();
+    }
+  };
+
   return (
-    <div className="h-screen w-screen bg-BackgroundLight">
+    <div
+      className="h-screen w-screen overflow-auto bg-BackgroundLight"
+      ref={scrollRef}
+      onScroll={scrollFn}
+    >
       <Headerbar showBackBtn={true} pageName="탐색" rightBtn="EDIT" />
       <div className="m-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-2">
         <SearchBar onSearchBarChange={onSearchBarChange} />
@@ -210,7 +242,8 @@ export default function SearchPage() {
           <div className="pl-2 pr-2 text-xl font-bold">
             <span>전체</span>
             <span className="ml-1 text-PrimaryLight">
-              {webtoonList.length > 999 ? '999+' : webtoonList.length}
+              {/* {webtoonList.length > 999 ? '999+' : webtoonList.length} */}
+              {webtoonCount}
             </span>
             <span className="ml-1">개</span>
           </div>

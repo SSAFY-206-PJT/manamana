@@ -152,8 +152,10 @@ for d_id in days:
             total_ep = soup.select_one('#__next > div > div.flex.w-full.grow.flex-col.px-122pxr > div.flex.h-full.flex-1 > div.mb-28pxr.ml-4px.flex.w-632pxr.flex-col > div:nth-child(2) > div:nth-child(1) > div.flex.h-44pxr.w-full.flex-row.items-center.justify-between.px-15pxr.bg-bg-a-20 > div.flex.h-full.flex-1.items-center.space-x-8pxr > span').get_text()
             webtoon_info.total_ep = total_ep[3:]
 
-            webtoon_info.start_date = soup.select_one(
+            start_date = soup.select_one(
                 '#__next > div > div.flex.w-full.grow.flex-col.px-122pxr > div.flex.h-full.flex-1 > div.mb-28pxr.ml-4px.flex.w-632pxr.flex-col > div:nth-child(2) > div:nth-child(1) > div.min-h-360pxr > ul > li:nth-child(1) > div > div > a > div > div.flex.flex-col > div.text-ellipsis.line-clamp-1.font-small2.text-el-60 > span').get_text()
+
+            webtoon_info.start_date = start_date[2:]
 
             # 작품소개로 이동
             info_url = webtoon_ori_url + "?tab_type=about"

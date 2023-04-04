@@ -52,7 +52,7 @@ export default function ProfilePage({ userData }: any) {
       cancelButtonColor: '#BE3455',
       confirmButtonText: '예',
       cancelButtonText: '아니오',
-    }).then(result => {
+    }).then((result: any) => {
       if (result.isConfirmed) {
         setCookie('accessToken', '');
         router.push('/login');
@@ -72,7 +72,7 @@ export default function ProfilePage({ userData }: any) {
         cancelButtonColor: '#BE3455',
         confirmButtonText: '예',
         cancelButtonText: '아니오',
-      }).then(result => {
+      }).then((result: any)  => {
         if (result.isConfirmed) {
           removeUserAxios();
           Swal.fire({ icon: 'success', title: '회원탈퇴 완료' });

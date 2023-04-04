@@ -64,7 +64,7 @@ export default MyCommentPage;
 export const getServerSideProps: GetServerSideProps = async context => {
   const token = context.req.cookies.accessToken;
 
-  const commentRes = await axios.get('mana/users/1/comments', {
+  const commentRes = await axios.get('https://j8b206.p.ssafy.io/api/users/1/comments', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,

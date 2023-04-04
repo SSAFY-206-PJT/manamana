@@ -1,8 +1,11 @@
 import { GetServerSideProps } from 'next';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { setCookie } from '@/util/cookie';
 import { css } from '@emotion/react';
+import { userInfo } from '../api/detail';
+import { setLogin, setUserInfo } from '@/store/LoginSlice';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   token: string | null;
@@ -10,16 +13,39 @@ interface Props {
 
 function Login({ token }: Props) {
   if (token) {
+    const [loading, setLoading] = useState<Boolean>(true);
     const router = useRouter();
-    const gogo = () => {
-      router.push('/');
+    const dispatch = useDispatch();
+    const userInfoAPI = async () => {
+      const res = await userInfo(token);
+      console.log(res.result);
+      if (res.result) {
+        dispatch(setUserInfo(res.result.result));
+        dispatch(setLogin(true));
+        setLoading(false);
+      }
     };
+
+    useEffect(() => {
+      if (!loading) {
+        router.push('/');
+      }
+    }, [loading]);
+
     useEffect(() => {
       setCookie('accessToken', token, { path: '/', secure: true });
       localStorage.setItem('accessToken', token);
-      gogo();
+      userInfoAPI();
     }, []);
-    return <div onClick={gogo}>로그인 성공, 사용자 정보 받아오는중</div>;
+    return (
+      <div
+        onClick={() => {
+          router.push('/');
+        }}
+      >
+        로그인 성공, 사용자 정보 받아오는중
+      </div>
+    );
   } else {
     const lezhinLogo = (
       <img
