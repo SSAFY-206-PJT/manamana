@@ -435,7 +435,7 @@ function DetailPage({ res }: Props) {
         </div>
         <div style={coverStyle} className="absolute h-auto w-full">
           <div className="m-3 flex h-12 justify-between">
-            <button onClick={() => router.push('/')}>
+            <button onClick={() => router.back()}>
               <ThemeProvider theme={theme}>
                 <ArrowBackIosNewIcon fontSize="large" color="primary" />
               </ThemeProvider>

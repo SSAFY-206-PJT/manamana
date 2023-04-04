@@ -35,6 +35,7 @@ export default function SearchPage() {
 
   const [webtoonList, setWebtoonList] = useState<any[]>([]); // 웹툰 정보 리스트
   const [webtoonListElement, setWebtoonListElement] = useState<any | null>(null); // 웹툰 정보를 이용하여 Element로 변환한 값
+  const [webtoonCount, setWebtoonCount] = useState<number>(9999); // 전체 웹툰 리스트의 길이
 
   const [searchText, setSearchText] = useState<string>('');
   const [tempSearchText, setTempSearchText] = useState(searchText);
@@ -141,7 +142,6 @@ export default function SearchPage() {
 
     return () => clearTimeout(debounce);
   }, [tempSearchText]);
-
   useEffect(() => {
     if (searchText !== '') {
       // 각 세팅 + 검색어(searchText) 를 통해 웹툰을 검색한다.
@@ -156,7 +156,7 @@ export default function SearchPage() {
         dayId: curSearchTag.days.map(v => v.key),
       }).then(res => {
         if (res != null) {
-          setWebtoonList(res);
+          setWebtoonList(res.contents);
         }
       });
     }
@@ -176,11 +176,8 @@ export default function SearchPage() {
       dayId: curSearchTag.days.map(v => v.key),
     }).then(res => {
       if (res != null) {
-        console.log('여기 봐야함', curSearchTag)
-        console.log('sortType', sortType)
-        console.log('statusId', curSearchTag.status.map(v => v.key))
-        console.log('gradeId', curSearchTag.grades.map(v => v.key))
-        setWebtoonList(res);
+        setWebtoonList(res.contents);
+        setWebtoonCount(res.count);
       }
     });
   }, [sortType, curSearchTag]);
@@ -210,7 +207,8 @@ export default function SearchPage() {
           <div className="pl-2 pr-2 text-xl font-bold">
             <span>전체</span>
             <span className="ml-1 text-PrimaryLight">
-              {webtoonList.length > 999 ? '999+' : webtoonList.length}
+              {/* {webtoonList.length > 999 ? '999+' : webtoonList.length} */}
+              {webtoonCount}
             </span>
             <span className="ml-1">개</span>
           </div>
