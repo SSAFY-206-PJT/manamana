@@ -10,7 +10,7 @@ pipeline {
                     SPRING_BUILD_PATH = "./data_save_spring/crawling"
                     APPLICATION_YML_PATH = "/var/jenkins_home/workspace"
                     CONTAINER_NAME = "crawling-api"
-                    PROJECT_DIR = "crawling-spring-boot/data_save_spring/"
+                    PROJECT_DIR = "crawling/data_save_spring/"
                     DOCKER_FILE_PATH = "data_save_spring/"
                 }
             }
