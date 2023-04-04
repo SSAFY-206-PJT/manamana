@@ -93,7 +93,7 @@ function CommentPage({ webtoon, comments }: Props) {
         setCommentList([newComment, ...commentList]);
         return true;
       } else {
-        alert(data);
+        console.log(data);
         return false;
       }
     };
