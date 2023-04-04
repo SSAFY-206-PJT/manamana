@@ -62,7 +62,7 @@ pipeline {
                     sh "docker images"
 
                     // 최신 이미지 RUN
-                    sh "docker run -d --name ${CONTAINER_NAME} -p 8000 ${IMAGE_NAME}:latest"
+                    sh "docker run -d --name ${CONTAINER_NAME} -p 8000:8000 ${IMAGE_NAME}:latest"
 
                     // 컨테이너 확인 - 로그 확인용
                     sh "docker ps -a"
