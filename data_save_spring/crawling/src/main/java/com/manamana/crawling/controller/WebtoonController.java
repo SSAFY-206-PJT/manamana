@@ -32,5 +32,4 @@ public class WebtoonController {
     public ResponseRecommendDataDTO recommend() {
         return recommendService.dummyRecommendData();
     }
-
 }

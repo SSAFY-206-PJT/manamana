@@ -8,5 +8,5 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class WebtoonUpdateDTO {
-    private List<Long> ids;
+    private List<Long> data;
 }
