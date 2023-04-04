@@ -39,6 +39,7 @@ function Home({ likeWebtoons }: Props) {
   const user = useSelector((state: RootState) => state.isLogin);
   //// api
   // 관심웹툰
+
   // 장르(genreId), 나이(age-group), 성별(gender)
   const [genreRec, setGenreRec] = useState<WTItem[]>();
   const [ageRec, setAgeRec] = useState<WTItem[]>();
