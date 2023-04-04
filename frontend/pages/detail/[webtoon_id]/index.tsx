@@ -395,7 +395,7 @@ function DetailPage({ res }: Props) {
         setSimilarWebtoon(data.result);
         console.log(data.result);
       } else if (data) {
-        console.log(data.message);
+        console.log('getElseWebtoon', data.message);
       } else {
         console.log('getElseRecommend통신오류');
       }

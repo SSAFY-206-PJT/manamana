@@ -34,6 +34,7 @@ interface Props {
 }
 
 function Home({ likeWebtoons }: Props) {
+  console.log('likeWebtoons', likeWebtoons);
   const router = useRouter();
   const token = getCookie('accessToken');
   const user = useSelector((state: RootState) => state.isLogin);
@@ -345,7 +346,7 @@ export async function getServerSideProps(context: any) {
   }
 
   const res = await api.getUserLike(token);
-  if (res && res.length > 0) {
+  if (res && res.result.length > 0) {
     const likeWebtoons = res.result;
     return { props: { likeWebtoons } };
   } else {
