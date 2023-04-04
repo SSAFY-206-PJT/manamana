@@ -172,5 +172,6 @@ public class UserInteractionController {
         return responseService.getSuccessResponse();
     }
 
+    /*유저가 받은 알람*/
 
 }
