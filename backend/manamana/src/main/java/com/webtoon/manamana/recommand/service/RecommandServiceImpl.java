@@ -9,13 +9,10 @@ import com.webtoon.manamana.entity.webtoon.Author;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommendApiRequestDTO;
-import com.webtoon.manamana.recommand.dto.request.RecommandWebtoonRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.*;
 import com.webtoon.manamana.user.repository.user.*;
-import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepositorySupport;
-import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -129,15 +126,12 @@ public class RecommandServiceImpl implements RecommandService {
         switch (listLen) {
             case 0: // 선호 장르가 없을 때
                 genreId = random.nextInt(16) + 1;
-                System.out.println("case0 : " + genreId);
                 break;
             case 1:
                 genreId = userGenreMaxWeightList.get(0);
-                System.out.println("case1 : " + genreId);
                 break;
             default: // 선호 장르 가중치가 최대인 값이 여러개일 때
                 genreId = userGenreMaxWeightList.get(random.nextInt(listLen));
-                System.out.println("many : " + genreId);
                 break;
         }
 
@@ -145,7 +139,6 @@ public class RecommandServiceImpl implements RecommandService {
         List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
 
         for (long webtoonId : webtoonIdList) {
-            System.out.println("webtoonId = " + webtoonId);
             List<UserWebtoon>  userWebtoonList = userWebtoonRepositorySupport.findByWebtoonIdAndIsDeletedFalse(webtoonId);
 
             for (UserWebtoon userWebtoon : userWebtoonList) {
