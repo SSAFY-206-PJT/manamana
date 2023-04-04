@@ -1,5 +1,6 @@
 package com.webtoon.manamana.entity.user;
 
+import com.webtoon.manamana.entity.webtoon.Webtoon;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,9 +17,6 @@ public class WebtoonNotification {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "webtoon_id")
-    private long webtoonId;
-
     @Column(name = "episode")
     private int episode;
 
@@ -28,4 +26,8 @@ public class WebtoonNotification {
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @JoinColumn(name = "webtoon_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Webtoon webtoon;
 }

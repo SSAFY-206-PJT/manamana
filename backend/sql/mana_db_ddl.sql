@@ -337,18 +337,24 @@ ENGINE = InnoDB;
 -- Table `mana_db`.`webtoon_notifications`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mana_db`.`webtoon_notifications` (
-  `id` BIGINT NOT NULL,
-  `webtoon_id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `episode` INT NOT NULL,
   `is_checked` TINYINT NOT NULL,
   `create_time` TIMESTAMP NOT NULL,
   `update_time` TIMESTAMP NOT NULL,
   `user_id` BIGINT NOT NULL,
+  `webtoon_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_webtoon_notifications_users1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_webtoon_notifications_webtoons1_idx` (`webtoon_id` ASC) VISIBLE,
   CONSTRAINT `fk_webtoon_notifications_users1`
     FOREIGN KEY (`user_id`)
     REFERENCES `mana_db`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_webtoon_notifications_webtoons1`
+    FOREIGN KEY (`webtoon_id`)
+    REFERENCES `mana_db`.`webtoons` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

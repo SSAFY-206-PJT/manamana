@@ -55,6 +55,10 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<Comment> comment = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<WebtoonNotification> webtoonNotification = new ArrayList<>();
+
     @Builder
     public User(String email, String nickname, String imagePath, String gender, int age, boolean isDeleted, LoginProvider loginProvider) {
         this.email = email;
