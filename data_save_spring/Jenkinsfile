@@ -61,7 +61,7 @@ pipeline {
 
         stage("Server Run") {
             steps {
-                dir("${APPLICATION_YML_PATH}"){
+                dir("${DOCKER_COMPOSE_PATH}"){
 
                     script {
                         sh "pwd"
