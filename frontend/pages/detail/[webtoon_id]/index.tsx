@@ -70,7 +70,7 @@ function DetailPage({ res }: Props) {
           setIsLike(true);
         } else {
           console.log(data);
-          alert(data?.message);
+          console.log(data?.message);
         }
       } else {
         const data = await api.unlikeWebtoon(1, [webtoon.id], token);
@@ -78,7 +78,7 @@ function DetailPage({ res }: Props) {
           setIsLike(false);
         } else {
           console.log(data);
-          alert(data?.message);
+          console.log(data?.message);
         }
       }
     };
@@ -242,9 +242,9 @@ function DetailPage({ res }: Props) {
         setAfterRating(true);
         setMyScore(ratingInput);
       } else if (data) {
-        alert(data.message);
+        console.log(data.message);
       } else {
-        alert('postRating 통신오류');
+        console.log('postRating 통신오류');
       }
     };
 
@@ -395,9 +395,9 @@ function DetailPage({ res }: Props) {
         setSimilarWebtoon(data.result);
         console.log(data.result);
       } else if (data) {
-        alert(data.message);
+        console.log(data.message);
       } else {
-        alert('getElseRecommend통신오류');
+        console.log('getElseRecommend통신오류');
       }
     };
 
