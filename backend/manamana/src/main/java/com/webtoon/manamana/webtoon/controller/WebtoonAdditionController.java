@@ -86,7 +86,6 @@ public class WebtoonAdditionController {
     }
 
     /*댓글 워드 클라우드*/
-    //TODO : 기능 보류
     @Tag(name = "웹툰 추가 기능")
     @Operation(summary = "댓글 워드 클라우드", description =  "댓글 워드 클라우드 기능")
     @ApiResponses({
