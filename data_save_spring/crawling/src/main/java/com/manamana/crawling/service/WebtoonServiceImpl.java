@@ -61,13 +61,13 @@ public class WebtoonServiceImpl implements WebtoonService {
             saveAddition(webtoon);
         });
 
+        WebtoonUpdateDTO webtoonUpdateDTO = WebtoonUpdateDTO.createDTO(ids);
+
         String block = webClient().post()
-                .uri("/alarm")
-                .bodyValue(ids)
+                .uri("/webtoons/alarm")
+                .bodyValue(webtoonUpdateDTO)
                 .retrieve()
                 .bodyToMono(String.class).block();
-
-        System.out.println(block);
     }
 
     // 웹툰 저장
