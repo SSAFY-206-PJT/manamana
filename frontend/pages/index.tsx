@@ -6,62 +6,34 @@ import Navbar from '../components/common/Navbar';
 import WebtoonContainer from '../components/common/WebtoonContainer';
 import WebtoonItem from '../components/common/WebtoonItem';
 import Top10 from '../components/common/Top10';
+import axios from 'axios';
 import * as api from '@/pages/api/detail';
 import { getCookie } from '@/util/cookie';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#FFFFFF',
-    },
-  },
-});
-
-interface WTItem {
-  id: number;
-  name: string;
-  imagePath: string;
-  status: string;
-}
 
 interface Props {
-  likeWebtoons: any;
+  home: any;
 }
 
-function Home({ likeWebtoons }: Props) {
+function Home({ home }: Props) {
   const router = useRouter();
   const token = getCookie('accessToken');
-  const user = useSelector((state: RootState) => state.isLogin);
   //// api
   // 관심웹툰
-
-  // 장르(genreId), 나이(age-group), 성별(gender)
-  const [genreRec, setGenreRec] = useState<WTItem[]>();
-  const [ageRec, setAgeRec] = useState<WTItem[]>();
-  const [genderRec, setGenderRec] = useState<WTItem[]>();
-
-  const getRec = async () => {
-    const genreRes = await api.algoWebtoons(token, 'genreId');
-    setGenreRec(genreRes?.result);
-    const ageRes = await api.algoWebtoons(token, 'age-group');
-    setAgeRec(ageRes?.result);
-    const genderRes = await api.algoWebtoons(token, 'gender');
-    setGenderRec(genderRes?.result);
-    console.log('genreRes.result', genreRes?.result);
-    console.log('ageRes.result', ageRes?.result);
-    console.log('genderRes.result', genderRes?.result);
-  };
-
-  const genderKR = (en: string) => {
-    if (en === 'male') {
-      return '남자';
-    } else {
-      return '여자';
+  const defaultLikeWebtoon = [
+    {
+      id: 0,
+      name: '등록해보세요',
+      imagePath: '/icon-192x192.png',
+      status: '연재중',
+    },
+  ];
+  const [likeWebtoons, setLikeWebtoons] = useState<Array<any>>(defaultLikeWebtoon);
+  const getUserLike = async () => {
+    const res = await api.getUserLike(token);
+    // console.log(res.result);
+    if (res.result && res.result.length > 0) {
+      setLikeWebtoons(res.result);
     }
   };
 
@@ -77,7 +49,7 @@ function Home({ likeWebtoons }: Props) {
   // home화면 초기화
   useEffect(() => {
     // api 요청
-    getRec();
+    getUserLike();
 
     let prevScrollPosition = 0;
     const handleScroll = () => {
@@ -182,11 +154,9 @@ function Home({ likeWebtoons }: Props) {
       {/* 최상위 헤더 */}
       <div className="sticky top-0 z-10 flex h-14 w-screen items-center justify-between bg-PrimaryLight px-5">
         <div className="h-6 w-6"></div>
-        <img src="/icon-192x192.png" alt="Logo" className="h-10 w-10"></img>
+        <img src="/images/MNMN_Logo_White.png" alt="Logo" className="h-10 w-10"></img>
         <Link href="/notification">
-          <ThemeProvider theme={theme}>
-            <NotificationsNoneIcon fontSize="large" color="primary" />
-          </ThemeProvider>
+          <img src="/images/HeaderBar_Noti.png" alt="Noti"></img>
         </Link>
       </div>
       {/* TOP 10 */}
@@ -199,16 +169,15 @@ function Home({ likeWebtoons }: Props) {
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'내가 보는 웹툰'} route={'my-webtoon'} />
           <WebtoonItemContainer>
-            {likeWebtoons &&
-              likeWebtoons.map((webtoon: any) => (
-                <WebtoonItem
-                  key={webtoon.id}
-                  id={webtoon.id}
-                  webtoonName={webtoon.name}
-                  imageUrl={webtoon.imagePath}
-                  status={webtoon.status}
-                />
-              ))}
+            {likeWebtoons.map((webtoon: any) => (
+              <WebtoonItem
+                key={webtoon.id}
+                id={webtoon.id}
+                webtoonName={webtoon.name}
+                imageUrl={webtoon.imagePath}
+                status={webtoon.status}
+              />
+            ))}
           </WebtoonItemContainer>
         </div>
       </div>
@@ -242,7 +211,7 @@ function Home({ likeWebtoons }: Props) {
                 <img className="z-10 h-24 w-24 p-2" src="/images/character.png" alt="hi"></img>
                 <Link href="/managola">
                   <div className="flex items-center p-2 font-bold">
-                    취향검사<br></br>하러가기
+                    취향검사<br />하러가기
                   </div>
                 </Link>
               </div>
@@ -278,52 +247,17 @@ function Home({ likeWebtoons }: Props) {
       </div>
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
-          <WebtoonContainer categoryTitle={'장르 추천'} />
+          <WebtoonContainer categoryTitle={'이 달의 신작'} />
           <WebtoonItemContainer>
-            {genreRec &&
-              genreRec.map(webtoon => (
-                <WebtoonItem
-                  key={webtoon.id}
-                  id={webtoon.id}
-                  webtoonName={webtoon.name}
-                  imageUrl={webtoon.imagePath}
-                  status={webtoon.status}
-                />
-              ))}
-          </WebtoonItemContainer>
-        </div>
-      </div>
-      <div className="mb-3 flex justify-center">
-        <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
-          <WebtoonContainer categoryTitle={`${user.age}대 추천`} />
-          <WebtoonItemContainer>
-            {ageRec &&
-              ageRec.map(webtoon => (
-                <WebtoonItem
-                  key={webtoon.id}
-                  id={webtoon.id}
-                  webtoonName={webtoon.name}
-                  imageUrl={webtoon.imagePath}
-                  status={webtoon.status}
-                />
-              ))}
-          </WebtoonItemContainer>
-        </div>
-      </div>
-      <div className="mb-3 flex justify-center">
-        <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
-          <WebtoonContainer categoryTitle={`${user?.gender && genderKR(user.gender)} 추천`} />
-          <WebtoonItemContainer>
-            {genderRec &&
-              genderRec.map(webtoon => (
-                <WebtoonItem
-                  key={webtoon.id}
-                  id={webtoon.id}
-                  webtoonName={webtoon.name}
-                  imageUrl={webtoon.imagePath}
-                  status={webtoon.status}
-                />
-              ))}
+            {myWebtoonDummy.map(webtoon => (
+              <WebtoonItem
+                key={webtoon.id}
+                id={webtoon.id}
+                webtoonName={webtoon.name}
+                imageUrl={webtoon.imagePath}
+                status={webtoon.status}
+              />
+            ))}
           </WebtoonItemContainer>
         </div>
       </div>
