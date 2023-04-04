@@ -22,8 +22,11 @@ export default function WebtoonItem({ id, imageUrl, webtoonName, status }: Props
 
   return (
     <div className="inline-block" onClick={onWebtoonClick}>
-      <div className="mr-2 flex flex-col">
-        <img src={imageUrl} alt="imageURL" className="h-30 mt-2 w-24"></img>
+      <div className="mr-2 flex flex-col">        
+        <div className="mt-2 h-[124px] w-[96px]">
+          <img src={imageUrl} alt="imageURL" className="h-full w-full"></img>
+        </div>
+
         <div className="mt-1 flex h-4 flex-row items-center overflow-hidden text-sm">
           {status === '휴재중' ? <WebtoonBreakLabel /> : <></>}
           {status === '완결' ? <WebtoonCompleteLabel /> : <></>}
