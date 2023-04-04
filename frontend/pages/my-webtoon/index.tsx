@@ -48,7 +48,6 @@ export default function MyWebtoonPage(props: Props) {
     const res = await getUserLike(token);
     if (res.result) {
       setLikeWebtoons(res.result);
-      console.log(res.result);
     }
   };
 
@@ -156,7 +155,6 @@ export default function MyWebtoonPage(props: Props) {
   }, []);
 
   useEffect(() => {
-    console.log('selectedDays', selectedDays);
     const newRes: Array<any> = [];
     const newElse: Array<any> = [];
     likeWebtoons.forEach((webtoon: any) => {

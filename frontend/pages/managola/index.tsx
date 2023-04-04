@@ -91,7 +91,7 @@ export default function ManagolaPage() {
   };
 
   // 보러가기 클릭
-  const goSeeClick = value => {
+  const goSeeClick = (value:any) => {
     const router = useRouter();
     router.push(`/details/${value.id}`);
   };
