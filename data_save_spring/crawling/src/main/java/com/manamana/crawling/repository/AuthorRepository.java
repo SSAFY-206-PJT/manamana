@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
-    Optional<Author> findByNameAndWebtoon(String name, Webtoon webtoon);
+    List<Author> findByNameAndWebtoon(String name, Webtoon webtoon);
 
     List<Author> findByWebtoon(Webtoon webtoon);
 

@@ -1,5 +1,7 @@
 package com.manamana.crawling.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.manamana.crawling.dto.WebtoonUpdateDTO;
 import com.manamana.crawling.entity.webtoon.*;
 import com.manamana.crawling.entity.webtoon.codetable.DayCode;
 import com.manamana.crawling.entity.webtoon.codetable.Genre;
@@ -9,12 +11,16 @@ import com.manamana.crawling.dto.WebtoonDataArrayDTO;
 import com.manamana.crawling.repository.WebtoonProviderRepository;
 import com.manamana.crawling.repository.WebtoonRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,17 +39,37 @@ public class WebtoonServiceImpl implements WebtoonService {
     private final AuthorRepository authorRepository;
     private final WebtoonAdditionRepository webtoonAdditionRepository;
 
+    public WebClient webClient() {
+        return WebClient.create("http://localhost:8080");
+    }
+
+
     // 웹툰 데이터 리스트 처리
     public void webtoonsData(WebtoonDataArrayDTO webtoonDataArrayDTO) {
         int providerId = webtoonDataArrayDTO.getProvider_id();
         List<WebtoonDataDTO> webtoonData = webtoonDataArrayDTO.getData();
+
+        // 업데이트 리스트를 저장
+         List<Long> ids = new ArrayList<>();
+
         webtoonData.forEach(w -> {
             Webtoon webtoon = saveWebtoon(providerId, w);
+            ids.add(webtoon.getId());
             saveGenre(webtoon, w);
             saveDay(webtoon, w);
             saveAuthor(webtoon, w);
             saveAddition(webtoon);
         });
+
+        webClient().post()
+                .uri("/alarm")
+                .bodyValue(ids)
+                .retrieve()
+                .bodyToMono(String.class);
+
+
+
+
     }
 
     // 웹툰 저장
@@ -69,6 +95,8 @@ public class WebtoonServiceImpl implements WebtoonService {
         WebtoonProvider webtoonProvider = webtoonProviderRepository.findById(provider).orElseThrow();
 
         Optional<Webtoon> findedWebtoon = webtoonRepository.findByWebtoonIdAndProviderId(webtoonId, webtoonProvider);
+
+
 
         if (!findedWebtoon.isEmpty()) {
             Webtoon updatedWebtoon = findedWebtoon.get();
@@ -232,11 +260,13 @@ public class WebtoonServiceImpl implements WebtoonService {
 
         authorRepository.saveAll(authors);
 
-        List<Author> deleteAuthors = deletedList.stream()
-                .map(a -> {
-                    return authorRepository.findByNameAndWebtoon(a, webtoon).get();
-                })
-                .collect(Collectors.toList());
+        List<Author> deleteAuthors = new ArrayList<>();
+        deletedList.stream()
+                .forEach(a -> {
+                    List<Author> byNameAndWebtoon = authorRepository.findByNameAndWebtoon(a, webtoon);
+                    System.out.println(byNameAndWebtoon);
+                    byNameAndWebtoon.forEach(q -> deleteAuthors.add(q));
+                });
 
         authorRepository.deleteAllInBatch(deleteAuthors);
 
