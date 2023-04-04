@@ -31,6 +31,7 @@ interface Data {
 interface Props {
   days: Data[];
   status: Data[];
+  myRes: any;
 }
 
 export default function MyWebtoonPage(props: Props) {
@@ -40,17 +41,26 @@ export default function MyWebtoonPage(props: Props) {
 
   const [selectedDays, setSelectedDays] = useState<Data[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<Data[]>([]);
-  const [likeWebtoons, setLikeWebtoons] = useState<Array<any>>(defaultLikeWebtoon);
+  // 좋아하는 웹툰 있는 경우에도 default로 들어감
+  const [likeWebtoons, setLikeWebtoons] = useState<Array<any>>(props.myRes);
   const [resWebtoons, setResWebtoons] = useState<Array<any>>([]);
   const [elseWebtoons, setElseWebtoons] = useState<Array<any>>([]);
 
-  const getMyWebtoon = async () => {
-    const res = await getUserLike(token);
-    if (res.result) {
-      setLikeWebtoons(res.result);
-      console.log(res.result);
-    }
-  };
+  // const getMyWebtoon = async () => {
+  //   const res = await getUserLike(token);
+  //   if (res.result.length > 0) {
+  //     const result = res.result;
+  //     console.log(result);
+  //     setLikeWebtoons([...result]);
+  //   } else {
+  //     const result = defaultLikeWebtoon;
+  //     setLikeWebtoons([...result]);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getMyWebtoon();
+  // }, []);
 
   const onDayClick = () => {
     if (focus === FocusState.DAY) {
@@ -77,6 +87,8 @@ export default function MyWebtoonPage(props: Props) {
     selectedStatus.push(data);
     setSelectedStatus([...selectedStatus]);
   };
+  console.log(selectedDays);
+  console.log(selectedStatus);
 
   const unSelectDayButton = (data: Data) => {
     for (let i = 0; i < selectedDays.length; i++) {
@@ -152,19 +164,33 @@ export default function MyWebtoonPage(props: Props) {
   }, [focus]);
 
   useEffect(() => {
-    getMyWebtoon();
-  }, []);
-
-  useEffect(() => {
-    console.log('selectedDays', selectedDays);
     const newRes: Array<any> = [];
     const newElse: Array<any> = [];
-    likeWebtoons.forEach((webtoon: any) => {
-      if (webtoon.day in selectedDays && webtoon.status in selectedStatus) {
+    console.log('selectedStatus', selectedStatus);
+    likeWebtoons.map((webtoon: any) => {
+      console.log(webtoon.status);
+      let hasDayMatch =
+        selectedDays.length === 0 || selectedDays.some(day => webtoon.days.includes(day.key));
+      let hasEndMatch =
+        selectedStatus.length === 0 ||
+        selectedStatus.some(
+          status =>
+            status.key === webtoon.status ||
+            (Array.isArray(status.key) && status.key.includes(webtoon.status)),
+        );
+
+      if (
+        !(selectedDays.length === 0 && selectedStatus.length === 0) &&
+        hasDayMatch &&
+        hasEndMatch
+      ) {
         newRes.push(webtoon);
       } else {
         newElse.push(webtoon);
       }
+
+      // webtoon.days 중 하나라도 selectedDayKeys에 포함되어 있으면 newRes.push(webtoon)
+      // webtoon.days 중 하나도 없으면 selectedDayKeys에 포함되어 있으면 newElse.push(webtoon)
     });
     setElseWebtoons([...newElse]);
     setResWebtoons([...newRes]);
@@ -196,7 +222,7 @@ export default function MyWebtoonPage(props: Props) {
         <div className="m-4 rounded-xl bg-BackgroundLightComponent p-4">
           <div className="w-full text-center text-lg font-semibold">필터링 결과</div>
           <div>
-            {likeWebtoons.map((webtoon: any) => (
+            {resWebtoons.map((webtoon: any) => (
               <WebtoonItem
                 key={webtoon.id}
                 id={webtoon.id}
@@ -210,7 +236,7 @@ export default function MyWebtoonPage(props: Props) {
         <div className="m-4 rounded-xl bg-BackgroundLightComponent p-4">
           <div className="w-full text-center text-lg font-semibold">그 외</div>
           <div>
-            {likeWebtoons.map((webtoon: any) => (
+            {elseWebtoons.map((webtoon: any) => (
               <WebtoonItem
                 key={webtoon.id}
                 id={webtoon.id}
@@ -229,18 +255,23 @@ export default function MyWebtoonPage(props: Props) {
 export const getServerSideProps: GetServerSideProps = async context => {
   const token = context.req.cookies.accessToken;
 
-  const daysRes = await axios.get('mana/webtoons/list/days', {
+  const daysRes = await axios.get('webtoons/list/days', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     },
   });
-  const statusRes = await axios.get('mana/webtoons/list/status', {
+  const statusRes = await axios.get('webtoons/list/status', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     },
   });
+  let myRes = [defaultLikeWebtoon];
+  if (token) {
+    const result = await getUserLike(token);
+    myRes = result?.result;
+  }
 
   let dayProp: any[] = [];
   daysRes.data.result.map((day: any) => {
@@ -260,5 +291,5 @@ export const getServerSideProps: GetServerSideProps = async context => {
     statusProp.push(onestate);
   });
 
-  return { props: { days: dayProp, status: statusProp } };
+  return { props: { days: dayProp, status: statusProp, myRes } };
 };

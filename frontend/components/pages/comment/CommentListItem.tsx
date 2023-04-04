@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Avatar } from '@mui/material';
 import { Chat } from './CommentList';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 interface ChatProp {
   chat: Chat;
@@ -9,9 +11,9 @@ interface ChatProp {
 }
 
 function CommentListItem({ chat, itemInfo }: ChatProp) {
-  const userImagePath =
-    'https://i.namu.wiki/i/xss2U6BFSuoMjDMssQDkkUNNvzOgpWjkTJ_pgdcRF034Qc_vlAZ6yOVI6ik1rhHBWpxovuBg5MIE55Wcf54uyLI6KplwA5lrYS5Omaa-G1MXvAawlW_QQO0gCR63K_TdrlqX75TyqynnSF89211hqg.webp';
-  const myName = '김태학';
+  const user = useSelector((state: RootState) => state.isLogin);
+  const userImagePath = user.imagePath;
+  const myName = user.nickname;
 
   const [isSpoiler, setIsSpoiler] = useState<boolean>(chat.isSpoiler);
 

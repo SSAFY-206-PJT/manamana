@@ -36,7 +36,6 @@ export default function GenreTastePage({ genreLists }: any) {
     axiosPost();
     // 지금까지 선택된 selectedBlocks 데이터를 보낸다.
     dispatch(changeGenreTaste(selectedBlocks));
-    console.log(selectedBlocks);
     // search로 이동한다.
     router.replace(
       {
@@ -69,7 +68,6 @@ export default function GenreTastePage({ genreLists }: any) {
         },
       })
       .then(response => {
-        console.log('리스폰스데이터', response.data);
         Swal.fire({
           title: '선호 장르가 변경되었습니다.',
           icon: 'success',
@@ -124,7 +122,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     });
     const genreLists: Genres[] = response.data.result;
-    console.log('장르리스트', genreLists);
     return {
       props: { genreLists },
     };

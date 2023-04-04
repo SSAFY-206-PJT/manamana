@@ -22,39 +22,37 @@ interface Parameters {
   dayId: number[];
 }
 
-///////////////////* GET *///////////////////
-/**
- * getWebtoons : 웹툰 검색
- * @returns
- */
-const getWebtoons = async (p: Parameters) => {
+interface ApiResult {
+  contents: any[];
+  count: number;
+}
+
+const getWebtoons = async (p: Parameters): Promise<ApiResult> => {
   let url = `/webtoons?keyword=${p.keyword}&page=${p.page}&size=${p.size}&sortType=${p.sortType}`;
-  let value = null;
+  let value:any[] = [];
+  let contentCount:number = 0;
   const token = getCookie('accessToken');
   await axios
-    .post(url, {
-      statusId: p.statusId,
-      genreId: p.genreId,
-      gradeId: p.gradeId,
-      dayId: p.dayId,
-    },{
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-      // data: {
-      //   statusId: p.statusId,
-      //   genreId: p.genreId,
-      //   gradeId: p.gradeId,
-      //   dayId: p.dayId,
-      // },
-    })
+    .post(
+      url,
+      {
+        statusId: p.statusId,
+        genreId: p.genreId,
+        gradeId: p.gradeId,
+        dayId: p.dayId,
+      },
+      {
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+      }
+    )
     .then(({ data }) => {
-      console.log(data)
-      value = data.result;
-      console.log('value', value);
+      value = data.result.contents;
+      contentCount = data.result.count;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('[ERROR] 마나 골라 웹툰 정보 가져올 때 오류 발생');
     });
-  return value;
+  return { contents: value, count: contentCount };
 };
 
 export { getWebtoons };
