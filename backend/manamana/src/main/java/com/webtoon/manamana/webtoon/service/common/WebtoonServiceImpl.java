@@ -16,6 +16,7 @@ import com.webtoon.manamana.util.repository.*;
 import com.webtoon.manamana.webtoon.dto.response.GenreDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
+import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListTotalDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonAdditionRepositorySupport;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepositorySupport;
@@ -24,6 +25,7 @@ import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
 import com.webtoon.manamana.webtoon.util.WebtoonFilterDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,9 +61,11 @@ public class WebtoonServiceImpl implements WebtoonService{
 
     /*웹툰 전체 조회*/
     @Override
-    public List<WebtoonListDTO> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable) {
+    public WebtoonListTotalDTO findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable) {
 
-        List<Webtoon> webtoonAll = webtoonRepositorySupport.findWebtoonAll(webtoonFilterDTO, pageable);
+        Page<Webtoon> webtoonAllPage = webtoonRepositorySupport.findWebtoonAll(webtoonFilterDTO, pageable);
+        List<Webtoon> webtoonAll = webtoonAllPage.getContent();
+        System.out.println(webtoonAllPage.getTotalElements());
 
         //웹툰 연재 상태 코드표 조회
         List<SerialStatus> serialStatuses = statusCodeRepository.findAll();
@@ -75,7 +79,9 @@ public class WebtoonServiceImpl implements WebtoonService{
                 .map(webtoon -> WebtoonListDTO.createDTO(webtoon, statusMap))
                 .collect(Collectors.toList());
 
-        return webtoonListDTOS;
+        WebtoonListTotalDTO webtoonListTotalDTO = WebtoonListTotalDTO.createDTO(webtoonAllPage.getTotalElements(), webtoonListDTOS);
+
+        return webtoonListTotalDTO;
     }
 
     /*웹툰 상세 조회*/
