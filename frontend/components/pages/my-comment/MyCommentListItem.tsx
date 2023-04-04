@@ -1,5 +1,7 @@
 import { Avatar } from '@mui/material';
 import { MyChat } from './MyCommentList';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 import MyCommentWebtoonInfo from './MyCommentWebtoonInfo';
 
 interface ChatProp {
@@ -8,8 +10,9 @@ interface ChatProp {
 }
 
 function MyCommentListItem({ chat, itemInfo }: ChatProp) {
-  const myName = '김태학';
-  const userImage = '/images/character.png';
+  const user = useSelector((state: RootState) => state.isLogin);
+  const myName = user.nickname;
+  const userImage = user.imagePath;
 
   // 날짜 변환
   const timeForToday = (value: string) => {
@@ -38,7 +41,7 @@ function MyCommentListItem({ chat, itemInfo }: ChatProp) {
   return (
     <div className="my-2 flex justify-end">
       <div className="max-w-[65%]">
-        <MyCommentWebtoonInfo webtoonId={1} />
+        <MyCommentWebtoonInfo webtoonId={chat.webtoon.id} />
         <div className="flex rounded bg-BackgroundLightComponent p-1.5">
           <p className="whitespace-pre-wrap break-all">{chat.content}</p>
           <div className="ml-auto">
