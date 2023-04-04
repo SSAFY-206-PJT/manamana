@@ -1,6 +1,5 @@
 package com.manamana.crawling.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.manamana.crawling.dto.WebtoonUpdateDTO;
 import com.manamana.crawling.entity.webtoon.*;
 import com.manamana.crawling.entity.webtoon.codetable.DayCode;
@@ -11,16 +10,13 @@ import com.manamana.crawling.dto.WebtoonDataArrayDTO;
 import com.manamana.crawling.repository.WebtoonProviderRepository;
 import com.manamana.crawling.repository.WebtoonRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

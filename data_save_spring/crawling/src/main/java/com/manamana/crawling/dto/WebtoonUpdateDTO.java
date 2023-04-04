@@ -9,16 +9,16 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class WebtoonUpdateDTO {
-    private List<Long> data;
+    private List<Long> id;
 
     @Builder
-    public WebtoonUpdateDTO(List<Long> data) {
-        this.data = data;
+    public WebtoonUpdateDTO(List<Long> id) {
+        this.id = id;
     }
 
-    public static WebtoonUpdateDTO createDTO(List<Long> data) {
+    public static WebtoonUpdateDTO createDTO(List<Long> id) {
         return WebtoonUpdateDTO.builder()
-                .data(data)
+                .id(id)
                 .build();
     }
 }
