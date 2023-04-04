@@ -13,6 +13,16 @@ import CommentIcon from '@/public/images/Comment_List.svg';
 import Heart from '@/public/images/Heart.svg';
 import { getCookie, setCookie } from '@/util/cookie';
 import { IdName } from '@/pages/api/detail';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#FFFFFF',
+    },
+  },
+});
 
 interface SimilarWebtoon {
   id: number;
@@ -27,6 +37,7 @@ interface Props {
 
 function DetailPage({ res }: Props) {
   if (!res.success) {
+    console.log(res);
     return (
       <div>
         ERROR: {res.error} | MESSAGE: {res.result.message}
@@ -163,7 +174,7 @@ function DetailPage({ res }: Props) {
           }}
         >
           <div>
-            <GoSee webtoonProvider={webtoon.webtoonUrl} />
+            <GoSee webtoonId={webtoon.id} />
           </div>
         </Modal>
       </div>
@@ -424,11 +435,11 @@ function DetailPage({ res }: Props) {
         </div>
         <div style={coverStyle} className="absolute h-auto w-full">
           <div className="m-3 flex h-12 justify-between">
-            <img
-              src="/images/HeaderBar_Back.png"
-              alt="goBack"
-              onClick={() => router.push('/')}
-            ></img>
+            <button onClick={() => router.push('/')}>
+              <ThemeProvider theme={theme}>
+                <ArrowBackIosNewIcon fontSize="large" color="primary" />
+              </ThemeProvider>
+            </button>
             <button className="h-full" onClick={likeInput}>
               {isLike ? (
                 <Heart width="100%" height="100%" fill="red" stroke="red" />
