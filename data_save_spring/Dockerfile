@@ -5,9 +5,8 @@ ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
 
 COPY ./crawling/build/libs/*.jar ./application.jar
-RUN pwd \
-    && ls
-COPY ./resources ./resources
+
+COPY ./resources ./
 
 EXPOSE 8080
 
