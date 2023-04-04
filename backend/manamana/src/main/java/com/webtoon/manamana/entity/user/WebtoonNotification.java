@@ -1,5 +1,6 @@
 package com.webtoon.manamana.entity.user;
 
+import com.webtoon.manamana.config.entity.BaseTimeEntity;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Table(name = "webtoon_notifications")
-public class WebtoonNotification {
+public class WebtoonNotification extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,4 +31,8 @@ public class WebtoonNotification {
     @JoinColumn(name = "webtoon_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Webtoon webtoon;
+
+    public void deleteNotification(){
+        this.isChecked = true;
+    }
 }

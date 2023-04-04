@@ -67,6 +67,9 @@ public enum CustomExceptionStatus {
     /*login provider 관련*/
     NOT_FOUNT_PROVIDER(false, 400, "해당하는 로그인 제공자를 찾을 수 없습니다."),
 
+    /*알림 기능.*/
+    NOT_FOUND_NOTIFICATION(false, 400, "해당하는 알림을 찾을 수 없습니다."),
+
 
     ;
     private final boolean isSuccess;

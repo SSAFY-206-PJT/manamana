@@ -22,11 +22,19 @@ public class QWebtoonNotification extends EntityPathBase<WebtoonNotification> {
 
     public static final QWebtoonNotification webtoonNotification = new QWebtoonNotification("webtoonNotification");
 
+    public final com.webtoon.manamana.config.entity.QBaseTimeEntity _super = new com.webtoon.manamana.config.entity.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createTime = _super.createTime;
+
     public final NumberPath<Integer> episode = createNumber("episode", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final BooleanPath isChecked = createBoolean("isChecked");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
 
     public final QUser user;
 
