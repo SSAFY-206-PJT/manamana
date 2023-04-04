@@ -63,6 +63,8 @@ pipeline {
                 script {
                     sh "pwd"
                     sh "ls"
+                    sh "cd .."
+                    sh "pwd"
                     // 도커 컴포즈 down
                     sh "docker compose down"
 
