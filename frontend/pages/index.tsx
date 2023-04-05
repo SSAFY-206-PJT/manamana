@@ -49,7 +49,7 @@ function Home({ likeWebtoons }: Props) {
   const getRec = async () => {
     const manaRes = await api.algoWebtoons(token, '');
     setManaRec(manaRes?.result);
-    const genreRes = await api.algoWebtoons(token, 'genreId');
+    const genreRes = await api.algoWebtoons(token, 'genre');
     setGenreRec(genreRes?.result);
     const ageRes = await api.algoWebtoons(token, 'age-group');
     setAgeRec(ageRes?.result);
