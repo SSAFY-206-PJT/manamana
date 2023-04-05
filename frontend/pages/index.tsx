@@ -194,38 +194,38 @@ function Home({ likeWebtoons }: Props) {
       </div>
       <div className="mb-4 flex justify-center">
         <div className="grid h-32 w-11/12 grid-cols-3 gap-2">
+          
           <BannerStyle1 className="col-span-1 rounded-lg bg-white px-4">
+            <Link href="/genre-taste">
             <div className="flex h-full w-full items-center justify-center">
-              <Link href="/genre-taste">
                 <div className="p-2 font-bold">
                   선호취향
                   <br />
                   설정하기
                 </div>
-              </Link>
-
               <div className="absolute bottom-1 right-2">
-                <Link href="/genre-taste">
                   <Image
                     src={'/images/goOtherPageWhite.png'}
                     alt="선호취향 이동"
                     width={24}
                     height={24}
                   />
-                </Link>
               </div>
             </div>
+
+            </Link>
           </BannerStyle1>
           <BannerStyle2 className="relative col-span-2 rounded-lg bg-[#0B99FF] px-4">
             <div className="z-10 flex flex-col justify-between">
+
+            <Link href="/managola">
               <div className="z-10 flex items-center justify-center pt-4">
                 <img className="z-10 h-24 w-24 p-2" src="/images/character.png" alt="hi"></img>
-                <Link href="/managola">
                   <div className="flex items-center p-2 font-bold">
                     취향검사<br></br>하러가기
                   </div>
-                </Link>
               </div>
+            </Link>
               <div className="absolute bottom-1 right-2">
                 <Link href="/managola">
                   <Image
@@ -317,14 +317,14 @@ export default Home;
 
 export async function getServerSideProps(context: any) {
   const token = context.req.cookies.accessToken;
-  // if (!token) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
 
   const res = await api.getUserLike(token);
   if (res && res.result.length > 0) {

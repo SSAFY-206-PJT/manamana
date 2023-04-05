@@ -33,11 +33,11 @@ export default function AgeGradeBlock(props: Props) {
         <div className="inline-block">
             {
                 selectStatus ?
-                    <button className="w-14 h-14 rounded-full bg-SecondaryLight text-FontPrimaryDark text-center" onClick={onButtonClick}>
+                    <button className="w-20 h-20 rounded-full bg-SecondaryLight text-FontPrimaryDark text-center" onClick={onButtonClick}>
                         {props.value.value}
                     </button>
                     :
-                    <button className="w-14 h-14 rounded-full bg-BackgroundLightComponent text-FontPrimaryLight text-center" onClick={onButtonClick}>
+                    <button className="w-20 h-20 rounded-full bg-BackgroundLightComponent text-FontPrimaryLight text-center" onClick={onButtonClick}>
                         {props.value.value}
                     </button>
             }
