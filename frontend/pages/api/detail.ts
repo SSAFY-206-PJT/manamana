@@ -399,9 +399,9 @@ export const goSeePlus = async (webtoon_id: any, token: string) => {
 export const unlikeWebtoon = async (user_id: any, webtoon_ids: number[], token: string) => {
   const options = {
     method: 'DELETE',
-    url: `/users/${webtoon_ids}/webtoons`,
+    url: `/users/${user_id}/webtoons`,
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-    data: { id: [1] },
+    data: { id: [webtoon_ids] },
   };
 
   try {
