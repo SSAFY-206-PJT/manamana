@@ -181,7 +181,7 @@ function Home({ likeWebtoons }: Props) {
   `;
 
   return (
-    <div className=" h-full w-full bg-BackgroundLight pb-12">
+    <div className="min-h-screen min-w-screen h-full w-full bg-BackgroundLight pb-12">
       {/* 최상위 헤더 */}
       <div className="sticky top-0 z-10 flex h-14 w-screen items-center justify-between bg-PrimaryLight px-5">
         <div className="h-6 w-6"></div>
@@ -202,8 +202,18 @@ function Home({ likeWebtoons }: Props) {
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'내가 보는 웹툰'} route={'my-webtoon'} />
           <WebtoonItemContainer>
+            {/* 내가 보는 웹툰이 없는 경우(id=0) 등록하러 가기, 있는 경우 해당 아이템들 렌더링 */}
             {likeWebtoons &&
               likeWebtoons.map((webtoon: any) => (
+                webtoon.id == 0 ? 
+                (<Link href='/search'>                
+                  <div className="flex flex-col justify-center">
+                    <div className="flex justify-center">
+                      <img src={webtoon.imagePath} alt="imageURL" className="h-[100px] w-[100px]"></img>
+                    </div>
+                    <div className="text-semibold flex items-center justify-center text-[16px]">등록하러 가기</div>
+                  </div>
+                </Link>) : 
                 <WebtoonItem
                   key={webtoon.id}
                   id={webtoon.id}
@@ -357,7 +367,7 @@ export async function getServerSideProps(context: any) {
     const likeWebtoons = [
       {
         id: 0,
-        name: '등록해보세요',
+        name: '등록하러 가기',
         imagePath: '/images/Plus-Button.png',
         status: '연재중',
       },

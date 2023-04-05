@@ -170,7 +170,7 @@ export default function ProfilePage({ userData }: any) {
     }
   `;
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="min-h-screen min-w-screen h-full w-full overflow-hidden">
       <Headerbar showBackBtn={false} pageName="마이페이지" rightBtn="NOTI" />
 
       <div className="flex h-full w-full flex-col gap-4 bg-BackgroundLight p-2">
