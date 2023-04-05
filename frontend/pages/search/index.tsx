@@ -212,6 +212,7 @@ export default function SearchPage() {
   };
   const scrollFn = () => {
     // 스크롤 맨 밑에서
+    console.log(scrollRef.current.scrollTop);
     if (
       scrollRef.current.scrollTop ===
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight
@@ -222,7 +223,7 @@ export default function SearchPage() {
 
   return (
     <div
-      className="min-w-screen h-full min-h-screen w-full overflow-auto bg-BackgroundLight"
+      className="min-w-screen w-screen overflow-auto bg-BackgroundLight"
       ref={scrollRef}
       onScroll={scrollFn}
     >
