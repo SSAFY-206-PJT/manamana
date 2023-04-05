@@ -49,7 +49,7 @@ export default function SearchPage() {
    * 필터가 클릭됐을 경우 실행되는 메소드
    * */
   const onfilterClick = () => {
-    console.log('필터 클릭됨');
+    // console.log('필터 클릭됨');
   };
 
   /*
@@ -107,7 +107,7 @@ export default function SearchPage() {
   };
 
   const reloadTag = () => {
-    console.dir(curSearchTag);
+    // console.dir(curSearchTag);
     setSelectedDaysElement(
       curSearchTag.days.map(v => <SearchTag tagData={v} deleteTag={deleteDay} />),
     );
@@ -188,7 +188,7 @@ export default function SearchPage() {
   const scrollRef = useRef<any>(null);
   const scrollNext = () => {
     const nextPage = pageNum + 1;
-    console.log(nextPage);
+    // console.log(nextPage);
     getWebtoons({
       keyword: searchText,
       page: nextPage, // 페이지 숫자

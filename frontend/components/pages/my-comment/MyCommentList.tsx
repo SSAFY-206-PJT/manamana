@@ -88,8 +88,8 @@ function MyCommentList({
   const itemInfo = (chat: MyChat) => {
     setSelectedChat(chat);
     setOpenModal(true);
-    console.log('chatList에서');
-    console.log(chat);
+    // console.log('chatList에서');
+    // console.log(chat);
   };
 
   const closeModal = () => {

@@ -36,22 +36,22 @@ export default function FilterPage(props: Props) {
 
   const selectDayBlock = (data: Data) => {
     selectedDays.push(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const selectGenreBlock = (data: Data) => {
     selectedGenres.push(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const selectGradeBlock = (data: Data) => {
     selectedGrades.push(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const selectStatusBlock = (data: Data) => {
     selectedStatus.push(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const unSelectDayBlock = (data: Data) => {

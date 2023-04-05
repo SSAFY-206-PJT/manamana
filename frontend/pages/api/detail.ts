@@ -31,7 +31,7 @@ export const renewToken = async (token: string): Promise<Response> => {
     const answer = res.data;
     return { success: true, result: answer };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return { success: false, error: 'API', result: { message: 'API통신오류' } };
   }
 };
@@ -56,7 +56,7 @@ export const userInfo = async (token: string): Promise<Response> => {
     // token 을 응답
     return { success: true, result: answer };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return { success: false, error: 'API', result: { message: 'API통신오류' } };
   }
 };
@@ -132,7 +132,7 @@ export const getWebtoonDetail = async (
       return { success: false, error: res.data, result: '' };
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return { success: false, error: 'API', result: { message: 'API통신오류' } };
   }
 };
@@ -167,7 +167,7 @@ export const getWebtoonProviders = async (webtoon_id: any, token: string, isAgai
       return answer;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -189,7 +189,7 @@ export const getWebtoonComments = async (webtoon_id: any, page: number, token: s
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -219,7 +219,7 @@ export const postWebtoonComment = async (
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -251,7 +251,7 @@ export const modifyWebtoonComment = async (
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -275,7 +275,7 @@ export const deleteWebtoonComment = async (webtoon_id: any, id: number, token: s
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -298,7 +298,7 @@ export const reportWebtoonComment = async (webtoon_id: any, comment_id: number, 
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -320,7 +320,7 @@ export const likeWebtoon = async (webtoon_id: any, token: string) => {
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -341,7 +341,7 @@ export const getWebtoonMyScore = async (webtoon_id: any, token: string) => {
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -363,7 +363,7 @@ export const postWebtoonMyScore = async (webtoon_id: any, score: number, token: 
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -384,7 +384,7 @@ export const goSeePlus = async (webtoon_id: any, token: string) => {
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -409,8 +409,8 @@ export const unlikeWebtoon = async (user_id: any, webtoon_ids: number[], token: 
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
-    console.log(error);
+    // console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -432,7 +432,7 @@ export const myWebtoonComment = async (user_id: any, token: string) => {
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -453,7 +453,7 @@ export const getUserInfo = async (token: string) => {
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -475,7 +475,7 @@ export const getUserLike = async (token: string) => {
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -492,7 +492,7 @@ export const getElseWebtoon = async (webtoon_id: any, token: string) => {
     const answer = res.data;
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -512,10 +512,10 @@ export const algoWebtoons = async (token: string, param: string) => {
   try {
     const res = await axios.request(options);
     const answer = res.data;
-    console.log(res);
+    // console.log(res);
     return answer;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };

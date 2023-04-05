@@ -34,7 +34,7 @@ interface Props {
 }
 
 function Home({ likeWebtoons }: Props) {
-  console.log('likeWebtoons', likeWebtoons);
+  // console.log('likeWebtoons', likeWebtoons);
   const router = useRouter();
   const token = getCookie('accessToken');
   const user = useSelector((state: RootState) => state.isLogin);
@@ -55,9 +55,9 @@ function Home({ likeWebtoons }: Props) {
     setAgeRec(ageRes?.result);
     const genderRes = await api.algoWebtoons(token, 'gender');
     setGenderRec(genderRes?.result);
-    console.log('genreRes.result', genreRes?.result);
-    console.log('ageRes.result', ageRes?.result);
-    console.log('genderRes.result', genderRes?.result);
+    // console.log('genreRes.result', genreRes?.result);
+    // console.log('ageRes.result', ageRes?.result);
+    // console.log('genderRes.result', genderRes?.result);
   };
 
   const genderKR = (en: string) => {

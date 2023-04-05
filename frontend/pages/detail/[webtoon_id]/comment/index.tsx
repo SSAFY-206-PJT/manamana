@@ -1,9 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import * as api from '@/pages/api/detail';
-// import { useRouter } from 'next/router';
-// import Image from 'next/image';
-
 import Headerbar from '@/components/common/Headerbar';
 import CommentList from '@/components/pages/comment/CommentList';
 import CommentInput from '@/components/pages/comment/CommentInput';
@@ -56,8 +53,8 @@ function CommentPage({ webtoon, comments }: Props) {
         // console.log(data);
         if (data && data.isSuccess) {
           if (data.result.length > 0) {
-            console.log('기존 리스트', commentList);
-            console.log('에다가 더할 리스트', data.result);
+            // console.log('기존 리스트', commentList);
+            // console.log('에다가 더할 리스트', data.result);
             const newList2 = commentList.concat(data.result);
             setCommentList(newList2);
             setCommentPage(commentPage => commentPage + 1);
@@ -93,7 +90,7 @@ function CommentPage({ webtoon, comments }: Props) {
         setCommentList([newComment, ...commentList]);
         return true;
       } else {
-        console.log(data);
+        // console.log(data);
         return false;
       }
     };
@@ -138,7 +135,7 @@ function CommentPage({ webtoon, comments }: Props) {
     };
 
     useEffect(() => {
-      console.log(commentList);
+      // console.log(commentList);
     }, [commentList]);
 
     return (

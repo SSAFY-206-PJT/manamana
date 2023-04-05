@@ -49,7 +49,7 @@ function MyCommentListItem({ chat, itemInfo }: ChatProp) {
               className="w-4"
               onClick={() => {
                 itemInfo(chat);
-                console.log('더보기클릭함', chat);
+                // console.log('더보기클릭함', chat);
               }}
             >
               <img src="/images/More.png" className="h-5 w-5" alt="#"></img>

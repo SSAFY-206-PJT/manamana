@@ -99,7 +99,7 @@ export default function ProfilePage({ userData }: any) {
         },
       })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         {
           Swal.fire({
             title: '프로필이 변경되었습니다.',
@@ -108,7 +108,7 @@ export default function ProfilePage({ userData }: any) {
         }
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -124,10 +124,10 @@ export default function ProfilePage({ userData }: any) {
       })
       .then(response => {
         setCookie('accessToken', '');
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -140,7 +140,7 @@ export default function ProfilePage({ userData }: any) {
     if (targetFile) {
       setSelectedFile(targetFile);
       const selectedFileURL = URL.createObjectURL(targetFile);
-      console.log('여기가 138번째줄 이미지 경로', selectedFileURL);
+      // console.log('여기가 138번째줄 이미지 경로', selectedFileURL);
       setInfo({ ...info, imagePath: selectedFileURL });
     }
   };
