@@ -106,46 +106,6 @@ function Home({ likeWebtoons }: Props) {
     };
   }, []);
 
-  // 웹툰 더미데이터
-  let myWebtoonDummy = [
-    {
-      id: 1,
-      name: '1조',
-      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
-      status: '휴재중',
-    },
-    {
-      id: 2,
-      name: '호랑이행님',
-      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
-      status: '휴재중',
-    },
-    {
-      id: 3,
-      name: '신의 탑',
-      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
-      status: '연재중',
-    },
-    {
-      id: 4,
-      name: '웹툰4',
-      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
-      status: '완결',
-    },
-    {
-      id: 5,
-      name: '웹툰5',
-      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
-      status: '연재중',
-    },
-    {
-      id: 6,
-      name: '웹툰6',
-      imagePath: '/images/Temp_Webtoon_Thumnail.jpg',
-      status: '연재중',
-    },
-  ];
-
   // 웹툰 취향 가는 컴포넌트 스타일
   const BannerStyle1 = styled.div`
     background: linear-gradient(120deg, #f9dc5c 0%, #f9dc5c 50%, #f4d03f 50%, #f4d03f 100%);
@@ -181,7 +141,7 @@ function Home({ likeWebtoons }: Props) {
   `;
 
   return (
-    <div className="min-h-screen min-w-screen h-full w-full bg-BackgroundLight pb-12">
+    <div className="min-w-screen h-full min-h-screen w-full bg-BackgroundLight pb-12">
       {/* 최상위 헤더 */}
       <div className="sticky top-0 z-10 flex h-14 w-screen items-center justify-between bg-PrimaryLight px-5">
         <div className="h-6 w-6"></div>
@@ -204,24 +164,32 @@ function Home({ likeWebtoons }: Props) {
           <WebtoonItemContainer>
             {/* 내가 보는 웹툰이 없는 경우(id=0) 등록하러 가기, 있는 경우 해당 아이템들 렌더링 */}
             {likeWebtoons &&
-              likeWebtoons.map((webtoon: any) => (
-                webtoon.id == 0 ? 
-                (<Link href='/search'>                
-                  <div className="flex flex-col justify-center">
-                    <div className="flex justify-center">
-                      <img src={webtoon.imagePath} alt="imageURL" className="h-[100px] w-[100px]"></img>
+              likeWebtoons.map((webtoon: any) =>
+                webtoon.id == 0 ? (
+                  <Link href="/search">
+                    <div className="flex flex-col justify-center">
+                      <div className="flex justify-center">
+                        <img
+                          src={webtoon.imagePath}
+                          alt="imageURL"
+                          className="h-[100px] w-[100px]"
+                        ></img>
+                      </div>
+                      <div className="text-semibold flex items-center justify-center text-[16px]">
+                        등록하러 가기
+                      </div>
                     </div>
-                    <div className="text-semibold flex items-center justify-center text-[16px]">등록하러 가기</div>
-                  </div>
-                </Link>) : 
-                <WebtoonItem
-                  key={webtoon.id}
-                  id={webtoon.id}
-                  webtoonName={webtoon.name}
-                  imageUrl={webtoon.imagePath}
-                  status={webtoon.status}
-                />
-              ))}
+                  </Link>
+                ) : (
+                  <WebtoonItem
+                    key={webtoon.id}
+                    id={webtoon.id}
+                    webtoonName={webtoon.name}
+                    imageUrl={webtoon.imagePath}
+                    status={webtoon.status}
+                  />
+                ),
+              )}
           </WebtoonItemContainer>
         </div>
       </div>

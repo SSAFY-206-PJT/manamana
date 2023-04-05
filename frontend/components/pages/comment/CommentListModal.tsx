@@ -5,26 +5,37 @@ import { Chat } from './CommentList';
 import { CommentUserInput } from './CommentInput';
 import { reportWebtoonComment } from '@/pages/api/detail';
 import { getCookie } from '@/util/cookie';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 interface ChatListModalProps {
   webtoonId: number;
   chat: Chat;
   open: boolean;
+  key: number;
   close: () => void;
   deleteComment: (chat: any) => Promise<boolean>;
-  modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
+  modifyComment: (
+    chatId: number,
+    oldComment: Chat,
+    newComment: Chat,
+    key: number,
+  ) => Promise<boolean>;
 }
 
 function CommentListModal({
   webtoonId,
   chat,
   open,
+  key,
   close,
   deleteComment,
   modifyComment,
 }: ChatListModalProps) {
   const token = getCookie('accessToken');
-  const myName = '김태학';
+
+  const user = useSelector((state: RootState) => state.isLogin);
+  const myName = user.nickname;
   const [modalState, setModalState] = useState<string>('init');
 
   const openModal = () => {};
@@ -54,7 +65,7 @@ function CommentListModal({
         imagePath: chat.user.imagePath,
       },
     };
-    const result = await modifyComment(chat.id, oldComment, newComment);
+    const result = await modifyComment(chat.id, oldComment, newComment, key);
     if (result) {
       closeModal();
       return true;

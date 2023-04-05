@@ -22,7 +22,12 @@ interface CommentListProps {
   commentEnd: boolean;
   loadComment: () => void;
   deleteComment: (chat: any) => Promise<boolean>;
-  modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
+  modifyComment: (
+    chatId: number,
+    oldComment: Chat,
+    newComment: Chat,
+    key: number,
+  ) => Promise<boolean>;
 }
 
 function CommentList({
@@ -87,10 +92,12 @@ function CommentList({
   }, []);
 
   const [selectedChat, setSelectedChat] = useState<any>();
+  const [selectedKey, setSelectedKey] = useState<number>(0);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const itemInfo = (chat: Chat) => {
+  const itemInfo = (chat: Chat, key: number) => {
     setSelectedChat(chat);
     setOpenModal(true);
+    setSelectedKey(key);
     // console.log('chatList에서');
     // console.log(chat);
   };
@@ -113,6 +120,7 @@ function CommentList({
         <CommentListModal
           webtoonId={webtoonId}
           chat={selectedChat}
+          key={selectedKey}
           open={openModal}
           close={closeModal}
           deleteComment={deleteComment}

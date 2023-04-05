@@ -254,7 +254,7 @@ function DetailPage({ res }: Props) {
 
     const getMyScore = async () => {
       const data = await api.getWebtoonMyScore(webtoon.id, token);
-      if (data.isSuccess) {
+      if (data && data.isSuccess) {
         setMyScore(data.result.score);
       }
     };
