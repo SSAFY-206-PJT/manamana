@@ -36,20 +36,19 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         CommonResponse exceptionResponse;
 
-        if(exception == TOKEN_INVALID){
+        if(exception.equals(TOKEN_INVALID)){
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_INVALID);
         }
-        else if(exception == TOKEN_EXPIRE){
+        else if(exception.equals(TOKEN_EXPIRE)){
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_EXPIRE);
         }
-        else if(exception == TOKEN_UNSUPPORTED){
+        else if(exception.equals(TOKEN_UNSUPPORTED)){
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_UNSUPPORTED);
         }
         else{
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_ILLEGAL);
         }
-
-
+        
 
         String error = objectMapper.writeValueAsString(exceptionResponse);
 
