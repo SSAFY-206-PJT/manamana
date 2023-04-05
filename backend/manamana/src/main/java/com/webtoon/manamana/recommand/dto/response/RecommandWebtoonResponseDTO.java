@@ -26,4 +26,14 @@ public class RecommandWebtoonResponseDTO {
         this.imagePath = imagePath;
         this.authors = authors;
     }
+
+    @Override
+    public String toString() {
+        return "RecommandWebtoonResponseDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", authors=" + authors +
+                '}';
+    }
 }
