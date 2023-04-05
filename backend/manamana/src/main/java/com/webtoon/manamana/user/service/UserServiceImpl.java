@@ -195,7 +195,6 @@ public class UserServiceImpl implements UserService{
 
             userWebtoon.removeUserWebtoon();
 
-            /*
             //레디스에서 저장중이던 sse 객체 삭제.
             Map<Long, SseEmitter> sseMap = redisUtil.getData(redisProperty.getSseKey(), id);
 
@@ -213,7 +212,6 @@ public class UserServiceImpl implements UserService{
                 redisUtil.setData(redisProperty.getSseKey(),id,sseMap);
             }
 
-             */
         });
 
     }
