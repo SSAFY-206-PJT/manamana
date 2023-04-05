@@ -80,11 +80,8 @@ public class RecommandServiceImpl implements RecommandService {
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
 
-        log.info("*************[recommend data]************* = {}", assosiationWebtoonResponseDTOS.toString());
-
         for (AssosiationWebtoonResponseDTO assosiationWebtoonResponseDTO : assosiationWebtoonResponseDTOS) {
 
-            log.info("[recommend webtoon id] = {}", assosiationWebtoonResponseDTO.getWebtoonId());
 
             Optional<Webtoon> webtoonOneOptional = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId());
             if(!webtoonOneOptional.isPresent()) continue;

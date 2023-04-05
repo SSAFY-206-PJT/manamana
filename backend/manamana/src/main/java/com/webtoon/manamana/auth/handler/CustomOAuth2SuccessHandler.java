@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
@@ -75,7 +76,11 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String jsonString = objectMapper.writeValueAsString(responseService.getDataResponse(accessTokenDTO, CustomSuccessStatus.RESPONSE_SUCCESS));
 
-        response.getWriter().write(jsonString);
+        response.addHeader("accessToken",accessToken);
+        response.sendRedirect(appProperty.getRedirect_page());
+
+//        response.getWriter().write(jsonString);
+
 
 //        getRedirectStrategy().sendRedirect(request,response,targetUrl); //리다이렉션.
     }
@@ -92,8 +97,6 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-
-        System.out.println("target : " + targetUrl);
 
         String token = tokenProvider.creatToken(authentication); //access 토큰 생성.
 
@@ -119,7 +122,6 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         User user = userRepository.findByIdAndIsDeletedFalse(userPrincipal.getId())
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_USER));
 
-        System.out.println(user.toString());
         user.updateRefresh(refreshToken);
     }
 }

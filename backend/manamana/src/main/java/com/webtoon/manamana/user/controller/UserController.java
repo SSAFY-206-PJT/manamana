@@ -71,7 +71,6 @@ public class UserController {
         //TODO : 닉네임 수정안할때도 처리해야됨.
         //TODO : pathvariable의 id랑 jwt의 id랑 비교처리 필요.
         long authUserId = userPrincipal.getId();
-        log.info("test update id : {}", authUserId);
 
         userService.updateUser(authUserId, userUpdateRequestDTO, multipartFile);
 

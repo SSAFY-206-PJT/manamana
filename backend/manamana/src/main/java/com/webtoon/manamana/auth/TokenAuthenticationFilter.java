@@ -68,7 +68,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             log.info("잘못된 토큰입니다.");
             request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_ILLEGAL);
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         filterChain.doFilter(request, response);

@@ -48,7 +48,6 @@ public class RecommandController {
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-        log.info("testasdf111111 : {}",userPrincipal.toString());
 
         long authUserId = userPrincipal.getId();
 //        long authUserId = 1L;
