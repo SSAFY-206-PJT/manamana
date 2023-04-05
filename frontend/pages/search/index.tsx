@@ -38,7 +38,6 @@ export default function SearchPage() {
   const [webtoonCount, setWebtoonCount] = useState<number>(0); // 전체 웹툰 리스트의 길이
 
   const [searchText, setSearchText] = useState<string>('');
-  const [tempSearchText, setTempSearchText] = useState(searchText);
 
   const [sortType, setSortType] = useState<number>(1); // 정렬기준 1: 조회순 2: 평점 높은 순 3: 댓글 많은 순
   const [sortTypeString, setSortTypeString] = useState<string>('조회순');
@@ -123,7 +122,10 @@ export default function SearchPage() {
     );
   };
 
-  const onSearchBarChange = (e: ChangeEvent<HTMLInputElement>) => setTempSearchText(e.target.value);
+  const onSearchBarChange = (e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value);
+  const handleClearSearchText = () => {
+    setSearchText('');
+    };
 
   useEffect(() => {
     if (sortType === 1) {
@@ -137,15 +139,16 @@ export default function SearchPage() {
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      return setSearchText(tempSearchText);
+      setSearchText(searchText);
     }, 300);
 
     return () => clearTimeout(debounce);
-  }, [tempSearchText]);
+  }, [searchText]);
+
 
   useEffect(() => {
-    if (searchText !== '') {
-      // 각 세팅 + 검색어(searchText) 를 통해 웹툰을 검색한다.
+    reloadTag();
+    // 필터값을 이용하여 웹툰을 검색한다.
       getWebtoons({
         keyword: searchText,
         page: pageNum, // 페이지 숫자
@@ -158,30 +161,13 @@ export default function SearchPage() {
       }).then(res => {
         if (res != null) {
           setWebtoonList(res.contents);
+          setWebtoonCount(res.count);
+        }
+        else {
+
         }
       });
-    }
-  }, [searchText]);
-
-  useEffect(() => {
-    reloadTag();
-    // 필터값을 이용하여 웹툰을 검색한다.
-    getWebtoons({
-      keyword: searchText,
-      page: pageNum, // 페이지 숫자
-      size: 21, // 한 페이지에 몇 개를 받을 건지
-      sortType: sortType,
-      statusId: curSearchTag.status.map(v => v.key),
-      genreId: curSearchTag.genres.map(v => v.key),
-      gradeId: curSearchTag.grades.map(v => v.key),
-      dayId: curSearchTag.days.map(v => v.key),
-    }).then(res => {
-      if (res != null) {
-        setWebtoonList(res.contents);
-        setWebtoonCount(res.count);
-      }
-    });
-  }, [sortType, curSearchTag, searchText]);
+    }, [sortType, curSearchTag, searchText]);
 
   useEffect(() => {
     setWebtoonListElement(
@@ -237,7 +223,7 @@ export default function SearchPage() {
     >
       <Headerbar showBackBtn={true} pageName="탐색" />
       <div className="m-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-2">
-        <SearchBar onSearchBarChange={onSearchBarChange} />
+        <SearchBar onSearchBarChange={onSearchBarChange} onClearSearchText={handleClearSearchText} />
         <div className="flex flex-row items-center justify-between">
           <div className="pl-2 pr-2 text-xl font-bold">
             <span>전체</span>
@@ -280,7 +266,7 @@ export default function SearchPage() {
           <Lottie loop animationData={EmptyLottie} play className="h-2/3 w-2/3" />
         </div>
       ) : (
-        <div className="m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-14 text-center">
+        <div className="m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-14 text-center float-left">
           {webtoonListElement}
         </div>
       )}

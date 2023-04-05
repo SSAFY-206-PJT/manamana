@@ -203,12 +203,14 @@ function Home({ likeWebtoons }: Props) {
             {likeWebtoons &&
               likeWebtoons.map((webtoon: any) => (
                 webtoon.id == 0 ? 
-                (<div className="flex flex-col justify-center">
-                  <div className="flex justify-center">
-                    <img src={webtoon.imagePath} alt="imageURL" className="h-[100px] w-[100px]"></img>
+                (<Link href='/search'>                
+                  <div className="flex flex-col justify-center">
+                    <div className="flex justify-center">
+                      <img src={webtoon.imagePath} alt="imageURL" className="h-[100px] w-[100px]"></img>
+                    </div>
+                    <div className="text-semibold flex items-center justify-center text-[16px]">등록하러 가기</div>
                   </div>
-                   <div className="text-semibold flex items-center justify-center text-[16px]">등록하러 가기</div>
-                </div>) : 
+                </Link>) : 
                 <WebtoonItem
                   key={webtoon.id}
                   id={webtoon.id}
