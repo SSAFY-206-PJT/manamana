@@ -207,6 +207,7 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
     }
 
     /*작품 평점 생성 및 수정*/
+    // TODO: 2023-04-05 로직 최적화 할것
     @Override
     public void createWebtoonUserScore(long userId,long webtoonId,int score) {
 

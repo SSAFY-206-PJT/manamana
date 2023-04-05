@@ -1,4 +1,4 @@
-package com.webtoon.manamana.auth.DTO;
+package com.webtoon.manamana.auth.dto;
 
 /*spring security에서 사용하는 인증 객체*/
 

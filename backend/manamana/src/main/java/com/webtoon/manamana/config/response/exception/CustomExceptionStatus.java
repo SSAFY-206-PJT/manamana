@@ -30,6 +30,8 @@ public enum CustomExceptionStatus {
 
     TOKEN_UNSUPPORTED(false,401,"지원하지 않는 토큰입니다."),
     TOKEN_ILLEGAL(false,401,"잘못된 토큰입니다."),
+    TOKEN_NOT_FOUND(false, 401, "토큰이 없습니다."),
+
 
 
     REQUEST_QUERY_ERROR(false, 400, "잘못된 쿼리 요청입니다."),

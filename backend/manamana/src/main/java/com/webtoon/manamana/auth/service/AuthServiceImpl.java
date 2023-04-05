@@ -1,6 +1,6 @@
 package com.webtoon.manamana.auth.service;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 
 import com.webtoon.manamana.auth.util.TokenProvider;
 import com.webtoon.manamana.config.response.exception.CustomException;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.NOT_INVALID_REFRESH_TOKEN;
-import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.REFRESH_TOKEN_RENEWAL;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,13 +33,7 @@ public class AuthServiceImpl implements AuthService{
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_USER));
 
         //리프레시 토큰 검증
-        try {
-            if(!tokenProvider.validateRefreshToken(refreshToken)) throw new CustomException(NOT_INVALID_REFRESH_TOKEN);
-
-        } catch (Exception e) {
-            throw new CustomException(REFRESH_TOKEN_RENEWAL);
-        }
-
+        if(!tokenProvider.validateRefreshToken(refreshToken)) throw new CustomException(NOT_INVALID_REFRESH_TOKEN);
 
         //엑세스 토큰 생성해서 리턴.
         return tokenProvider.creatToken(UserPrincipal.create(user));

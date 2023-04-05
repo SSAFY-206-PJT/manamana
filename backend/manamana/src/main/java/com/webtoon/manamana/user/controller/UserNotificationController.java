@@ -1,12 +1,11 @@
 package com.webtoon.manamana.user.controller;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.user.dto.response.WebtoonNotificationDTO;
-import com.webtoon.manamana.user.repository.notification.WebtoonNotificationRepository;
 import com.webtoon.manamana.user.service.UserNotificationService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

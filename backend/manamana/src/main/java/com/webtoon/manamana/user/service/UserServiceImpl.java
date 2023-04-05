@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webtoon.manamana.config.aws.AwsDirectoryName;
 import com.webtoon.manamana.config.redis.RedisProperty;
 import com.webtoon.manamana.config.redis.RedisUtil;
 import com.webtoon.manamana.config.response.exception.CustomException;
@@ -26,7 +28,7 @@ import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepository;
 import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,13 +36,9 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.webtoon.manamana.config.aws.AwsDirectoryName.PROFILE_IMAGE;
 import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.*;
 import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.NOT_FOUNT_USER;
 
@@ -65,15 +63,13 @@ public class UserServiceImpl implements UserService{
     //aws 업로드
     private final AmazonS3Client amazonS3Client;
 
-    //s3 버킷명
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-
+    //aws 변수.
+    private final AwsDirectoryName awsDirectoryName;
     //레디스
     private final RedisUtil redisUtil;
 
     //레디스 설정
-    private RedisProperty redisProperty;
+    private final RedisProperty redisProperty;
 
 
     //TODO : jwt로 받은 유저ID와 pathvariable로 받은 유저ID가 같은지 처리하는 로직 필요. - 별도의 메서드로 만들어서 공통처리하도록.
@@ -108,13 +104,12 @@ public class UserServiceImpl implements UserService{
 
         String updateFilePath = "";
 
-        //TODO : 파일 업로드 처리 로직 필요.
-        if(file != null){
-            updateFilePath = saveFile(userId, file);
+        //파일 저장 후 파일 경로 반환 - 없으면 null;
+        updateFilePath = saveFile(userId, file);
 
-            //DTO에 파일 경로 저장
-            userUpdateRequestDTO.setUserImage(updateFilePath);
-        }
+        //DTO에 파일 경로 저장
+        userUpdateRequestDTO.setUserImage(updateFilePath);
+
 
         //유저 업데이트
         user.updateUser(userUpdateRequestDTO);
@@ -215,14 +210,13 @@ public class UserServiceImpl implements UserService{
 
     }
 
+
     /*선호 장르 선택*/
     @Transactional
     @Override
     public void selectLikeGenre(long userId,List<Integer> genreIds) {
         //유저 조회
         User user = userCheck(userId);
-
-
 
         genreIds.forEach(id -> {
 
@@ -346,6 +340,9 @@ public class UserServiceImpl implements UserService{
 
     /*S3 파일 저장.*/
     public String saveFile(long userId, MultipartFile file) {
+
+        if(file == null) return null;
+
         String storageFileUrl;
 
         //저장에 필요한 메타데이터
@@ -356,18 +353,24 @@ public class UserServiceImpl implements UserService{
         //유저가 업로드한 파일의 이름
         String originFileName = file.getOriginalFilename();
 
-        //확장자 추출
-        int index = originFileName.lastIndexOf(".");
-        String ext = originFileName.substring(index+1);
+        //만약 null이라면 확장자 명을 png로 해서 저장 - 이미지이므로.
+        String ext = "png";
+
+        if(originFileName != null){
+            //확장자 추출
+            int index = originFileName.lastIndexOf(".");
+            ext = originFileName.substring(index+1);
+        }
+
 
         //저장할 이름
         String storeFileName = UUID.randomUUID().toString() + "." + ext;
 
         //파일 저장위치
-        String key = PROFILE_IMAGE + userId + "/" + storeFileName;
+        String key = awsDirectoryName.getProfileImage() + userId + "/" + storeFileName;
 
         try (InputStream inputStream = file.getInputStream()) {
-            amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
+            amazonS3Client.putObject(new PutObjectRequest(awsDirectoryName.getBucket(), key, inputStream, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         }
         catch(IOException e){
@@ -375,7 +378,7 @@ public class UserServiceImpl implements UserService{
             throw new CustomException(FILE_SAVE_FAIL);
         }
 
-        storageFileUrl = amazonS3Client.getUrl(bucket,key).toString();
+        storageFileUrl = amazonS3Client.getUrl(awsDirectoryName.getBucket(),key).toString();
 
         return storageFileUrl;
     }

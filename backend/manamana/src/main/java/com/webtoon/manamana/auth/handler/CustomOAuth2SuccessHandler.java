@@ -2,7 +2,7 @@ package com.webtoon.manamana.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.auth.exception.BadRequestException;
 import com.webtoon.manamana.auth.util.CookieUtils;
 import com.webtoon.manamana.auth.util.HttpCookieOAuth2AuthorizationRequestRepository;

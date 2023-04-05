@@ -1,6 +1,6 @@
 package com.webtoon.manamana.util.controller;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.util.dto.request.NotificationRequestDTO;

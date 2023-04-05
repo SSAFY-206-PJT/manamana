@@ -1,4 +1,4 @@
-package com.webtoon.manamana.auth.DTO;
+package com.webtoon.manamana.auth.dto;
 
 import lombok.Builder;
 import lombok.Getter;
