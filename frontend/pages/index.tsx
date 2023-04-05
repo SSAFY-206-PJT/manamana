@@ -41,11 +41,14 @@ function Home({ likeWebtoons }: Props) {
   //// api
   // 관심웹툰
   // 장르(genreId), 나이(age-group), 성별(gender)
+  const [manaRes, setManaRec] = useState<WTItem[]>();
   const [genreRec, setGenreRec] = useState<WTItem[]>();
   const [ageRec, setAgeRec] = useState<WTItem[]>();
   const [genderRec, setGenderRec] = useState<WTItem[]>();
 
   const getRec = async () => {
+    const manaRes = await api.algoWebtoons(token, '');
+    setManaRec(manaRes?.result);
     const genreRes = await api.algoWebtoons(token, 'genreId');
     setGenreRec(genreRes?.result);
     const ageRes = await api.algoWebtoons(token, 'age-group');
@@ -264,15 +267,16 @@ function Home({ likeWebtoons }: Props) {
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
           <WebtoonContainer categoryTitle={'마나마나가 준비했어요'} />
           <WebtoonItemContainer>
-            {myWebtoonDummy.map(webtoon => (
-              <WebtoonItem
-                key={webtoon.id}
-                id={webtoon.id}
-                webtoonName={webtoon.name}
-                imageUrl={webtoon.imagePath}
-                status={webtoon.status}
-              />
-            ))}
+            {manaRes &&
+              manaRes.map(webtoon => (
+                <WebtoonItem
+                  key={webtoon.id}
+                  id={webtoon.id}
+                  webtoonName={webtoon.name}
+                  imageUrl={webtoon.imagePath}
+                  status={webtoon.status}
+                />
+              ))}
           </WebtoonItemContainer>
         </div>
       </div>
