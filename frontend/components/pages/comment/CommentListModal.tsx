@@ -15,12 +15,7 @@ interface ChatListModalProps {
   key: number;
   close: () => void;
   deleteComment: (chat: any) => Promise<boolean>;
-  modifyComment: (
-    chatId: number,
-    oldComment: Chat,
-    newComment: Chat,
-    key: number,
-  ) => Promise<boolean>;
+  modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
 }
 
 function CommentListModal({
@@ -65,7 +60,7 @@ function CommentListModal({
         imagePath: chat.user.imagePath,
       },
     };
-    const result = await modifyComment(chat.id, oldComment, newComment, key);
+    const result = await modifyComment(chat.id, oldComment, newComment);
     if (result) {
       closeModal();
       return true;

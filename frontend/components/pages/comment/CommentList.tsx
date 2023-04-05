@@ -21,7 +21,7 @@ interface CommentListProps {
   commentList: Chat[];
   commentEnd: boolean;
   loadComment: () => void;
-  deleteComment: (chat: any) => Promise<boolean>;
+  deleteComment: (chat: any, key: number) => Promise<boolean>;
   modifyComment: (
     chatId: number,
     oldComment: Chat,
@@ -82,7 +82,7 @@ function CommentList({
     if (scrollLoading === 'add') {
       loadComment();
     } else if (scrollLoading === 'del') {
-      deleteComment('ee');
+      // deleteComment('ee');
     }
   }, [scrollLoading]);
 
@@ -106,6 +106,14 @@ function CommentList({
     setOpenModal(false);
   };
 
+  const modifyCommentM = (chatId: number, oldComment: Chat, newComment: Chat) => {
+    return modifyComment(chatId, oldComment, newComment, selectedKey);
+  };
+
+  const deleteCommentM = (chat: any) => {
+    return deleteComment(chat, selectedKey);
+  };
+
   return (
     <div className="mx-3 max-w-full overflow-auto bg-slate-100" ref={scrollRef} onScroll={scrollFn}>
       <div className="flex justify-center">
@@ -123,8 +131,8 @@ function CommentList({
           key={selectedKey}
           open={openModal}
           close={closeModal}
-          deleteComment={deleteComment}
-          modifyComment={modifyComment}
+          deleteComment={deleteCommentM}
+          modifyComment={modifyCommentM}
         />
       ) : null}
     </div>

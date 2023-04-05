@@ -99,14 +99,10 @@ function CommentPage({ webtoon, comments }: Props) {
     };
 
     // 댓글 삭제
-    const deleteComment = async (chat: any) => {
+    const deleteComment = async (chat: any, key: number) => {
       const data = await api.deleteWebtoonComment(webtoon.id, chat.id, token);
       if (data && data.isSuccess) {
-        for (let i = 0; i < commentList.length; i++) {
-          if (commentList[i] === chat) {
-            commentList.splice(i, 1);
-          }
-        }
+        commentList.splice(key, 1);
         setCommentList([...commentList]);
         return true;
       } else {
