@@ -1,7 +1,6 @@
 package com.webtoon.manamana.auth.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webtoon.manamana.auth.TokenAuthenticationFilter;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;

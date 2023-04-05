@@ -1,11 +1,7 @@
 package com.webtoon.manamana.webtoon.service.addition;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webtoon.manamana.config.redis.RedisProperty;
-import com.webtoon.manamana.config.redis.RedisUtil;
 import com.webtoon.manamana.config.response.exception.CustomException;
-import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.user.UserGenre;
 import com.webtoon.manamana.entity.user.UserWebtoon;
@@ -25,13 +21,9 @@ import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 

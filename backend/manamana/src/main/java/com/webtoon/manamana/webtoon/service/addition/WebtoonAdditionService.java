@@ -1,7 +1,6 @@
 package com.webtoon.manamana.webtoon.service.addition;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.webtoon.manamana.webtoon.dto.request.ScoreRequestDTO;
 import com.webtoon.manamana.webtoon.dto.response.addition.ScoreResponseDTO;
 import com.webtoon.manamana.webtoon.dto.response.addition.WordCloudResponseDTO;
 

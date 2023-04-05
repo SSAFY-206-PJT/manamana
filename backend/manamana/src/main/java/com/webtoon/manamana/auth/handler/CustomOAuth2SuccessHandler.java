@@ -1,29 +1,23 @@
 package com.webtoon.manamana.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webtoon.manamana.auth.DTO.AccessTokenDTO;
+
 import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.auth.exception.BadRequestException;
 import com.webtoon.manamana.auth.util.CookieUtils;
 import com.webtoon.manamana.auth.util.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.webtoon.manamana.auth.util.TokenProvider;
 import com.webtoon.manamana.config.AppProperty;
-import com.webtoon.manamana.config.response.CustomSuccessStatus;
-import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.user.repository.user.UserRepository;
-import com.webtoon.manamana.user.repository.user.UserRepositorySupport;
-import com.webtoon.manamana.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;

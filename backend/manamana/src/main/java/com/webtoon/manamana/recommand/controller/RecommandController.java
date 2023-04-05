@@ -5,7 +5,6 @@ import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
-import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.WorldCupResponseDTO;

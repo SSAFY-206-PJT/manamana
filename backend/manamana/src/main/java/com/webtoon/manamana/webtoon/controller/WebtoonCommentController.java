@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//TODO : 전부 더미데이터라 바꿔야됨.
-
 /**
  * 댓글 관련 컨트롤러 - 댓글 CRUD
  */

@@ -1,7 +1,6 @@
 package com.webtoon.manamana.webtoon.repository.comment;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.webtoon.manamana.entity.webtoon.Comment;
 import com.webtoon.manamana.entity.webtoon.QReport;
 import com.webtoon.manamana.entity.webtoon.Report;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;

@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService{
 
             userWebtoon.removeUserWebtoon();
 
-            // TODO: 2023-04-05 다른 테스트를 위해 주석처리. 
+            // TODO: 2023-04-05 다른 테스트를 위해 주석처리.
             /*
             //레디스에서 저장중이던 sse 객체 삭제.
             Map<Long, SseEmitter> sseMap = redisUtil.getData(redisProperty.getSseKey(), id);

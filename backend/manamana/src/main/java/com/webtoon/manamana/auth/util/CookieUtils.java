@@ -1,6 +1,5 @@
 package com.webtoon.manamana.auth.util;
 
-import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
 import javax.servlet.http.Cookie;

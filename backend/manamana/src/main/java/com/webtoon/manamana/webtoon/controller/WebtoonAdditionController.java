@@ -2,8 +2,6 @@ package com.webtoon.manamana.webtoon.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.webtoon.manamana.auth.DTO.UserPrincipal;
-import com.webtoon.manamana.config.redis.RedisProperty;
-import com.webtoon.manamana.config.redis.RedisUtil;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -20,12 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**

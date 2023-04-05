@@ -3,7 +3,6 @@ package com.webtoon.manamana.auth.exception;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.ResponseService;
-import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

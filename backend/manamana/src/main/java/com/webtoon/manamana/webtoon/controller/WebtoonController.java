@@ -8,7 +8,6 @@ import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListTotalDTO;
 import com.webtoon.manamana.webtoon.util.WebtoonFilterDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
-import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
 import com.webtoon.manamana.webtoon.service.common.WebtoonService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * 웹툰 정보
@@ -39,7 +37,6 @@ public class WebtoonController {
     private final WebtoonService webtoonService;
 
 
-    // TODO : 아래처럼 쿼리 스트링을 하나씩 받는게 아니라 맵으로 받던가 해야됨 - Pageable 사용하려고 하다보니까 아래와 같은 형식이 됨.
     //전체 조회.
     @Tag(name = "웹툰 정보")
     @Operation(summary = "웹툰 전체 조회", description =  "모든 웹툰 조회 - 쿼리 스트링으로 검색가능, 페이징 처리 가능")

@@ -1,7 +1,7 @@
 package com.webtoon.manamana.auth.service;
 
 import com.webtoon.manamana.auth.DTO.UserPrincipal;
-import com.webtoon.manamana.auth.oauth2.exception.OAuth2AuthenticationProcessingException;
+
 import com.webtoon.manamana.auth.util.TokenProvider;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
