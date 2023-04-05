@@ -54,7 +54,6 @@ public class WebtoonController {
             @RequestBody(required = false) WebtoonFilterDTO webtoonFilterDTO,
             Pageable pageable){
 
-        log.info("page = {}, size = {}",pageable.getOffset(),pageable.getPageSize());
 
         //body의 검색조건이 null이면
         if(webtoonFilterDTO == null) webtoonFilterDTO = new WebtoonFilterDTO();

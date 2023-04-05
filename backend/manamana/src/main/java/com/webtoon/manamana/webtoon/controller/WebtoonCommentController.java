@@ -54,7 +54,6 @@ public class WebtoonCommentController {
 
 
         long authUserId = userPrincipal.getId();
-        log.info("page = {}, size = {}", pageable.getOffset(), pageable.getPageSize());
         List<CommentListDTO> commentListDTOS = webtoonCommentService.findCommentAll(authUserId, webtoonId, pageable);
 
         if(commentListDTOS.isEmpty()) return responseService.getDataResponse(commentListDTOS,CustomSuccessStatus.RESPONSE_NO_CONTENT);

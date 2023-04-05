@@ -1,6 +1,5 @@
 package com.webtoon.manamana.user.repository.user;
 
-import com.webtoon.manamana.entity.user.LoginProvider;
 import com.webtoon.manamana.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

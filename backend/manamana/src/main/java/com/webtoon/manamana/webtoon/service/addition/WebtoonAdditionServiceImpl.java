@@ -308,7 +308,6 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
         }
         //값이 없을때
         else{
-            log.info("check4");
             userWebtoon = UserWebtoon.createScoreUserWebtoon(user, webtoon, score);
             userWebtoonRepository.save(userWebtoon);
             webtoonAddition.updateTotalScore(score);

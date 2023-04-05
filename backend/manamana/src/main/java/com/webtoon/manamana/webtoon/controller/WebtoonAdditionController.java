@@ -112,7 +112,6 @@ public class WebtoonAdditionController {
     public DataResponse<Object> scoreWebtoon(
             @PathVariable("webtoon-id") long webtoonId,
             @AuthenticationPrincipal UserPrincipal userPrincipal){
-        log.info("[개인이 평가한 평점 확인] - webtoon-id : {} ", webtoonId);
         
         long authUserId = userPrincipal.getId();
 
