@@ -1,11 +1,16 @@
 package com.webtoon.manamana.auth.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webtoon.manamana.auth.DTO.AccessTokenDTO;
 import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.auth.exception.BadRequestException;
 import com.webtoon.manamana.auth.util.CookieUtils;
 import com.webtoon.manamana.auth.util.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.webtoon.manamana.auth.util.TokenProvider;
 import com.webtoon.manamana.config.AppProperty;
+import com.webtoon.manamana.config.response.CustomSuccessStatus;
+import com.webtoon.manamana.config.response.DataResponse;
+import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
@@ -38,6 +43,11 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final AppProperty appProperty;
     private final UserRepository userRepository;
 
+    private final ResponseService responseService;
+
+    private final ObjectMapper objectMapper;
+
+
     @Transactional
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -51,15 +61,23 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         CookieUtils.addCookie(response,"refresh-token",refreshToken,Integer.parseInt(appProperty.getRefreshTokenExpirationTime()));
 
 //        String targetUrl = determineTargetUrl(request, response, authentication);
-        String targetUrl = determineTargetUrl(request, response, authentication);
+        String accessToken = determineTargetUrl(request, response, authentication);
         if (response.isCommitted()) {
-            logger.debug("응답이 이미 커밋되었습니다. " + targetUrl + "로 리다이렉션 할 수 없습니다.");
+            logger.debug("응답이 이미 커밋되었습니다. " );
             return;
         }
 
         clearAuthenticationAttributes(request, response);
 //        response.sendRedirect(appProperty.getRedirect_page());
-        getRedirectStrategy().sendRedirect(request,response,targetUrl); //리다이렉션.
+
+        AccessTokenDTO accessTokenDTO = AccessTokenDTO.builder()
+                .accessToken(accessToken).build();
+
+        String jsonString = objectMapper.writeValueAsString(responseService.getDataResponse(accessTokenDTO, CustomSuccessStatus.RESPONSE_SUCCESS));
+
+        response.getWriter().write(jsonString);
+
+//        getRedirectStrategy().sendRedirect(request,response,targetUrl); //리다이렉션.
     }
 
     protected String determineTargetUrl(HttpServletRequest request,
@@ -81,11 +99,11 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
 //        CookieUtils.addCookie(response,"access-token", token,Integer.parseInt(appProperty.getTokenExpirationTime()));
 
-        return UriComponentsBuilder.fromUriString(appProperty.getRedirect_page())
-                .queryParam("token", token)
-                .build().toString();
+//        return UriComponentsBuilder.fromUriString(appProperty.getRedirect_page())
+//                .queryParam("token", token)
+//                .build().toString();
 
-//        return targetUrl;
+        return token;
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request,
