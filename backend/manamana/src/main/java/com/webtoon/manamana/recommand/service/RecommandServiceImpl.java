@@ -82,13 +82,14 @@ public class RecommandServiceImpl implements RecommandService {
 
         log.info("*************[recommend data]************* = {}", assosiationWebtoonResponseDTOS.toString());
 
-
         for (AssosiationWebtoonResponseDTO assosiationWebtoonResponseDTO : assosiationWebtoonResponseDTOS) {
 
             log.info("[recommend webtoon id] = {}", assosiationWebtoonResponseDTO.getWebtoonId());
 
-            Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId())
-                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
+            Optional<Webtoon> webtoonOneOptional = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId());
+            if(!webtoonOneOptional.isPresent()) continue;
+
+            Webtoon webtoon = webtoonRepositorySupport.findWebtoonOne(assosiationWebtoonResponseDTO.getWebtoonId()).get();
 
             List<ApiAuthorDTO> apiAuthorDTOS = new ArrayList<>();
 
