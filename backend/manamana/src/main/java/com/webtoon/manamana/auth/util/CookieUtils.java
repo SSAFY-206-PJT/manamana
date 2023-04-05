@@ -1,5 +1,6 @@
 package com.webtoon.manamana.auth.util;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
 import javax.servlet.http.Cookie;
@@ -21,6 +22,9 @@ public class CookieUtils {
         return Optional.empty();
     }
 
+
+    // TODO: 2023-04-04 테스트시에는 samesite 기능을 켜줘야 함, servlet에서 제공하는 쿠키는 이 기능이 없어서 
+    // TODO: 2023-04-04 response에 직접 헤더를 추가해줘야함. - 아니면 스프링이 제공하는 reponseCookie를 사용해야됨.
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");

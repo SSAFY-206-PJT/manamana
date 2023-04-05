@@ -1,10 +1,9 @@
 package com.webtoon.manamana.webtoon.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.config.redis.RedisProperty;
+import com.webtoon.manamana.config.redis.RedisUtil;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -17,17 +16,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
-import kr.co.shineware.nlp.komoran.core.Komoran;
-import kr.co.shineware.nlp.komoran.model.KomoranResult;
-import kr.co.shineware.nlp.komoran.model.Token;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,20 +69,19 @@ public class WebtoonAdditionController {
             @ApiResponse(responseCode = "200",description = "API 정상 동작"),
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
-    @PatchMapping("/{webtoon-id}/like")
+    @PatchMapping(value="/{webtoon-id}/like")
     public CommonResponse likeComment(
             @PathVariable("webtoon-id") long webtoonId,
             @AuthenticationPrincipal UserPrincipal userPrincipal){
 
         long authUserId = userPrincipal.getId();
-        log.info("[관심등록 확인] - webtoon-id : {} ", webtoonId);
+
         webtoonAdditionService.createLikeWebtoon(authUserId,webtoonId);
 
         return responseService.getSuccessResponse();
     }
 
     /*댓글 워드 클라우드*/
-    //TODO : 기능 보류
     @Tag(name = "웹툰 추가 기능")
     @Operation(summary = "댓글 워드 클라우드", description =  "댓글 워드 클라우드 기능")
     @ApiResponses({
@@ -142,8 +137,6 @@ public class WebtoonAdditionController {
             @AuthenticationPrincipal UserPrincipal userPrincipal){
 
         long authUserId = userPrincipal.getId();
-
-        log.info("[작품 평점 생성 확인] - webtoon-id : {}, score : {}", webtoonId, scoreRequestDTO.getScore());
 
         webtoonAdditionService.createWebtoonUserScore(authUserId,webtoonId,scoreRequestDTO.getScore());
 

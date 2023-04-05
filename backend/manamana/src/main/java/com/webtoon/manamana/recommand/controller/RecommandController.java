@@ -47,8 +47,8 @@ public class RecommandController {
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-//        long authUserId = userPrincipal.getId();
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
+//        long authUserId = 1L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon(authUserId);
 
@@ -66,8 +66,8 @@ public class RecommandController {
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandByGenre(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-//        long authUserId = userPrincipal.getId();
-        long authUserId = 1L;
+        long authUserId = userPrincipal.getId();
+//        long authUserId = 1L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByGenre(authUserId);
 
@@ -85,8 +85,8 @@ public class RecommandController {
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandByAge(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-//        long authUserId = userPrincipal.getId();
-        long authUserId = 16L;
+        long authUserId = userPrincipal.getId();
+//        long authUserId = 16L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByAge(authUserId);
 
@@ -104,8 +104,8 @@ public class RecommandController {
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandByGender(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
-//        long authUserId = userPrincipal.getId();
-        long authUserId = 16L;
+        long authUserId = userPrincipal.getId();
+//        long authUserId = 16L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByGender(authUserId);
 

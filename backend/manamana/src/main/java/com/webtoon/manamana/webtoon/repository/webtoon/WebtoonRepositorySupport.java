@@ -3,12 +3,15 @@ package com.webtoon.manamana.webtoon.repository.webtoon;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.manamana.entity.user.QUserWebtoon;
 import com.webtoon.manamana.entity.webtoon.*;
 import com.webtoon.manamana.webtoon.util.WebtoonFilterDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -42,11 +45,11 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
 
 
     // TODO : distict 이케 쓰면 안됨 - 메모리에 올려서 중복제거를 하기 떄문에 in 쿼리를 이용해서 해결 할 수 있도록 바꿔야됨.
-    public List<Webtoon> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable){
+    public Page<Webtoon> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable){
 
         QWebtoon webtoon = QWebtoon.webtoon;
 
-        return queryFactory
+        List<Webtoon> webtoons = queryFactory
                 .select(webtoon).distinct()
                 .from(webtoon)
                 .where(webtoon.isDeleted.eq(false),
@@ -56,12 +59,28 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
                         gradeEq(webtoonFilterDTO.getGradeId()))
                 .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin().where(dayContain(webtoonFilterDTO.getDayId()))
                 .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin().where(genreContain(webtoonFilterDTO.getGenreId()))
-                .leftJoin(webtoon.webtoonAddition,QWebtoonAddition.webtoonAddition).fetchJoin()
+                .leftJoin(webtoon.webtoonAddition, QWebtoonAddition.webtoonAddition).fetchJoin()
                 .leftJoin(webtoon.authors, QAuthor.author).fetchJoin()
                 .orderBy(sortTypeOrder(webtoonFilterDTO.getSortType()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+        //총 개수 세기
+        JPAQuery<Webtoon> countQuery = queryFactory
+                .select(webtoon).distinct()
+                .from(webtoon)
+                .where(webtoon.isDeleted.eq(false),
+                        webtoon.isDeleted.eq(false),
+                        containsKey(webtoonFilterDTO.getKeyword()),
+                        statusEq(webtoonFilterDTO.getStatusId()),
+                        gradeEq(webtoonFilterDTO.getGradeId()))
+                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin().where(dayContain(webtoonFilterDTO.getDayId()))
+                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin().where(genreContain(webtoonFilterDTO.getGenreId()))
+                .leftJoin(webtoon.webtoonAddition, QWebtoonAddition.webtoonAddition).fetchJoin()
+                .leftJoin(webtoon.authors, QAuthor.author).fetchJoin();
+
+        return PageableExecutionUtils.getPage(webtoons,pageable,() -> countQuery.fetch().size());
 
     }
 
@@ -93,7 +112,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
     /*연재여부*/
     private BooleanExpression statusEq(List<Integer> statusId){
 
-        if(statusId.isEmpty() || statusId == null) return null;
+        if(statusId == null || statusId.isEmpty()) return null;
 
         return QWebtoon.webtoon.statusId.in(statusId);
     }
@@ -103,14 +122,14 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
     /*연령 등급*/
     private BooleanExpression gradeEq(List<Integer> gradeId){
 
-        if(gradeId.isEmpty() || gradeId == null) return null;
+        if(gradeId == null || gradeId.isEmpty()) return null;
 
         return QWebtoon.webtoon.gradeId.in(gradeId);
     }
     /*요일*/
     private BooleanExpression dayContain(List<Integer> dayId){
 
-        if(dayId.isEmpty() || dayId == null) return null;
+        if(dayId == null || dayId.isEmpty()) return null;
 
         return QWebtoon.webtoon.webtoonDays.any().codeId.in(dayId);
 
@@ -118,7 +137,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
     /*장르*/
     private BooleanExpression genreContain(List<Integer> genreId){
 
-        if(genreId.isEmpty() || genreId == null) return null;
+        if(genreId == null || genreId.isEmpty()) return null;
 
         return QWebtoon.webtoon.webtoonGenres.any().genre.id.in(genreId);
     }
