@@ -120,8 +120,8 @@ function CommentList({
         {scrollLoading === 'add' ? <CircularProgress /> : null}
       </div>
       <div className="m-2 flex min-h-screen max-w-full flex-col-reverse">
-        {commentList?.reverse().map((item: Chat) => (
-          <CommentListItem chat={item} itemInfo={itemInfo} key={item.id} />
+        {commentList?.reverse().map((item: Chat, idx) => (
+          <CommentListItem chat={item} itemInfo={itemInfo} key={idx} />
         ))}
       </div>
       {openModal ? (

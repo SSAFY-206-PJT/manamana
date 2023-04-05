@@ -27,11 +27,10 @@ interface ApiResult {
   count: number;
 }
 
-const getWebtoons = async (p: Parameters): Promise<ApiResult> => {
+const getWebtoons = async (p: Parameters, token: any): Promise<ApiResult> => {
   let url = `/webtoons?keyword=${p.keyword}&page=${p.page}&size=${p.size}&sortType=${p.sortType}`;
-  let value:any[] = [];
-  let contentCount:number = 0;
-  const token = getCookie('accessToken');
+  let value: any[] = [];
+  let contentCount: number = 0;
   await axios
     .post(
       url,
@@ -43,13 +42,13 @@ const getWebtoons = async (p: Parameters): Promise<ApiResult> => {
       },
       {
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-      }
+      },
     )
     .then(({ data }) => {
       value = data.result.contents;
       contentCount = data.result.count;
     })
-    .catch((err) => {
+    .catch(err => {
       // console.log('[ERROR] 마나 골라 웹툰 정보 가져올 때 오류 발생');
     });
   return { contents: value, count: contentCount };

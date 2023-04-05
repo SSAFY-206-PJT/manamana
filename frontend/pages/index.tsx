@@ -73,7 +73,6 @@ function Home({ likeWebtoons }: Props) {
     window.scrollTo({
       top: y,
       left: x,
-      behavior: 'smooth',
     });
   };
 
@@ -318,14 +317,14 @@ export default Home;
 
 export async function getServerSideProps(context: any) {
   const token = context.req.cookies.accessToken;
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  // if (!token) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   const res = await api.getUserLike(token);
   if (res && res.result.length > 0) {

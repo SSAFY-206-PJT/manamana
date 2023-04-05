@@ -18,6 +18,7 @@ import EmptyLottie from '../../public/lottie/51382-astronaut-light-theme.json';
 import WebtoonItem from '@/components/common/WebtoonItem';
 import { getWebtoons } from '../api/webtoon';
 import SortModal from '@/components/pages/search/SortModal';
+import { getCookie } from '@/util/cookie';
 
 interface Data {
   key: number;
@@ -25,6 +26,7 @@ interface Data {
 }
 
 export default function SearchPage() {
+  const token = getCookie('accessToken');
   const dispatch = useDispatch();
   const curSearchTag = useSelector((state: RootState) => state.searchTag); // Redux에 있는 값
 
@@ -125,7 +127,7 @@ export default function SearchPage() {
   const onSearchBarChange = (e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value);
   const handleClearSearchText = () => {
     setSearchText('');
-    };
+  };
 
   useEffect(() => {
     if (sortType === 1) {
@@ -145,11 +147,11 @@ export default function SearchPage() {
     return () => clearTimeout(debounce);
   }, [searchText]);
 
-
   useEffect(() => {
     reloadTag();
     // 필터값을 이용하여 웹툰을 검색한다.
-      getWebtoons({
+    getWebtoons(
+      {
         keyword: searchText,
         page: pageNum, // 페이지 숫자
         size: 21, // 한 페이지에 몇 개를 받을 건지
@@ -158,16 +160,16 @@ export default function SearchPage() {
         genreId: curSearchTag.genres.map(v => v.key),
         gradeId: curSearchTag.grades.map(v => v.key),
         dayId: curSearchTag.days.map(v => v.key),
-      }).then(res => {
-        if (res != null) {
-          setWebtoonList(res.contents);
-          setWebtoonCount(res.count);
-        }
-        else {
-
-        }
-      });
-    }, [sortType, curSearchTag, searchText]);
+      },
+      token,
+    ).then(res => {
+      if (res != null) {
+        setWebtoonList(res.contents);
+        setWebtoonCount(res.count);
+      } else {
+      }
+    });
+  }, [sortType, curSearchTag, searchText]);
 
   useEffect(() => {
     setWebtoonListElement(
@@ -189,16 +191,19 @@ export default function SearchPage() {
   const scrollNext = () => {
     const nextPage = pageNum + 1;
     // console.log(nextPage);
-    getWebtoons({
-      keyword: searchText,
-      page: nextPage, // 페이지 숫자
-      size: 21, // 한 페이지에 몇 개를 받을 건지
-      sortType: sortType,
-      statusId: curSearchTag.status.map(v => v.key),
-      genreId: curSearchTag.genres.map(v => v.key),
-      gradeId: curSearchTag.grades.map(v => v.key),
-      dayId: curSearchTag.days.map(v => v.key),
-    }).then(res => {
+    getWebtoons(
+      {
+        keyword: searchText,
+        page: nextPage, // 페이지 숫자
+        size: 21, // 한 페이지에 몇 개를 받을 건지
+        sortType: sortType,
+        statusId: curSearchTag.status.map(v => v.key),
+        genreId: curSearchTag.genres.map(v => v.key),
+        gradeId: curSearchTag.grades.map(v => v.key),
+        dayId: curSearchTag.days.map(v => v.key),
+      },
+      token,
+    ).then(res => {
       if (res != null) {
         setPageNum(nextPage);
         setWebtoonList([...webtoonList, ...res.contents]);
@@ -217,13 +222,16 @@ export default function SearchPage() {
 
   return (
     <div
-      className="min-h-screen min-w-screen h-full w-full overflow-auto bg-BackgroundLight"
+      className="min-w-screen h-full min-h-screen w-full overflow-auto bg-BackgroundLight"
       ref={scrollRef}
       onScroll={scrollFn}
     >
       <Headerbar showBackBtn={true} pageName="탐색" />
       <div className="m-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-2">
-        <SearchBar onSearchBarChange={onSearchBarChange} onClearSearchText={handleClearSearchText} />
+        <SearchBar
+          onSearchBarChange={onSearchBarChange}
+          onClearSearchText={handleClearSearchText}
+        />
         <div className="flex flex-row items-center justify-between">
           <div className="pl-2 pr-2 text-xl font-bold">
             <span>전체</span>
@@ -240,7 +248,7 @@ export default function SearchPage() {
               <span>{sortTypeString}</span>
               <AngleDown width={20} height={20} />
             </button>
-            <Link href="/search/filter">
+            <Link href="/search/filter" className="flex items-center">
               <img
                 src="/images/filter-img.svg"
                 alt="filter"
@@ -266,7 +274,7 @@ export default function SearchPage() {
           <Lottie loop animationData={EmptyLottie} play className="h-2/3 w-2/3" />
         </div>
       ) : (
-        <div className="m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-12 text-center float-left">
+        <div className="float-left m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-12 text-center">
           {webtoonListElement}
         </div>
       )}
