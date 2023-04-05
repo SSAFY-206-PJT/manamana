@@ -217,7 +217,7 @@ export default function SearchPage() {
 
   return (
     <div
-      className="h-screen w-screen overflow-auto bg-BackgroundLight"
+      className="min-h-screen min-w-screen h-full w-full overflow-auto bg-BackgroundLight"
       ref={scrollRef}
       onScroll={scrollFn}
     >
@@ -266,7 +266,7 @@ export default function SearchPage() {
           <Lottie loop animationData={EmptyLottie} play className="h-2/3 w-2/3" />
         </div>
       ) : (
-        <div className="m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-14 text-center float-left">
+        <div className="m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-12 text-center float-left">
           {webtoonListElement}
         </div>
       )}

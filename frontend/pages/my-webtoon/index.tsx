@@ -197,10 +197,10 @@ export default function MyWebtoonPage(props: Props) {
   }, [selectedDays, selectedStatus]);
 
   return (
-    <div>
-      <Headerbar showBackBtn={true} pageName="내 웹툰" rightBtn="EDIT"></Headerbar>
-      <div className="flex h-[94vh] w-full flex-col bg-BackgroundLight pt-4">
-        <div className="m-4 rounded-xl bg-BackgroundLightComponent p-4">
+    <div className="min-h-screen min-w-screen h-full w-full bg-BackgroundLight">
+      <Headerbar showBackBtn={true} pageName="내 웹툰"></Headerbar>
+      <div>
+        <div className="mx-4 my-6 rounded-xl bg-BackgroundLightComponent p-4">
           <div className="flex">
             <div onClick={onDayClick} className="w-full text-center text-lg font-bold">
               {FocusState.DAY === focus ? (

@@ -118,7 +118,7 @@ export default function FilterPage(props: Props) {
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-col gap-4 bg-BackgroundLight">
+    <div className="flex min-h-screen min-w-screen h-full w-full flex-col gap-4 bg-BackgroundLight">
       <div className="m-2 flex h-16 items-center justify-center">
         <span className="text-2xl font-bold text-PrimaryLight">필터</span>
       </div>
