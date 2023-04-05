@@ -6,6 +6,7 @@ import { css } from '@emotion/react';
 import { userInfo } from '../api/detail';
 import { setLogin, setUserInfo } from '@/store/LoginSlice';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 interface Props {
   token: string | null;
@@ -79,6 +80,20 @@ function Login({ token }: Props) {
       ></img>
     );
 
+    const newLogin = async () => {
+      // axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
+      // { withCredentials: true, }
+      try {
+        const res = await axios.get('https://j8b206.p.ssafy.io/api/oauth2/authorization/kakao');
+        const answer = res.data;
+        console.log(answer);
+        return answer;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    };
+
     return (
       <div className="flex h-screen w-screen flex-col">
         <div className="z-[-1]">
@@ -119,11 +134,11 @@ function Login({ token }: Props) {
             마나마나
           </div>
 
-          <a href="https://j8b206.p.ssafy.io/api/oauth2/authorization/kakao">
-            <button className="m-8 h-[45px] w-[300px]">
-              <img src="images/kakao_login_medium_wide.png" alt="카카오 로그인"></img>
-            </button>
-          </a>
+          {/* <a href="https://j8b206.p.ssafy.io/api/oauth2/authorization/kakao"> */}
+          <button className="m-8 h-[45px] w-[300px]" onClick={newLogin}>
+            <img src="images/kakao_login_medium_wide.png" alt="카카오 로그인"></img>
+          </button>
+          {/* </a> */}
 
           <div className="text-center text-FontSecondaryDark">
             <p>Copyright 2023.</p>
