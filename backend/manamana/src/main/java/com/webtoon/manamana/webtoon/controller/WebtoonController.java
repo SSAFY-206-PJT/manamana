@@ -5,6 +5,7 @@ import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
+import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListTotalDTO;
 import com.webtoon.manamana.webtoon.util.WebtoonFilterDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
@@ -47,7 +48,7 @@ public class WebtoonController {
             @ApiResponse(responseCode = "400",description = "API 에러"),
     })
     @PostMapping
-    public DataResponse<List<WebtoonListDTO>> webtoonList(
+    public DataResponse<WebtoonListTotalDTO> webtoonList(
             @Parameter(description = "키워드", required = false, example = "박태준") @RequestParam(required = false) String keyword,
             @Parameter(description = "정렬조건", required = false, example = "1") @RequestParam(required = false) Integer sortType,
             @RequestBody(required = false) WebtoonFilterDTO webtoonFilterDTO,
@@ -62,15 +63,13 @@ public class WebtoonController {
         webtoonFilterDTO.setKeyword(keyword);
         webtoonFilterDTO.setSortType(sortType);
 
-        log.info("webtoon find All DTO : {}", webtoonFilterDTO);
 
-        List<WebtoonListDTO> webtoonListDTOS = webtoonService.findWebtoonAll(webtoonFilterDTO, pageable);
+        WebtoonListTotalDTO webtoonListTotalDTO = webtoonService.findWebtoonAll(webtoonFilterDTO, pageable);
 
-        log.info("data size : {}", webtoonListDTOS.size());
 
-        if(webtoonListDTOS.isEmpty()) return responseService.getDataResponse(webtoonListDTOS,CustomSuccessStatus.RESPONSE_NO_CONTENT);
+        if(webtoonListTotalDTO.getCount() == 0) return responseService.getDataResponse(webtoonListTotalDTO,CustomSuccessStatus.RESPONSE_NO_CONTENT);
 
-        return responseService.getDataResponse(webtoonListDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
+        return responseService.getDataResponse(webtoonListTotalDTO, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
     @Tag(name = "웹툰 정보")
