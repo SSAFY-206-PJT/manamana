@@ -27,7 +27,6 @@ async def assosiateion(request: Request):
         recommendData.done()
 
     recommend_webtoon_json = recommendData.make_json()
-    print(recommend_webtoon_json)
 
     return recommend_webtoon_json
 
@@ -36,11 +35,8 @@ async def assosiateion(request: Request):
 async def userbased(request: Request):
 
     req = await request.json()
-    print(req)
     k = int(list(req.keys())[0])
     v = list(req.values())[0]
-    print(k)
-    print(v)
 
     recommend_list = userRecommend.recommand_to_user(v, k)
 
@@ -52,6 +48,5 @@ async def userbased(request: Request):
         recommendData.done()
 
     recommend_webtoon_json = recommendData.make_json()
-    print(recommend_webtoon_json)
 
     return recommend_webtoon_json
