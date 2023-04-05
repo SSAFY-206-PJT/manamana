@@ -14,13 +14,14 @@ import java.util.Collection;
 import java.util.Map;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class UserPrincipal implements OAuth2User, UserDetails {
 
     private long id;
     private String email;
 
-    @Setter
+
     private Map<String, Object> attributes;
 
     public static UserPrincipal create(User user) {
@@ -83,12 +84,4 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "UserPrincipal{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", attributes=" + attributes +
-                '}';
-    }
 }

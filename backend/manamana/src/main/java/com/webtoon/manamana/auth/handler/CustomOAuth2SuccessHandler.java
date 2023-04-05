@@ -74,7 +74,6 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
 //        response.getWriter().write(jsonString);
 
-        response.addHeader("test1111", "test11111");
 
         getRedirectStrategy().sendRedirect(request,response,targetUrl); //리다이렉션.
     }
