@@ -401,7 +401,7 @@ export const unlikeWebtoon = async (user_id: any, webtoon_ids: number[], token: 
     method: 'DELETE',
     url: `/users/${user_id}/webtoons`,
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-    data: { webtoon_ids },
+    data: { id: webtoon_ids },
   };
 
   try {
