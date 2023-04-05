@@ -61,8 +61,8 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         //리프레시 토큰 쿠키에 담기.
         CookieUtils.addCookie(response,"refresh-token",refreshToken,Integer.parseInt(appProperty.getRefreshTokenExpirationTime()));
 
-//        String targetUrl = determineTargetUrl(request, response, authentication);
-        String accessToken = determineTargetUrl(request, response, authentication);
+        String targetUrl = determineTargetUrl(request, response, authentication);
+//        String accessToken = determineTargetUrl(request, response, authentication);
         if (response.isCommitted()) {
             logger.debug("응답이 이미 커밋되었습니다. " );
             return;
@@ -71,18 +71,18 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         clearAuthenticationAttributes(request, response);
 //        response.sendRedirect(appProperty.getRedirect_page());
 
-        AccessTokenDTO accessTokenDTO = AccessTokenDTO.builder()
-                .accessToken(accessToken).build();
+//        AccessTokenDTO accessTokenDTO = AccessTokenDTO.builder()
+//                .accessToken(accessToken).build();
 
-        String jsonString = objectMapper.writeValueAsString(responseService.getDataResponse(accessTokenDTO, CustomSuccessStatus.RESPONSE_SUCCESS));
+//        String jsonString = objectMapper.writeValueAsString(responseService.getDataResponse(accessTokenDTO, CustomSuccessStatus.RESPONSE_SUCCESS));
 
-        response.addHeader("accessToken",accessToken);
-        response.sendRedirect(appProperty.getRedirect_page());
+//        response.sendRedirect(appProperty.getRedirect_page());
 
 //        response.getWriter().write(jsonString);
 
+        response.addHeader("test1111", "test11111");
 
-//        getRedirectStrategy().sendRedirect(request,response,targetUrl); //리다이렉션.
+        getRedirectStrategy().sendRedirect(request,response,targetUrl); //리다이렉션.
     }
 
     protected String determineTargetUrl(HttpServletRequest request,
@@ -102,11 +102,11 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
 //        CookieUtils.addCookie(response,"access-token", token,Integer.parseInt(appProperty.getTokenExpirationTime()));
 
-//        return UriComponentsBuilder.fromUriString(appProperty.getRedirect_page())
-//                .queryParam("token", token)
-//                .build().toString();
+        return UriComponentsBuilder.fromUriString(appProperty.getRedirect_page())
+                .queryParam("token", token)
+                .build().toString();
 
-        return token;
+//        return token;
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request,
