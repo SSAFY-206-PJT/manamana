@@ -85,4 +85,13 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     public String getPassword() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "UserPrincipal{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", attributes=" + attributes +
+                '}';
+    }
 }

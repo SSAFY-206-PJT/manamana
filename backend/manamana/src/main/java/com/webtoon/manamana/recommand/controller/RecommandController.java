@@ -5,6 +5,7 @@ import com.webtoon.manamana.auth.DTO.UserPrincipal;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
+import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.RecommandWebtoonResponseDTO;
 import com.webtoon.manamana.recommand.dto.response.WorldCupResponseDTO;
@@ -46,6 +47,8 @@ public class RecommandController {
     @GetMapping("/recommands")
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandUserWebtoon(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
+
+        log.info("testasdf111111 : {}",userPrincipal.toString());
 
         long authUserId = userPrincipal.getId();
 //        long authUserId = 1L;
