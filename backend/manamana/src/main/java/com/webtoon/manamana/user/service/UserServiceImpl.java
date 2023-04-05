@@ -186,11 +186,16 @@ public class UserServiceImpl implements UserService{
 
         //관심 웹툰 조회
         webtoonIds.forEach(id -> {
-            UserWebtoon userWebtoon = userWebtoonRepository.findByUserAndIsDeletedFalseAndIsLikedTrue(user)
+            //해당 웹툰이 있는지 조회.
+            Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(id)
+                    .orElseThrow(() -> new CustomException(NOT_FOUNT_WEBTOON));
+
+            UserWebtoon userWebtoon = userWebtoonRepositorySupport.findUserWetboonLikedByUserAndWebtoon(user,webtoon)
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER_WEBTOON));
 
             userWebtoon.removeUserWebtoon();
 
+            /*
             //레디스에서 저장중이던 sse 객체 삭제.
             Map<Long, SseEmitter> sseMap = redisUtil.getData(redisProperty.getSseKey(), id);
 
@@ -207,6 +212,8 @@ public class UserServiceImpl implements UserService{
                 sseMap.remove(userId);
                 redisUtil.setData(redisProperty.getSseKey(),id,sseMap);
             }
+
+             */
         });
 
     }
