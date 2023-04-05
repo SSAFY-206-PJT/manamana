@@ -27,10 +27,10 @@ export default function WebtoonItem({ id, imageUrl, webtoonName, status }: Props
           <img src={imageUrl} alt="imageURL" className="h-full w-full"></img>
         </div>
 
-        <div className="mt-1 flex h-4 flex-row items-center overflow-hidden text-sm">
+        <div className="mt-1 flex h-4 flex-row justify-start items-center overflow-hidden text-sm">
           {status === '휴재중' ? <WebtoonBreakLabel /> : <></>}
           {status === '완결' ? <WebtoonCompleteLabel /> : <></>}
-          <div className="text-semibold flex items-center justify-center text-[16px]">
+          <div className="text-semibold text-[16px]">
             {/* 웹툰제목 길이가 길면 6글자만 출력 */}
             {/* 휴재/완결 버튼 있고 웹툰제목 길이가 길면 4글자만 출력 */}
             {(status === '휴재중' || status === '완결') && webtoonName.length > 4

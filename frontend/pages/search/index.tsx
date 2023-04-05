@@ -35,7 +35,7 @@ export default function SearchPage() {
 
   const [webtoonList, setWebtoonList] = useState<any[]>([]); // 웹툰 정보 리스트
   const [webtoonListElement, setWebtoonListElement] = useState<any | null>(null); // 웹툰 정보를 이용하여 Element로 변환한 값
-  const [webtoonCount, setWebtoonCount] = useState<number>(9999); // 전체 웹툰 리스트의 길이
+  const [webtoonCount, setWebtoonCount] = useState<number>(0); // 전체 웹툰 리스트의 길이
 
   const [searchText, setSearchText] = useState<string>('');
   const [tempSearchText, setTempSearchText] = useState(searchText);
@@ -181,7 +181,7 @@ export default function SearchPage() {
         setWebtoonCount(res.count);
       }
     });
-  }, [sortType, curSearchTag]);
+  }, [sortType, curSearchTag, searchText]);
 
   useEffect(() => {
     setWebtoonListElement(
@@ -235,15 +235,14 @@ export default function SearchPage() {
       ref={scrollRef}
       onScroll={scrollFn}
     >
-      <Headerbar showBackBtn={true} pageName="탐색" rightBtn="EDIT" />
+      <Headerbar showBackBtn={true} pageName="탐색" />
       <div className="m-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-2">
         <SearchBar onSearchBarChange={onSearchBarChange} />
         <div className="flex flex-row items-center justify-between">
           <div className="pl-2 pr-2 text-xl font-bold">
             <span>전체</span>
             <span className="ml-1 text-PrimaryLight">
-              {/* {webtoonList.length > 999 ? '999+' : webtoonList.length} */}
-              {webtoonCount}
+              {webtoonCount > 999 ? '999+' : webtoonCount}
             </span>
             <span className="ml-1">개</span>
           </div>
