@@ -69,16 +69,16 @@ function DetailPage({ res }: Props) {
         if (data && data.isSuccess) {
           setIsLike(true);
         } else {
-          console.log(data);
-          console.log(data?.message);
+          console.log('like', data);
+          console.log('like', data?.message);
         }
       } else {
         const data = await api.unlikeWebtoon(1, [webtoon.id], token);
         if (data && data.isSuccess) {
           setIsLike(false);
         } else {
-          console.log(data);
-          console.log(data?.message);
+          console.log('unlike', data);
+          console.log('unlike', data?.message);
         }
       }
     };
