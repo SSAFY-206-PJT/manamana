@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import Lottie from 'react-lottie-player';
 import yesEffect from '../../public/lottie/138218-check-icon.json';
 import noEffect from '../../public/lottie/138219-x-icon.json';
+import { getCookie } from '@/util/cookie';
 
 interface WebtoonData {
   id: number;
@@ -22,6 +23,7 @@ interface ImageData {
 }
 
 export default function ManagolaPage() {
+  const token = getCookie('accessToken');
   /*
    * @Variable
    * 현재 위치하고 있는 단계 저장할 변수
@@ -79,7 +81,7 @@ export default function ManagolaPage() {
    * - 선택된 결과 초기화
    * */
   const onReplayClick = () => {
-    managolaInit().then(value => {
+    managolaInit(token).then(value => {
       if (value != null) setWebtoonDataList(value);
     });
     setPresentIdx(0);
@@ -111,7 +113,7 @@ export default function ManagolaPage() {
       // API 통신 결과로 얻게된 웹툰 데이터
 
       setIsLoading(true);
-      managolaEnd(choiceResult).then(res => {
+      managolaEnd(choiceResult, token).then(res => {
         setIsLoading(false);
         let value: WebtoonData = res;
         if (value != null) {
@@ -165,10 +167,10 @@ export default function ManagolaPage() {
    * */
   useEffect(() => {
     setChoiceResult([]);
-    managolaInit().then(value => {
+    managolaInit(token).then(value => {
       if (value != null) setWebtoonDataList(value);
     });
-  }, []);
+  }, [token]);
 
   /*
    * @useEffect
