@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import { getCookie } from '@/util/cookie';
 /*
  *
@@ -50,7 +50,7 @@ const getWebtoons = async (p: Parameters): Promise<ApiResult> => {
       contentCount = data.result.count;
     })
     .catch((err) => {
-      console.log('[ERROR] 마나 골라 웹툰 정보 가져올 때 오류 발생');
+      // console.log('[ERROR] 마나 골라 웹툰 정보 가져올 때 오류 발생');
     });
   return { contents: value, count: contentCount };
 };

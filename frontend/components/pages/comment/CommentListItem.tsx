@@ -69,7 +69,7 @@ function CommentListItem({ chat, itemInfo }: ChatProp) {
                 className="w-4"
                 onClick={() => {
                   itemInfo(chat);
-                  console.log('더보기클릭함');
+                  // console.log('더보기클릭함');
                 }}
               >
                 <Image src="/images/More.png" width={20} height={20} alt="#" />
@@ -110,7 +110,7 @@ function CommentListItem({ chat, itemInfo }: ChatProp) {
                 className="w-4"
                 onClick={() => {
                   itemInfo(chat);
-                  console.log('더보기클릭함');
+                  // console.log('더보기클릭함');
                 }}
               >
                 <Image src="/images/More.png" width={20} height={20} alt="#" />

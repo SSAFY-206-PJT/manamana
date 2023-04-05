@@ -87,8 +87,8 @@ export default function MyWebtoonPage(props: Props) {
     selectedStatus.push(data);
     setSelectedStatus([...selectedStatus]);
   };
-  console.log(selectedDays);
-  console.log(selectedStatus);
+  // console.log(selectedDays);
+  // console.log(selectedStatus);
 
   const unSelectDayButton = (data: Data) => {
     for (let i = 0; i < selectedDays.length; i++) {
@@ -166,9 +166,9 @@ export default function MyWebtoonPage(props: Props) {
   useEffect(() => {
     const newRes: Array<any> = [];
     const newElse: Array<any> = [];
-    console.log('selectedStatus', selectedStatus);
+    // console.log('selectedStatus', selectedStatus);
     likeWebtoons.map((webtoon: any) => {
-      console.log(webtoon.status);
+      // console.log(webtoon.status);
       let hasDayMatch =
         selectedDays.length === 0 || selectedDays.some(day => webtoon.days.includes(day.key));
       let hasEndMatch =

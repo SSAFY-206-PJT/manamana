@@ -24,7 +24,7 @@ const managolaInit = async () => {
             value = data.result;
         })
         .catch((err) => {
-            console.log("[ERROR] 마나 골라 웹툰 정보 가져올 때 오류 발생");
+            // console.log("[ERROR] 마나 골라 웹툰 정보 가져올 때 오류 발생");
         });
     return value;
 };
@@ -45,7 +45,7 @@ const managolaEnd = async (idArr: number[]) => {
             value = data.result;
         })
         .catch((err) => {
-            console.log("[ERROR] 마나 골라 웹툰 정보 전송 시 오류 발생");
+            // console.log("[ERROR] 마나 골라 웹툰 정보 전송 시 오류 발생");
         });
     return value;
 }

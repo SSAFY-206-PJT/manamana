@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Rating } from '@mui/material';
@@ -37,7 +37,7 @@ interface Props {
 
 function DetailPage({ res }: Props) {
   if (!res.success) {
-    console.log(res);
+    // console.log(res);
     return (
       <div>
         ERROR: {res.error} | MESSAGE: {res.result.message}
@@ -69,16 +69,16 @@ function DetailPage({ res }: Props) {
         if (data && data.isSuccess) {
           setIsLike(true);
         } else {
-          console.log(data);
-          console.log(data?.message);
+          // console.log(data);
+          // console.log(data?.message);
         }
       } else {
         const data = await api.unlikeWebtoon(1, [webtoon.id], token);
         if (data && data.isSuccess) {
           setIsLike(false);
         } else {
-          console.log(data);
-          console.log(data?.message);
+          // console.log(data);
+          // console.log(data?.message);
         }
       }
     };
@@ -230,7 +230,7 @@ function DetailPage({ res }: Props) {
     };
 
     const closeModal = () => {
-      console.log('밖을 클릭함');
+      // console.log('밖을 클릭함');
       setRatingModal(false);
       setAfterRating(false);
       setRatingInput(0);
@@ -242,9 +242,9 @@ function DetailPage({ res }: Props) {
         setAfterRating(true);
         setMyScore(ratingInput);
       } else if (data) {
-        console.log(data.message);
+        // console.log(data.message);
       } else {
-        console.log('postRating 통신오류');
+        // console.log('postRating 통신오류');
       }
     };
 
@@ -393,11 +393,11 @@ function DetailPage({ res }: Props) {
       const data = await api.getElseWebtoon(webtoon.id, token);
       if (data && data.isSuccess) {
         setSimilarWebtoon(data.result);
-        console.log(data.result);
+        // console.log(data.result);
       } else if (data) {
-        console.log('getElseWebtoon', data.message);
+        // console.log('getElseWebtoon', data.message);
       } else {
-        console.log('getElseRecommend통신오류');
+        // console.log('getElseRecommend통신오류');
       }
     };
 

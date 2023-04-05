@@ -18,7 +18,7 @@ function Login({ token }: Props) {
     const dispatch = useDispatch();
     const userInfoAPI = async () => {
       const res = await userInfo(token);
-      console.log(res.result);
+      // console.log(res.result);
       if (res.result) {
         dispatch(setUserInfo(res.result.result));
         dispatch(setLogin(true));

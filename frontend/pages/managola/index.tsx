@@ -1,13 +1,11 @@
 import Headerbar from '@/components/common/Headerbar';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Loading from '@/components/common/Loading';
 import Cover from '@/components/pages/managola/Cover';
 import Link from 'next/link';
 import { managolaInit, managolaEnd } from '../api/managola';
-import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import Lottie from 'react-lottie-player';
 import yesEffect from '../../public/lottie/138218-check-icon.json';
@@ -106,7 +104,7 @@ export default function ManagolaPage() {
     } else {
       // data 배열의 크기 이상이면 종료해야 하므로, 최종 결과 화면 띄워줌
 
-      console.log(choiceResult);
+      // console.log(choiceResult);
       // 서버에 결과를 보내고 해당 결과에 대한 결과 값을 도출받음
       // 도출이 되면 isLoading을 다시 false로 변환
       // 서버 연결 전까지는 timeout으로 임의로 진행
@@ -245,15 +243,6 @@ export default function ManagolaPage() {
       );
     }
   }, [presentIdx]);
-
-  useEffect(() => {
-    console.log(effect);
-    // if(effect != null){
-    //   setTimeout(() => {
-    //     setEffect(null);
-    //   }, 1500);
-    // }
-  }, [effect]);
 
   return (
     <div className="h-screen w-full">
