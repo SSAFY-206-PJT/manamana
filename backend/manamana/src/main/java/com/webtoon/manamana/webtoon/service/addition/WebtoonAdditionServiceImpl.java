@@ -203,9 +203,12 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
         ScoreResponseDTO scoreResponseDTO = null;
 
         //유저 작품 연계 테이블 조회
-        UserWebtoon userWebtoon = userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId, webtoonId).get();
+        Optional<UserWebtoon> userWebtoonOptional = userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId, webtoonId);
 
-        if(userWebtoon != null) scoreResponseDTO = ScoreResponseDTO.createDTO(userWebtoon.getScore());
+        if(userWebtoonOptional.isPresent()){
+            UserWebtoon userWebtoon = userWebtoonOptional.get();
+            scoreResponseDTO = ScoreResponseDTO.createDTO(userWebtoon.getScore());
+        }
         else scoreResponseDTO = ScoreResponseDTO.createDTO(0);
 
         return scoreResponseDTO;

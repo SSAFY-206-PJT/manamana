@@ -48,7 +48,7 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
         else{
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_ILLEGAL);
         }
-        
+
 
         String error = objectMapper.writeValueAsString(exceptionResponse);
 

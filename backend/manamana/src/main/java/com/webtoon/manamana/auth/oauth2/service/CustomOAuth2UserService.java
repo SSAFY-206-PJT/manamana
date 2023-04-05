@@ -26,6 +26,7 @@ import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Component
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
@@ -51,7 +52,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     /**
      * 사용자 정보 추출 후 시큐리티가 처리할 UserPrincipal 객체를 제공
      */
-    @Transactional
+
     public OAuth2User processOAuthUser(OAuth2UserRequest userRequest, OAuth2User oAuth2User) throws OAuth2AuthenticationProcessingException {
         //만들어둔 팩토리에 데이터를 전달해서 어떤 provider인지 판단.
         OAuth2UserInfo oAuth2UserInfo = customOAuthUserInfoFactory

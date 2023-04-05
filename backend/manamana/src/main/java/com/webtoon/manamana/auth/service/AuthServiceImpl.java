@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService{
 
         //리프레시 토큰 검증
         try {
-            if(!tokenProvider.validateRefreshToken(refreshToken)) new CustomException(NOT_INVALID_REFRESH_TOKEN);
+            if(!tokenProvider.validateRefreshToken(refreshToken)) throw new CustomException(NOT_INVALID_REFRESH_TOKEN);
 
         } catch (Exception e) {
             throw new CustomException(REFRESH_TOKEN_RENEWAL);
