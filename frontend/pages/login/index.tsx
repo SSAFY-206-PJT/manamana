@@ -84,7 +84,7 @@ function Login({ token }: Props) {
       // axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
       // { withCredentials: true, }
       try {
-        const res = await axios.get('https://j8b206.p.ssafy.io/api/oauth2/authorization/kakao');
+        const res = await axios.get('mana/oauth2/authorization/kakao');
         const answer = res.data;
         console.log(answer);
         return answer;
