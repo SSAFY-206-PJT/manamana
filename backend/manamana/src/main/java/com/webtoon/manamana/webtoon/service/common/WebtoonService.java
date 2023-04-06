@@ -1,13 +1,10 @@
 package com.webtoon.manamana.webtoon.service.common;
 
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
-import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListTotalDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
 import com.webtoon.manamana.webtoon.util.WebtoonFilterDTO;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 public interface WebtoonService {
 

@@ -10,7 +10,7 @@ interface Props {
 }
 
 function MyCommentPage({ myComments }: Props) {
-  console.log(myComments);
+  // console.log(myComments);
   // 댓글 리스트
   const [commentList, setCommentList] = useState<MyChat[]>(myComments);
   // 더이상 로딩할 댓글이 없으면 true

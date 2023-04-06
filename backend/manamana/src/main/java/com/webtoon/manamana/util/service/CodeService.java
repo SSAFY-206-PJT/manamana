@@ -2,7 +2,6 @@ package com.webtoon.manamana.util.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.webtoon.manamana.util.dto.response.*;
-import com.webtoon.manamana.util.repository.DayCodeRepository;
 
 import java.util.List;
 

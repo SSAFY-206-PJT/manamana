@@ -1,6 +1,5 @@
-import Image from 'next/image';
 import { css } from '@emotion/react';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 export default function MovingLogo(props: { direction: string; startIdx: number }) {
   /*

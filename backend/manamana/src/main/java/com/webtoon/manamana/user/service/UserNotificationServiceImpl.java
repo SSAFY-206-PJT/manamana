@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Transactional
 @RequiredArgsConstructor
 @Service
 public class UserNotificationServiceImpl implements UserNotificationService{
@@ -30,6 +29,7 @@ public class UserNotificationServiceImpl implements UserNotificationService{
 
 
     /*유저 알림 조회*/
+    @Transactional(readOnly = true)
     @Override
     public List<WebtoonNotificationDTO> getWebtoonNotificationList(long userId) {
 
@@ -49,19 +49,17 @@ public class UserNotificationServiceImpl implements UserNotificationService{
     }
 
     /*유저 알림 제거*/
+    @Transactional
     @Override
-    public void removeWebtoonNotification(long userId, long webtoonId) {
+    public void removeWebtoonNotification(long userId, long alarmId) {
 
         //회원 정보 조회
-        User user = userRepository.findByIdAndIsDeletedFalse(userId)
+        userRepository.findByIdAndIsDeletedFalse(userId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_USER));
 
-        //해당 웹툰 조회.
-        Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(webtoonId)
-                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_WEBTOON));
 
         //알림 조회
-        WebtoonNotification webtoonNotification = webtoonNotificationRepositorySupport.findWebtoonNotificationByUserAndWebtoon(user, webtoon)
+        WebtoonNotification webtoonNotification = webtoonNotificationRepositorySupport.findWebtoonNotificationByAlarmId(alarmId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_NOTIFICATION));
 
         //삭제처리.

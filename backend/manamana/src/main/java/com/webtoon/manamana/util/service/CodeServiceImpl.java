@@ -9,14 +9,12 @@ import com.webtoon.manamana.util.dto.naver.KeywordRankResponseDTO;
 import com.webtoon.manamana.util.dto.response.*;
 import com.webtoon.manamana.util.repository.*;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.apache.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 

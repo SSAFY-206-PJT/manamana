@@ -74,7 +74,7 @@ export default function GenreTastePage({ genreLists }: any) {
         });
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -126,7 +126,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       props: { genreLists },
     };
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return {
       props: {
         genreLists: null,

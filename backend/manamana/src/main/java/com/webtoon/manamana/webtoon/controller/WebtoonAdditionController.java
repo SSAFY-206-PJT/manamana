@@ -1,9 +1,7 @@
 package com.webtoon.manamana.webtoon.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
-import com.webtoon.manamana.config.redis.RedisProperty;
-import com.webtoon.manamana.config.redis.RedisUtil;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -20,12 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -112,7 +106,6 @@ public class WebtoonAdditionController {
     public DataResponse<Object> scoreWebtoon(
             @PathVariable("webtoon-id") long webtoonId,
             @AuthenticationPrincipal UserPrincipal userPrincipal){
-        log.info("[개인이 평가한 평점 확인] - webtoon-id : {} ", webtoonId);
         
         long authUserId = userPrincipal.getId();
 

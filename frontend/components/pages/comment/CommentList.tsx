@@ -21,8 +21,13 @@ interface CommentListProps {
   commentList: Chat[];
   commentEnd: boolean;
   loadComment: () => void;
-  deleteComment: (chat: any) => Promise<boolean>;
-  modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
+  deleteComment: (chat: any, key: number) => Promise<boolean>;
+  modifyComment: (
+    chatId: number,
+    oldComment: Chat,
+    newComment: Chat,
+    key: number,
+  ) => Promise<boolean>;
 }
 
 function CommentList({
@@ -77,7 +82,7 @@ function CommentList({
     if (scrollLoading === 'add') {
       loadComment();
     } else if (scrollLoading === 'del') {
-      deleteComment('ee');
+      // deleteComment('ee');
     }
   }, [scrollLoading]);
 
@@ -87,16 +92,24 @@ function CommentList({
   }, []);
 
   const [selectedChat, setSelectedChat] = useState<any>();
+  const [selectedKey, setSelectedKey] = useState<number>(0);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const itemInfo = (chat: Chat) => {
+  const itemInfo = (chat: Chat, key: number) => {
     setSelectedChat(chat);
     setOpenModal(true);
-    console.log('chatList에서');
-    console.log(chat);
+    setSelectedKey(key);
   };
 
   const closeModal = () => {
     setOpenModal(false);
+  };
+
+  const modifyCommentM = (chatId: number, oldComment: Chat, newComment: Chat) => {
+    return modifyComment(chatId, oldComment, newComment, selectedKey);
+  };
+
+  const deleteCommentM = (chat: any) => {
+    return deleteComment(chat, selectedKey);
   };
 
   return (
@@ -105,8 +118,8 @@ function CommentList({
         {scrollLoading === 'add' ? <CircularProgress /> : null}
       </div>
       <div className="m-2 flex min-h-screen max-w-full flex-col-reverse">
-        {commentList?.reverse().map((item: Chat) => (
-          <CommentListItem chat={item} itemInfo={itemInfo} key={item.id} />
+        {commentList?.reverse().map((item: Chat, idx) => (
+          <CommentListItem chat={item} itemInfo={itemInfo} key={item.id} idx={idx} />
         ))}
       </div>
       {openModal ? (
@@ -115,8 +128,8 @@ function CommentList({
           chat={selectedChat}
           open={openModal}
           close={closeModal}
-          deleteComment={deleteComment}
-          modifyComment={modifyComment}
+          deleteComment={deleteCommentM}
+          modifyComment={modifyCommentM}
         />
       ) : null}
     </div>

@@ -5,6 +5,8 @@ import { Chat } from './CommentList';
 import { CommentUserInput } from './CommentInput';
 import { reportWebtoonComment } from '@/pages/api/detail';
 import { getCookie } from '@/util/cookie';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 interface ChatListModalProps {
   webtoonId: number;
@@ -24,7 +26,9 @@ function CommentListModal({
   modifyComment,
 }: ChatListModalProps) {
   const token = getCookie('accessToken');
-  const myName = '김태학';
+
+  const user = useSelector((state: RootState) => state.isLogin);
+  const myName = user.nickname;
   const [modalState, setModalState] = useState<string>('init');
 
   const openModal = () => {};

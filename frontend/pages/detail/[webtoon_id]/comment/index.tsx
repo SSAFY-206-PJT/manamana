@@ -1,9 +1,6 @@
 import { GetServerSideProps } from 'next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as api from '@/pages/api/detail';
-// import { useRouter } from 'next/router';
-// import Image from 'next/image';
-
 import Headerbar from '@/components/common/Headerbar';
 import CommentList from '@/components/pages/comment/CommentList';
 import CommentInput from '@/components/pages/comment/CommentInput';
@@ -11,6 +8,8 @@ import { Chat } from '@/components/pages/comment/CommentList';
 import { CommentUserInput } from '@/components/pages/comment/CommentInput';
 import { WebtoonDetail } from '@/pages/api/detail';
 import { getCookie } from '@/util/cookie';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const defaultValue: CommentUserInput = {
   content: '',
@@ -27,6 +26,7 @@ function CommentPage({ webtoon, comments }: Props) {
     return <div>오류</div>;
   } else {
     const token = getCookie('accessToken');
+    const user = useSelector((state: RootState) => state.isLogin);
     // 그라데이션 스타일
     const hsls = webtoon.colorHsl.split(',');
     const WEBTOON_THEME_COLOR = `hsl(${hsls[0]}, ${hsls[1]}%, 20%)`;
@@ -56,8 +56,8 @@ function CommentPage({ webtoon, comments }: Props) {
         // console.log(data);
         if (data && data.isSuccess) {
           if (data.result.length > 0) {
-            console.log('기존 리스트', commentList);
-            console.log('에다가 더할 리스트', data.result);
+            // console.log('기존 리스트', commentList);
+            // console.log('에다가 더할 리스트', data.result);
             const newList2 = commentList.concat(data.result);
             setCommentList(newList2);
             setCommentPage(commentPage => commentPage + 1);
@@ -86,27 +86,23 @@ function CommentPage({ webtoon, comments }: Props) {
           createTime: new Date().toDateString(),
           user: {
             id: 1,
-            nickname: '김태학',
-            imagePath: 'url',
+            nickname: user.nickname,
+            imagePath: user.imagePath,
           },
         };
         setCommentList([newComment, ...commentList]);
         return true;
       } else {
-        console.log(data);
+        // console.log(data);
         return false;
       }
     };
 
     // 댓글 삭제
-    const deleteComment = async (chat: any) => {
+    const deleteComment = async (chat: any, key: number) => {
       const data = await api.deleteWebtoonComment(webtoon.id, chat.id, token);
       if (data && data.isSuccess) {
-        for (let i = 0; i < commentList.length; i++) {
-          if (commentList[i] === chat) {
-            commentList.splice(i, 1);
-          }
-        }
+        commentList.splice(key, 1);
         setCommentList([...commentList]);
         return true;
       } else {
@@ -115,7 +111,12 @@ function CommentPage({ webtoon, comments }: Props) {
     };
 
     // 댓글 수정
-    const modifyComment = async (chatId: number, oldComment: Chat, newComment: Chat) => {
+    const modifyComment = async (
+      chatId: number,
+      oldComment: Chat,
+      newComment: Chat,
+      key: number,
+    ) => {
       const result = await api.modifyWebtoonComment(
         webtoon.id,
         chatId,
@@ -124,22 +125,13 @@ function CommentPage({ webtoon, comments }: Props) {
         token,
       );
       if (result) {
-        for (let i = 0; i < commentList.length; i++) {
-          if (commentList[i] === oldComment) {
-            commentList[i] = newComment;
-            break;
-          }
-        }
+        commentList[key] = newComment;
         setCommentList([...commentList]);
         return true;
       } else {
         return false;
       }
     };
-
-    useEffect(() => {
-      console.log(commentList);
-    }, [commentList]);
 
     return (
       <div>

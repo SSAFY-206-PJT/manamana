@@ -1,6 +1,6 @@
 package com.webtoon.manamana.auth.controller;
 
-import com.webtoon.manamana.auth.DTO.TokenResponseDTO;
+import com.webtoon.manamana.auth.dto.TokenResponseDTO;
 import com.webtoon.manamana.auth.service.AuthService;
 import com.webtoon.manamana.auth.util.CookieUtils;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
@@ -29,7 +29,7 @@ public class AuthController {
     private final ResponseService responseService;
     private final AuthService authService;
 
-    //만료되념 ㄴ재발급.
+    //만료되면 재발급.
     @GetMapping("/reissuance")
     public DataResponse<TokenResponseDTO> reAuth(
             @RequestHeader("Authorization")String accessToken,

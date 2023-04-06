@@ -1,9 +1,9 @@
 package com.webtoon.manamana.auth;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
-import com.webtoon.manamana.entity.user.LoginProvider;
+
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.user.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;

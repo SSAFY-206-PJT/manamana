@@ -36,22 +36,22 @@ export default function FilterPage(props: Props) {
 
   const selectDayBlock = (data: Data) => {
     selectedDays.push(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const selectGenreBlock = (data: Data) => {
     selectedGenres.push(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const selectGradeBlock = (data: Data) => {
     selectedGrades.push(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const selectStatusBlock = (data: Data) => {
     selectedStatus.push(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const unSelectDayBlock = (data: Data) => {
@@ -118,7 +118,7 @@ export default function FilterPage(props: Props) {
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-col gap-4 bg-BackgroundLight">
+    <div className="flex min-h-screen min-w-screen h-full w-full flex-col gap-4 bg-BackgroundLight">
       <div className="m-2 flex h-16 items-center justify-center">
         <span className="text-2xl font-bold text-PrimaryLight">필터</span>
       </div>

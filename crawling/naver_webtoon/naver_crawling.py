@@ -305,5 +305,5 @@ def crawling_start(weeks):
             
     with open('./webtoon_json/fail.json','w',encoding='UTF-8') as f:
         json.dump(fails, f, ensure_ascii=False, default=str, indent=4)
-    post_request(json.dumps(temp_dict, ensure_ascii=False, default=str), url="http://crawling-spring-boot:8080/crawling")
+    post_request(json.dumps(temp_dict, ensure_ascii=False, default=str), url="http://crawling-spring-boot:8081/crawling")
     

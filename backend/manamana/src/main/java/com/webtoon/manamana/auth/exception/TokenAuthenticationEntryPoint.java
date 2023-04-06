@@ -1,7 +1,6 @@
 package com.webtoon.manamana.auth.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webtoon.manamana.auth.TokenAuthenticationFilter;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
@@ -36,23 +35,18 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         CommonResponse exceptionResponse;
 
-        if(exception == TOKEN_INVALID){
-            System.out.println("test1");
+        if(exception.equals(TOKEN_INVALID)){
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_INVALID);
         }
-        else if(exception == TOKEN_EXPIRE){
-            System.out.println("test2");
+        else if(exception.equals(TOKEN_EXPIRE)){
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_EXPIRE);
         }
-        else if(exception == TOKEN_UNSUPPORTED){
-            System.out.println("test3");
+        else if(exception.equals(TOKEN_UNSUPPORTED)){
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_UNSUPPORTED);
         }
         else{
-            System.out.println("test4");
             exceptionResponse = responseService.getExceptionResponse(CustomExceptionStatus.TOKEN_ILLEGAL);
         }
-
 
 
         String error = objectMapper.writeValueAsString(exceptionResponse);

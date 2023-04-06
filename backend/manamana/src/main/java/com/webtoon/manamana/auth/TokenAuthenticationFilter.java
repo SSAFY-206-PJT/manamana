@@ -6,7 +6,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.SignatureException;
+
 /*필터*/
 
 @Slf4j
@@ -44,8 +44,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-            System.out.println("hello1241513423");
-            System.out.println(jwt);
 
             if (tokenProvider.validateToken(jwt) && StringUtils.hasText(jwt)) {
                 Long userId = tokenProvider.getUserIdFromToken(jwt);
@@ -70,7 +68,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             log.info("잘못된 토큰입니다.");
             request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_ILLEGAL);
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         filterChain.doFilter(request, response);

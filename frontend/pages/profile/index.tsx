@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Swal from 'sweetalert2';
 import { getCookie, setCookie } from '@/util/cookie';
-import { userInfo } from '../api/detail';
+import { myWebtoonComment, userInfo } from '../api/detail';
 import { useRouter } from 'next/router';
 
 type User = {
@@ -72,7 +72,7 @@ export default function ProfilePage({ userData }: any) {
         cancelButtonColor: '#BE3455',
         confirmButtonText: '예',
         cancelButtonText: '아니오',
-      }).then((result: any)  => {
+      }).then((result: any) => {
         if (result.isConfirmed) {
           removeUserAxios();
           Swal.fire({ icon: 'success', title: '회원탈퇴 완료' });
@@ -99,7 +99,7 @@ export default function ProfilePage({ userData }: any) {
         },
       })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         {
           Swal.fire({
             title: '프로필이 변경되었습니다.',
@@ -108,7 +108,7 @@ export default function ProfilePage({ userData }: any) {
         }
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -124,10 +124,10 @@ export default function ProfilePage({ userData }: any) {
       })
       .then(response => {
         setCookie('accessToken', '');
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -140,13 +140,22 @@ export default function ProfilePage({ userData }: any) {
     if (targetFile) {
       setSelectedFile(targetFile);
       const selectedFileURL = URL.createObjectURL(targetFile);
-      console.log('여기가 138번째줄 이미지 경로', selectedFileURL);
+      // console.log('여기가 138번째줄 이미지 경로', selectedFileURL);
       setInfo({ ...info, imagePath: selectedFileURL });
+    }
+  };
+
+  const [myCommentCnt, setMyCommentCnt] = useState<number>(0);
+  const getMycomment = async () => {
+    const res = await myWebtoonComment(1, token);
+    if (res.result) {
+      setMyCommentCnt(res.result.length);
     }
   };
 
   // 처음 프로필 페이지 들어오면 수정중이 아닌 상태
   useEffect(() => {
+    getMycomment();
     setIsEditState(false);
     // console.log(userData);
     // console.log(info);
@@ -170,16 +179,16 @@ export default function ProfilePage({ userData }: any) {
     }
   `;
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="overflow-hidden">
       <Headerbar showBackBtn={false} pageName="마이페이지" rightBtn="NOTI" />
-
-      <div className="flex h-full w-full flex-col gap-4 bg-BackgroundLight p-2">
+      <div className="flex min-h-screen w-full flex-col gap-4 bg-BackgroundLight p-2">
         <div className="flex items-center rounded-2xl bg-BackgroundLightComponent p-8">
           <div className="relative flex w-full">
             <img
               src={info.imagePath}
               alt="프로필 이미지"
-              className="h-[100px] w-[100px] rounded-full"
+              className="h-[100px] w-[100px] object-cover rounded-full"
+              style={{ width: "100px", height: "100px" }}
             />
             {isEditState ? (
               <>
@@ -251,7 +260,7 @@ export default function ProfilePage({ userData }: any) {
             <div>
               <img src={'/images/Comment_Logo.png'} alt="My comment" className="h-12 w-12"></img>
             </div>
-            <div className="text-xl font-bold">{info.scoreCount}</div>
+            <div className="text-xl font-bold">{myCommentCnt}</div>
             <Link href={'/my-comment'}>
               <button className="rounded-xl bg-PrimaryLight p-1 pl-2 pr-2 text-lg font-medium text-FontPrimaryDark">
                 내 댓글
@@ -285,6 +294,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const token = context.req.cookies.accessToken;
   if (token) {
     const res = await userInfo(token);
+    console.log(res);
     if (res.success) {
       const userData: User = res.result;
       return { props: { userData } };

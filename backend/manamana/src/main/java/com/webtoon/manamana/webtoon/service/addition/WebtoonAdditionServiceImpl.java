@@ -1,11 +1,7 @@
 package com.webtoon.manamana.webtoon.service.addition;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webtoon.manamana.config.redis.RedisProperty;
-import com.webtoon.manamana.config.redis.RedisUtil;
 import com.webtoon.manamana.config.response.exception.CustomException;
-import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.user.UserGenre;
 import com.webtoon.manamana.entity.user.UserWebtoon;
@@ -25,13 +21,9 @@ import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -203,15 +195,19 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
         ScoreResponseDTO scoreResponseDTO = null;
 
         //유저 작품 연계 테이블 조회
-        UserWebtoon userWebtoon = userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId, webtoonId).get();
+        Optional<UserWebtoon> userWebtoonOptional = userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId, webtoonId);
 
-        if(userWebtoon != null) scoreResponseDTO = ScoreResponseDTO.createDTO(userWebtoon.getScore());
+        if(userWebtoonOptional.isPresent()){
+            UserWebtoon userWebtoon = userWebtoonOptional.get();
+            scoreResponseDTO = ScoreResponseDTO.createDTO(userWebtoon.getScore());
+        }
         else scoreResponseDTO = ScoreResponseDTO.createDTO(0);
 
         return scoreResponseDTO;
     }
 
     /*작품 평점 생성 및 수정*/
+    // TODO: 2023-04-05 로직 최적화 할것
     @Override
     public void createWebtoonUserScore(long userId,long webtoonId,int score) {
 
@@ -305,7 +301,6 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
         }
         //값이 없을때
         else{
-            log.info("check4");
             userWebtoon = UserWebtoon.createScoreUserWebtoon(user, webtoon, score);
             userWebtoonRepository.save(userWebtoon);
             webtoonAddition.updateTotalScore(score);

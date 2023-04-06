@@ -5,7 +5,6 @@ import com.webtoon.manamana.entity.user.LoginProvider;
 import com.webtoon.manamana.entity.user.QLoginProvider;
 import com.webtoon.manamana.entity.user.QUser;
 import com.webtoon.manamana.entity.user.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 

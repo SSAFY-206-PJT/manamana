@@ -1,6 +1,6 @@
 package com.webtoon.manamana.webtoon.controller;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -21,8 +21,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-//TODO : 전부 더미데이터라 바꿔야됨.
 
 /**
  * 댓글 관련 컨트롤러 - 댓글 CRUD
@@ -54,7 +52,6 @@ public class WebtoonCommentController {
 
 
         long authUserId = userPrincipal.getId();
-        log.info("page = {}, size = {}", pageable.getOffset(), pageable.getPageSize());
         List<CommentListDTO> commentListDTOS = webtoonCommentService.findCommentAll(authUserId, webtoonId, pageable);
 
         if(commentListDTOS.isEmpty()) return responseService.getDataResponse(commentListDTOS,CustomSuccessStatus.RESPONSE_NO_CONTENT);

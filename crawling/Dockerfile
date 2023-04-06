@@ -11,8 +11,12 @@ COPY . .
 RUN apt-get -qq update \
     && apt-get -qq install -y --no-install-recommends \
         cron \
+        supervisor \
     && apt-get -qq autoremove \
     && apt-get -qq clean
+
+RUN rm -rf /etc/localtime \
+    && ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 RUN cp ./crawling-env/cronjob /etc/cron.d/cronjob
 RUN chmod +x /etc/cron.d/cronjob
@@ -21,10 +25,13 @@ RUN cp ./crawling-env/.env ./kakao_webtoon/.env
 RUN cp ./crawling-env/.env ./kakao_page/.env
 RUN cp ./crawling-env/config.py ./naver_webtoon/config.py
 
+
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && apt install -y ./google-chrome-stable_current_amd64.deb \
     && rm google-chrome-stable_current_amd64.deb
 
 RUN pip install -r requirements.txt
+
+RUN sh /usr/app/crawling-env/log/startup.sh &
 
 CMD ["cron", "-f"]

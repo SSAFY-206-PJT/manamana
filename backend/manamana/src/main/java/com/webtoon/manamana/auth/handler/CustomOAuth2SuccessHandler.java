@@ -1,19 +1,19 @@
 package com.webtoon.manamana.auth.handler;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.auth.exception.BadRequestException;
 import com.webtoon.manamana.auth.util.CookieUtils;
 import com.webtoon.manamana.auth.util.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.webtoon.manamana.auth.util.TokenProvider;
 import com.webtoon.manamana.config.AppProperty;
+import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.user.repository.user.UserRepository;
-import com.webtoon.manamana.user.repository.user.UserRepositorySupport;
-import com.webtoon.manamana.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -38,6 +38,11 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final AppProperty appProperty;
     private final UserRepository userRepository;
 
+    private final ResponseService responseService;
+
+    private final ObjectMapper objectMapper;
+
+
     @Transactional
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -50,15 +55,26 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         //리프레시 토큰 쿠키에 담기.
         CookieUtils.addCookie(response,"refresh-token",refreshToken,Integer.parseInt(appProperty.getRefreshTokenExpirationTime()));
 
-//        String targetUrl = determineTargetUrl(request, response, authentication);
         String targetUrl = determineTargetUrl(request, response, authentication);
+//        String accessToken = determineTargetUrl(request, response, authentication);
         if (response.isCommitted()) {
-            logger.debug("응답이 이미 커밋되었습니다. " + targetUrl + "로 리다이렉션 할 수 없습니다.");
+            logger.debug("응답이 이미 커밋되었습니다. " );
             return;
         }
 
         clearAuthenticationAttributes(request, response);
 //        response.sendRedirect(appProperty.getRedirect_page());
+
+//        AccessTokenDTO accessTokenDTO = AccessTokenDTO.builder()
+//                .accessToken(accessToken).build();
+
+//        String jsonString = objectMapper.writeValueAsString(responseService.getDataResponse(accessTokenDTO, CustomSuccessStatus.RESPONSE_SUCCESS));
+
+//        response.sendRedirect(appProperty.getRedirect_page());
+
+//        response.getWriter().write(jsonString);
+
+
         getRedirectStrategy().sendRedirect(request,response,targetUrl); //리다이렉션.
     }
 
@@ -75,8 +91,6 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
-        System.out.println("target : " + targetUrl);
-
         String token = tokenProvider.creatToken(authentication); //access 토큰 생성.
 
 //        CookieUtils.addCookie(response,"access-token", token,Integer.parseInt(appProperty.getTokenExpirationTime()));
@@ -85,7 +99,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .queryParam("token", token)
                 .build().toString();
 
-//        return targetUrl;
+//        return token;
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request,
@@ -101,7 +115,6 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         User user = userRepository.findByIdAndIsDeletedFalse(userPrincipal.getId())
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_USER));
 
-        System.out.println(user.toString());
         user.updateRefresh(refreshToken);
     }
 }

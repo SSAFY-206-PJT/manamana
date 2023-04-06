@@ -14,7 +14,7 @@ const GenreTasteSlice = createSlice({
   reducers: {
     changeGenreTaste: (state: GenreTasteState, action: PayloadAction<number[]>) => {
       state.genreTasteList = action.payload;
-      console.log(state.genreTasteList);
+      // console.log(state.genreTasteList);
     },
   },
 });

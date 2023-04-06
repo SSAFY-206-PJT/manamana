@@ -1,4 +1,4 @@
-package com.webtoon.manamana.auth.DTO;
+package com.webtoon.manamana.auth.dto;
 
 /*spring security에서 사용하는 인증 객체*/
 
@@ -7,23 +7,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class UserPrincipal implements OAuth2User, UserDetails {
 
     private long id;
     private String email;
 
-    @Setter
+
     private Map<String, Object> attributes;
 
     public static UserPrincipal create(User user) {
@@ -85,4 +83,5 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     public String getPassword() {
         return null;
     }
+
 }
