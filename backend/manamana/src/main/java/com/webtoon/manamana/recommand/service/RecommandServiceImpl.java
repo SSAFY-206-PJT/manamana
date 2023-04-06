@@ -45,10 +45,6 @@ public class RecommandServiceImpl implements RecommandService {
     @Override
     public List<RecommandWebtoonResponseDTO> recommandUserWebtoon(long userId) throws Exception {
 
-        /*
-            TODO : Exception 던졌던거 다시 처리
-         */
-
         List<UserWebtoon> userWebtoonList = userWebtoonRepository.findAllByIsDeletedFalse();
 
         List<RecommendApiRequestDTO> recommendApiRequestDTOS = new ArrayList<>();
@@ -115,11 +111,6 @@ public class RecommandServiceImpl implements RecommandService {
     /* 사용자 선호 장르 기반 웹툰 추천 */
     @Override
     public List<RecommandWebtoonResponseDTO> recommandByGenre(long userId) throws Exception {
-
-        /*
-            TODO : Exception 던졌던거 처리
-            TODO : DB 조회 엄청 오래걸림
-         */
 
         List<Integer> userGenreMaxWeightList = userGenreRepositorySupport.findByMaxWeightGenre(userId);
         int listLen = userGenreMaxWeightList.size();
@@ -205,10 +196,6 @@ public class RecommandServiceImpl implements RecommandService {
     @Override
     public List<RecommandWebtoonResponseDTO> recommandByAge(long userId) throws Exception {
 
-        /*
-            TODO : Exception 던졌던거 다시 처리
-         */
-
         User user = userCheck(userId);
 
         int userAge = user.getAge();
@@ -282,10 +269,6 @@ public class RecommandServiceImpl implements RecommandService {
     @Override
     public List<RecommandWebtoonResponseDTO> recommandByGender(long userId) throws Exception {
 
-        /*
-            TODO : Exception 던졌던거 다시 처리
-         */
-
         User user = userCheck(userId);
 
         String userGender = user.getGender();
@@ -358,10 +341,6 @@ public class RecommandServiceImpl implements RecommandService {
     /* 관련 웹툰 추천 */
     @Override
     public  List<RecommandWebtoonResponseDTO> recommandAssociationWebtoon(long webtoonId) throws Exception {
-
-        /*
-            TODO : Exception 던졌던거 처리
-         */
 
         List<UserWebtoon> userWebtoonList =  userWebtoonRepository.findAllByIsDeletedFalse();
 
@@ -466,10 +445,6 @@ public class RecommandServiceImpl implements RecommandService {
     @Override
     @Transactional
     public WorldCupResultDTO worldCupWebtoonSave(long userId, WorldCupRequestDTO worldCupRequestDTO) throws Exception {
-
-        /*
-            TODO : Exception 던졌던거 다시 처리
-         */
 
         // users_and_webtoons 테이블 정보
         List<UserWebtoon> userWebtoons =  userWebtoonRepository.findAllByIsDeletedFalse();
