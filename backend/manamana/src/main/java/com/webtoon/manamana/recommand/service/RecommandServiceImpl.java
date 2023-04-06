@@ -62,14 +62,17 @@ public class RecommandServiceImpl implements RecommandService {
 
         // 유저가 관심등록한 웹툰 조회
         List<Long> userLikedWebtoon = userWebtoonRepositorySupport.findLikeWebtoonByUserId(userId);
+        List<RecommendDataRequestDTO> recommendDataRequestDTOS = new ArrayList<>();
+        recommendDataRequestDTOS.add(
+                RecommendDataRequestDTO.builder()
+                        .recommendApiRequestDTOS(recommendApiRequestDTOS)
+                        .userLikedWebtoon(userLikedWebtoon)
+                        .build()
+        );
 
-        RecommendDataRequestDTO recommendDataRequestDTO = RecommendDataRequestDTO.builder()
-                .recommendApiRequestDTOS(recommendApiRequestDTOS)
-                .userLikedWebtoon(userLikedWebtoon)
-                .build();
 
-        HashMap<Long, RecommendDataRequestDTO> map = new HashMap<>();
-        map.put(userId, recommendDataRequestDTO);
+        HashMap<Long, List<RecommendDataRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendDataRequestDTOS);
 
 
         HttpHeaders httpHeaders = new HttpHeaders();
