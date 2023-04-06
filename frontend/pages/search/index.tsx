@@ -1,10 +1,6 @@
-import Navbar from '../../components/common/Navbar';
-import Headerbar from '../../components/common/Headerbar';
-import SearchBar from '@/components/pages/search/SearchBar';
-import AngleDown from '../../public/images/fi-rs-angle-small-down.svg';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState, useRef } from 'react';
-import { RootState } from '../../store/index';
+import { RootState } from '@/store/index';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteDayTag,
@@ -12,13 +8,17 @@ import {
   deleteGradeTag,
   deleteStatusTag,
 } from '@/store/CurSearchTagSlice';
-import SearchTag from '@/components/pages/search/SearchTag';
 import Lottie from 'react-lottie-player';
-import EmptyLottie from '../../public/lottie/51382-astronaut-light-theme.json';
-import WebtoonItem from '@/components/common/WebtoonItem';
-import { getWebtoons } from '../api/webtoon';
+import Navbar from '@/components/common/Navbar';
+import Headerbar from '@/components/common/Headerbar';
+import SearchBar from '@/components/pages/search/SearchBar';
+import SearchTag from '@/components/pages/search/SearchTag';
 import SortModal from '@/components/pages/search/SortModal';
+import WebtoonItem from '@/components/common/WebtoonItem';
+import AngleDown from '@/public/images/fi-rs-angle-small-down.svg';
+import EmptyLottie from '@/public/lottie/51382-astronaut-light-theme.json';
 import { getCookie } from '@/util/cookie';
+import { getWebtoons } from '../api/webtoon';
 
 interface Data {
   key: number;
