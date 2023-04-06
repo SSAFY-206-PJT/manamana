@@ -35,6 +35,7 @@ async def assosiateion(request: Request):
 async def userbased(request: Request):
 
     req = await request.json()
+    print(req)
     k = int(list(req.keys())[0])
     v = list(req.values())[0]
 
