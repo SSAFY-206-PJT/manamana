@@ -39,7 +39,7 @@ def recommand_webtoons(user_table, df_svd_preds, user_id, ori_webtoons_df, ori_s
     return user_history, recommandations
 
 
-def recommand_to_user(data, user_id, liked_webtoon_arr):
+def recommand_to_user(data, user_id, liked_webtoon_arr, number_of_recommend):
     """
     사용자 기반 추천
         ARGS:
@@ -96,7 +96,7 @@ def recommand_to_user(data, user_id, liked_webtoon_arr):
     liked_webtoons = set(liked_webtoon_arr)
     recommend_webtoon_arr = predictions['webtoonId'].values.tolist()
     recommend_webtoons = set(recommend_webtoon_arr)
-    return list(filter(lambda x: x not in liked_webtoons, recommend_webtoon_arr))
+    return list(filter(lambda x: x not in liked_webtoons, recommend_webtoon_arr))[:number_of_recommend]
 
     # return list(recommend_webtoons - liked_webtoons)
 

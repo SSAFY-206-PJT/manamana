@@ -34,22 +34,14 @@ async def assosiateion(request: Request):
 @app.post("/userbased")
 async def userbased(request: Request):
 
-    print("==========")
-    print(request)
     req = await request.json()
-    print("==========")
-    print(req)
     k = int(list(req.keys())[0])
-    v = list(req.values())[0]
+    v = list(req.values())[0][0]
 
     recomm_data = v['recommendApiRequestDTOS']
     userLikedWebtoon = v['userLikedWebtoon']
-    print("==========")
-    print(recomm_data)
-    print(userLikedWebtoon)
-    print("==========")
 
-    recommend_list = userRecommend.recommand_to_user(v, k)
+    recommend_list = userRecommend.recommand_to_user(recomm_data, k, userLikedWebtoon, 10)
 
     for i in recommend_list:
         recommendData = recommendWebtoonList.RecommendWebtoonList()
