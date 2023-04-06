@@ -3,6 +3,8 @@ import Headerbar from '../../components/common/Headerbar';
 import NotiItem from '../../components/pages/notification/notiItem';
 import { GetServerSideProps } from 'next';
 import axios from 'axios';
+import Lottie from 'react-lottie-player';
+import EmptyLottie from '../../public/lottie/51382-astronaut-light-theme.json';
 
 interface Noti {
   id: number;
@@ -48,7 +50,7 @@ export default function NotificationPage({ data }: any) {
 
   // 알림 데이터
   const [notiData, setNotiData] = useState<Noti[]>(data);
-  console.log(notiData);
+  // console.log(notiData);
   return (
     <div>
       <Headerbar showBackBtn={true} pageName={'알림'} />
@@ -95,12 +97,15 @@ export default function NotificationPage({ data }: any) {
         </div>
       </div> */}
 
-      {notiData.length === 0 ? (
-        <div>알림없음</div>
+      {notiData === null || undefined || notiData.length === 0 ? (
+        <div className="flex h-[50vh] w-full flex-col items-center justify-center">
+          <Lottie loop animationData={EmptyLottie} play className="w-2/3" />
+        </div>
       ) : (
         notiData.map((noti: Noti) => (
           <NotiItem
             key={noti.id}
+            id={noti.id}
             image={noti.image}
             name={noti.name}
             episode={noti.episode}
