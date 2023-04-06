@@ -283,7 +283,7 @@ export default function SearchPage() {
         </div>
       </div>
       {webtoonList.length == 0 ? (
-        <div className="flex h-2/3 w-full flex-col items-center justify-center">
+        <div className="flex h-[100vh] w-full flex-col items-center justify-center">
           <Lottie loop animationData={EmptyLottie} play className="h-2/3 w-2/3" />
         </div>
       ) : (
