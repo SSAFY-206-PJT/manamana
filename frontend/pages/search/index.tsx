@@ -19,6 +19,7 @@ import AngleDown from '@/public/images/fi-rs-angle-small-down.svg';
 import EmptyLottie from '@/public/lottie/51382-astronaut-light-theme.json';
 import { getCookie } from '@/util/cookie';
 import { getWebtoons } from '../api/webtoon';
+import { CircularProgress } from '@mui/material';
 
 interface Data {
   key: number;
@@ -45,6 +46,7 @@ export default function SearchPage() {
   const [sortTypeString, setSortTypeString] = useState<string>('조회순');
   const [sortOpen, setSortOpen] = useState<boolean>(false);
   const [pageNum, setPageNum] = useState<number>(1);
+  const [scrollLoading, setScrollLoading] = useState<boolean>(false);
 
   /*
    * @Method
@@ -207,16 +209,19 @@ export default function SearchPage() {
       if (res != null) {
         setPageNum(nextPage);
         setWebtoonList([...webtoonList, ...res.contents]);
+        setScrollLoading(false);
       }
     });
   };
+
   const scrollFn = () => {
     // 스크롤 맨 밑에서
     console.log(scrollRef.current.scrollTop);
     if (
-      scrollRef.current.scrollTop ===
+      scrollRef.current.scrollTop + 50 >
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight
     ) {
+      setScrollLoading(true);
       scrollNext();
     }
   };
@@ -277,6 +282,7 @@ export default function SearchPage() {
           onScroll={scrollFn}
         >
           {webtoonListElement}
+          {scrollLoading ? <CircularProgress /> : null}
         </div>
       )}
       <Navbar />
