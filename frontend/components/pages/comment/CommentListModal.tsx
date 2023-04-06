@@ -49,7 +49,7 @@ function CommentListModal({
     const newComment = {
       id: chat.id,
       content: e.content,
-      isSpoiler: e.spoiler,
+      spoiler: e.spoiler,
       report: chat.report,
       createTime: chat.createTime,
       user: {
@@ -100,7 +100,7 @@ function CommentListModal({
         <p className="text-center text-2xl text-PrimaryLight">리뷰 수정</p>
         <hr className="my-2 w-full border border-PrimaryLight bg-PrimaryLight" />
         <CommentInput
-          defaultValue={{ content: chat.content, spoiler: chat.isSpoiler }}
+          defaultValue={{ content: chat.content, spoiler: chat.spoiler }}
           comment={modify}
         />
       </div>

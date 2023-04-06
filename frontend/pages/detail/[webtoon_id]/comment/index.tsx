@@ -81,7 +81,7 @@ function CommentPage({ webtoon, comments }: Props) {
         const newComment = {
           id: data.result.id,
           content: data.result.content,
-          isSpoiler: data.result.spoiler,
+          spoiler: data.result.spoiler,
           report: 0,
           createTime: new Date().toDateString(),
           user: {
@@ -121,7 +121,7 @@ function CommentPage({ webtoon, comments }: Props) {
         webtoon.id,
         chatId,
         newComment.content,
-        newComment.isSpoiler,
+        newComment.spoiler,
         token,
       );
       if (result) {

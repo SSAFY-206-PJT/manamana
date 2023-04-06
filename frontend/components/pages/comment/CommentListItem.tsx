@@ -16,7 +16,7 @@ function CommentListItem({ chat, itemInfo, idx }: Props) {
   const userImagePath = user.imagePath;
   const myName = user.nickname;
 
-  const [isSpoiler, setIsSpoiler] = useState<boolean>(chat.isSpoiler);
+  const [isSpoiler, setIsSpoiler] = useState<boolean>(chat.spoiler);
 
   // 날짜 변환
   const timeForToday = (value: string) => {

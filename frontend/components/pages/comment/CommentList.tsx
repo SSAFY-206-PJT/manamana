@@ -6,7 +6,7 @@ import CommentListModal from './CommentListModal';
 export interface Chat {
   id: number;
   content: string;
-  isSpoiler: boolean;
+  spoiler: boolean;
   report: number;
   createTime: string;
   user: {
