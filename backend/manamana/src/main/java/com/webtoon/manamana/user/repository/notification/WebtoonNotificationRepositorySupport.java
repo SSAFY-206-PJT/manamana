@@ -37,14 +37,13 @@ public class WebtoonNotificationRepositorySupport extends QuerydslRepositorySupp
     }
 
     /*유저의 알람에 해당하는 정보 조회*/
-    public Optional<WebtoonNotification> findWebtoonNotificationByUserAndWebtoon(User user, Webtoon webtoon){
+    public Optional<WebtoonNotification> findWebtoonNotificationByAlarmId(long alarmId){
 
         QWebtoonNotification webtoonNotification = QWebtoonNotification.webtoonNotification;
         return Optional.ofNullable(
                 queryFactory
                 .selectFrom(webtoonNotification)
-                .where(webtoonNotification.user.eq(user),
-                        webtoonNotification.webtoon.eq(webtoon),
+                .where(webtoonNotification.id.eq(alarmId),
                         webtoonNotification.isChecked.eq(false))
                 .fetchOne()
         );

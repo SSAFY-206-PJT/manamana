@@ -12,7 +12,7 @@ public interface UserNotificationService{
     List<WebtoonNotificationDTO> getWebtoonNotificationList(long userId);
 
     /*유저 알림 제거*/
-    void removeWebtoonNotification(long userId, long webtoonId);
+    void removeWebtoonNotification(long userId, long alarmId);
 
 
 
