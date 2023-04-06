@@ -25,7 +25,7 @@
 <table>
     <tr>
         <td height="140px" align="center"> <a href="https://github.com/oth54477">
-            <img src="https://avatars.githubusercontent.com/u/66712534?v=4" width="140px" /> <br><br> 👑 김태훈 <br>(Back-End) </a> <br></td>
+            <img src="https://avatars.githubusercontent.com/u/66712534?v=4" width="140px" /> <br><br> 👑 오태훈 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/lsh9672">
             <img src="https://avatars.githubusercontent.com/u/56991244?v=4" width="140px" /> <br><br> 😎 이상현 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/yeonnno">
