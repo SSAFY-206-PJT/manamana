@@ -42,6 +42,13 @@ async def userbased(request: Request):
     k = int(list(req.keys())[0])
     v = list(req.values())[0]
 
+    recomm_data = v['recommendApiRequestDTOS']
+    userLikedWebtoon = v['userLikedWebtoon']
+    print("==========")
+    print(recomm_data)
+    print(userLikedWebtoon)
+    print("==========")
+
     recommend_list = userRecommend.recommand_to_user(v, k)
 
     for i in recommend_list:
