@@ -94,6 +94,10 @@ def recommand_to_user(data, user_id, liked_webtoon_arr):
         user_table, df_svd_preds, user_id, df_ori, df, 10)
     
     liked_webtoons = set(liked_webtoon_arr)
-    recommend_webtoons = set(predictions['webtoonId'].values.tolist())
+    recommend_webtoon_arr = predictions['webtoonId'].values.tolist()
+    recommend_webtoons = set(recommend_webtoon_arr)
     print(predictions['webtoonId'].values.tolist())
-    return list(recommend_webtoons - liked_webtoons)
+    return list(filter(lambda x: x not in liked_webtoons, recommend_webtoon_arr))
+
+    # return list(recommend_webtoons - liked_webtoons)
+
