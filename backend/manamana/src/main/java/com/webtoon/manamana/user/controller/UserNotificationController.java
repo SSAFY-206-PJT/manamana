@@ -42,10 +42,10 @@ public class UserNotificationController {
 
 
     /*유저가 받은 알람 제거*/
-    @DeleteMapping("/{user-id}/webtoons/{webtoon-id}/alarm")
+    @DeleteMapping("/{user-id}/webtoon/alarms/{alarm-id}")
     public CommonResponse deleteUserNotification(
             @PathVariable("user-id") long userId,
-            @PathVariable("webtoon-id") long webtoonId,
+            @PathVariable("alarm-id") long alarmId,
             @AuthenticationPrincipal UserPrincipal userPrincipal){
 
 
@@ -54,7 +54,7 @@ public class UserNotificationController {
 
 
         //삭제 서비스 호출
-        userNotificationService.removeWebtoonNotification(authUserId,webtoonId);
+        userNotificationService.removeWebtoonNotification(authUserId,alarmId);
 
 
         return responseService.getSuccessResponse();
