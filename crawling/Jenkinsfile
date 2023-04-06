@@ -52,6 +52,9 @@ pipeline {
                     // 도커 컴포즈 down
                     sh "docker compose down"
 
+                    //기존 이미지 삭제
+                    sh "docker images sh80165/crawling -q | xargs -r docker rmi -f"
+
                     //컨테이너 확인
                     sh "docker ps -a"
                     
