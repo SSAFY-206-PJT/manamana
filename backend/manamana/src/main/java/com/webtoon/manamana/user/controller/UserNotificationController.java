@@ -30,9 +30,8 @@ public class UserNotificationController {
             @PathVariable("user-id") long userId,
             @AuthenticationPrincipal UserPrincipal userPrincipal){
 
-//        long authUserId = userPrincipal.getId();
+        long authUserId = userPrincipal.getId();
 
-        long authUserId = 1L;
 
         List<WebtoonNotificationDTO> webtoonNotificationList = userNotificationService.getWebtoonNotificationList(authUserId);
         if(webtoonNotificationList.isEmpty()) return responseService.getDataResponse(webtoonNotificationList,CustomSuccessStatus.RESPONSE_NO_CONTENT);
@@ -51,9 +50,8 @@ public class UserNotificationController {
 
 
         //jwt로 인증한 값 가져오기.
-//        long authUserId = userPrincipal.getId();
+        long authUserId = userPrincipal.getId();
 
-        long authUserId = 1L;
 
         //삭제 서비스 호출
         userNotificationService.removeWebtoonNotification(authUserId,webtoonId);
