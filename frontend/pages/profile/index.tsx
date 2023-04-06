@@ -187,7 +187,8 @@ export default function ProfilePage({ userData }: any) {
             <img
               src={info.imagePath}
               alt="프로필 이미지"
-              className="h-[100px] w-[100px] rounded-full"
+              className="h-[100px] w-[100px] object-cover rounded-full"
+              style={{ width: "100px", height: "100px" }}
             />
             {isEditState ? (
               <>
