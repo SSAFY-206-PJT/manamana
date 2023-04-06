@@ -11,6 +11,7 @@ COPY . .
 RUN apt-get -qq update \
     && apt-get -qq install -y --no-install-recommends \
         cron \
+        supervisor \
     && apt-get -qq autoremove \
     && apt-get -qq clean
 
@@ -30,5 +31,7 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
     && rm google-chrome-stable_current_amd64.deb
 
 RUN pip install -r requirements.txt
+
+RUN sh /usr/app/crawling-env/log/startup.sh &
 
 CMD ["cron", "-f"]
