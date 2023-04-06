@@ -125,12 +125,7 @@ function CommentPage({ webtoon, comments }: Props) {
         token,
       );
       if (result) {
-        console.log('commentList', commentList);
         commentList[key] = newComment;
-        console.log('oldComment', oldComment);
-        console.log('key', key);
-        console.log('commentList', commentList);
-        console.log('newComment', newComment);
         setCommentList([...commentList]);
         return true;
       } else {

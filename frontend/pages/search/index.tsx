@@ -209,10 +209,15 @@ export default function SearchPage() {
       if (res != null) {
         setPageNum(nextPage);
         setWebtoonList([...webtoonList, ...res.contents]);
-        setScrollLoading(false);
       }
     });
   };
+
+  useEffect(() => {
+    if (scrollLoading) {
+      setScrollLoading(false);
+    }
+  }, [webtoonList]);
 
   useEffect(() => {
     if (scrollLoading) {
@@ -222,7 +227,8 @@ export default function SearchPage() {
 
   const scrollFn = () => {
     // 스크롤 맨 밑에서
-    console.log(scrollRef.current.scrollTop);
+    // console.log(scrollRef.current.scrollTop);
+    // console.log(scrollRef.current.scrollHeight - scrollRef.current.clientHeight);
     if (
       scrollRef.current.scrollTop + 50 >
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight

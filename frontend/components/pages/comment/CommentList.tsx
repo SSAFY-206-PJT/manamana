@@ -95,7 +95,6 @@ function CommentList({
   const [selectedKey, setSelectedKey] = useState<number>(0);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const itemInfo = (chat: Chat, key: number) => {
-    console.log('itemInfo, key', key);
     setSelectedChat(chat);
     setOpenModal(true);
     setSelectedKey(key);
@@ -106,7 +105,6 @@ function CommentList({
   };
 
   const modifyCommentM = (chatId: number, oldComment: Chat, newComment: Chat) => {
-    console.log('modifyCommentM, selectedKey:', selectedKey);
     return modifyComment(chatId, oldComment, newComment, selectedKey);
   };
 
