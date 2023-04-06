@@ -222,11 +222,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div
-      className="min-w-screen w-screen overflow-auto bg-BackgroundLight"
-      ref={scrollRef}
-      onScroll={scrollFn}
-    >
+    <div className="min-w-screen flex max-h-screen w-screen flex-col bg-BackgroundLight">
       <Headerbar showBackBtn={true} pageName="탐색" />
       <div className="m-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-2">
         <SearchBar
@@ -275,7 +271,11 @@ export default function SearchPage() {
           <Lottie loop animationData={EmptyLottie} play className="h-2/3 w-2/3" />
         </div>
       ) : (
-        <div className="float-left m-2 mt-2 rounded-2xl bg-BackgroundLightComponent p-4 pb-12 text-center">
+        <div
+          className="m-2 mt-2 flex-1 overflow-auto rounded-2xl bg-BackgroundLightComponent p-4 pb-12 text-center"
+          ref={scrollRef}
+          onScroll={scrollFn}
+        >
           {webtoonListElement}
         </div>
       )}
