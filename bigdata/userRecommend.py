@@ -9,7 +9,7 @@ def recommand_webtoons(user_table, df_svd_preds, user_id, ori_webtoons_df, ori_s
 
     # 현재는 index로 적용이 되어있으므로 user_id - 1을 해야함.
     user_row_number = user_table[user_id]
-
+    
     # 최종적으로 만든 pred_df에서 사용자 index에 따라 웹툰 데이터 정렬 -> 웹툰 평점이 높은 순으로 정렬 됌
     sorted_user_predictions = df_svd_preds.iloc[user_row_number].sort_values(
         ascending=False)
@@ -31,17 +31,21 @@ def recommand_webtoons(user_table, df_svd_preds, user_id, ori_webtoons_df, ori_s
         sorted_user_predictions).reset_index(), on='webtoonId')
 
     # 컬럼 이름 바꾸고 정렬해서 return
+    # recommandations = recommandations.rename(columns={user_row_number: 'Predictions'}).sort_values(
+    #     'Predictions', ascending=False).iloc[:num_recommandations, :]
     recommandations = recommandations.rename(columns={user_row_number: 'Predictions'}).sort_values(
-        'Predictions', ascending=False).iloc[:num_recommandations, :]
+        'Predictions', ascending=False) # 추천 리스트 전부 다 뽑기
 
     return user_history, recommandations
 
 
-def recommand_to_user(data, user_id):
+def recommand_to_user(data, user_id, liked_webtoon_arr, number_of_recommend):
     """
     사용자 기반 추천
         ARGS:
-            data: list
+            data: list,
+            user_id: int,
+            liked_webtoon_arr: list
         RETURN:
             recommand: DataFrame
     """
@@ -49,16 +53,14 @@ def recommand_to_user(data, user_id):
 
     temp = []
     user_table = {}
-    for idx, user_id in enumerate(list(set(map(lambda x: x['userId'], data)))):
-        user_table[user_id] = idx
+    for idx, id in enumerate(list(set(map(lambda x: x['userId'], data)))):
+        user_table[id] = idx
     for i in set(map(lambda x: x['webtoonId'], data)):
         temp_dict = {"webtoonId": i}
         temp.append(temp_dict)
-
     df_ori = pd.DataFrame(temp)
 
-    df_ori.drop_duplicates(subset=None, keep='first',
-                           inplace=False, ignore_index=False)
+    df_ori.drop_duplicates(subset=None, keep='first', inplace=False, ignore_index=False)
     df_user_webtoon_scores = df.pivot(
         index='userId',
         columns='webtoonId',
@@ -90,5 +92,11 @@ def recommand_to_user(data, user_id):
 
     already_rated, predictions = recommand_webtoons(
         user_table, df_svd_preds, user_id, df_ori, df, 10)
+    
+    liked_webtoons = set(liked_webtoon_arr)
+    recommend_webtoon_arr = predictions['webtoonId'].values.tolist()
+    recommend_webtoons = set(recommend_webtoon_arr)
+    return list(filter(lambda x: x not in liked_webtoons, recommend_webtoon_arr))[:number_of_recommend]
 
-    return predictions['webtoonId'].values.tolist()
+    # return list(recommend_webtoons - liked_webtoons)
+
