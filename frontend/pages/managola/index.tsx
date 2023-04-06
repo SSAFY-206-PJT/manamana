@@ -1,17 +1,16 @@
 import Headerbar from '@/components/common/Headerbar';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Loading from '@/components/common/Loading';
 import Cover from '@/components/pages/managola/Cover';
 import Link from 'next/link';
 import { managolaInit, managolaEnd } from '../api/managola';
-import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import Lottie from 'react-lottie-player';
 import yesEffect from '../../public/lottie/138218-check-icon.json';
 import noEffect from '../../public/lottie/138219-x-icon.json';
+import { getCookie } from '@/util/cookie';
 
 interface WebtoonData {
   id: number;
@@ -24,6 +23,7 @@ interface ImageData {
 }
 
 export default function ManagolaPage() {
+  const token = getCookie('accessToken');
   /*
    * @Variable
    * 현재 위치하고 있는 단계 저장할 변수
@@ -81,7 +81,7 @@ export default function ManagolaPage() {
    * - 선택된 결과 초기화
    * */
   const onReplayClick = () => {
-    managolaInit().then(value => {
+    managolaInit(token).then(value => {
       if (value != null) setWebtoonDataList(value);
     });
     setPresentIdx(0);
@@ -106,14 +106,14 @@ export default function ManagolaPage() {
     } else {
       // data 배열의 크기 이상이면 종료해야 하므로, 최종 결과 화면 띄워줌
 
-      console.log(choiceResult);
+      // console.log(choiceResult);
       // 서버에 결과를 보내고 해당 결과에 대한 결과 값을 도출받음
       // 도출이 되면 isLoading을 다시 false로 변환
       // 서버 연결 전까지는 timeout으로 임의로 진행
       // API 통신 결과로 얻게된 웹툰 데이터
 
       setIsLoading(true);
-      managolaEnd(choiceResult).then(res => {
+      managolaEnd(choiceResult, token).then(res => {
         setIsLoading(false);
         let value: WebtoonData = res;
         if (value != null) {
@@ -167,10 +167,10 @@ export default function ManagolaPage() {
    * */
   useEffect(() => {
     setChoiceResult([]);
-    managolaInit().then(value => {
+    managolaInit(token).then(value => {
       if (value != null) setWebtoonDataList(value);
     });
-  }, []);
+  }, [token]);
 
   /*
    * @useEffect
@@ -245,15 +245,6 @@ export default function ManagolaPage() {
       );
     }
   }, [presentIdx]);
-
-  useEffect(() => {
-    console.log(effect);
-    // if(effect != null){
-    //   setTimeout(() => {
-    //     setEffect(null);
-    //   }, 1500);
-    // }
-  }, [effect]);
 
   return (
     <div className="h-screen w-full">

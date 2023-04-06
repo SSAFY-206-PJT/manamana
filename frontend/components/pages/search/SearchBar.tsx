@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 
 interface Props {
   onSearchBarChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onClearSearchText: () => void;
 }
 
 export default function SearchBar(props: Props) {
@@ -19,6 +19,7 @@ export default function SearchBar(props: Props) {
 
   const onClickDeleteSearchContent = (event: any) => {
     setSearchContent('');
+    props.onClearSearchText();
   };
 
   return (

@@ -5,12 +5,13 @@ import { Chat } from './CommentList';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 
-interface ChatProp {
+interface Props {
   chat: Chat;
   itemInfo: any;
+  idx: number;
 }
 
-function CommentListItem({ chat, itemInfo }: ChatProp) {
+function CommentListItem({ chat, itemInfo, idx }: Props) {
   const user = useSelector((state: RootState) => state.isLogin);
   const userImagePath = user.imagePath;
   const myName = user.nickname;
@@ -68,8 +69,8 @@ function CommentListItem({ chat, itemInfo }: ChatProp) {
               <button
                 className="w-4"
                 onClick={() => {
-                  itemInfo(chat);
-                  console.log('더보기클릭함');
+                  itemInfo(chat, idx);
+                  console.log('chatitem idx', idx);
                 }}
               >
                 <Image src="/images/More.png" width={20} height={20} alt="#" />
@@ -109,8 +110,8 @@ function CommentListItem({ chat, itemInfo }: ChatProp) {
               <button
                 className="w-4"
                 onClick={() => {
-                  itemInfo(chat);
-                  console.log('더보기클릭함');
+                  itemInfo(chat, idx);
+                  // console.log('더보기클릭함');
                 }}
               >
                 <Image src="/images/More.png" width={20} height={20} alt="#" />
