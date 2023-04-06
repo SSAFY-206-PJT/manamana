@@ -34,7 +34,10 @@ async def assosiateion(request: Request):
 @app.post("/userbased")
 async def userbased(request: Request):
 
+    print("==========")
+    print(request)
     req = await request.json()
+    print("==========")
     print(req)
     k = int(list(req.keys())[0])
     v = list(req.values())[0]
