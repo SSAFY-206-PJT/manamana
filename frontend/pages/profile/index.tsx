@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Swal from 'sweetalert2';
 import { getCookie, setCookie } from '@/util/cookie';
-import { userInfo } from '../api/detail';
+import { myWebtoonComment, userInfo } from '../api/detail';
 import { useRouter } from 'next/router';
 
 type User = {
@@ -72,7 +72,7 @@ export default function ProfilePage({ userData }: any) {
         cancelButtonColor: '#BE3455',
         confirmButtonText: '예',
         cancelButtonText: '아니오',
-      }).then((result: any)  => {
+      }).then((result: any) => {
         if (result.isConfirmed) {
           removeUserAxios();
           Swal.fire({ icon: 'success', title: '회원탈퇴 완료' });
@@ -145,8 +145,17 @@ export default function ProfilePage({ userData }: any) {
     }
   };
 
+  const [myCommentCnt, setMyCommentCnt] = useState<number>(0);
+  const getMycomment = async () => {
+    const res = await myWebtoonComment(1, token);
+    if (res.result) {
+      setMyCommentCnt(res.result.length);
+    }
+  };
+
   // 처음 프로필 페이지 들어오면 수정중이 아닌 상태
   useEffect(() => {
+    getMycomment();
     setIsEditState(false);
     // console.log(userData);
     // console.log(info);
@@ -250,7 +259,7 @@ export default function ProfilePage({ userData }: any) {
             <div>
               <img src={'/images/Comment_Logo.png'} alt="My comment" className="h-12 w-12"></img>
             </div>
-            <div className="text-xl font-bold">{info.scoreCount}</div>
+            <div className="text-xl font-bold">{myCommentCnt}</div>
             <Link href={'/my-comment'}>
               <button className="rounded-xl bg-PrimaryLight p-1 pl-2 pr-2 text-lg font-medium text-FontPrimaryDark">
                 내 댓글
@@ -284,6 +293,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const token = context.req.cookies.accessToken;
   if (token) {
     const res = await userInfo(token);
+    console.log(res);
     if (res.success) {
       const userData: User = res.result;
       return { props: { userData } };

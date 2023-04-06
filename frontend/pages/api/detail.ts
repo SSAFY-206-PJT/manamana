@@ -204,14 +204,14 @@ export const getWebtoonComments = async (webtoon_id: any, page: number, token: s
 export const postWebtoonComment = async (
   webtoon_id: any,
   content: string,
-  isSpoiler: boolean,
+  spoiler: boolean,
   token: string,
 ) => {
   const options = {
     method: 'POST',
     url: `/webtoons/${webtoon_id}/comments`,
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-    data: { content, isSpoiler },
+    data: { content, spoiler },
   };
 
   try {
@@ -506,7 +506,7 @@ export const getElseWebtoon = async (webtoon_id: any, token: string) => {
 export const algoWebtoons = async (token: string, param: string) => {
   const options = {
     method: 'GET',
-    url: `/webtoons/recommands/${param}`,
+    url: `/webtoons/recommands${param}`,
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
   };
   try {

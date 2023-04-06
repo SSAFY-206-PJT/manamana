@@ -26,7 +26,7 @@ function CommentInput({ defaultValue, comment }: CommentInputProps) {
   const [spoilerInput, setSpoilerInput] = useState<boolean>(defaultValue.spoiler);
 
   const commentPost = async () => {
-    // console.log(commentInput, spoilerInput);
+    console.log(commentInput, spoilerInput);
     const result = await comment({ content: commentInput, spoiler: spoilerInput });
     if (result) {
       setCommentInput('');

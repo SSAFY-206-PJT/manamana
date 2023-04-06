@@ -133,10 +133,6 @@ function CommentPage({ webtoon, comments }: Props) {
       }
     };
 
-    useEffect(() => {
-      // console.log(commentList);
-    }, [commentList]);
-
     return (
       <div>
         <div className="flex h-screen w-screen flex-col">

@@ -49,11 +49,11 @@ function Home({ likeWebtoons }: Props) {
   const getRec = async () => {
     const manaRes = await api.algoWebtoons(token, '');
     setManaRec(manaRes?.result);
-    const genreRes = await api.algoWebtoons(token, 'genre');
+    const genreRes = await api.algoWebtoons(token, '/genre');
     setGenreRec(genreRes?.result);
-    const ageRes = await api.algoWebtoons(token, 'age-group');
+    const ageRes = await api.algoWebtoons(token, '/age-group');
     setAgeRec(ageRes?.result);
-    const genderRes = await api.algoWebtoons(token, 'gender');
+    const genderRes = await api.algoWebtoons(token, '/gender');
     setGenderRec(genderRes?.result);
     // console.log('genreRes.result', genreRes?.result);
     // console.log('ageRes.result', ageRes?.result);
@@ -194,38 +194,35 @@ function Home({ likeWebtoons }: Props) {
       </div>
       <div className="mb-4 flex justify-center">
         <div className="grid h-32 w-11/12 grid-cols-3 gap-2">
-          
           <BannerStyle1 className="col-span-1 rounded-lg bg-white px-4">
             <Link href="/genre-taste">
-            <div className="flex h-full w-full items-center justify-center">
+              <div className="flex h-full w-full items-center justify-center">
                 <div className="p-2 font-bold">
                   선호취향
                   <br />
                   설정하기
                 </div>
-              <div className="absolute bottom-1 right-2">
+                <div className="absolute bottom-1 right-2">
                   <Image
                     src={'/images/goOtherPageWhite.png'}
                     alt="선호취향 이동"
                     width={24}
                     height={24}
                   />
+                </div>
               </div>
-            </div>
-
             </Link>
           </BannerStyle1>
           <BannerStyle2 className="relative col-span-2 rounded-lg bg-[#0B99FF] px-4">
             <div className="z-10 flex flex-col justify-between">
-
-            <Link href="/managola">
-              <div className="z-10 flex items-center justify-center pt-4">
-                <img className="z-10 h-24 w-24 p-2" src="/images/character.png" alt="hi"></img>
+              <Link href="/managola">
+                <div className="z-10 flex items-center justify-center pt-4">
+                  <img className="z-10 h-24 w-24 p-2" src="/images/character.png" alt="hi"></img>
                   <div className="flex items-center p-2 font-bold">
                     취향검사<br></br>하러가기
                   </div>
-              </div>
-            </Link>
+                </div>
+              </Link>
               <div className="absolute bottom-1 right-2">
                 <Link href="/managola">
                   <Image
@@ -259,7 +256,7 @@ function Home({ likeWebtoons }: Props) {
       </div>
       <div className="mb-3 flex justify-center">
         <div className="w-11/12 rounded-lg bg-BackgroundLightComponent px-4 pt-4">
-          <WebtoonContainer categoryTitle={'장르 추천'} />
+          <WebtoonContainer categoryTitle={'선호장르 추천'} />
           <WebtoonItemContainer>
             {genreRec &&
               genreRec.map(webtoon => (
