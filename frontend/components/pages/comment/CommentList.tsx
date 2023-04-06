@@ -95,11 +95,10 @@ function CommentList({
   const [selectedKey, setSelectedKey] = useState<number>(0);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const itemInfo = (chat: Chat, key: number) => {
+    console.log('itemInfo, key', key);
     setSelectedChat(chat);
     setOpenModal(true);
     setSelectedKey(key);
-    // console.log('chatList에서');
-    // console.log(chat);
   };
 
   const closeModal = () => {
@@ -107,6 +106,7 @@ function CommentList({
   };
 
   const modifyCommentM = (chatId: number, oldComment: Chat, newComment: Chat) => {
+    console.log('modifyCommentM, selectedKey:', selectedKey);
     return modifyComment(chatId, oldComment, newComment, selectedKey);
   };
 
@@ -128,7 +128,6 @@ function CommentList({
         <CommentListModal
           webtoonId={webtoonId}
           chat={selectedChat}
-          key={selectedKey}
           open={openModal}
           close={closeModal}
           deleteComment={deleteCommentM}

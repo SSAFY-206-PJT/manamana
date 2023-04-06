@@ -12,7 +12,6 @@ interface ChatListModalProps {
   webtoonId: number;
   chat: Chat;
   open: boolean;
-  key: number;
   close: () => void;
   deleteComment: (chat: any) => Promise<boolean>;
   modifyComment: (chatId: number, oldComment: Chat, newComment: Chat) => Promise<boolean>;
@@ -22,7 +21,6 @@ function CommentListModal({
   webtoonId,
   chat,
   open,
-  key,
   close,
   deleteComment,
   modifyComment,

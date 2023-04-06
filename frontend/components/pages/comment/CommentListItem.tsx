@@ -70,7 +70,7 @@ function CommentListItem({ chat, itemInfo, key }: Props) {
                 className="w-4"
                 onClick={() => {
                   itemInfo(chat, key);
-                  // console.log('더보기클릭함');
+                  console.log('chatitem key', key);
                 }}
               >
                 <Image src="/images/More.png" width={20} height={20} alt="#" />
