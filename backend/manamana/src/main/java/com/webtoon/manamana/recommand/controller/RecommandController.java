@@ -1,7 +1,7 @@
 package com.webtoon.manamana.recommand.controller;
 
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
 import com.webtoon.manamana.config.response.ResponseService;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-// TODO : 더미데이터로 만든 테스트용이라 수정 필요.
 /**
  * 추천 관련 API처리 컨트롤러
  */
@@ -48,7 +47,6 @@ public class RecommandController {
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         long authUserId = userPrincipal.getId();
-//        long authUserId = 1L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon(authUserId);
 
@@ -67,7 +65,6 @@ public class RecommandController {
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         long authUserId = userPrincipal.getId();
-//        long authUserId = 1L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByGenre(authUserId);
 
@@ -86,7 +83,6 @@ public class RecommandController {
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         long authUserId = userPrincipal.getId();
-//        long authUserId = 16L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByAge(authUserId);
 
@@ -105,7 +101,6 @@ public class RecommandController {
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
 
         long authUserId = userPrincipal.getId();
-//        long authUserId = 16L;
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByGender(authUserId);
 

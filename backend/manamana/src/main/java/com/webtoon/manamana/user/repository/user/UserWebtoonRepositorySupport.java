@@ -132,4 +132,18 @@ public class UserWebtoonRepositorySupport extends QuerydslRepositorySupport {
                         .and(userWebtoon.isDeleted.eq(false)))
                 .fetch();
     }
+
+    /* 유저가 관심등록한 웹툰 조회 */
+    public List<Long> findLikeWebtoonByUserId(long userId) {
+
+        QUserWebtoon userWebtoon = QUserWebtoon.userWebtoon;
+
+        return queryFactory
+                .select(userWebtoon.webtoon.id)
+                .from(userWebtoon)
+                .where(userWebtoon.user.id.eq(userId)
+                        .and(userWebtoon.isLiked.eq(true))
+                        .and(userWebtoon.isDeleted.eq(false)))
+                .fetch();
+    }
 }

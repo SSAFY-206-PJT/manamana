@@ -1,8 +1,5 @@
 package com.webtoon.manamana.recommand.dto.request;
 
-import com.webtoon.manamana.webtoon.dto.response.AuthorDTO;
-import com.webtoon.manamana.webtoon.dto.response.DayDTO;
-import com.webtoon.manamana.webtoon.dto.response.GenreDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -9,15 +9,11 @@ import com.webtoon.manamana.auth.oauth2.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -54,7 +50,7 @@ public class SecurityConfig {
         //허용 url
         http
                 .authorizeRequests()
-                .antMatchers("/**","/auth/**","/oauth2/**", "/token/**","/webtoons/list/**").permitAll()
+                .antMatchers("/auth/**","/oauth2/**", "/token/**","/webtoons/list/**").permitAll()
                 .anyRequest().authenticated()
             .and() //나머지는 모두 인증 필요.
 //                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

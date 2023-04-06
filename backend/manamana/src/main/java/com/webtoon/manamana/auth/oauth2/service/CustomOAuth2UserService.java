@@ -1,6 +1,6 @@
 package com.webtoon.manamana.auth.oauth2.service;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.auth.oauth2.dto.OAuth2UserInfo;
 import com.webtoon.manamana.auth.oauth2.exception.OAuth2AuthenticationProcessingException;
 import com.webtoon.manamana.auth.oauth2.repository.LoginProviderRepository;
@@ -26,6 +26,7 @@ import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Component
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
@@ -42,7 +43,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest); // OAuth 제공자로 부터 정보를 받아오는 객체
 
         try{
-            System.out.println("test123151251");
             return processOAuthUser(userRequest, oAuth2User);
         }catch (Exception e){
             throw new InternalAuthenticationServiceException(e.getMessage(),e.getCause());
@@ -52,7 +52,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     /**
      * 사용자 정보 추출 후 시큐리티가 처리할 UserPrincipal 객체를 제공
      */
-    @Transactional
+
     public OAuth2User processOAuthUser(OAuth2UserRequest userRequest, OAuth2User oAuth2User) throws OAuth2AuthenticationProcessingException {
         //만들어둔 팩토리에 데이터를 전달해서 어떤 provider인지 판단.
         OAuth2UserInfo oAuth2UserInfo = customOAuthUserInfoFactory
@@ -66,8 +66,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         LoginProvider loginProvider = loginProviderRepository.findLoginProviderByName(AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId().toLowerCase()))
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUNT_PROVIDER));
 
-
-        System.out.println(loginProvider.getName());
         //이메일과 로그인 제공자로 유저 조회
         Optional<User> userOptional = userRepositorySupport.findUserByEmailAndLoginProvider(oAuth2UserInfo.getEmail(), loginProvider);
 

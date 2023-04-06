@@ -1,8 +1,8 @@
 package com.webtoon.manamana.auth.util;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
-import com.webtoon.manamana.auth.oauth2.exception.OAuth2AuthenticationProcessingException;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.AppProperty;
+import com.webtoon.manamana.config.response.exception.CustomException;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.user.repository.user.UserRepository;
 import io.jsonwebtoken.*;
@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Optional;
+
+import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.*;
+import static com.webtoon.manamana.config.response.exception.CustomExceptionStatus.REFRESH_TOKEN_RENEWAL;
 
 /*jwt를 발급하고 인증하는 클래스*/
 @RequiredArgsConstructor
@@ -78,19 +81,23 @@ public class TokenProvider {
             Jwts.parser().setSigningKey(appProperty.getTokenSecret()).parseClaimsJws(token);
             return true;
         } catch (MalformedJwtException e) { // 유효하지 않은 JWT
-            throw new MalformedJwtException("not valid jwt");
+            throw new CustomException(TOKEN_INVALID);
+//            throw new MalformedJwtException("not valid jwt");
         } catch (ExpiredJwtException e) { // 만료된 JWT
-            throw new ExpiredJwtException(null,null,"expired");
+            throw new CustomException(REFRESH_TOKEN_RENEWAL);
+//            throw new ExpiredJwtException(null,null,"expired");
         } catch (UnsupportedJwtException e) { // 지원하지 않는 JWT
-            throw new UnsupportedJwtException("unsupported jwt");
+            throw new CustomException(TOKEN_UNSUPPORTED);
+//            throw new UnsupportedJwtException("unsupported jwt");
         } catch (IllegalArgumentException e) { // 빈값
-            throw new IllegalArgumentException("empty jwt");
+            throw new CustomException(TOKEN_NOT_FOUND);
+//            throw new IllegalArgumentException("empty jwt");
         }
 //            Jwts.parser().setSigningKey(appProperty.getTokenSecret()).parseClaimsJws(token);
 
     }
 
-    public boolean validateRefreshToken(String refreshToken) throws OAuth2AuthenticationProcessingException {
+    public boolean validateRefreshToken(String refreshToken) {
 
         //검증
         validateToken(refreshToken);

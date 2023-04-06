@@ -3,7 +3,6 @@ package com.webtoon.manamana.webtoon.repository.webtoon;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.manamana.entity.webtoon.QWebtoonAddition;
 import com.webtoon.manamana.entity.webtoon.WebtoonAddition;
-import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 

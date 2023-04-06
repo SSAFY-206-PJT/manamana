@@ -1,7 +1,7 @@
 package com.webtoon.manamana.recommand.dto.response;
 
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
-import com.webtoon.manamana.webtoon.dto.response.AuthorDTO;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +25,15 @@ public class RecommandWebtoonResponseDTO {
         this.name = name;
         this.imagePath = imagePath;
         this.authors = authors;
+    }
+
+    @Override
+    public String toString() {
+        return "RecommandWebtoonResponseDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", authors=" + authors +
+                '}';
     }
 }

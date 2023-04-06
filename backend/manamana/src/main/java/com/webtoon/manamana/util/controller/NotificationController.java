@@ -1,6 +1,6 @@
 package com.webtoon.manamana.util.controller;
 
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.ResponseService;
 import com.webtoon.manamana.util.dto.request.NotificationRequestDTO;
@@ -11,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.List;
 
 //알림 객체 관련 sse
 

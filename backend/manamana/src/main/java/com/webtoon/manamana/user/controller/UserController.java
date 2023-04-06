@@ -1,8 +1,6 @@
 package com.webtoon.manamana.user.controller;
 
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.parser.JSONParser;
-import com.webtoon.manamana.auth.DTO.UserPrincipal;
+import com.webtoon.manamana.auth.dto.UserPrincipal;
 import com.webtoon.manamana.config.response.CommonResponse;
 import com.webtoon.manamana.config.response.CustomSuccessStatus;
 import com.webtoon.manamana.config.response.DataResponse;
@@ -71,7 +69,6 @@ public class UserController {
         //TODO : 닉네임 수정안할때도 처리해야됨.
         //TODO : pathvariable의 id랑 jwt의 id랑 비교처리 필요.
         long authUserId = userPrincipal.getId();
-        log.info("test update id : {}", authUserId);
 
         userService.updateUser(authUserId, userUpdateRequestDTO, multipartFile);
 
