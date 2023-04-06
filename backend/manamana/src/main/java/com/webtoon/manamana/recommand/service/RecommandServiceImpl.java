@@ -159,8 +159,18 @@ public class RecommandServiceImpl implements RecommandService {
             }
         }
 
-        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
-        map.put(userId, recommendApiRequestDTOS);
+        // 유저가 관심등록한 웹툰 조회
+        List<Long> userLikedWebtoon = userWebtoonRepositorySupport.findLikeWebtoonByUserId(userId);
+        List<RecommendDataRequestDTO> recommendDataRequestDTOS = new ArrayList<>();
+        recommendDataRequestDTOS.add(
+                RecommendDataRequestDTO.builder()
+                        .recommendApiRequestDTOS(recommendApiRequestDTOS)
+                        .userLikedWebtoon(userLikedWebtoon)
+                        .build()
+        );
+
+        HashMap<Long, List<RecommendDataRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendDataRequestDTOS);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -232,8 +242,18 @@ public class RecommandServiceImpl implements RecommandService {
             }
         }
 
-        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
-        map.put(userId, recommendApiRequestDTOS);
+        // 유저가 관심등록한 웹툰 조회
+        List<Long> userLikedWebtoon = userWebtoonRepositorySupport.findLikeWebtoonByUserId(userId);
+        List<RecommendDataRequestDTO> recommendDataRequestDTOS = new ArrayList<>();
+        recommendDataRequestDTOS.add(
+                RecommendDataRequestDTO.builder()
+                        .recommendApiRequestDTOS(recommendApiRequestDTOS)
+                        .userLikedWebtoon(userLikedWebtoon)
+                        .build()
+        );
+
+        HashMap<Long, List<RecommendDataRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendDataRequestDTOS);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -305,8 +325,18 @@ public class RecommandServiceImpl implements RecommandService {
             }
         }
 
-        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
-        map.put(userId, recommendApiRequestDTOS);
+        // 유저가 관심등록한 웹툰 조회
+        List<Long> userLikedWebtoon = userWebtoonRepositorySupport.findLikeWebtoonByUserId(userId);
+        List<RecommendDataRequestDTO> recommendDataRequestDTOS = new ArrayList<>();
+        recommendDataRequestDTOS.add(
+                RecommendDataRequestDTO.builder()
+                        .recommendApiRequestDTOS(recommendApiRequestDTOS)
+                        .userLikedWebtoon(userLikedWebtoon)
+                        .build()
+        );
+
+        HashMap<Long, List<RecommendDataRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendDataRequestDTOS);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -381,7 +411,7 @@ public class RecommandServiceImpl implements RecommandService {
         HttpEntity entity = new HttpEntity(request, httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.exchange("http://recommend-api:8000/userbased", HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange("http://recommend-api:8000/assosiation", HttpMethod.POST, entity, String.class);
 
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
@@ -484,8 +514,18 @@ public class RecommandServiceImpl implements RecommandService {
             );
         }
 
-        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
-        map.put(userId, recommendApiRequestDTOS);
+        // 유저가 관심등록한 웹툰 조회
+        List<Long> userLikedWebtoon = userWebtoonRepositorySupport.findLikeWebtoonByUserId(userId);
+        List<RecommendDataRequestDTO> recommendDataRequestDTOS = new ArrayList<>();
+        recommendDataRequestDTOS.add(
+                RecommendDataRequestDTO.builder()
+                        .recommendApiRequestDTOS(recommendApiRequestDTOS)
+                        .userLikedWebtoon(userLikedWebtoon)
+                        .build()
+        );
+
+        HashMap<Long, List<RecommendDataRequestDTO>> map = new HashMap<>();
+        map.put(userId, recommendDataRequestDTOS);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
