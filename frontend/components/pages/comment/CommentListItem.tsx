@@ -8,10 +8,10 @@ import { RootState } from '@/store';
 interface Props {
   chat: Chat;
   itemInfo: any;
-  key: number;
+  idx: number;
 }
 
-function CommentListItem({ chat, itemInfo, key }: Props) {
+function CommentListItem({ chat, itemInfo, idx }: Props) {
   const user = useSelector((state: RootState) => state.isLogin);
   const userImagePath = user.imagePath;
   const myName = user.nickname;
@@ -69,8 +69,8 @@ function CommentListItem({ chat, itemInfo, key }: Props) {
               <button
                 className="w-4"
                 onClick={() => {
-                  itemInfo(chat, key);
-                  console.log('chatitem key', key);
+                  itemInfo(chat, idx);
+                  console.log('chatitem idx', idx);
                 }}
               >
                 <Image src="/images/More.png" width={20} height={20} alt="#" />
@@ -110,7 +110,7 @@ function CommentListItem({ chat, itemInfo, key }: Props) {
               <button
                 className="w-4"
                 onClick={() => {
-                  itemInfo(chat, key);
+                  itemInfo(chat, idx);
                   // console.log('더보기클릭함');
                 }}
               >

@@ -121,7 +121,7 @@ function CommentList({
       </div>
       <div className="m-2 flex min-h-screen max-w-full flex-col-reverse">
         {commentList?.reverse().map((item: Chat, idx) => (
-          <CommentListItem chat={item} itemInfo={itemInfo} key={idx} />
+          <CommentListItem chat={item} itemInfo={itemInfo} key={item.id} idx={idx} />
         ))}
       </div>
       {openModal ? (
