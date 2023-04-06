@@ -214,6 +214,12 @@ export default function SearchPage() {
     });
   };
 
+  useEffect(() => {
+    if (scrollLoading) {
+      scrollNext();
+    }
+  }, [scrollLoading]);
+
   const scrollFn = () => {
     // 스크롤 맨 밑에서
     console.log(scrollRef.current.scrollTop);
@@ -222,7 +228,6 @@ export default function SearchPage() {
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight
     ) {
       setScrollLoading(true);
-      scrollNext();
     }
   };
 
@@ -282,7 +287,7 @@ export default function SearchPage() {
           onScroll={scrollFn}
         >
           {webtoonListElement}
-          {scrollLoading ? <CircularProgress /> : null}
+          <div className="flex justify-center">{scrollLoading ? <CircularProgress /> : null}</div>
         </div>
       )}
       <Navbar />
