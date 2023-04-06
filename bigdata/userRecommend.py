@@ -31,17 +31,21 @@ def recommand_webtoons(user_table, df_svd_preds, user_id, ori_webtoons_df, ori_s
         sorted_user_predictions).reset_index(), on='webtoonId')
 
     # 컬럼 이름 바꾸고 정렬해서 return
+    # recommandations = recommandations.rename(columns={user_row_number: 'Predictions'}).sort_values(
+    #     'Predictions', ascending=False).iloc[:num_recommandations, :]
     recommandations = recommandations.rename(columns={user_row_number: 'Predictions'}).sort_values(
-        'Predictions', ascending=False).iloc[:num_recommandations, :]
+        'Predictions', ascending=False) # 추천 리스트 전부 다 뽑기
 
     return user_history, recommandations
 
 
-def recommand_to_user(data, user_id):
+def recommand_to_user(data, user_id, liked_webtoon_arr):
     """
     사용자 기반 추천
         ARGS:
-            data: list
+            data: list,
+            user_id: int,
+            liked_webtoon_arr: list
         RETURN:
             recommand: DataFrame
     """
@@ -88,5 +92,8 @@ def recommand_to_user(data, user_id):
 
     already_rated, predictions = recommand_webtoons(
         user_table, df_svd_preds, user_id, df_ori, df, 10)
-
-    return predictions['webtoonId'].values.tolist()
+    
+    liked_webtoons = set(liked_webtoon_arr)
+    recommend_webtoons = set(predictions['webtoonId'].values.tolist())
+    print(predictions['webtoonId'].values.tolist())
+    return list(recommend_webtoons - liked_webtoons)
