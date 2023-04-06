@@ -9,6 +9,7 @@ import com.webtoon.manamana.entity.webtoon.Author;
 import com.webtoon.manamana.entity.webtoon.Webtoon;
 import com.webtoon.manamana.recommand.dto.request.ApiAuthorDTO;
 import com.webtoon.manamana.recommand.dto.request.RecommendApiRequestDTO;
+import com.webtoon.manamana.recommand.dto.request.RecommendDataRequestDTO;
 import com.webtoon.manamana.recommand.dto.request.WorldCupRequestDTO;
 import com.webtoon.manamana.recommand.dto.response.*;
 import com.webtoon.manamana.user.repository.user.*;
@@ -59,8 +60,17 @@ public class RecommandServiceImpl implements RecommandService {
             );
         }
 
-        HashMap<Long, List<RecommendApiRequestDTO>> map = new HashMap<>();
-        map.put(userId, recommendApiRequestDTOS);
+        // 유저가 관심등록한 웹툰 조회
+        List<Long> userLikedWebtoon = userWebtoonRepositorySupport.findLikeWebtoonByUserId(userId);
+
+        RecommendDataRequestDTO recommendDataRequestDTO = RecommendDataRequestDTO.builder()
+                .recommendApiRequestDTOS(recommendApiRequestDTOS)
+                .userLikedWebtoon(userLikedWebtoon)
+                .build();
+
+        HashMap<Long, RecommendDataRequestDTO> map = new HashMap<>();
+        map.put(userId, recommendDataRequestDTO);
+
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
