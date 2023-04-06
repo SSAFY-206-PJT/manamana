@@ -44,7 +44,7 @@ public class CommentRepositorySupport extends QuerydslRepositorySupport {
 
         return queryFactory
                 .selectFrom(QComment.comment)
-                .where(QComment.comment.user.eq(user))
+                .where(QComment.comment.isDeleted.eq(false), QComment.comment.user.eq(user))
                 .leftJoin(QComment.comment.webtoon, QWebtoon.webtoon)
                 .fetchJoin().orderBy(QComment.comment.createTime.desc())
                 .distinct().fetch();
