@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as api from '@/pages/api/detail';
 import Headerbar from '@/components/common/Headerbar';
 import CommentList from '@/components/pages/comment/CommentList';
