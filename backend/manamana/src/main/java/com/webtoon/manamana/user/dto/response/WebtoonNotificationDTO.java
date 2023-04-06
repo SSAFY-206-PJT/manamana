@@ -10,22 +10,27 @@ import lombok.Setter;
 public class WebtoonNotificationDTO {
 
     private long id;
+    private long webtoonId;
     private String image;
     private String name;
     private int episode;
-
     @Builder
-    public WebtoonNotificationDTO(long id, String image, String name, int episode) {
+    public WebtoonNotificationDTO(long id, long webtoonId, String image, String name, int episode) {
         this.id = id;
+        this.webtoonId = webtoonId;
         this.image = image;
         this.name = name;
         this.episode = episode;
     }
 
+
+
+
     public static WebtoonNotificationDTO createDTO(WebtoonNotification webtoonNotification){
 
         return WebtoonNotificationDTO.builder()
-                .id(webtoonNotification.getWebtoon().getId())
+                .id(webtoonNotification.getId())
+                .webtoonId(webtoonNotification.getWebtoon().getId())
                 .image(webtoonNotification.getWebtoon().getImagePath())
                 .name(webtoonNotification.getWebtoon().getName())
                 .episode(webtoonNotification.getEpisode()).build();
