@@ -76,9 +76,6 @@ pipeline {
                     //컨테이너 확인
                     sh "docker ps -a"
 
-                    // 최신 이미지 PULL
-                    sh "docker pull ${IMAGE_NAME}:latest"
-
                     // 이미지 확인
                     sh "docker images"
 
