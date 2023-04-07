@@ -31,38 +31,26 @@ import static com.webtoon.manamana.config.response.exception.CustomExceptionStat
 
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
 
     private final WebtoonRepository webtoonRepository;
-    private final WebtoonRepositorySupport webtoonRepositorySupport;
-
     private final UserRepository userRepository;
-    private final UserRepositorySupport userRepositorySupport;
-
     private final CommentReportRepository commentReportRepository;
     private final CommentReportRepositorySupport commentReportRepositorySupport;
-
-    private final CommentRepository commentRepository;
     private final CommentRepositorySupport commentRepositorySupport;
-
     private final UserWebtoonRepository userWebtoonRepository;
     private final UserWebtoonRepositorySupport userWebtoonRepositorySupport;
-
     private final WebtoonAdditionRepositorySupport webtoonAdditionRepositorySupport;
-
-    private final UserGenreRepository userGenreRepository;
     private final UserGenreRepositorySupport userGenreRepositorySupport;
-
     private final WebtoonGenreRepositorySupport webtoonGenreRepositorySupport;
-
     //형태소 분석기 등록
     private final Komoran komoran;
 
 
 
     /*작품 댓글 신고기능*/
+    @Transactional
     @Override
     public void commentReport(long userId,long webtoonId, long commentId) {
 
@@ -89,6 +77,7 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
     }
 
     /*작품 관심 등록.*/
+    @Transactional
     @Override
     public void createLikeWebtoon(long userId,long webtoonId) {
 
@@ -123,8 +112,9 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
     }
 
     // TODO: 2023-04-02 분석속도가 느리기 때문에, 댓글을 입력받을 때마다 형태소 분석기를 돌려서 댓글별로 키워드를 저장해두도록 변경필요.
+    @Transactional(readOnly = true)
     @Override
-    public List<WordCloudResponseDTO> getWordCloudData(long webtoonId) throws JsonProcessingException {
+    public List<WordCloudResponseDTO> getWordCloudData(long webtoonId) {
 
         //웹툰 조회
         Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(webtoonId)
@@ -181,6 +171,7 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
     }
 
     /*개인이 평가한 평점*/
+    @Transactional
     @Override
     public ScoreResponseDTO getWebtoonUserScore(long userId, long webtoonId) {
         //유저 조회
@@ -208,10 +199,15 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
 
     /*작품 평점 생성 및 수정*/
     // TODO: 2023-04-05 로직 최적화 할것
+    // TODO: 2023-04-07 일부 if문을 줄여서 최적화 했지만, 좀더 최적화 필요
+    @Transactional
     @Override
     public void createWebtoonUserScore(long userId,long webtoonId,int score) {
 
-        int[] scoreArray = {0,0,0,0,1,3};
+        // TODO: 2023-04-07 외부에서 주입할 수 있도록 수정 필요.
+        final int[] SCORE_ARRAY = {0,0,0,0,1,3};
+
+        int newScore = SCORE_ARRAY[score];
 
         //유저 조회
         User user = userRepository.findByIdAndIsDeletedFalse(userId)
@@ -220,13 +216,13 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
         //작품 조회
         Webtoon webtoon = webtoonRepository.findByIdAndIsDeletedFalse(webtoonId)
                 .orElseThrow(() -> new CustomException(NOT_FOUNT_WEBTOON));
+
         //작품 추가 정보 테이블 조회.
         WebtoonAddition webtoonAddition = webtoonAdditionRepositorySupport.findAdditionByWebtoonId(webtoonId)
                 .orElseThrow(() -> new CustomException(NOT_FOUNT_WEBTOON_ADDITION));
 
         //웹툰에 해당하는 장르 조회
         List<WebtoonGenre> webtoonGenres = webtoonGenreRepositorySupport.findGenrebyWebtoonAll(webtoonId);
-
 
         //유저 작품 연계 테이블 조회
         Optional<UserWebtoon> userWebtoonOptional = userWebtoonRepositorySupport.findUserWebtoonByUserAndWebtoon(userId, webtoonId);
@@ -237,76 +233,56 @@ public class WebtoonAdditionServiceImpl implements WebtoonAdditionService{
             Optional<UserGenre> userGenreOptional = userGenreRepositorySupport.findUserGenre(user, webtoonGenre.getGenre());
 
             //1,2,3점이면 패스, 4점이면 1, 5점이면 3을 추가함.
-            UserGenre userGenre = null;
-            //해당 장르가 있다면
-            if(userGenreOptional.isPresent()){
-
-                userGenre = userGenreOptional.get();
-                // 유저-작품 연계테이블을 조회해서 이전에 몇점을 줬었는지 확인해야됨.
-                if(userWebtoonOptional.isPresent()){
-
-                    UserWebtoon userWebtoon = userWebtoonOptional.get();
-
-                    //0이면 준적 없는 것이므로.
-                    if(userWebtoon.getScore() == 0){
-                        if(score == 4) userGenre.updateUserGenre(1);
-                        else if(score == 5) userGenre.updateUserGenre(3);
-                    }
-                    //0이 아니면 이전에 평점을 줬었음.
-                    else{
-                        int oldScore = scoreArray[userWebtoon.getScore()];
-
-                        if(score == 1 || score == 2 || score == 3){
-                            userGenre.updateUserGenre(oldScore * (-1));
-                        }
-                        else if(score == 4){
-                            userGenre.updateUserGenre(oldScore * (-1) + 1);
-                        }
-                        else{
-                            userGenre.updateUserGenre(oldScore * (-1) + 3);
-                        }
-                    }
-                }
-                //이전에 평점을 준적이 없으면 그냥 더하면 됨.
-                else{
-                    if(score == 4) userGenre.updateUserGenre(1);
-                    else if(score == 5) userGenre.updateUserGenre(3);
-                }
-
-            }
+            //점수가 없으면 패스.
             //해당 장르가 없다면 - 점수안줌.
+            if(!userGenreOptional.isPresent()) return; //람다식이라 continue가 아닌 return
+
+            //해당 장르가 있다면
+            UserGenre userGenre = userGenreOptional.get();
+
+            //이전에 평점을 준적이 없으면 가중치를 그냥 더하기만 하면 됨.
+            if(!userWebtoonOptional.isPresent()){
+                userGenre.updateUserGenre(newScore);
+                return;
+            }
+
+            // 유저-작품 연계테이블을 조회해서 이전에 몇점을 줬었는지 확인해야됨
+            UserWebtoon userWebtoon = userWebtoonOptional.get();
+
+            //이전에 준 점수.
+            int oldScore = SCORE_ARRAY[userWebtoon.getScore()];
+
+            //이전점수만큼 빼고, 새로운 점수를 추가해야됨.
+            userGenre.updateUserGenre(oldScore * (-1) + newScore);
+
         });
 
 
-        UserWebtoon userWebtoon = null;
+        //값이 없다면.
+        if(!userWebtoonOptional.isPresent()){
+            createScore(score, user, webtoon, webtoonAddition); //점수 새로 생성.
+            return;
+        }
+
         // 값이 있을떄,
-        if(userWebtoonOptional.isPresent()){
-            userWebtoon = userWebtoonOptional.get();
-            //점수가 0인경우.
-            if(userWebtoon.getScore() == 0){
-                //평가한 사람수 증가
-                webtoonAddition.updateScoreCount();
+        UserWebtoon userWebtoon = userWebtoonOptional.get();
 
-                //평가 누적점수 추가
-                webtoonAddition.updateTotalScore(score);
-                userWebtoon.updateScoreUserWebtoon(score);
-            }
-            //점수가 0이 아니면
-            else {
-                //점수 누적
-                webtoonAddition.updateTotalScore(score - userWebtoon.getScore());
-                // 기존에 있는 값 수정
-                userWebtoon.updateScoreUserWebtoon(score);
-            }
-        }
-        //값이 없을때
-        else{
-            userWebtoon = UserWebtoon.createScoreUserWebtoon(user, webtoon, score);
-            userWebtoonRepository.save(userWebtoon);
-            webtoonAddition.updateTotalScore(score);
-            webtoonAddition.updateScoreCount();
-        }
+        //점수가 0인경우.
+        if(userWebtoon.getScore() == 0) webtoonAddition.updateScoreCount();//평가한 사람수 증가
 
+        //점수가 0이 아니면
+        webtoonAddition.updateTotalScore(score - userWebtoon.getScore());//점수 누적
+
+        // 기존에 있는 값 수정
+        userWebtoon.updateScoreUserWebtoon(score);
+
+    }
+
+    public void createScore(int score, User user, Webtoon webtoon, WebtoonAddition webtoonAddition) {
+        UserWebtoon userWebtoon = UserWebtoon.createScoreUserWebtoon(user, webtoon, score);
+        userWebtoonRepository.save(userWebtoon);
+        webtoonAddition.updateTotalScore(score);
+        webtoonAddition.updateScoreCount();
     }
 
 }
