@@ -33,6 +33,8 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         String exception = (String) request.getAttribute(TOKEN_EXCEPTION_KEY);
 
+        if(exception == null) return;
+
         CommonResponse exceptionResponse;
 
         if(exception.equals(TOKEN_INVALID)){

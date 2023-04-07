@@ -86,8 +86,12 @@ public class RecommandServiceImpl implements RecommandService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange("http://recommend-api:8000/userbased", HttpMethod.POST, entity, String.class);
 
+        log.info("recommend check : {}", response);
+
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
+
+        log.info("[recommend size check] : {}", assosiationWebtoonResponseDTOS.size());
 
         for (AssosiationWebtoonResponseDTO assosiationWebtoonResponseDTO : assosiationWebtoonResponseDTOS) {
 
@@ -182,6 +186,8 @@ public class RecommandServiceImpl implements RecommandService {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange("http://recommend-api:8000/userbased", HttpMethod.POST, entity, String.class);
+
+        log.info("[genre] : {}", response);
 
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
@@ -462,8 +468,13 @@ public class RecommandServiceImpl implements RecommandService {
                         .limit(2)
                         .collect(Collectors.toList());
 
-                worldCupWebtoon.add(randomTwo.get(0));
-                worldCupWebtoon.add(randomTwo.get(1));
+
+                for(long temp : randomTwo){
+                    worldCupWebtoon.add(temp);
+                }
+
+//                worldCupWebtoon.add(randomTwo.get(0));
+//                worldCupWebtoon.add(randomTwo.get(1));
             }
         }
 

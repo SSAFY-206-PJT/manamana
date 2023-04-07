@@ -35,9 +35,9 @@ public class WebtoonServiceImpl implements WebtoonService {
     private final AuthorRepository authorRepository;
     private final WebtoonAdditionRepository webtoonAdditionRepository;
 
-    public WebClient webClient() {
-        return WebClient.create("http://localhost:8080");
-    }
+//    public WebClient webClient() {
+//        return WebClient.create("http://localhost:8080");
+//    }
 
 
     // 웹툰 데이터 리스트 처리
@@ -57,13 +57,13 @@ public class WebtoonServiceImpl implements WebtoonService {
             saveAddition(webtoon);
         });
 
-        WebtoonUpdateDTO webtoonUpdateDTO = WebtoonUpdateDTO.createDTO(ids);
+//        WebtoonUpdateDTO webtoonUpdateDTO = WebtoonUpdateDTO.createDTO(ids);
 
-        String block = webClient().post()
-                .uri("/webtoons/alarm")
-                .bodyValue(webtoonUpdateDTO)
-                .retrieve()
-                .bodyToMono(String.class).block();
+//        String block = webClient().post()
+//                .uri("/webtoons/alarm")
+//                .bodyValue(webtoonUpdateDTO)
+//                .retrieve()
+//                .bodyToMono(String.class).block();
     }
 
     // 웹툰 저장

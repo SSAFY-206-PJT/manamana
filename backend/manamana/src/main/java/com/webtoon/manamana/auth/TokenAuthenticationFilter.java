@@ -45,7 +45,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
 
-            if (tokenProvider.validateToken(jwt) && StringUtils.hasText(jwt)) {
+            log.info("token provider : {}", tokenProvider);
+
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Long userId = tokenProvider.getUserIdFromToken(jwt);
 
                 UserDetails userDetails = customUserDetailsService.loadUserById(userId);
@@ -67,9 +69,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         } catch (IllegalStateException e) {
             log.info("잘못된 토큰입니다.");
             request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_ILLEGAL);
-        } catch (Exception e){
-            e.printStackTrace();
         }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
 
         filterChain.doFilter(request, response);
     }
