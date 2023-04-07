@@ -11,6 +11,11 @@ import java.util.TimeZone;
 @EnableJpaAuditing
 public class ManamanaApplication {
 
+	@PostConstruct
+	public void start(){
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(ManamanaApplication.class, args);
 	}
