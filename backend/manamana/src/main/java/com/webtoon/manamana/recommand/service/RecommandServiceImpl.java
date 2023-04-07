@@ -86,6 +86,8 @@ public class RecommandServiceImpl implements RecommandService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange("http://recommend-api:8000/userbased", HttpMethod.POST, entity, String.class);
 
+        log.info("recommend check : {}", response);
+
         List<AssosiationWebtoonResponseDTO> assosiationWebtoonResponseDTOS = objectMapper.readValue(response.getBody(), AssosiationApiResponseDTO.class).getResult();
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = new ArrayList<>();
 
