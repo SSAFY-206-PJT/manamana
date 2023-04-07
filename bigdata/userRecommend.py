@@ -96,7 +96,7 @@ def recommand_to_user(data, user_id, liked_webtoon_arr, number_of_recommend):
     liked_webtoons = set(liked_webtoon_arr)
     recommend_webtoon_arr = predictions['webtoonId'].values.tolist()
     recommend_webtoons = set(recommend_webtoon_arr)
-    return list(filter(lambda x: x not in liked_webtoons, recommend_webtoon_arr))[:number_of_recommend]
+    return list(filter(lambda x: x not in liked_webtoons, recommend_webtoon_arr))[:10]
 
     # return list(recommend_webtoons - liked_webtoons)
 
