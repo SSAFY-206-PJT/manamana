@@ -185,7 +185,14 @@ public class RecommandServiceImpl implements RecommandService {
         HttpEntity entity = new HttpEntity(request, httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.exchange("http://recommend-api:8000/userbased", HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response = null;
+        try{
+            response = restTemplate.exchange("http://recommend-api:8000/userbased", HttpMethod.POST, entity, String.class);
+        }
+        catch (Exception e){
+            throw new CustomException(CustomExceptionStatus.NOT_FOUND_RECOMMEND_WEBTOON);
+        }
+
 
         log.info("[genre] : {}", response);
 
