@@ -29,7 +29,7 @@ public class ControllerAdvisor {
 
         CustomExceptionStatus status = e.getCustomExceptionStatus();
 
-//        e.printStackTrace();
+        e.printStackTrace();
         log.warn("[" +" CustomException - " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")) + "]" +" : " + status.getMessage());
 
         return responseService.getExceptionResponse(status);
@@ -41,7 +41,7 @@ public class ControllerAdvisor {
     @ExceptionHandler
     public CommonResponse exceptionHandler(RuntimeException e){
 
-//        e.printStackTrace();
+        e.printStackTrace();
 
         log.error("[" +" CustomException - " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")) + "]" +" : " + e.getMessage());
 
