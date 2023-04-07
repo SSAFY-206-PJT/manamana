@@ -466,6 +466,8 @@ public class RecommandServiceImpl implements RecommandService {
                         .limit(2)
                         .collect(Collectors.toList());
 
+                log.info("[randomTwo] : {}", randomTwo);
+
                 worldCupWebtoon.add(randomTwo.get(0));
                 worldCupWebtoon.add(randomTwo.get(1));
             }
