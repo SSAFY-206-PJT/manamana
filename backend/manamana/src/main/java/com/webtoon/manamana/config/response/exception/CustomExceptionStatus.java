@@ -74,6 +74,9 @@ public enum CustomExceptionStatus {
     FAIL_CONNECT_SSE(false, 400, "알림등록에 실패했습니다."),
     ALREADY_NOTIFICATION(false, 400, "이미 알림이 등록되어있습니다."),
 
+    /*추천관련*/
+    NOT_FOUND_RECOMMEND_WEBTOON(false,400,"장르 추천 웹툰이 없습니다"),
+
 
 
 
