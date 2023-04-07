@@ -50,6 +50,8 @@ public class RecommandController {
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandUserWebtoon(authUserId);
 
+
+
         return responseService.getDataResponse(recommandWebtoonResponseDTOS, CustomSuccessStatus.RESPONSE_SUCCESS);
     }
 
