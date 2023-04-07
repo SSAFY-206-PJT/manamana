@@ -93,7 +93,7 @@ function CommentListItem({ chat, itemInfo, idx }: Props) {
     return (
       <div className="mjustify-end my-2 flex">
         <div className="mr-1 flex items-center">
-          <Avatar alt="Remy Sharp" src={userImagePath} />
+          <Avatar alt="Remy Sharp" src={chat.user.imagePath} />
         </div>
         <div className="max-w-[65%]">
           <div className="relative flex rounded bg-BackgroundLightComponent p-1.5">
