@@ -41,15 +41,25 @@ async def userbased(request: Request):
     recomm_data = v['recommendApiRequestDTOS']
     userLikedWebtoon = v['userLikedWebtoon']
 
-    recommend_list = userRecommend.recommand_to_user(recomm_data, k, userLikedWebtoon, 10)
+    recommend_list = userRecommend.recommand_to_user(
+        recomm_data, k, userLikedWebtoon, 10)
 
+    # recommend_webtoon_json = dict()
+    recommendData = list()
     for i in recommend_list:
-        recommendData = recommendWebtoonList.RecommendWebtoonList()
+        # recommendData = recommendWebtoonList.RecommendWebtoonList()
+        # recommendData.webtoonId = i
+        # recommendData.done()
 
-        recommendData.webtoonId = i
+        recommend_webtoon_dict = dict()
+        recommend_webtoon_dict["webtoonId"] = i
+        recommendData.append(recommend_webtoon_dict)
 
-        recommendData.done()
+    recommend_webtoon_json = dict()
+    recommend_webtoon_json["result"] = recommendData
 
-    recommend_webtoon_json = recommendData.make_json()
+    # recommend_webtoon_json = recommendData.make_json()
 
+    # print(recommend_list)
+    print(recommend_webtoon_json)
     return recommend_webtoon_json
