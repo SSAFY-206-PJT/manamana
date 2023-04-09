@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
@@ -28,22 +29,54 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
     }
 
 
+    //in쿼리를 이용해서 페이징처리하여 id값 set으로 만드는 메서드
+    public Page<Webtoon> findWebtoonAllPage(Set<Long> id,WebtoonFilterDTO webtoonFilterDTO, Pageable pageable){
 
-//    //뽑아낸 정보로 페이지네이션
-//    public List<Webtoon> findByPageableWebtoonId(WebtoonFilterDTO webtoonFilterDTO,Pageable pageable){
-//
-//        QWebtoon webtoon = QWebtoon.webtoon;
-//        return queryFactory
-//                .selectFrom(webtoon)
-//                .where(webtoon.isDeleted.eq(false),
-//                        containsKey(webtoonFilterDTO.getKeyword()),
-//                        statusEq(webtoonFilterDTO.getStatusId()),
-//                        gradeEq(webtoonFilterDTO.getGradeId()))
-//
-//    }
+        QWebtoon webtoon = QWebtoon.webtoon;
+
+        List<Webtoon> webtoons = queryFactory
+                .selectFrom(webtoon)
+                .where(webtoon.id.in(id),webtoon.isDeleted.eq(false),
+                        containsKey(webtoonFilterDTO.getKeyword()),
+                                statusEq(webtoonFilterDTO.getStatusId()),
+                                gradeEq(webtoonFilterDTO.getGradeId()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Webtoon> limit = queryFactory
+                .selectFrom(webtoon)
+                .where(webtoon.id.in(id),
+                        containsKey(webtoonFilterDTO.getKeyword()),
+                        statusEq(webtoonFilterDTO.getStatusId()),
+                        gradeEq(webtoonFilterDTO.getGradeId()));
+
+        return PageableExecutionUtils.getPage(webtoons,pageable,() -> limit.fetch().size());
+    }
+
+    //페치조인과 정렬하는 메서드
+    public List<Webtoon> findWebtoonAllJoinAndOrderBy(Set<Long> id,WebtoonFilterDTO webtoonFilterDTO){
+        QWebtoon webtoon = QWebtoon.webtoon;
+
+        return queryFactory
+                .selectFrom(webtoon)
+                .where(webtoon.isDeleted.eq(false),
+                        webtoon.id.in(id))
+                .leftJoin(webtoon.webtoonDays, QWebtoonDay.webtoonDay).fetchJoin()
+                .leftJoin(webtoon.webtoonGenres, QWebtoonGenre.webtoonGenre).fetchJoin()
+                .leftJoin(webtoon.webtoonAddition, QWebtoonAddition.webtoonAddition).fetchJoin()
+                .leftJoin(webtoon.authors, QAuthor.author).fetchJoin()
+                .orderBy(sortTypeOrder(webtoonFilterDTO.getSortType()))
+                .distinct()
+                .fetch();
+    }
 
 
-    // TODO : distict 이케 쓰면 안됨 - 메모리에 올려서 중복제거를 하기 떄문에 in 쿼리를 이용해서 해결 할 수 있도록 바꿔야됨.
+
+
+
+
+    // TODO : distinct 이케 쓰면 안됨 - 메모리에 올려서 중복제거를 하기 떄문에 in 쿼리를 이용해서 해결 할 수 있도록 바꿔야됨.
     public Page<Webtoon> findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable){
 
         QWebtoon webtoon = QWebtoon.webtoon;

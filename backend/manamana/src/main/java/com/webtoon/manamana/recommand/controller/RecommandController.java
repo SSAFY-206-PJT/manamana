@@ -65,7 +65,6 @@ public class RecommandController {
     @GetMapping("/recommands/genre")
     public DataResponse<List<RecommandWebtoonResponseDTO>> recommandByGenre(
             @AuthenticationPrincipal UserPrincipal userPrincipal) throws Exception {
-
         long authUserId = userPrincipal.getId();
 
         List<RecommandWebtoonResponseDTO> recommandWebtoonResponseDTOS = recommandService.recommandByGenre(authUserId);
