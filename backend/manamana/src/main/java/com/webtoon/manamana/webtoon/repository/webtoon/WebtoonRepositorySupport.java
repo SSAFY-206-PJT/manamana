@@ -49,9 +49,7 @@ public class WebtoonRepositorySupport extends QuerydslRepositorySupport {
                 .where(webtoon.id.in(id),
                         containsKey(webtoonFilterDTO.getKeyword()),
                         statusEq(webtoonFilterDTO.getStatusId()),
-                        gradeEq(webtoonFilterDTO.getGradeId()))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                        gradeEq(webtoonFilterDTO.getGradeId()));
 
         return PageableExecutionUtils.getPage(webtoons,pageable,() -> limit.fetch().size());
     }

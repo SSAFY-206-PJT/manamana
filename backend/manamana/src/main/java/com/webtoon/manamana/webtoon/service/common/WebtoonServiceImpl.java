@@ -62,7 +62,7 @@ public class WebtoonServiceImpl implements WebtoonService{
         Map<Integer,String> statusMap = new HashMap<>();
 
         serialStatuses.forEach(serialStatus -> statusMap.put(serialStatus.getId(),serialStatus.getStatus()));
-        
+
         //연재 요일에 해당하는 웹툰id 조회
         List<WebtoonDay> webtoonDays = webtoonDayRepositorySupport.findWebtoonDayInCodeId(webtoonFilterDTO.getDayId());
         Set<Long> dayIdWebtoonIds = getDayIdWebtoonIds(webtoonDays);//webtoon Id만 뽑음
