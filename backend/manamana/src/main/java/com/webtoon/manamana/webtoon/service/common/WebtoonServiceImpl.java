@@ -19,6 +19,7 @@ import com.webtoon.manamana.webtoon.repository.webtoon.*;
 import com.webtoon.manamana.webtoon.util.WebtoonFilterDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,23 +68,14 @@ public class WebtoonServiceImpl implements WebtoonService{
 
         //연재 요일에 해당하는 웹툰id 조회
         List<WebtoonDay> webtoonDays = webtoonDayRepositorySupport.findWebtoonDayInCodeId(webtoonFilterDTO.getDayId());
-        //필터에 해당하는 연재요일에 속하는 웹툰 id 조회.
-        Set<Long> dayIdWebtoonIds = webtoonDays.stream()
-                .map(WebtoonDay::getWebtoon)
-                .map(Webtoon::getId)
-                .collect(Collectors.toSet());
+        Set<Long> dayIdWebtoonIds = getDayIdWebtoonIds(webtoonDays);//webtoon Id만 뽑음
 
         //장르에 해당하는 웹툰 id 조회.
         List<WebtoonGenre> webtoonGenres = webtoonGenreRepositorySupport.findWebtoonGenreInGenreId(webtoonFilterDTO.getGenreId());
-        Set<Long> genreIdWebtoonIds = webtoonGenres.stream()
-                .map(WebtoonGenre::getWebtoon)
-                .map(Webtoon::getId)
-                .collect(Collectors.toSet());
+        Set<Long> genreIdWebtoonIds = getGenreIdWebtoonIds(webtoonGenres); //webtoon Id만 뽑음
 
         //두 테이블에서 구한 웹툰 id값을 합침.
-        Set<Long> webtoonIdSet = new HashSet<>();
-        webtoonIdSet.addAll(dayIdWebtoonIds);
-        webtoonIdSet.addAll(genreIdWebtoonIds);
+        Set<Long> webtoonIdSet = unionId(dayIdWebtoonIds, genreIdWebtoonIds);
 
         //연재 여부에 해당하는 웹툰 id 조회
         //연령등급에 해당하는 웹툰id 조회
@@ -91,9 +83,7 @@ public class WebtoonServiceImpl implements WebtoonService{
         List<Webtoon> webtoons = webtoonAllPage.getContent();
 
         //페이징한 id 값들을 다시 In쿼리를 이용
-        Set<Long> webtoonIds = webtoons.stream()
-                .map(Webtoon::getId)
-                .collect(Collectors.toSet());
+        Set<Long> webtoonIds = getWebtoonIds(webtoons);
 
         List<Webtoon> webtoonAll = webtoonRepositorySupport.findWebtoonAllJoinAndOrderBy(webtoonIds, webtoonFilterDTO);
 
@@ -104,6 +94,36 @@ public class WebtoonServiceImpl implements WebtoonService{
         WebtoonListTotalDTO webtoonListTotalDTO = WebtoonListTotalDTO.createDTO(webtoonAllPage.getTotalElements(), webtoonListDTOS);
 
         return webtoonListTotalDTO;
+    }
+
+    private static Set<Long> getWebtoonIds(List<Webtoon> webtoons) {
+        Set<Long> webtoonIds = webtoons.stream()
+                .map(Webtoon::getId)
+                .collect(Collectors.toSet());
+        return webtoonIds;
+    }
+
+    public static Set<Long> unionId(Set<Long> dayIdWebtoonIds, Set<Long> genreIdWebtoonIds) {
+        Set<Long> webtoonIdSet = new HashSet<>();
+        webtoonIdSet.addAll(dayIdWebtoonIds);
+        webtoonIdSet.addAll(genreIdWebtoonIds);
+        return webtoonIdSet;
+    }
+
+    public static Set<Long> getGenreIdWebtoonIds(List<WebtoonGenre> webtoonGenres) {
+        Set<Long> genreIdWebtoonIds = webtoonGenres.stream()
+                .map(WebtoonGenre::getWebtoon)
+                .map(Webtoon::getId)
+                .collect(Collectors.toSet());
+        return genreIdWebtoonIds;
+    }
+
+    public static Set<Long> getDayIdWebtoonIds(List<WebtoonDay> webtoonDays) {
+        Set<Long> dayIdWebtoonIds = webtoonDays.stream()
+                .map(WebtoonDay::getWebtoon)
+                .map(Webtoon::getId)
+                .collect(Collectors.toSet());
+        return dayIdWebtoonIds;
     }
 
     /*웹툰 상세 조회*/
