@@ -1,5 +1,6 @@
 package com.webtoon.manamana.webtoon.repository.webtoon;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.manamana.entity.webtoon.*;
 import com.webtoon.manamana.entity.webtoon.codetable.QGenre;
@@ -17,6 +18,18 @@ public class WebtoonGenreRepositorySupport extends QuerydslRepositorySupport {
     public WebtoonGenreRepositorySupport(JPAQueryFactory queryFactory) {
         super(WebtoonGenre.class);
         this.queryFactory = queryFactory;
+    }
+
+    //주어진 장르에 포함되는 웹툰반환
+    public List<WebtoonGenre> findWebtoonGenreInGenreId(List<Integer> genreId){
+
+        QWebtoonGenre webtoonGenre = QWebtoonGenre.webtoonGenre;
+
+        return queryFactory
+                .selectFrom(webtoonGenre)
+                .where(genreContain(genreId))
+                .fetch();
+
     }
 
 
@@ -53,5 +66,13 @@ public class WebtoonGenreRepositorySupport extends QuerydslRepositorySupport {
                 .from(QWebtoonGenre.webtoonGenre)
                 .where(QWebtoonGenre.webtoonGenre.genre.id.eq(genreId))
                 .fetch();
+    }
+
+    /*장르*/
+    private BooleanExpression genreContain(List<Integer> genreId){
+
+        if(genreId == null || genreId.isEmpty()) return null;
+
+        return QWebtoonGenre.webtoonGenre.genre.id.in(genreId);
     }
 }

@@ -5,10 +5,7 @@ import com.webtoon.manamana.config.response.exception.CustomExceptionStatus;
 import com.webtoon.manamana.entity.user.User;
 import com.webtoon.manamana.entity.user.UserGenre;
 import com.webtoon.manamana.entity.user.UserWebtoon;
-import com.webtoon.manamana.entity.webtoon.Webtoon;
-import com.webtoon.manamana.entity.webtoon.WebtoonAddition;
-import com.webtoon.manamana.entity.webtoon.WebtoonGenre;
-import com.webtoon.manamana.entity.webtoon.WebtoonProvider;
+import com.webtoon.manamana.entity.webtoon.*;
 import com.webtoon.manamana.entity.webtoon.codetable.Grade;
 import com.webtoon.manamana.entity.webtoon.codetable.SerialStatus;
 import com.webtoon.manamana.user.repository.user.*;
@@ -18,10 +15,7 @@ import com.webtoon.manamana.webtoon.dto.response.common.WebtoonDetailDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonListTotalDTO;
 import com.webtoon.manamana.webtoon.dto.response.common.WebtoonProviderDTO;
-import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonAdditionRepositorySupport;
-import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonGenreRepositorySupport;
-import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepository;
-import com.webtoon.manamana.webtoon.repository.webtoon.WebtoonRepositorySupport;
+import com.webtoon.manamana.webtoon.repository.webtoon.*;
 import com.webtoon.manamana.webtoon.util.WebtoonFilterDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -57,15 +48,13 @@ public class WebtoonServiceImpl implements WebtoonService{
     private final UserWebtoonRepositorySupport userWebtoonRepositorySupport;
     private final WebtoonAdditionRepositorySupport webtoonAdditionRepositorySupport;
 
+    private final WebtoonDayRepositorySupport webtoonDayRepositorySupport;
+
 
 
     /*웹툰 전체 조회*/
     @Override
     public WebtoonListTotalDTO findWebtoonAll(WebtoonFilterDTO webtoonFilterDTO, Pageable pageable) {
-
-        Page<Webtoon> webtoonAllPage = webtoonRepositorySupport.findWebtoonAll(webtoonFilterDTO, pageable);
-        List<Webtoon> webtoonAll = webtoonAllPage.getContent();
-        System.out.println(webtoonAllPage.getTotalElements());
 
         //웹툰 연재 상태 코드표 조회
         List<SerialStatus> serialStatuses = statusCodeRepository.findAll();
@@ -74,6 +63,39 @@ public class WebtoonServiceImpl implements WebtoonService{
         serialStatuses.forEach(serialStatus -> {
             statusMap.put(serialStatus.getId(),serialStatus.getStatus());
         });
+
+
+        //연재 요일에 해당하는 웹툰id 조회
+        List<WebtoonDay> webtoonDays = webtoonDayRepositorySupport.findWebtoonDayInCodeId(webtoonFilterDTO.getDayId());
+        //필터에 해당하는 연재요일에 속하는 웹툰 id 조회.
+        Set<Long> dayIdWebtoonIds = webtoonDays.stream()
+                .map(WebtoonDay::getWebtoon)
+                .map(Webtoon::getId)
+                .collect(Collectors.toSet());
+
+        //장르에 해당하는 웹툰 id 조회.
+        List<WebtoonGenre> webtoonGenres = webtoonGenreRepositorySupport.findWebtoonGenreInGenreId(webtoonFilterDTO.getGenreId());
+        Set<Long> genreIdWebtoonIds = webtoonGenres.stream()
+                .map(WebtoonGenre::getWebtoon)
+                .map(Webtoon::getId)
+                .collect(Collectors.toSet());
+
+        //두 테이블에서 구한 웹툰 id값을 합침.
+        Set<Long> webtoonIdSet = new HashSet<>();
+        webtoonIdSet.addAll(dayIdWebtoonIds);
+        webtoonIdSet.addAll(genreIdWebtoonIds);
+
+        //연재 여부에 해당하는 웹툰 id 조회
+        //연령등급에 해당하는 웹툰id 조회
+        Page<Webtoon> webtoonAllPage = webtoonRepositorySupport.findWebtoonAllPage(webtoonIdSet, webtoonFilterDTO, pageable);
+        List<Webtoon> webtoons = webtoonAllPage.getContent();
+
+        //페이징한 id 값들을 다시 In쿼리를 이용
+        Set<Long> webtoonIds = webtoons.stream()
+                .map(Webtoon::getId)
+                .collect(Collectors.toSet());
+
+        List<Webtoon> webtoonAll = webtoonRepositorySupport.findWebtoonAllJoinAndOrderBy(webtoonIds, webtoonFilterDTO);
 
         List<WebtoonListDTO> webtoonListDTOS = webtoonAll.stream()
                 .map(webtoon -> WebtoonListDTO.createDTO(webtoon, statusMap))
